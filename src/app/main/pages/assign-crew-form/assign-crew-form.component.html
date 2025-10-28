@@ -1,0 +1,221 @@
+<section>
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/main">Dashboard</a></li>
+        <li class="breadcrumb-item">
+          <a routerLink (click)="navigate('ASSIGN CREW', '13')">Assign Crew</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Create Assign Crew And Schedule</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section>
+  <form class="form" [formGroup]="assignCrewForm">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <div class="heading">
+        <h2>Assign Crew and Schedule</h2>
+      </div>
+
+      <div
+        style="
+          margin: 0 auto;
+          height: 400px;
+          justify-content: space-around;
+          padding: 15px;
+        "
+      >
+        <div class="two-row-grid mt-4" style="justify-content: space-between">
+          <div class="left-div">
+            <div class="inner-div">
+              <label>Work Order No.</label>
+
+              {{ data?.wmWorkorderRegisteredDTO?.workorderNo }}
+            </div>
+          </div>
+          <div>
+            <div class="inner-div">
+              <label>Work Order End Date</label>
+
+              {{
+                data?.wmWorkorderRegisteredDTO?.workorderEndDate
+                  | date : "medium"
+              }}
+            </div>
+          </div>
+        </div>
+        <br />
+        <!-- </div> -->
+        <div class="txt-area">
+          <label style="width: fit-content">Work Description</label>
+          <p>
+            {{ data?.wmWorkorderRegisteredDTO?.workDescription }}
+          </p>
+        </div>
+
+        <div class="indicators-line-content">
+          <label>Store <span class="star">*</span></label>
+          <select
+            class="form-select"
+            id="forms"
+            [(ngModel)]="store"
+            formControlName="store"
+            col="10"
+            row="1"
+            name="stored"
+            (change)="onStoreChange()"
+          >
+            <option selected disabled>select</option>
+            <option
+              *ngFor="let d of data?.storeMasterDTO"
+              [value]="d.storeMasterId"
+            >
+              {{ d.storeName }}
+            </option>
+          </select>
+          <mat-error  *ngIf="assignCrewForm.get('store').hasError('required') && assignCrewForm.get('store').touched">
+            Please select this field
+          </mat-error>
+        </div>
+
+        <div style="overflow: auto; width: 100%; height: 300px">
+          <table class="table table-bordered text-center mt-4">
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th scope="col">S. No.</th>
+                <th scope="col">Employee Name <span class="star">*</span></th>
+                <th scope="col">Designation</th>
+                <th scope="col">Start Date<span class="star">*</span></th>
+                <th scope="col">End Date <span class="star">*</span></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>0</td>
+                <td>
+                  <select
+                    class="form-control"
+                    [(ngModel)]="newEmployee.name"
+                    formControlName="name"
+                    name="employeeName"
+                    (change)="onEmployeeChange()"
+                  >
+                    <option
+                      *ngFor="let option of employeeOptions"
+                      [value]="option.employeeName"
+                    >
+                      {{ option.employeeName }}
+                    </option>
+                  </select>
+                  <mat-error  *ngIf="assignCrewForm.get('name').hasError('required') && assignCrewForm.get('name').touched">
+                    Please select this field.
+                  </mat-error>
+                </td>
+                <td>{{ newEmployee.designation }}</td>
+                <td>
+                  <div class="date-field">
+                    <div style="position: relative">
+                      <input
+                        matInput
+                        [matDatepicker]="startDatePicker"
+                        [(ngModel)]="newEmployee.startDate"
+                        formControlName="startDate"
+                        name="startDate"
+                        class="form-control"
+                        readonly
+                        required
+                      />
+                      <mat-datepicker-toggle
+                        style="position: absolute; top: 0; right: 0"
+                        matSuffix
+                        [for]="startDatePicker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #startDatePicker></mat-datepicker>
+                      <!-- <mat-error class="startdate" *ngIf="assignCrewForm.get('startDate').hasError('required') && assignCrewForm.get('startDate').touched"> Please select this field.  </mat-error> -->
+                      <mat-error class="startdate" *ngIf="assignCrewForm.get('startDate').hasError('dateRangeError') &&  assignCrewForm.get('startDate').touched">Start date must be after <br/>{{ workorderDate | date:'mediumDate' }} and {{ workorderEndDate | date:'mediumDate' }}. </mat-error>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="date-field">
+                    <div style="position: relative">
+                      <input
+                        matInput
+                        [matDatepicker]="endDatePicker"
+                        [(ngModel)]="newEmployee.endDate"
+                        formControlName="endDate"
+                        name="endDate"
+                        class="form-control"
+                        readonly
+                        required
+                      />
+                      <mat-datepicker-toggle
+                        style="position: absolute; top: 0; right: 0"
+                        matSuffix
+                        [for]="endDatePicker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #endDatePicker></mat-datepicker>
+                      <!-- <mat-error class="enddate" *ngIf="assignCrewForm.get('endDate').hasError('required') && assignCrewForm.get('endDate').touched">Please select this field</mat-error> -->
+                      <mat-error class="enddate" *ngIf="assignCrewForm.get('endDate').hasError('dateRangeError') && assignCrewForm.get('endDate').touched">End Date cannot be <br/> before start date and <br/> not after work order End Date</mat-error>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <button
+                    style="border: none; background-color: transparent"
+                    (click)="addEmployee()"
+                    [disabled]="assignCrewForm.invalid || assignCrewForm.get('startDate')?.invalid || assignCrewForm.get('endDate')?.invalid"
+
+
+                  >
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngFor="let employee of employees; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ employee.employeeName }}</td>
+                <td>{{ employee.designation }}</td>
+                <td>{{ employee.startDate || "Default Start Date" }}</td>
+                <td>{{ employee.endDate || "Default End Date" }}</td>
+                <td>
+                  <button
+                    style="border: none; background-color: transparent"
+                    (click)="removeEmployee(i)"
+                  >
+                    <img src="assets/delete-icon.png" alt="" />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- </div> -->
+      </div>
+
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 1rem;
+          padding: 1.5rem;
+        "
+      >
+        <button
+        [disabled]="isLoading"
+          type="submit"
+          class="btn btn-primary btn-md"
+          (click)="openConfirmationpopupDialog()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+</section>

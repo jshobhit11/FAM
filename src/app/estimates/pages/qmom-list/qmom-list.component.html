@@ -1,0 +1,23 @@
+<div class="container-fluid page">
+    <section class="mt-2">
+      <ul>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a routerLink="/estimates/dashboard">Estimates </a>
+            </li>
+            <li class="breadcrumb-item">
+              <a style="color: lightslategray">
+                Bulk Meters Replacement Estimation Approval
+              </a>
+            </li>
+          </ol>
+        </nav>
+      </ul>
+    </section>
+  
+    <app-filter-table headingName="Quarterly Maintenance Estimation Approval List " 
+    titleName="emergency" [isOffice]="true" [cols]="cols" [rows]="estimatesList" 
+    [data]="estimatesList" [filterFields]="filterFields" [loading]="false">
+    </app-filter-table>
+  </div>

@@ -1,0 +1,25 @@
+<section>
+  <form [formGroup]="materialTypeForm">
+  <h1 mat-dialog-title>Add Material Type</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Material Type</mat-label>
+        <input matInput placeholder="add material type name" 
+        formControlName="materialTypeName" appAlphaNumeric [maxLength]="50" required/>
+        <mat-error>Please enter this field.</mat-error>
+      </mat-form-field> 
+      <mat-form-field class="example-full-width">
+        <mat-label>Material Code</mat-label>
+        <input matInput placeholder="add material type code"
+        formControlName="materialTypeCode" appAlphaNumeric [maxLength]="25" required/>
+        <mat-error>Please enter this field.</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="addMaterial()">Add</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+</form>
+</section>

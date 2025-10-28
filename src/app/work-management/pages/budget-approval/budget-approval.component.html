@@ -1,0 +1,176 @@
+<div class="page-1">
+<section class="mt-1">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/work-management/dashboard">Works</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Budget Approval</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section>
+
+  <div class="page__content shadow dis-fl2 position-relative dis-flex-colu">
+    <h2 class="title-2 p-3">Budget Approval </h2>
+    <div class="row office-m45" >
+      <div class="col-sm-5"></div>
+      <div class="col-sm-2 text-end mt-2 office-label"><strong>Office</strong></div>
+      <div class="col-sm-4">
+        <div class="card flex justify-content-center"> 
+            <p-treeSelect class="md:w-20rem w-full" 
+              containerStyleClass="w-full" 
+              [formControl]="treeControl" 
+              (onNodeSelect)="nodeSelect($event.node)"
+              selectionMode="single" 
+              (onNodeUnselect)="reset()" 
+              [options]="nodes">
+            </p-treeSelect>
+          </div>
+      </div>
+    <div class="col-sm-1">
+     <button type="button" class="btn btn-warning btn-sm mr_6" (click)="reset()">Reset</button>
+    </div>
+    </div>
+    <div class="p-3 p_tree_cont mt-1">
+      <p-table class="p-table-full-width" #dt [value]="tableData" [(selection)]="selectedAccounts" dataKey="referenceNo" [rowHover]="true" [rows]="10"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50,100,200]" [loading]="loading"
+        [exportHeader]="'customExportHeader'" [columns]="cols" selectionMode="multiple" [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+        [globalFilterFields]="filterFields">
+        <ng-template pTemplate="caption">
+            <button pButton label="Clear" class="btn btn-warning btn-sm filter-btn ms-2 mr_6 float-start" icon="pi pi-filter-slash" (click)="clear(dt)">
+              <span class="p-button-icon p-button-icon-left pi pi-filter-slash" aria-hidden="true"></span>
+              <span class="p-button-label"> Clear Filter</span> 
+            </button>
+          <div class="flex text-end table-padding-right">
+            <div class="p-input-icon-left ms-2">
+              <i class="pi pi-search"></i>
+              <input class="pl30" pInputText type="text" [formControl]="clearControl"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search" />
+            </div>
+            <button type="button" (click)="exportExcel()" class="bi bi-filetype-xls button-success ms-2 p-btns text-success"
+              pTooltip="XLS" tooltipPosition="bottom"></button>
+            <button type="button" (click)="exportPdf()" class="bi bi-filetype-pdf button-warning ms-2 p-btns text-danger"
+              pTooltip="PDF" tooltipPosition="bottom"></button>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>
+              <p-tableHeaderCheckbox class="custom-checkbox"></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="referenceNo">
+              <div class="d-flex justify-content-center  flex-column">
+                <div>Request No.</div>
+                <div>
+                  <p-sortIcon field="referenceNo"></p-sortIcon>
+                  <p-columnFilter type="text" field="referenceNo" display="menu" class="ml-auto"></p-columnFilter>
+                </div>
+              </div>
+            </th>
+            <th pSortableColumn="amount">
+              <div class="flex justify-content-between flex-column">
+               <div>Amount</div> 
+                <p-sortIcon field="amount" class="flex-column"></p-sortIcon>
+                <p-columnFilter type="text" field="amount" display="menu" class="ml-auto flex-column"></p-columnFilter>
+              </div>
+            </th>
+            <th pSortableColumn="allocatedBudgetDate">
+              <div class="flex justify-content-between flex-column">
+               <div>Date</div> 
+                <p-sortIcon field="allocatedBudgetDate"></p-sortIcon>
+                <p-columnFilter type="text" field="allocatedBudgetDate" display="menu" class="ml-auto"></p-columnFilter>
+              </div>
+            </th>
+            <th pSortableColumn="omNumber">
+              <div class="flex justify-content-between flex-column">
+               <div>OM No.</div> 
+                <p-sortIcon field="omNumber"></p-sortIcon>
+                <p-columnFilter type="text" field="omNumber" display="menu" class="ml-auto"></p-columnFilter>
+              </div>
+            </th>
+            <th pSortableColumn="remarks">
+              <div class="flex justify-content-between flex-column">
+               <div>Remarks</div>   
+                <p-sortIcon field="remarks"></p-sortIcon>
+                <p-columnFilter type="text" field="remarks" display="menu" class="ml-auto"></p-columnFilter>
+              </div>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data>
+          <tr class="p-selectable-row">
+            <td>
+              <p-tableCheckbox class="custom-checkbox" [value]="data"></p-tableCheckbox>
+            </td>
+            <td>
+              <span class="p-column-title">Request No.</span>
+              <a href="javascript:void(0)" [routerLink]="['/work-management/budget-approval-details']">
+                {{ data.referenceNo }}</a>
+            </td>
+            <td>
+              <span class="p-column-title">Amount</span>
+              {{data.amount}}
+            </td>
+            <td>
+              <span class="p-column-title">Date</span>
+              {{data.allocatedBudgetDate}}
+            </td>
+            <td>
+              <span class="p-column-title">OM No.</span>
+              {{data.omNumber}}
+            </td>
+            <td>
+              <span class="p-column-title">Remarks</span>
+              {{data.remarks}}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="8">No record found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div class="radio-buttons mt-4">
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="radioButton"
+          id="approve"
+          [(ngModel)]="selectedTransactionType"
+          value="A"
+          (change)="updateButtonState()"
+        />
+        <label class="form-check-label" for="approve">Approve</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="radioButton"
+          id="reject"
+          [(ngModel)]="selectedTransactionType"
+          value="R"
+          (change)="updateButtonState()"
+        />
+        <label class="form-check-label" for="reject">Reject</label>
+      </div>
+    </div>
+    <!-- Approve button should be visible if approve radio button is pressed, and Reject button will be visible if reject radio button is pressed, until then no button should be visible -->
+  
+    <div class="button-box p-3 mt-4">
+      <button type="button" class="btn btn-primary btn-md button" (click)="onApproveClicked()"[disabled]="isApproveDisabled">Approve</button>
+      <button type="button" class="btn btn-primary btn-md button" (click)="onRejectClicked()" [disabled]="isRejectDisabled">Reject</button>
+    </div>
+  </div>
+ 
+</section>
+</div>

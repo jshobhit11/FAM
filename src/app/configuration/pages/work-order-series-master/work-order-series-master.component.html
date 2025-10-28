@@ -1,0 +1,102 @@
+<div class="container-fluid page-3">
+<ul>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/configuration">Configuration</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a style="color: lightslategray">Work Order Series Master</a>
+      </li>
+    </ol>
+  </nav>
+</ul>
+
+  <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+    <h2 class="title-2">Work Order Series Master  </h2>
+
+  <div style="display: flex; flex-wrap: wrap; overflow: auto">
+    <div class="top-row">
+      <div class="input-control">
+        <mat-form-field class="example-full-width">
+          <mat-label>Search By Office Name</mat-label>
+          <input
+            (keyup)="applyFilter($event.target.value)"
+            matInput
+            placeholder="Ex. Conductor"
+          />
+        </mat-form-field>
+      </div>
+      <div class="button-control">
+        <button mat-button class="c-btn" (click)="openAddWorkOrderSeriesDialog()">
+          Add Work Order Series
+        </button>
+      </div>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="mt-4">
+      <!-- SLNO Column -->
+      <ng-container matColumnDef="slno">
+        <th mat-header-cell *matHeaderCellDef>SL NO</th>
+        <td mat-cell *matCellDef="let element; index as i">{{ i + 1 }}</td>
+      </ng-container>
+
+      <!-- office Column -->
+      <ng-container matColumnDef="officeId">
+        <th mat-header-cell *matHeaderCellDef>Office Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.officeName }}</td>
+      </ng-container>
+
+
+      <!--Account Head MasterId Column -->
+      <ng-container matColumnDef="accountHeadMasterId">
+        <th mat-header-cell *matHeaderCellDef>Account Head Name</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.accountHeadCode }}
+        </td>
+      </ng-container>
+
+      <!--Financial year Column -->
+      <ng-container matColumnDef="financialYear">
+        <th mat-header-cell *matHeaderCellDef>Financial Year</th>
+        <td mat-cell *matCellDef="let element">{{ element.financialYear }}</td>
+      </ng-container>
+
+      <!--Alphabet Sequence Column -->
+      <ng-container matColumnDef="alphabetSequence">
+        <th mat-header-cell *matHeaderCellDef>Alphabet Sequence</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.alphabetSequence }}
+        </td>
+      </ng-container>
+
+      <!--Start number Column -->
+      <ng-container matColumnDef="startNumber">
+        <th mat-header-cell *matHeaderCellDef>Start Number</th>
+        <td mat-cell *matCellDef="let element">{{ element.startNumber }}</td>
+      </ng-container>
+
+      <!--End number Column -->
+      <ng-container matColumnDef="endNumber">
+        <th mat-header-cell *matHeaderCellDef>End Number</th>
+        <td mat-cell *matCellDef="let element">{{ element.endNumber }}</td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <!-- <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            style="border: none; background-color: transparent"
+            (click)="
+              openUpdateWorkOrderSeriesDialog(element.workOrderSeriesMasterId)">
+            <mat-icon color="error">edit</mat-icon>
+          </button>
+        </td>
+      </ng-container> -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+  </mat-paginator>
+

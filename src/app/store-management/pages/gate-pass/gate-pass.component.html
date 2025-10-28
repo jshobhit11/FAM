@@ -1,0 +1,121 @@
+<div class="page-1">
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/store-management">Store </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Gate Pass</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section>
+  <form class="form">
+    <div class="col-lg-6 mt-4" style="width: 100% !important; padding: 1rem">
+      <div class="heading" style="background-color: #f0f0f0">
+        <h1>Gate Pass</h1>
+      </div>
+
+      <div style="border: 2px solid #c2c2c2; margin-top: 1rem; padding: 0.5rem">
+        <div class="indicators-line mt-4">
+          <div class="indicators-line-content">
+            <div class="color-div indicator-color-one"></div>
+            <span>One Day Delayed</span>
+          </div>
+          <div class="indicators-line-content">
+            <div class="color-div indicator-color-two"></div>
+            <span>Two Day Delayed</span>
+          </div>
+          <div class="indicators-line-content">
+            <div class="color-div indicator-color-three"></div>
+            <span>Three Day Delayed</span>
+          </div>
+
+          <div
+            style="
+              overflow: auto;
+              width: 100%;
+              border: 2px solid #c2c2c2;
+              margin-top: 1rem;
+            "
+          >
+            <table class="table table-bordered text-center">
+              <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                <tr>
+                  <th scope="col">S.NO.</th>
+                  <th scope="col">Request No.</th>
+                  <th scope="col">Counter Sign Date</th>
+                  <th scope="col">From Office</th>
+                  <th scope="col">Indicator</th>
+                  <th scope="col">Allocated Store</th>
+                  <th scope="col">Request Department</th>
+                  <th scope="col">Request By</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let dataItem of data; index as i">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <a
+                      *ngIf="isDesignationRole(dataItem.designationCode)"
+                      href="javascript:void(0)"
+                      [routerLink]="[
+                        '/store-management',
+                        'gate-pass-details',
+                        dataItem.wmMaterialsIndentId
+                      ]"
+                    >
+                      {{ dataItem.materialsIndentNo }}
+                    </a>
+                    <span
+                      *ngIf="!isDesignationRole(dataItem.designationCode)"
+                      >{{ dataItem.materialsIndentNo }}</span
+                    >
+                  </td>
+                  <td>
+                    <date-pipe-third
+                      date="{{ dataItem.materialsIndentApprovedDate }}"
+                    ></date-pipe-third>
+                  </td>
+                  <td>{{ dataItem.officename }}</td>
+                  <td>
+                    <div
+                      *ngIf="isGreenColor(dataItem.materialsIndentApprovedDate)"
+                      class="color-div indicator-color-one"
+                    ></div>
+                    <div
+                      *ngIf="
+                        isYellowColor(dataItem.materialsIndentApprovedDate)
+                      "
+                      class="color-div indicator-color-two"
+                    ></div>
+                    <div
+                      *ngIf="isRedColor(dataItem.materialsIndentApprovedDate)"
+                      class="color-div indicator-color-three"
+                    ></div>
+                    <div
+                      *ngIf="
+                        !isGreenColor(dataItem.materialsIndentApprovedDate) &&
+                        !isYellowColor(dataItem.materialsIndentApprovedDate) &&
+                        !isRedColor(dataItem.materialsIndentApprovedDate)
+                      "
+                      class="color-div"
+                    ></div>
+                  </td>
+                  <td>{{ dataItem.store }}</td>
+                  <td>OPERATION & MAINTENACE</td>
+                  <td>{{ dataItem.requestedBy }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>
+</div>

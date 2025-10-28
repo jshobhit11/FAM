@@ -1,0 +1,147 @@
+<section>
+  <form class="form" [formGroup]="billSubmissionForm">
+    <div
+      class="page__content p-3 p20 shadow dis-fl dis-fl2 position-relative dis-flex-colu"
+    >
+      <h2 class="title-2">Bill Submission</h2>
+      <br />
+      <div class="two-row-grid" style="justify-content: space-evenly">
+        <div class="left-div" style="width: unset !important">
+          <div class="inner-div" *ngIf="isDataLoaded">
+            <label>Work Order No : </label>
+            {{ workOrderNo }}
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Estimation No : </label>
+            {{ estimationno }}
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Work Description :</label>
+            {{ workdescription }}
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Bill Invoice No <span class="star">*</span></label>
+            <div>
+            <input
+              class="form-control"
+              type="text"
+              [(ngModel)]="billInvoiceNo"
+              formControlName="billInvoiceNo"
+              appAlphaNumeric
+              [maxLength]="20"
+              required
+            />
+            <mat-error *ngIf="billSubmissionForm.get('billInvoiceNo').hasError('required') && billSubmissionForm.get('billInvoiceNo').touched">
+              Please select this field
+            </mat-error>
+          </div>
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Date Of Bill Submission <span class="star">*</span></label>
+            <div class="date-field">
+              <div style="position: relative">
+                <input
+                  matInput
+                  [matDatepicker]="date_picker"
+                  class="form-control"
+                  name="dateOfPermitWork"
+                  [(ngModel)]="billSubmissionDate"
+                  formControlName="billSubmissionDate"
+                  appDate
+                  [readonly]="true" [disabled]="false"
+                  required
+                />
+                <mat-datepicker-toggle
+                  style="position: absolute; top: 0; right: 0"
+                  matIconSuffix
+                  [for]="date_picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #date_picker></mat-datepicker>
+                <mat-error *ngIf="billSubmissionForm.get('billSubmissionDate').hasError('required') && billSubmissionForm.get('billSubmissionDate').touched">
+                  Please select this field
+                </mat-error>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-div">
+          <div class="inner-div">
+            <label>Work Order Date : </label>
+            {{ workOrderDate }}
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Execution Method :</label>
+            {{ workExecutionmethod }}
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Rate Contractor / Vendor :</label>
+            {{ vendormasterId }}
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Bill Amount <span class="star">*</span></label>
+            <div>
+            <input
+              class="form-control"
+              type="text"
+              [(ngModel)]="workAwardedAmount"
+              formControlName="workAwardedAmount"
+              required
+              appIndianCurrency
+              [maxLength]="10"
+              (input)="onInputChange($event)"
+              placeholder="₹"
+            />
+            <span ></span>
+            <mat-error *ngIf="billSubmissionForm.get('workAwardedAmount').hasError('required') && billSubmissionForm.get('workAwardedAmount').touched">
+              Please select this field
+            </mat-error>
+            <mat-error *ngIf="billSubmissionForm.get('workAwardedAmount').hasError('pattern')">
+              Please enter a valid amount
+            </mat-error>
+          </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+      <div class="txt-area">
+        <label style="width: fit-content">Remarks <span class="star">*</span></label>
+        <div>
+        <textarea
+          class="form-control"
+          cols="100"
+          rows="3"
+          name="remarks"
+          [(ngModel)]="remarks"
+          formControlName="remarks"
+        >
+        </textarea>
+        <mat-error *ngIf="billSubmissionForm.get('remarks').hasError('required') && billSubmissionForm.get('remarks').touched">
+          Please select this field
+        </mat-error>
+      </div>
+      </div>
+      <!-- button box -->
+      <div class="btn-box mt-4 pb-4">
+        <button
+          [disabled]="isLoading" 
+          type="button"
+          class="btn btn-md"
+          style="background-color: #4472c4; color: white"
+          (click)="openConfirmationpopupDialog()"
+        >
+          Submit
+        </button>
+      </div>
+      <form class="form"></form>
+    </div>
+  </form>
+</section>

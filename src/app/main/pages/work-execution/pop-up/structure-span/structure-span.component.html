@@ -1,0 +1,95 @@
+<div class="box">
+  <div class="box-header">
+    <div class="row">
+      <div class="col1">
+        <h1 mat-dialog-title>Span</h1>
+      </div>
+      <div class="col">
+        <button mat-button mat-dialog-close class="cross-button">
+          <img src="assets/cross-icon.png" alt="" class="cross-icon" />
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="structre">
+    <div class="row">
+      <div class="col">
+        <p>
+          Actual Length :
+          <label for="totalLength">{{ totalQ ? totalQ : 0 }} KM</label>
+        </p>
+      </div>
+      <div class="col">
+        <p>
+          No Of Spans:
+          <input
+            type="number"
+            [(ngModel)]="numberOfSpans"
+            (ngModelChange)="generateTableData()"
+          />
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="content mt-4" mat-dialog-content>
+    <div class="table-container mt-4" style="display: flex; flex-wrap: wrap">
+      <table
+        class="table text-center"
+        style="width: 100%; flex-wrap: wrap; border: 1px solid #757575"
+      >
+        <thead style="background-color: #f3f7fa">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Material Code</th>
+            <th scope="col">Part</th>
+            <th scope="col">Spans</th>
+            <th scope="col">Length</th>
+            <th scope="col">Is Busbar</th>
+          </tr>
+        </thead>
+        <tbody style="cursor: pointer">
+          <tr *ngFor="let span of tableData; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ materialCode }}</td>
+            <td>{{ workPart }}</td>
+            <td>{{ span.span }}</td>
+            <td>
+              <input
+                type="number"
+                [(ngModel)]="span.length"
+                (ngModelChange)="onLengthChange(span.length, i)"
+              />
+              KM
+            </td>
+            <td>
+              <label>
+                <input
+                  type="radio"
+                  name="busbar{{ i }}"
+                  [(ngModel)]="span.isBusbar"
+                  value="1"
+                />
+                Yes
+              </label>
+              &nbsp;
+              <label>
+                <input
+                  type="radio"
+                  name="busbar{{ i }}"
+                  [(ngModel)]="span.isBusbar"
+                  value="0"
+                />
+                No
+              </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Balance: {{ totalQuantityCount ? totalQuantityCount : 0 }} KM</p>
+    </div>
+
+    <mat-dialog-actions class="actions">
+      <button class="btn clor" (click)="onApply()" [disabled]="totalQuantityCount !== 0">Save</button>
+    </mat-dialog-actions>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<section>
+  <form class="form" [formGroup]="specialLocalityForm">
+  <h1 mat-dialog-title>Add Special Locality Allowance Master</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>District Name</mat-label>
+        <mat-select formControlName="district" required>
+          <mat-option *ngFor="let main of districtData" [value]="main.districtId" [maxLength]="">
+            {{main.districtName}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="specialLocalityForm.get('district').invalid && specialLocalityForm.get('district').touched">
+          Please select in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label> Percentage</mat-label>
+        <input matInput placeholder="Ex. 234" 
+        formControlName="percentage" appAlphaNumeric [maxLength]="75" required />
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="modal-input-control">
+    <div class="col-sm-6" id="office">
+      Office Name<br>
+      <div class="card flex justify-content-center">
+          <form [formGroup]="treeForm">
+              <p-treeSelect class="md:w-20rem w-full"
+              containerStyleClass="w-full"
+              formControlName="selectedNodes"
+              (onNodeSelect)="nodeSelect($event.node)"
+              selectionMode="single"
+              (onNodeUnselect)="nodeUnselect()"
+              [(ngModel)]="selected"
+              [options]="nodes"
+              [filter]="true" [filterInputAutoFocus]="true"
+          > </p-treeSelect>
+          </form>
+          <mat-error *ngIf="treeForm.get('selectedNodes').hasError('required')">
+            Please select Office Name.
+          </mat-error>
+        </div>
+    </div>    
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onAddSpecialLocalityType()">Add</button>
+    <button class="btn clor" mat-button mat-dialog-close [disabled]="notificationRef">Close</button>
+  </div>
+  </form>
+</section>

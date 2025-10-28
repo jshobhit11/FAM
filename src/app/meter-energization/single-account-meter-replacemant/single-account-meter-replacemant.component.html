@@ -1,0 +1,142 @@
+  <section >
+    <form class="form">
+      <div class="page__content shadow p-3 position-relative dis-flex-colu">
+        <h2 class="title-2">Meter Change Details</h2>
+        <!-- <div *ngIf="data && data.length">
+          <div class="two-column-grid">
+            <div class="left-column">
+              <div class="inner-div">
+                <label>Work Order No :</label>
+                <p>{{ data[0]?.workorderNo }}</p>
+              </div>
+            </div>
+            <div class="right-column">
+              <div class="inner-div">
+                <label>Work Description :</label>
+                <p>{{ data[0]?.workDescription }}</p>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <h3>Old Meter Details :</h3>
+        <div
+          style="
+            overflow: auto;
+            width: 100%;
+            border: 2px solid #c2c2c2;
+            margin-top: 1rem;
+          "
+        >
+          <table class="table table-bordered text-center"  >
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th scope="col">Account Id</th>
+                <th scope="col">Badge Number</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of oldAccountMappingData">
+                <td>{{ item.accountId }}</td>
+                <td>{{ item.badgeNumber }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          style="
+            overflow: auto;
+            width: 100%;
+            border: 2px solid #c2c2c2;
+            margin-top: 1rem;
+          "
+        >
+          <table class="table table-bordered text-center" >
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th scope="col">Sequence no</th>
+                <th scope="col">Register Id</th>
+                <th scope="col">Unit of Measure</th>
+                <th scope="col">Time of Use</th>
+                <th scope="col">Reading</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of oldMeterData">
+                <td>{{ item.registerReadSeqNo }}</td>
+                <td>{{ item.registerId }}</td>
+                <td>{{ item.registerUom }}</td>
+                <td>{{ item.registerTou }}</td>
+                <td>{{ item.registerReading }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br/>
+        <h3>New Meter Details :</h3>
+        <div
+          style="
+            overflow: auto;
+            width: 100%;
+            border: 2px solid #c2c2c2;
+            margin-top: 1rem;
+          "
+        >
+          <table
+            class="table table-bordered text-center" >
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th scope="col">Account Id</th>
+                <th scope="col">Badge Number</th>
+                <th scope="col">Reading Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of newAccountMappingData">
+                <td>{{ item.accountId }}</td>
+                <td>{{ item.badgeNumber }}</td>
+                <td>{{ item.readingDate }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <ng-template #errorMessage>
+            <div class="alert alert-danger mt-3">
+              <p>Validate meter process is pending. No data available.Please wait for 30 minutes; it's under processing.</p>
+            </div>
+          </ng-template>
+        </div>
+        <div
+          style="
+            overflow: auto;
+            width: 100%;
+            border: 2px solid #c2c2c2;
+            margin-top: 1rem;
+          "
+        >
+          <table class="table table-bordered text-center" >
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th scope="col">Sequence no</th>
+                <th scope="col">Register Id</th>
+                <th scope="col">Unit of Measure</th>
+                <th scope="col">Time of Use</th>
+                <th scope="col">Reading</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of newMeterData">
+                <td>{{ item.registerReadSeqNo }}</td>
+                <td>{{ item.registerId }}</td>
+                <td>{{ item.registerUom }}</td>
+                <td>{{ item.registerTou }}</td>
+                <td>{{ item.registerReading }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="text-center mt-3"> 
+          <button type="button" class="btn btn-primary" (click)="Back()">Back</button> 
+      </div>
+      </div>
+    </form>
+  </section>
+  

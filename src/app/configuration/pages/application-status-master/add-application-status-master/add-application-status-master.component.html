@@ -1,0 +1,54 @@
+<section>
+  <form class="form" [formGroup]="appStatusForm">
+  <h1 mat-dialog-title>Add Application Status Master</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field appearance="fill">
+        <mat-label>Process Type</mat-label>
+        <mat-select formControlName="processType" required>
+          <mat-option *ngFor="let main of processData" [value]="main.processTypeName" [maxLength]="20">
+            {{main.processTypeName}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="appStatusForm.get('processType').invalid && appStatusForm.get('processType').touched">
+          Please select in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Is Display</mat-label>
+        <mat-select formControlName="displayType" required>
+          <mat-option value="1">Yes</mat-option>
+          <mat-option value="0">No</mat-option>
+        </mat-select>
+        <mat-error *ngIf="appStatusForm.get('displayType').invalid && appStatusForm.get('displayType').touched">
+          Please select in this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Status Name</mat-label>
+        <input matInput placeholder="Ex. Each"  
+        formControlName="statusName" appAlphaNumeric [maxLength]="50" required/>
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Status Code</mat-label>
+        <input matInput placeholder="Ex. Each" 
+        formControlName="statusCode" appAlphaNumeric [maxLength]="10" required/>
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="modal-input-control">
+      <mat-form-field appearance="fill">
+        <mat-label>Type Wise Sequence</mat-label>
+        <input matInput placeholder="Ex. Each" 
+        formControlName="typeWiseSequence" appAlphaNumeric [maxLength]="10" required/>
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onAddApplicationStatusType()">Add</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+  </form>
+</section>

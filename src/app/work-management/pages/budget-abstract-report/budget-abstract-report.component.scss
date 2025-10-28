@@ -1,0 +1,19 @@
+h1 {
+  color: #484848;
+  font-weight: 600;
+  margin: unset !important;
+}
+.btn {
+  padding: 0.4rem 1rem;
+  background-color: #4472c4;
+  color: white;
+  min-height: 1.5rem !important;
+  min-width: 3rem !important;
+  font-size:medium;
+  &:hover {
+    background-color: #7f9cce;
+  }
+}
+.form-label {
+  margin-bottom: 0.5rem; 
+}

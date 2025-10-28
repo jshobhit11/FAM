@@ -1,0 +1,775 @@
+<div class="page-1">
+<section>
+  <form class="form" id="my-section">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Consumer Details </h2>
+
+      <div class="two-row-flex mt-3">
+        <div class="left-div">
+          <div class="inner-div">
+            <h3>Account ID</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.accountId == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.accountId
+              }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <h3>Name & Address</h3>
+            <p>
+              {{ data?.serviceRegistration?.applicantName }},
+              {{ data?.serviceRegistration?.address }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <h3>Land Mark</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.landmark == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.landmark
+              }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <h3>Email ID</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.email == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.email
+              }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <h3>Contact No.</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.mobileNumber == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.mobileNumber
+              }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <h3>Application Type</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.applicationType == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.applicationType
+              }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <h3>Applicant Type</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.applicantType == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.applicantType
+              }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <h3>Tariff</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.tariff == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.tariff
+              }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <h3>Type of Connection</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.connectionType == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.connectionType
+              }}
+            </p>
+          </div>
+        </div>
+        <div class="right-div">
+          <!-- <div class="inner-div">
+            <h3>Applied Load (KW)</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.loadKw == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.loadKw
+              }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <h3>Applied Load (HP)</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.loadHp == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.loadHp
+              }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <h3>Total Applied Load in KW</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.loadKw == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.loadKw
+              }}
+            </p>
+          </div> -->
+
+          <div
+            class="inner-div"
+            *ngIf="
+              data?.applicationTypeCode === 'LE' ||
+              data?.applicationTypeCode === 'LR'
+            "
+          >
+            <h3>Existing Load (KW & HP)</h3>
+            <p>
+              {{
+                data.existingLoadKw !== "null"
+                  ? data.existingLoadKw + " KW"
+                  : "-"
+              }}
+              &nbsp;
+              {{
+                data.existingLoadHp !== "null"
+                  ? data.existingLoadHp + " HP"
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div
+            class="inner-div"
+            *ngIf="
+              data?.applicationTypeCode === 'LE' ||
+              data?.applicationTypeCode === 'LR'
+            "
+          >
+            <h3>Total Existing Load ({{ data.loadUnit }})</h3>
+            <p>
+              {{
+                data.existingTotalLoad !== "null" ? data.existingTotalLoad : "-"
+              }}
+            </p>
+          </div>
+          <div class="inner-div" *ngIf="data?.applicationTypeCode === 'LE'">
+            <h3>Additional Load (KW & HP)</h3>
+            <p>
+              {{ data.newLoadKw !== "null" ? data.newLoadKw + " KW" : "-" }}
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              {{ data.newLoadHp !== "null" ? data.newLoadHp + " HP" : "-" }}
+              <!-- {{ data.connectionType !== "null" ? data.connectionType : "-" }} -->
+            </p>
+          </div>
+          <div class="inner-div" *ngIf="data?.applicationTypeCode === 'LR'">
+            <h3>Reduced Load (KW & HP)</h3>
+            <p>
+              {{ data.newLoadKw !== "null" ? data.newLoadKw + " KW" : "-" }}
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              {{ data.newLoadHp !== "null" ? data.newLoadHp + " HP" : "-" }}
+            </p>
+          </div>
+          <div class="inner-div" *ngIf="data?.applicationTypeCode === 'LR'">
+            <h3>Total Reduced Load</h3>
+            <p>
+              {{ data.newTotalLoad !== "null" ? data.newTotalLoad : "-" }}
+            </p>
+          </div>
+          <div class="inner-div" *ngIf="data?.applicationTypeCode === 'LE'">
+            <h3>Total Additional Load({{ data?.loadUnit }})</h3>
+            <p>
+              {{ data.newTotalLoad !== "null" ? data.newTotalLoad : "-" }}
+            </p>
+          </div>
+
+          <div
+            class="inner-div"
+            *ngIf="
+              data.applicationTypeCode === 'LE' ||
+              data.applicationTypeCode === 'LR'
+            "
+          >
+            <h3>Requested Load (KW & HP)</h3>
+            <p>
+              {{ data.loadKw !== "null" ? data.loadKw + " KW" : "-" }}
+              &nbsp;&nbsp;&nbsp;{{
+                data.loadHp !== "null" ? data.loadHp + " HP" : "-"
+              }}
+            </p>
+          </div>
+
+          <div
+            class="inner-div"
+            *ngIf="
+              data.applicationTypeCode === 'LE' ||
+              data.applicationTypeCode === 'LR'
+            "
+          >
+            <h3>Total Requested Load ({{ data?.loadUnit }} )</h3>
+            <p>
+              {{ data.loadKw !== "null" ? data.loadKw : "-" }}
+            </p>
+          </div>
+
+          <div
+            class="inner-div"
+            *ngIf="
+              data.applicationTypeCode === 'NC' ||
+              data.applicationTypeCode === 'TC'
+            "
+          >
+            <h3>Applied Load (KW & HP)</h3>
+            <p>
+              {{ data.loadKw !== "null" ? data.loadKw + " KW" : "-" }} &nbsp;{{
+                data.loadHp !== "null" ? data.loadHp + " HP" : "-"
+              }}
+            </p>
+          </div>
+
+          <div
+            class="inner-div"
+            *ngIf="
+              data.applicationTypeCode === 'NC' ||
+              data.applicationTypeCode === 'TC'
+            "
+          >
+            <h3>Total Applied Load in {{ data?.loadUnit }}</h3>
+            <p>{{ data?.totalContractedLoad }}</p>
+          </div>
+
+          <div class="inner-div">
+            <h3>Phase</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.phase == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.phase
+              }}
+            </p>
+          </div>
+          <!-- <div class="inner-div">
+            <h3>Plot Size (sq.ft)</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.plotSize == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.plotSize
+              }}
+            </p>
+          </div> -->
+          <!-- <div class="inner-div">
+            <h3>Total Build up Area (sq.mts.)</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.buildupAreaSize == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.buildupAreaSize
+              }}
+            </p>
+          </div> -->
+          <div
+            class="inner-div"
+            *ngIf="
+              data?.applicationTypeCode === 'LE' ||
+              data?.applicationTypeCode === 'LR'
+            "
+          >
+            <h3>Existing Build up Area (sq.mts.)</h3>
+            <p>
+              {{
+                data.existingBuildupArea !== "null"
+                  ? data.existingBuildupArea
+                  : "-"
+              }}
+            </p>
+          </div>
+
+          <div class="inner-div" *ngIf="data?.applicationTypeCode === 'LE'">
+            <h3>Build up Area Added (sq.mts.)</h3>
+            <p>
+              {{ data.newBuildupArea !== "null" ? data.newBuildupArea : "-" }}
+            </p>
+          </div>
+          <div class="inner-div" *ngIf="data?.applicationTypeCode === 'LR'">
+            <h3>Build up Area Reduced (sq.mts.)</h3>
+            <p>
+              {{ data.newBuildupArea !== "null" ? data.newBuildupArea : "-" }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <h3>Total Build up Area (sq.mts.)</h3>
+            <p>
+              {{ data.buildupAreaSize !== "null" ? data.buildupAreaSize : "-" }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <h3>Adjacent Consumer Number</h3>
+            <p>
+              {{
+                data?.serviceRegistration?.adjacentAccountNo == "null"
+                  ? "-"
+                  : data?.serviceRegistration?.adjacentAccountNo
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+    
+    <div class="page__content p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Site Inspection Report </h2>
+
+       <div class="report-list-content mt-4">
+        <div class="inner-div">
+          <h3>1. Main Category</h3>
+          <p>{{ data.siteInspection?.mainCategory }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>2. Sub Category</h3>
+          <p>{{ data.siteInspection?.subCategory }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>3. Government Scheme Applicable</h3>
+          <p>
+            {{
+              data.siteInspection?.isGovtSchemeApplicatible == "1"
+                ? "Yes"
+                : "No"
+            }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>4. Scheme Name</h3>
+          <p>{{ data.siteInspection?.schemeName }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>5. Beneficiary Issuer department</h3>
+          <p>{{ data.siteInspection?.beneficiaryIssuerDept }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>6. Nature of Business</h3>
+          <p>{{ data.siteInspection?.connectionNature }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>7. Is the name and site address correct?</h3>
+          <p>
+            {{
+              data.siteInspection?.isNameAddressCorrect == "1" ? "Yes" : "No"
+            }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>
+            8. Whether the site is in accordance, only for the usage for which
+            Service Connection applied.
+          </h3>
+          <p>
+            {{ data.siteInspection?.isSiteInAccordance == "1" ? "Yes" : "No" }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>9. BBMP Ward no.</h3>
+          <p>{{ data.siteInspection?.wardNo }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>10. Assembly constituency</h3>
+          <p>{{ data.siteInspection?.assemblyConstituency }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>11. Parliament constituency</h3>
+          <p>{{ data.siteInspection?.parliamentConstituency }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>12. Adjacent Consumer Number</h3>
+          <p>{{ data.siteInspection?.adjacentAccountNo }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>13. Requested Load (in KW)</h3>
+          <p>{{ data.siteInspection?.totalLoadKw }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>14. Requested Load (in HP)</h3>
+          <p>{{ data.siteInspection?.loadHp }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>15. Total Connected Load (KW)</h3>
+          <p>{{ data.siteInspection?.loadKw }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>16. Total No. of Floors</h3>
+          <p>{{ data.siteInspection?.totNoFloor }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>17. Total Build up Area of building(in sq.mtr)</h3>
+          <p>{{ data.siteInspection?.totBuildupArea }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>18. Height of building (in meters)</h3>
+          <p>{{ data.siteInspection?.buildingHeight }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>
+            19. Is Bore-well existing in the premises at the time of field
+            inspection
+          </h3>
+          <p>
+            {{ data.siteInspection?.isBoreWellExisting == "1" ? "Yes" : "No" }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>20. Internal wiring is completed in the building</h3>
+          <p>
+            {{
+              data.siteInspection?.isInternalWiringDone == "1" ? "Yes" : "No"
+            }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>21. Is solar Heater mandatory?</h3>
+          <p>
+            {{
+              data.siteInspection?.isSolarHeaterMandatory == "1" ? "Yes" : "No"
+            }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>22. Is Provision of Solar Water Heater Made</h3>
+          <p>
+            {{
+              data.siteInspection?.isSolarHeaterProvisioned == "1"
+                ? "Yes"
+                : "No"
+            }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>23. Any deviation found</h3>
+          <p>{{ data.siteInspection?.anyDeviation == "1" ? "Yes" : "No" }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>
+            24. is any HT / EHT line Crossing* (if crossing mention, is KPTCL
+            clearence certificate required) IE rules Ref. LT: H=1.2, V=2.5, HT:
+            H=1.2, V=3.7, 66kV: H=2.3, V=4, 220kV: H=3.7, V=5.4 all unit in
+            meter]
+          </h3>
+          <p>
+            {{ data.siteInspection?.isHtEhtLineCrossing == "1" ? "Yes" : "No" }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>25. Line clearance certificate provided ?</h3>
+          <p>
+            {{
+              data.siteInspection?.lineClearenceCertSubmitted == "1"
+                ? "Yes"
+                : "No"
+            }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>
+            26. This area belongs to Partly-Electrified / Non-Electrified /
+            Electrified area (mention which is applicable)*
+          </h3>
+          <p>This area belongs to Partly-Electrified</p>
+        </div>
+        <div class="inner-div">
+          <h3>27. Does this Premises belongs to any one of these</h3>
+          <p>
+            {{ data.siteInspection?.premisesBelongsTo }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>28. Decommisioning of Assets required?</h3>
+          <p>
+            {{
+              data.siteInspection?.decommisionAssetsRequired == "1"
+                ? "Yes"
+                : "No"
+            }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>29. is any Additional Documents collected at spot ?</h3>
+          <p>
+            {{ data.siteInspection?.anyAddlDocCollected == "1" ? "Yes" : "No" }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>30. any documents still to be collected?</h3>
+          <p>
+            {{ data.siteInspection?.anyDocsPending == "1" ? "Yes" : "No" }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>31. Any other details</h3>
+          <p>Any other details</p>
+        </div>
+        <!-- <div class="inner-div">
+          <h3>
+            32. Disconnected/ old Account No. for the same premise, if any.
+          </h3>
+          <p>{{ data.siteInspection?.oldAccNoInPremises }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>33. Arrears, if any</h3>
+          <p>{{ data.siteInspection?.arrears }}</p>
+        </div> -->
+      </div>
+    </div>
+
+    <div
+      class="col-lg-6 mt-4"
+      style="width: 100% !important; padding: 1rem"
+      *ngIf="isExecutionMethod"
+    >
+      <div class="heading" style="background-color: #f0f0f0">
+        <h1>
+          Is built-up area of the building is between 500 sq. mts. And 800 sq.
+          mts. and requested load is between 25kw to 34 kw and is it attracting
+          KERC Clause No.: 3.1.3(A) as per Amendment-9 Dated: 27-12-2017
+        </h1>
+      </div>
+
+      <div class="report-list-content mt-4">
+        <div class="inner-div">
+          <h3>
+            If yes, is the applicant willing to provide space in his premises
+            for erection of transformer and associate equipment and sufficient
+            space available
+          </h3>
+          <p>Yes</p>
+        </div>
+        <div class="inner-div">
+          <h3>Execution Method</h3>
+          <p>{{ data.siteInspection?.executionMethod }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="page__content p-3 position-relative dis-flex-colu">
+        <h1>
+          Network Extension Required
+          {{ data.siteInspection?.isNetworkExtRequired == "1" ? "Yes" : "No" }}
+        </h1>
+      
+
+      <div class="report-list-content mt-4">
+        <div class="inner-div">
+          <h3>1. Network Extension Type</h3>
+          <p>{{ data.siteInspection?.networkExtentionType }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>2. Latitude and Longitude of the location</h3>
+          <p>
+            {{ data.siteInspection?.latitude }} and
+            {{ data.siteInspection?.longitude }} of the location
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>3. Connection Extended from</h3>
+          <p>{{ data.siteInspection?.distanceFromConnection }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>4. Distribution Transformer name</h3>
+          <p>{{ data.siteInspection?.dtrId }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>5. Feeder Name</h3>
+          <p>{{ data.siteInspection?.feederId }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>6. Sub Station Name</h3>
+          <p>{{ data.siteInspection?.substationId }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>7. MR Code</h3>
+          <p>{{ data.siteInspection?.mrCode }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>8. MR Day</h3>
+          <p>{{ data.siteInspection?.mrDay }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>9. Cable precommissioning test required?</h3>
+          <p>
+            {{
+              data.siteInspection?.isCablePrecomTestRequired == "1"
+                ? "Yes"
+                : "No"
+            }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>10. RMU pre commissioning test required?</h3>
+          <p>
+            {{
+              data.siteInspection?.isRmuPrecomTestRequired == "1" ? "Yes" : "No"
+            }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>11. LBS pre commissioning test required?</h3>
+          <p>
+            {{
+              data.siteInspection?.isLbsPrecomTestRequired == "1" ? "Yes" : "No"
+            }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>12. DT testing charges required?</h3>
+          <p>
+            {{
+              data.siteInspection?.isDtPrecomTestRequired == "1" ? "Yes" : "No"
+            }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>13. Is Solar Heater Mandatory?</h3>
+          <p>
+            {{
+              data.siteInspection?.isSolarHeaterMandatory == "1" ? "Yes" : "No"
+            }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <h3>14. Is provision for solar water heater made</h3>
+          <p>
+            {{
+              data.siteInspection?.isSolarHeaterProvisioned == "1"
+                ? "Yes"
+                : "No"
+            }}
+          </p>
+        </div>
+      </div>
+    
+
+    <div
+      class="col-lg-6 mt-4"
+      style="width: 100% !important; padding: 1rem"
+      *ngIf="isMeterProcured"
+    >
+      <div class="heading" style="background-color: #f0f0f0">
+        <h1>Meter Procured Details</h1>
+      </div>
+
+      <div class="report-list-content mt-4">
+        <div class="inner-div">
+          <h3 class="form-label">Meter Procured by Consumer</h3>
+          <p>Yes</p>
+        </div>
+        <div
+          class="mt-4 inner-div"
+          style="display: flex; flex-wrap: wrap; overflow: auto"
+        >
+          <table
+            class="table table-bordered text-center"
+            style="width: 100%; flex-wrap: wrap; border: 2px solid #757575"
+          >
+            <thead style="background-color: #f0efef">
+              <tr>
+                <th scope="col">Account Id</th>
+                <th scope="col">Meter Serial Number</th>
+                <th scope="col">KWH</th>
+                <th scope="col">KVAH</th>
+                <th scope="col">KVA</th>
+                <th scope="col">KW</th>
+                <th scope="col">PF</th>
+                <th scope="col">RR Number</th>
+              </tr>
+            </thead>
+            <tbody
+              style="cursor: pointer"
+              *ngIf="data.consumerMetersProcured?.length > 0"
+            >
+              <tr *ngFor="let d of data.consumerMetersProcured">
+                <td>{{ d?.accountId }}</td>
+                <td>{{ d.meterSerialNo }}</td>
+                <td>{{ d.kwhReading }}</td>
+                <td>{{ d.kvahReading }}</td>
+                <td>{{ d.kwReading }}</td>
+                <td>{{ d.kvaReading }}</td>
+                <td>{{ d.pf }}</td>
+                <td>{{ d.rrNumber }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="page__content p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Deviation Details </h2>
+
+
+      <div class="mt-4" style="display: flex; flex-wrap: wrap; overflow: auto">
+        <table
+          class="table text-center"
+          style="width: 100%; flex-wrap: wrap; border: 1px solid #757575"
+        >
+          <thead style="background-color: #f0efef">
+            <tr>
+              <th scope="col">Account Id</th>
+              <th scope="col">Particulars</th>
+              <th scope="col">Remarks</th>
+            </tr>
+          </thead>
+          <tbody
+            style="cursor: pointer"
+            *ngIf="data.inspectionDeviation?.length > 0"
+          >
+            <tr *ngFor="let data of data.inspectionDeviation">
+              <td>{{ data.accountId }}</td>
+              <td>{{ data.particulars }}</td>
+              <td>{{ data.remarks }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="report-list-content mt-4">
+        <div class="inner-div">
+          <h3>Inspection By</h3>
+          <p>{{ inspectedData }}</p>
+        </div>
+        <div class="inner-div">
+          <h3>Inspection Date</h3>
+          <p>{{ data.siteInspection?.inspectionDate }}</p>
+        </div>
+      </div>
+  
+  <div style="display: flex; justify-content: center" class="btn-box mt-4">
+    <button
+      type="button"
+      class="btn btn-secondary btn-md clor mt-4 mb-2"
+      (click)="cancel()"
+    >
+      Back
+    </button>
+    &nbsp;
+    <button
+      type="button"
+      class="print-btn btn btn-primary btn-md mt-4 mb-2"
+      mat-button
+      (click)="printElement('my-section')"
+    >
+      Print
+    </button>
+  </div>
+</div>
+</div>
+</div>
+</form>
+</section>
+</div>

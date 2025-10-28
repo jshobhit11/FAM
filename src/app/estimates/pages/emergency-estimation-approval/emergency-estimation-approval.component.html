@@ -1,0 +1,764 @@
+<div class="page-1">
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/estimates/dashboard">Estimates </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">
+            Emergency Estimation Approval Form
+          </a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section *ngIf="data && data.serviceRegistration">
+  <!-- <button
+    class="btn btn-sm"
+    style="background-color: #4472c4; color: white; float: right"
+    (click)="printPageArea('printForm')"
+  >
+    Print
+  </button> -->
+  <form class="form" id="printForm">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2"> Emergency Estimation Approval Form </h2>
+
+
+    <div class="page__content  p-1 position-relative dis-flex-colu">
+        <h3><strong>Cost Estimation Report</strong> </h3>
+    <div class="two-row-grid single-row-grid mt-1" style="padding: 1rem">
+      <div class="left-div" *ngFor="let item of data.estimationRegisteredDTO">
+        <!-- <div class="inner-div">
+          <label>Name & Address</label>
+          <p>{{ data.serviceRegistration.applicantName }} , {{ data.serviceRegistration.address }}</p>
+        </div> -->
+        <div class="inner-div">
+          <label>Dop Category</label>
+          <p>{{ workCategoryName }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <label>Work Execution Method</label>
+          <p>{{ item.woExecutionMethodName == null ? '-' : item.woExecutionMethodName }}</p>
+        </div>
+        <div class="inner-div">
+          <label>Estimation No</label>
+          <p>{{ item.estimationNo == null ? '-' : item.estimationNo }}</p>
+        </div>
+        <div class="inner-div">
+          <label>Estimation Date</label>
+          <p>
+            {{ item.estimationDate == null ? '-' : item.estimationDate }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <label>Purpose of Estimate</label>
+          <p>{{ item.estimationWorkDesc == null ? '-' : item.estimationWorkDesc }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <label>Suspense Request No.</label>
+          <p>{{ item?.suspenseRequestNo == null ? '-' : item.suspenseRequestNo }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div style=" padding: 1rem" *ngIf="regularizationArray.length">
+      <h2>Regularization</h2>
+      <div class="heading mt-2" *ngFor="let e of regularizationArray">
+        <div style="background-color: #f0f0f0">
+          <h1>
+            {{ e.estimate.workType }}- {{ e.estimate.workPart }}-
+            {{ e.estimate.workscopeDescription }}
+          </h1>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; overflow: auto">
+          <table
+            class="table text-center"
+            style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+          >
+            <thead>
+              <tr>
+                <th scope="col">Rate Type</th>
+                <th scope="col">Description of Material</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Unit</th>
+                <th scope="col">Rate</th>
+                <th scope="col">Materials Amount</th>
+                <th scope="col">Labour Rate</th>
+                <th scope="col">Labour Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of e.data">
+                <td>{{ item.rateType }}</td>
+                <td style="text-align: left">
+                  {{ item.materialCode }} - {{ item.materialName }}
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.materialUnit }}</td>
+                <td>{{ item.materialRate }}</td>
+                <td>{{ item.materailAmount }}</td>
+                <td>{{ item.labourRate }}</td>
+                <td>{{ item.labourAmount }}</td>
+              </tr>
+            </tbody>
+            <tr>
+              <td>
+                <h4><strong>Total</strong></h4>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ e.estimate.materialCost }}</td>
+              <td></td>
+              <td>{{ e.estimate.labourCost }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typical Cost Data Sheet -->
+
+    <div class="page__content  p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Typical Cost Data Sheet </h2>
+
+
+      <div
+        class="two-row-grid mt-3"
+        style="
+          grid-template-columns: 1fr;
+          justify-items: flex-end;
+          
+          padding: 1rem;
+        "
+      >
+        <div class="data-sheet">
+          <div class="inner-div-t">
+            <label>Material Cost (A)</label>
+            <p>
+              {{ data.estimationRegisteredDTO[0]?.estimationMaterialCost }}
+            </p>
+          </div>
+          <div class="inner-div-t">
+            <label>Labour Cost (B)</label>
+            <p>
+              {{ data.estimationRegisteredDTO[0]?.estimationLabourCost }}
+            </p>
+          </div>
+          <div class="inner-div-t">
+            <label>Basic Rate (C)=(A+B)</label>
+            <p>
+              {{basicRate}}
+            </p>
+          </div>
+          <div class="inner-div-t" *ngFor="let item of addChargesBeforeTotalLabour">
+            <label>
+                <ng-container *ngIf="item.chargeType == 'PERCENTAGE'">
+                    {{ item.chargeTypeValue }}% {{ item.additionalChargeName }}
+                </ng-container>
+                <ng-container *ngIf="item.chargeType == 'FLAT'">
+                    {{ item.additionalChargeName }}
+                </ng-container>
+                <span *ngIf="item.additionalChargeName === 'Area Specific Loading on Basic Rates'">(D)</span>
+                <span *ngIf="item.additionalChargeName === 'GST'">(E)</span>
+            </label>
+            <p>{{ item.amount }}</p>
+        </div>     
+          <div class="inner-div-t">
+            <label>Cost Of Estimate (F) = (C + D + E)</label>
+            <p>
+              {{ data.estimationRegisteredDTO[0]?.totalLabourCharges }}
+            </p>
+          </div>
+          <div
+            class="inner-div-t"
+            *ngFor="let item of addChargesAfterTotalLabour"
+          >
+            <label *ngIf="item.chargeType == 'PERCENTAGE'"
+              >{{ item.chargeTypeValue }}%
+              {{ item.additionalChargeName }}</label
+            >
+            <label *ngIf="item.chargeType == 'FLAT'">{{
+              item.additionalChargeName
+            }}</label>
+            <p>{{ item.amount }}</p>
+          </div>
+          <div class="inner-div-t">
+            <label style="font-weight: bold;">Total Estimation Cost (F + Sum of all charges below F)</label>
+            <p style="font-weight: bold;">
+              {{ data?.estimationRegisteredDTO[0]?.estimationTotalCost }}
+            </p>
+          </div>
+        </div>
+      </div>
+    
+
+    <!-- Budget Details -->
+    <div class="page__content  p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Budget Details </h2>
+
+  <div *ngIf="isBudgetDetails">
+    <p class="mt-2" *ngIf="!isDivisionalBudgetSCValid" 
+      style="color: red; padding: 0.2rem">
+      Total Estimation Amount : {{grandTotal}} is greater than Budget Actual Balance Amount : {{divisionalBudgetData?.totalBudgetAmount - divisionalBudgetData?.totalExpenditureAmount}}
+    </p>
+    <p class="mt-2" *ngIf="!isDivisionalBudgetTLValid" 
+      style="color: red; padding: 0.2rem">
+      Total Estimation Amount : {{grandTotal}} is greater than Budget Balance Amount : {{divisionalBudgetData?.balanceAmount}}
+    </p>
+    <div
+      class="col-lg-6 mt-2"
+      style="width: 100% !important; padding: 0.5rem"
+    >
+      <div class="grid two-row-grid">
+        <div class="left-div">
+          <div class="inner-div">
+            <label>Divisional Acc. Head No.*</label>
+            <select
+              #budgetSelect
+              class="form-select"
+              name="budget"
+              style="width: 100%"
+              [formControl]="budgetControl"
+              (change)="getDivisionalBudgetData($event.target.value)"
+            >
+              <option value="">--select--</option>
+              <option selected *ngIf="selectedValue">
+                {{ selectedValue }}
+              </option>
+              <option
+                *ngFor="let data of budgetData"
+                [value]="data.accountHeadMasterId"
+              >
+                {{ data?.accountHeadCode }}&nbsp;({{
+                  data?.accountHeadDescription
+                }})
+              </option>
+            </select>
+          </div>
+          <div *ngIf="showError" class="star" style="text-align: right;">
+            Divisional Acc. Head No. is required.
+          </div>
+          <div class="inner-div">
+            <label>Divisional Acc. Head Description</label>
+            <p>{{ divisionalBudgetData?.accountHeadDescription }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Division Budget Head</label>
+            <p>{{ divisionalBudgetData?.divisionalBudgetHead }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Budget Type</label>
+            <p>{{ divisionalBudgetData?.budgetWorkType }}</p>
+          </div>
+        </div>
+        <div>
+          <div class="inner-div">
+            <label>Total Budget Amount (A)</label>
+            <p>{{ divisionalBudgetData?.totalBudgetAmount }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Work Order issue Amount (B)</label>
+            <p>
+              {{
+                divisionalBudgetData?.workOrderIssueAmount != "null"
+                  ? divisionalBudgetData?.workOrderIssueAmount
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <label>Reserved Amount (C)</label>
+            <p>
+              {{ divisionalBudgetData?.totalReserveAmount != 'null' ? 
+                  divisionalBudgetData?.totalReserveAmount : '-' }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <label>Balance Amount ( A - ( B + C) )</label>
+            <p>
+              {{ divisionalBudgetData?.balanceAmount ? divisionalBudgetData?.balanceAmount : '-' }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <label>Total Expenditure Amount (D)</label>
+            <p>
+              {{ divisionalBudgetData?.totalExpenditureAmount != 'null' ? 
+                  divisionalBudgetData?.totalExpenditureAmount : '0' }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <label>Actual Balance Amount (A - D)</label>
+            <p>
+              {{ divisionalBudgetData?.totalBudgetAmount - divisionalBudgetData?.totalExpenditureAmount || 
+                divisionalBudgetData?.totalBudgetAmount - divisionalBudgetData?.totalExpenditureAmount == 0 ? 
+                divisionalBudgetData?.totalBudgetAmount - divisionalBudgetData?.totalExpenditureAmount : '-' }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Labour Details -->
+
+    <div
+      class="heading"
+      style="
+        display: flex;
+        flex-direction: row;
+      "
+    >
+      <h2>
+        Labour Details 
+        <button style="border: none" (click)="toggleDisplayTableIf()">
+          <img src="assets/plus.svg" alt="" />
+        </button>
+      </h2>
+    </div>
+
+    <div
+      style="
+        display: flex;
+        flex-wrap: wrap;
+        overflow: auto;
+        
+      "
+      *ngIf="!toggleTable"
+    >
+      <!-- [ngStyle]="{ display: toggleTable ? 'none' : '' }" -->
+      <table
+        class="table text-center"
+        style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+      >
+        <thead style="background-color: #dfdfdf">
+          <tr>
+            <th scope="col">Description of Material</th>
+            <th scope="col">Description of Labours</th>
+            <th scope="col">Unit</th>
+            <th scope="col">Labour Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let labourDetail of labourDetails">
+            <td>{{ labourDetail.materialName }}</td>
+            <td>{{ labourDetail.labourName }}</td>
+            <td>{{ labourDetail.labourUnit }}</td>
+            <td>{{ labourDetail.labourRate }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div></div>
+
+    <br/><br/>
+    <div
+      class="heading"
+      style="
+      
+        display: flex;
+        flex-direction: row;
+      "
+    >
+      <h2>History</h2>
+    </div>
+
+    <div
+      style="
+        display: flex;
+        flex-wrap: wrap;
+        overflow: auto;
+      
+      "
+    >
+      <table class="table text-center" style="margin-top: 1rem; width: 100%; flex-wrap: wrap">
+        <thead style="background-color: #dfdfdf">
+          <tr>
+            <th>S. No.</th>
+            <th scope="col">PROCESS TYPE</th>
+            <th scope="col">PROCESSED DATE</th>
+            <th scope="col">PROCESSED BY</th>
+            <th scope="col">FORWARD/RETURN TO</th>
+            <th scope="col">REMARKS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let historyData of history?.estimationProcessFlowHistory; index as i"
+          [ngStyle]="{'background-color': historyData.estimationStatus === '1' && historyData.estimationFlowType === 'REGENERATED' ? '#ffd8fe' : 'none'}">
+            <td>{{ i + 1 }}</td>
+            <td>
+              <b *ngIf="historyData.estimationFlowType == 'GENERATED' || historyData.estimationFlowType == 'REGENERATED'">
+                <a target="_blank" 
+                routerLink="/main/estimation-report/{{historyData.estimationRegisteredId}}/{{ data.serviceRegistration.serviceRegistrationId }}">
+                {{ historyData.estimationFlowType }}</a>
+              </b>
+              <b *ngIf="historyData.estimationFlowType != 'GENERATED' && historyData.estimationFlowType != 'REGENERATED'">
+                {{ historyData.estimationFlowType }}
+              </b>
+            </td>
+            <td>{{ historyData.processedDate | date : "medium" }}</td>
+            <td>{{ historyData.processedByDesigcode }}</td>
+            <td>{{ historyData.processSendToDesigcode !== "null" ? historyData.processSendToDesigcode : '-' }}</td>
+            <td>{{ historyData?.remarks }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div></div>
+
+    <br /><br />
+    <div
+      class="heading"
+      style="
+      
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0 2rem;
+      "
+    >
+    <h3>Approve/Return/Forward</h3>
+    </div>
+    <!-- Radio btns -->
+
+    <div
+      *ngIf="isAEE"
+      style="
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: center;
+        padding: 0.5rem;
+      "
+    >
+      <!-- <label style="font-size: 20px; font-weight: 500">
+    <input [(ngModel)]="isApprovePowerSanction" name="isApprovePowerSanction" type="checkbox" />
+    Click on checkbox to approve the Power Sanction
+  </label> -->
+    </div>
+
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0.5rem;
+      "
+    >
+      <h4>
+       <strong>{{ displayText }}</strong> 
+      </h4>
+    </div>
+
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: center;
+        padding: 0.5rem;
+      "
+    >
+      <label class="sm" *ngIf="isApproved && isDivisionalBudgetSCValid">
+        <input
+          [value]="1"
+          [(ngModel)]="sh"
+          name="sh"
+          type="radio"
+          [checked]="isChecked"
+        />
+        Approve
+      </label>
+      <label class="sm" *ngIf="isDivisionalBudgetSCValid">
+        <input
+          [value]="2"
+          [(ngModel)]="sh"
+          name="sh"
+          type="radio"
+          (change)="radioType('forward')"
+          [checked]="!isChecked"
+        />
+        Forward
+      </label>
+      <label class="sm" *ngIf="!isAE">
+        <input
+          [value]="3"
+          [(ngModel)]="sh"
+          name="sh"
+          type="radio"
+          [checked]="!isChecked"
+          (change)="radioType('return')"
+        />
+        Return
+      </label>
+      <!-- <label class="sm">
+        <input
+          [value]="4"
+          [(ngModel)]="sh"
+          name="sh"
+          type="radio"
+          [checked]="!isChecked"
+        />
+        Edit
+      </label> -->
+    </div>
+
+    <div class="text-center purple" *ngIf="sh == 1 && isApproved">
+      <div class="container text-center">
+        <div class="row">
+          <div
+            class="col"
+            style="display: flex; flex-direction: column; gap: 2rem"
+          >
+            <h4><b>Approve By</b></h4>
+            <h4><b>Approve Date</b></h4>
+            <h4><b>Remarks</b></h4>
+          </div>
+          <div
+            class="col"
+            style="display: flex; flex-direction: column; gap: 2rem"
+          >
+            <input
+              type="text"
+              class="form-control"
+              style="width: 80%"
+              id=""
+              name="forwardBy"
+              [(ngModel)]="forwardData.forwardBy"
+            />
+            <input
+              type="date"
+              class="form-control"
+              style="width: 80%"
+              id=""
+              name="forwardDate"
+              [(ngModel)]="forwardData.forwardDate"
+            />
+            <textarea
+              type="text"
+              class="form-control"
+              style="width: 80%"
+              id=""
+              name="Remarks"
+              [(ngModel)]="forwardData.Remarks"
+              appAlphaNumeric
+              maxlength="300"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="approvalErrorMessage" class="alert alert-danger budget-error mt-4">
+        {{ approvalErrorMessage }}
+      </div>
+      <div class="radio-button">
+        <button
+        [disabled]="isLoading||isApproveDisabled"
+          class="btn btn-md radio-button"
+          style="background-color: #4472c4; color: white"
+          (click)="approve()"
+        >
+          Approve
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="sh == 2">
+      <div class="container text-center">
+        <div class="row">
+          <div
+            class="col"
+            style="display: flex; flex-direction: column; gap: 2rem"
+          >
+            <h4><b>Forwarded By</b></h4>
+            <h4><b>Forwarded To</b></h4>
+            <h4><b>Forwarded Date</b></h4>
+            <h4><b>Remarks</b></h4>
+          </div>
+          <div
+            class="col"
+            style="display: flex; flex-direction: column; gap: 2rem"
+          >
+            <input
+              type="text"
+              class="form-control"
+              style="width: 80%"
+              id=""
+              name="forwardBy"
+              [(ngModel)]="forwardData.forwardBy"
+            />
+            <select
+              class="form-select"
+              style="width: 80%"
+              name="forwardTo"
+              [formControl]="forwardControl"
+            >
+              <option value="" disabled>select</option>
+              <option
+                *ngFor="let optionItem of forwardData.forwardTo"
+                [value]="optionItem.designationCode"
+              >
+                {{ optionItem.designationCode }}
+              </option>
+            </select>
+            <!-- <input type="text" class="form-control" style="width: 80%" id="" name="forwardTo"
+              [(ngModel)]="forwardData.forwardTo" /> -->
+            <input
+              type="date"
+              class="form-control"
+              style="width: 80%"
+              id=""
+              name="forwardDate"
+              [(ngModel)]="forwardData.forwardDate"
+            />
+            <textarea
+              type="text"
+              class="form-control"
+              style="width: 80%"
+              id=""
+              name="Remarks"
+              [(ngModel)]="forwardData.Remarks"
+              appAlphaNumeric
+              maxlength="300"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="radio-button">
+        <button
+          [disabled]="isLoading"
+          class="btn btn-md radio-button"
+          style="background-color: #4472c4; color: white"
+          (click)="forward()"
+        >
+          Forward
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="sh == 3">
+      <div class="container text-center">
+        <div class="row">
+          <div
+            class="col"
+            style="display: flex; flex-direction: column; gap: 2rem"
+          >
+            <h4><b>Return By</b></h4>
+            <h4><b>Return To</b></h4>
+            <h4><b>Return Date</b></h4>
+            <h4><b>Remarks</b></h4>
+          </div>
+          <div
+            class="col"
+            style="display: flex; flex-direction: column; gap: 2rem"
+          >
+            <input
+              type="text"
+              class="form-control"
+              style="width: 80%"
+              id=""
+              [(ngModel)]="forwardData.forwardBy"
+              name="forwardBy"
+            />
+            <select
+              class="form-select"
+              style="width: 80%"
+              name="forwardTo"
+              [formControl]="returnControl"
+            >
+              <option value="">select</option>
+              <option
+                *ngFor="let optionItem of forwardData.forwardTo"
+                [value]="optionItem"
+              >
+              {{ optionItem.designationCode }}
+              </option>
+            </select>
+
+            <!-- <select class="form-select" style="width: 80%" name="forwardTo" >
+              <option *ngFor="let optionItem of forwardData.forwardTo" [value]="optionItem" >
+                {{ optionItem }}</option>
+              </select> -->
+
+            <!-- <input type="text" class="form-control" style="width: 80%" id="" value="AET"
+              [(ngModel)]="forwardData.forwardTo" name="forwardTo" /> -->
+            <input
+              type="text"
+              class="form-control"
+              style="width: 80%"
+              id=""
+              [(ngModel)]="forwardData.forwardDate"
+              name="forwardDate"
+            />
+            <textarea
+              type="text"
+              class="form-control"
+              style="width: 80%"
+              id=""
+              [(ngModel)]="forwardData.Remarks"
+              name="remarks"
+              maxlength="300"
+              appAlphaNumeric
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="radio-button">
+        <button
+          class="btn btn-md radio-button"
+          style="background-color: #4472c4; color: white"
+          (click)="return()"
+        >
+          Return
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="sh == 4">
+      <div class="container text-center">
+        <div class="row">
+          <div
+            class="col"
+            style="display: flex; flex-direction: column; gap: 2rem"
+          >
+            <!-- <h4><b>Approve Date</b></h4> -->
+          </div>
+          <div
+            class="col"
+            style="display: flex; flex-direction: column; gap: 2rem"
+          >
+            <!-- <input
+              type="text"
+              class="form-control"
+              style="width: 80%"
+              id=""
+              placeholder="09-09-2023"
+            /> -->
+          </div>
+        </div>
+      </div>
+      <!-- <div class="radio-button">
+        <button class="btn btn-lg radio-button" (click)="moveToEstimateForms()">
+          Edit
+        </button>
+      </div> -->
+    </div>
+    </div>
+    </div>
+    </div>
+  </div>
+  </form>
+</section>
+</div>

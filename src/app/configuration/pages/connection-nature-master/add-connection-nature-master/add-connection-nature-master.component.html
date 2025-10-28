@@ -1,0 +1,41 @@
+<section>
+  <form [formGroup]="connectionNatureForm">
+<h1 mat-dialog-title>Add Connection Nature Master</h1>
+<div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Connection Nature Name</mat-label>
+        <input matInput placeholder="Ex. Each"
+        formControlName="connectionNatureName" appAlphaNumeric [maxLength]="200" required/>
+        <mat-error *ngIf="connectionNatureForm.get('connectionNatureName').hasError('required')">
+          Please enter in this field.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Connection Nature Code</mat-label>
+        <input matInput placeholder="Ex. Each"
+        formControlName="connectionNatureCode" appAlphaNumeric [maxLength]="20" required/>
+        <mat-error *ngIf="connectionNatureForm.get('connectionNatureCode').hasError('required')">
+          Please enter in this field.
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field appearance="fill">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="categoryMasterId" required>
+          <mat-option *ngFor="let main of categoryMasterData" [value]="main.categoryMasterId">
+            {{main.categoryCode }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="connectionNatureForm.get('categoryMasterId').hasError('required')">
+          Please select this field.
+        </mat-error>
+      </mat-form-field>
+    </div>
+</div>
+<div class="btn-box mt-3" mat-dialog-actions>
+  <button class="c-btn" mat-button (click)="onAddConnectionType()">Add</button>
+  <button class="btn clor" mat-button mat-dialog-close>Close</button>
+</div>
+</form>
+</section>

@@ -1,0 +1,57 @@
+<ng-container >
+  <section>
+    <form class="form" >
+      <div class="page__content shadow p-3 position-relative dis-flex-colu">
+        <h2 class="title-2">Account Meter Mapping</h2>     
+         
+                
+        <div style="
+          overflow: auto;
+          width: 100%;
+          border: 2px solid #c2c2c2;
+          margin-top: 1rem;">
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">S.No</th>
+              <!-- <th scope="col">SR</th> -->
+              <th scope="col">Account ID</th>
+              <th scope="col">Material Code</th>
+              <th scope="col">Badge Number</th>
+              <th scope="col">Serial Number</th>
+              <th scope="col">Reading Date</th>
+              <th scope="col">KWH Reading</th>
+              <th scope="col">KVAH Reading</th>
+              <th scope="col">KILLOWATT Demand</th>
+              <th scope="col">PF Number</th>
+              <!-- <th scope="col">Delete</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of finalContent; let i = index" >
+              <td>{{ i + 1 }}</td>
+              <!-- <td>{{ row[0] }}</td> -->
+              <td>{{ row.accountId }}</td>
+              <td>{{ row.materialCode }}</td>
+              <td>{{ row.badgeNumber }}</td>
+              <td>{{ row.meterSerialNo }}</td>
+              <td>{{ row.readingDate }}</td>
+              <td>{{ row.kwhReading }}</td>
+              <td>{{ row.kvahReading }}</td>
+              <td>{{ row.kwReading }}</td>
+              <td>{{ row.pf }}</td>
+             <!-- <td>
+                 <button style="border: none" (click)="removeData(i)">
+                  <img src="assets/delete-icon.png" alt="" />
+                </button>
+              </td> -->
+            </tr>
+          </tbody>
+          
+        </table>
+      </div>
+    </div> 
+    </form>
+  </section>
+  </ng-container>
+  

@@ -1,0 +1,43 @@
+<div class="box">
+  <div class="heading">
+    <p class="quantity">Work Order No : ({{ workOrderNo }})</p>
+    <button mat-button mat-dialog-close class="cross-button">
+      <img src="assets/cross-icon.png" alt="" class="cross-icon" />
+    </button>
+  </div>
+  <div class="content mt-4" mat-dialog-content>
+    <table class="table table-bordered text-center mt-4">
+      <thead style="background-color: #f2f2f2; color: #3e3e3e">
+        <tr>
+          <th scope="col">S. No.</th>
+          <th scope="col">Material Name</th>
+          <th scope="col">Material Code</th>
+          <th scope="col">Estimated Qty</th>
+          <th scope="col">Return Qty</th>
+          <th scope="col">Part #</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of materialData; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>
+            <span>{{ d?.materialName }}</span>
+          </td>
+          <td>
+            <span>{{ d?.materialCode }}</span>
+          </td>
+          <td>
+            {{ d?.estimatedQuantity }}
+          </td>
+          <td>
+            {{ d?.returnedQuantity == "null" ? 0 : d?.returnedQuantity }}
+          </td>
+          <td>{{ d?.workPart }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <mat-dialog-actions class="actions">
+    <button class="btn clor" (click)="onClose()">Close</button>
+  </mat-dialog-actions>
+</div>

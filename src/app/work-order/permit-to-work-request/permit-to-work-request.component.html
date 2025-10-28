@@ -1,0 +1,154 @@
+<div class="page-1">
+<section>
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/main">Dashboard</a></li>
+        <li class="breadcrumb-item">
+          <a routerLink (click)="navigate('PERMIT TO WORK', '10')"
+            >Permit To Work</a
+          >
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Create Permit Work</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section>
+  <form class="form" [formGroup]="permitToWorkForm">
+    <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+      <h2 class="title-2">Permit Work</h2>
+      <br />
+      <div
+        class="two-row-grid"
+        style="justify-content: space-evenly"
+        *ngIf="data"
+      >
+        <div class="left-div" style="width: unset !important">
+          <div class="inner-div">
+            <label>Work Order No :</label>
+            {{ data?.wmWorkorderRegistered?.workorderNo }}
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Estimation No :</label>
+            {{ data?.wmWorkorderRegistered?.estimationNo }}
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Work Description :</label>
+            {{ data?.wmWorkorderRegistered?.workDescription }}
+          </div>
+          <br />
+          <br />
+          <div class="inner-div">
+            <label>Date Of Permit Work <span class="star">*</span> :</label>
+            <div class="date-field">
+              <div style="position: relative">
+                <input
+                  matInput
+                  [matDatepicker]="date_picker"
+                  class="form-control"
+                  [(ngModel)]="dateOfPermitWork"
+                  name="dateOfPermitWork"
+                  formControlName="dateOfPermitWork"
+                  readonly
+                />
+                <mat-datepicker-toggle
+                  style="position: absolute; top: 0; right: 0"
+                  matIconSuffix
+                  [for]="date_picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #date_picker></mat-datepicker>
+              </div>
+              <mat-error *ngIf="permitToWorkForm.get('dateOfPermitWork').hasError('required') && permitToWorkForm.get('dateOfPermitWork').touched">
+                Please select this field
+              </mat-error>
+            </div>
+          </div>
+        </div>
+        <div class="right-div">
+          <div class="inner-div">
+            <label>Work Order Date :</label>
+            {{
+              data?.wmWorkorderRegistered?.workorderDate | date : "dd/MM/yyyy"
+            }}
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Execution Method :</label>
+            {{ data?.wmWorkorderRegistered?.workExecutionMethod }}
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Permit Work Number <span class="star">*</span>:</label>
+            <input
+              class="form-control"
+              type="text"
+              [(ngModel)]="permitWorkNumber"
+              name="permitWorkNumber"
+              formControlName="permitWorkNumber"
+              appAlphaNumeric
+              [maxLength]="20"
+            />
+          </div>
+          <mat-error class="dates" *ngIf="permitToWorkForm.get('permitWorkNumber').hasError('required') && permitToWorkForm.get('permitWorkNumber').touched">
+            Please fill in this field.
+          </mat-error>
+          <div class="inner-div">
+            <label>Permit Work Document <span class="star">*</span></label>
+            <input 
+                class="btn btn-upload" 
+                type="file" 
+                style="background: color #f5f5f5;;"
+                id="actual-btn" 
+                accept=".xls, .xlsx, .doc, .docx, .csv, .pdf"
+                formControlName="file" 
+            />
+          </div>
+          <mat-error class="dates" *ngIf="permitToWorkForm.get('file').hasError('required') && permitToWorkForm.get('file').touched">
+            Please select this field.
+          </mat-error>
+          <mat-error class="dates" *ngIf="fileSizeError">
+            File size must be up to 5MB.
+          </mat-error>
+        </div>
+      </div>
+      <br />
+      <br />
+      <div class="txt-area">
+        <label style="width: fit-content">Remarks <span class="star">*</span></label>
+        <textarea
+          class="form-control"
+          rows="3"
+          (input)="adjustTextareaHeight($event.target)"
+          [(ngModel)]="remarks"
+          name="remarks"
+          formControlName="remarks"
+          appAlphaNumeric
+          maxLength="300"
+        >
+        </textarea>
+      </div>
+      <mat-error class="remarks" *ngIf="permitToWorkForm.get('remarks').hasError('required') && permitToWorkForm.get('remarks').touched">
+        Please fill in this field.
+      </mat-error>
+      <!-- button box -->
+      <div class="btn-box mt-4 pb-4">
+        <button
+        [disabled]="isLoading"
+          type="button"
+          class="btn clor btn-primary btn-md"
+          (click)="openConfirmationpopupDialog()"
+        >
+          Submit
+        </button>
+      </div>
+
+      <form class="form"></form>
+    </div>
+  </form>
+</section>
+</div>

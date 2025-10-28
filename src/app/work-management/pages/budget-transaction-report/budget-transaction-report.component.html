@@ -1,0 +1,186 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/dashboard">Works</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Budget Transaction Report</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+
+  <section>
+    <form class="form" [formGroup]="formGroup">
+      <div class="container-fluid page">
+        <div class="page__content shadow p-3 position-relative dis-flex-colu">
+          <h2 class="title-2">Budget Transaction Report</h2>
+          <div style="width: 100%; margin-top: 1rem">
+            <div class="p-3 mb-5">
+              <div class="row g-4 align-items-center">
+                <div class="col-sm-2">
+                  <label for="Divisionoffice" 
+                    >Budget Year<span class="star"> *</span></label
+                  >
+                </div>
+                <div class="col-sm-4">
+                  <input
+                  class="form-check-input"
+                  type="radio"
+                  name="budgetYearType"
+                  id="SpillOverBudget"
+                  value="spillover"
+                  formControlName="budgetYearType"
+                />
+                Spill Over Budget &nbsp;
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="budgetYearType"
+                  id="CurrYearBudget"
+                  value="current_year"
+                  formControlName="budgetYearType"
+                />
+                Current year Budget
+                <div *ngIf="formSubmitted && getErrorMessage('budgetYearType')" class="star">
+                  {{ getErrorMessage('budgetYearType') }}
+                </div>
+                </div>
+                <div class="col-sm-2">
+                  <label for="Divisionoffice">Division Office<span class="star"> *</span></label>
+                </div>
+                <div class="col-sm-4">
+                  <select
+                    class="form-select"
+                    style="width: 100%"
+                    id="divisionSelect"
+                    formControlName="divisionOffice"
+                  >
+                    <option *ngFor="let division of divisionOptions" [value]="division.officeMasterId">
+                      {{ division.divisionCode }} - {{ division.divisionName }}
+                    </option>
+                  </select>
+                  <div *ngIf="formSubmitted && getErrorMessage('divisionOffice')" class="star">
+                    {{ getErrorMessage('divisionOffice') }}
+                  </div>
+                </div>                            
+                <div class="col-sm-2">
+                  <label >Divisional Account Head<span class="star"> *</span></label >
+                </div>
+                <div class="col-sm-4">
+                  <select class="form-select" style="width: 100%" id="accHeadSelect" formControlName="divisionAcountHead">
+                    <option disabled selected>--select--</option>
+                    <ng-container *ngFor="let option of accountHeadoptions">
+                      <option [value]="option.accountHeadMasterId">
+                        {{ option.accountHeadCode }}
+                      </option>
+                    </ng-container>
+                  </select>
+                  <div *ngIf="formSubmitted && getErrorMessage('divisionAcountHead')" class="star">
+                    {{ getErrorMessage('divisionAcountHead') }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="row g-4 mt-2 align-items-center">
+                <div class="col-sm-2">
+                  <label for="Financialyear" >Financial Year<span class="star"> *</span></label >
+                </div>
+                <div class="col-sm-4">
+                  <select id="financial-year" class="form-select" formControlName="financialYear">
+                    <option value="2023-24">2023-24</option>
+                    <option value="2024-25">2024-25</option>
+                    <option value="2025-26">2025-26</option>
+                  </select>
+                  <div *ngIf="formSubmitted && getErrorMessage('financialYear')" class="star">
+                    {{ getErrorMessage('financialYear') }}
+                  </div>
+                </div>
+                <div class="col-sm-2">
+                  <label for="Transactiontype" >Transaction Type<span class="star"> *</span></label>
+                </div>
+                <div class="col-sm-4">
+                  <select id="transaction-type" class="form-select" formControlName="transactionType">
+                    <option value="ADD">ADD</option>
+                    <option value="RETURN">RETURN</option>
+                    <option value="REDUCE">REDUCE</option>
+                    <option value="EXPENDITURE">EXPENDITURE</option>
+                    <option value="WORKORDER APPROVED">WORKORDER APPROVED</option>
+                    <option value="ALL">ALL</option>
+                  </select>
+                  <div *ngIf="formSubmitted && getErrorMessage('transactionType')" class="star">
+                    {{ getErrorMessage('transactionType') }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="offset-sm-5">
+                <div class="row mt-2 mb-2 align-items-center col-sm-4">
+                  <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Output Format <span class="star"> *</span></legend>
+                    <div class="mt-2">
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="inlineRadioOptions"
+                          id="inlineRadio1"
+                          value="pdf"
+                          (change)="onRadioChange($event.target.value)"
+                          checked
+                        />
+                        <label class="form-check-label" for="inlineRadio1"
+                          >PDF</label
+                        >
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="inlineRadioOptions"
+                          id="inlineRadio2"
+                          value="xlsx"
+                          (change)="onRadioChange($event.target.value)"
+                        />
+                        <label class="form-check-label" for="inlineRadio2"
+                          >XLS </label
+                        >
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="offset-sm-5 mt-2 mb-2">
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-md"
+                    *ngIf="pdfType == 'pdf'"
+                    (click)="generateBudgetTransactionReport()"
+                  >
+                    Generate PDF
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-md"
+                    *ngIf="pdfType == 'xlsx'"
+                    (click)="downloadExcelFile()"
+                  >
+                    Generate XSLX
+                  </button>
+                </div>
+                <!-- <div class="offset-sm-5">
+                  <span *ngIf="error" style="color: red">{{ error }}</span>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+</div>

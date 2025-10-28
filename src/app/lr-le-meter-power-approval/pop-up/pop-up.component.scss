@@ -1,0 +1,17 @@
+.btn-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-start;
+  }
+  
+  .btn {
+    background-color: #4472c4;
+    color: white;
+    min-height: 0.5rem;
+    min-width: 3rem;
+  
+    &:hover {
+      background-color: #7f9cce;
+    }
+  }

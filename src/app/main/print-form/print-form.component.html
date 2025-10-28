@@ -1,0 +1,174 @@
+<section>
+  <form class="form m-2" id="printableArea">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Consumer Details </h2>
+      <div class="grid two-row-grid mt-3">
+        <div class="left-div">
+          <div class="inner-div">
+            <h3>Account ID</h3>
+            <p>{{ data.accountId }}</p>
+          </div>
+          <div class="inner-div">
+            <h3>Name & Address</h3>
+            <p>{{ data.officeName }}, {{ data.address }}</p>
+          </div>
+          <div class="inner-div">
+            <h3>Land Mark</h3>
+            <p>{{ data.landmark == "null" ? "" : data.landmark }}</p>
+          </div>
+          <div class="inner-div">
+            <h3>Email ID</h3>
+            <p>{{ data.email == "null" ? "" : data.email }}</p>
+          </div>
+          <div class="inner-div">
+            <h3>Contact No.</h3>
+            <p>{{ data.mobileNumber }}</p>
+          </div>
+          <div class="inner-div">
+            <h3>Applicant Type</h3>
+            <p>{{ data.applicantType }}</p>
+          </div>
+          <div class="inner-div">
+            <h3>Tariff</h3>
+            <p>{{ data.tariff }}</p>
+          </div>
+          <div class="inner-div">
+            <h3>Type of Connection</h3>
+            <p>{{ data.connectionType }}</p>
+          </div>
+        </div>
+        <div class="right-div">
+          <div class="inner-div">
+            <h3>Applied Load (KW)</h3>
+            <p>{{ data.loadKw }}</p>
+          </div>
+          <div class="inner-div">
+            <h3>Applied Load (HP)</h3>
+            <p>{{ data.loadHp }}</p>
+          </div>
+          <div class="inner-div">
+            <h3>Total Applied Load in KW</h3>
+            <p>{{ data.loadKw }}</p>
+          </div>
+          <div class="inner-div">
+            <h3>Phase</h3>
+            <p>{{ data.phase }}</p>
+          </div>
+          <div class="inner-div">
+            <h3>Plot Size (sq.ft)</h3>
+            <p>{{ data.plotSize }}</p>
+          </div>
+          <div class="inner-div">
+            <h3>Total Build up Area (sq.mts.)</h3>
+            <p>{{ data.buildupAreaSize }}</p>
+          </div>
+          <div class="inner-div">
+            <h3>Adjacent Consumer Number</h3>
+            <p>{{ data.adjacentAccountNo }}</p>
+          </div>
+        </div>
+      </div>
+
+
+    <div class="page__content p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Inspection Details </h2>
+      
+
+      <div style="
+      overflow: auto;
+      width: 100%;
+      border: 2px solid #c2c2c2;
+      margin-top: 0.5rem;"
+      *ngIf="data?.applicationTypeCode ==='NMCHG' || data?.applicationTypeCode ==='TCNG'">
+    <table class="table table-bordered text-center">
+      <thead style="background-color: #f2f2f2; color: #3e3e3e">
+        <tr>
+          <th scope="col">Sequence no</th>
+          <th scope="col">Register Id </th>
+          <th scope="col">Unit of Measure</th>
+          <th scope="col">Time of Use</th>
+          <!-- <th scope="col">Read Type</th> -->
+          <th scope="col">Reading</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let item of meterData">
+          <tr>
+              <td>{{ item.registerReadSeqNo }}</td>
+              <td>{{ item.registerId }}</td>
+              <td>{{ item.registerUom }}</td>
+              <td>{{ item.registerTou }}</td>
+              <!-- <td>
+                  <input type="text" class="form-control" [(ngModel)]="item.registerReading"[ngModelOptions]="{standalone: true}">
+              </td> -->
+          </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+      <!-- <div class="grid single-row-grid mt-4">
+        <div class="inner-div">
+          <label>
+            If Yes (LT Line Extn/HT Line Extn/ New DT/ New Feeder/ New Station)
+          </label>
+          <span></span>
+        </div>
+        <div class="inner-div">
+          <label>1. Nearest Network</label>
+          <span></span>
+        </div>
+        <div class="inner-div">
+          <label>2. Network Extension Required or Not</label>
+          <span></span>
+        </div>
+        <div class="inner-div">
+          <label>3. Latitude and Longitude of the location</label>
+          <span></span>
+        </div>
+        <div class="inner-div">
+          <label>4. Connection Extended From</label>
+          <span></span>
+        </div>
+        <div class="inner-div">
+          <label>5. Distribution Transformer Name</label>
+          <span></span>
+        </div>
+        <div class="inner-div">
+          <label>6. Feeder Name</label>
+          <span></span>
+        </div>
+        <div class="inner-div">
+          <label>7. Substation Name</label>
+          <span></span>
+        </div>
+        <div class="inner-div">
+          <label>8. Inspectded By</label>
+          <span></span>
+        </div>
+        <div class="inner-div">
+          <label>9. Inspectded Date</label>
+          <span></span>
+        </div>
+      </div> -->
+   
+  <div style="display: flex; justify-content: center" class="btn-box mt-4">
+    <button
+      type="button"
+      (click)="cancel()"
+      class="btn btn-secondary btn-md clor mt-4 mb-2"
+    >
+      Back
+    </button>
+    <button
+      type="button"
+      class="print-btn btn btn-primary btn-md mt-4 mb-2"
+      mat-button
+      (click)="printDiv('printableArea')"
+    >
+      Print
+    </button>
+  </div>
+</div>
+</div>
+</form>
+</section>

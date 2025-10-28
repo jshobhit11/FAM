@@ -1,0 +1,630 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/main">Dashboard</a></li>
+          <li class="breadcrumb-item">
+            <a routerLink (click)="navigate('WORK EXECUTION', '16')"
+              >Work Execution</a
+            >
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Create Work Execution</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+
+  <div class="page__content p-3 dis-fl dis-fl2 position-relative dis-flex-colu">
+    <section>
+      <form
+        class="form"
+        (ngSubmit)="submitWorkExecutionForm()"
+        [formGroup]="workExecution"
+      >
+        <div
+          class="page__content p-3 dis-fl dis-fl2 position-relative dis-flex-colu"
+        >
+          <h2 class="title-2">Work Execution</h2>
+
+          <div class="two-row-grid mt-4">
+            <div class="left-div">
+              <div class="inner-div mb-4">
+                <label>Work Order No</label>
+
+                <span>{{ data?.WmWorkorderRegistered?.workorderNo }}</span>
+              </div>
+              <div class="inner-div mb-4">
+                <label>Execution Method</label>
+
+                <span>{{
+                  data?.WmWorkorderRegistered?.workExecutionMethod
+                }}</span>
+              </div>
+              <div class="inner-div mb-4">
+                <label>Dop Category</label>
+
+                <span>{{ data?.EstimationRegistered?.workCategory }}</span>
+              </div>
+
+              <div class="inner-div mb-4">
+                <label>Approved Amount </label>
+
+                <span>{{ data?.WmWorkorderRegistered?.estimationCost }}</span>
+              </div>
+
+              <div class="inner-div mb-4">
+                <label>Work Order End Date</label>
+
+                <span>{{ data?.WmWorkorderRegistered?.workorderEndDate }}</span>
+              </div>
+            </div>
+            <div>
+              <div class="inner-div">
+                <label>Estimation No.</label>
+
+                <span>{{ data?.WmWorkorderRegistered?.estimationNo }}</span>
+              </div>
+              <div class="inner-div mt25">
+                <label>Work Type</label>
+
+                <span>{{
+                  data?.EstimationRegistered?.applicationTypeName
+                }}</span>
+              </div>
+
+              <div class="inner-div mt25">
+                <label>Estimated Amount</label>
+
+                <span>{{ data?.WmWorkorderRegistered?.estimationCost }}</span>
+              </div>
+              <div class="inner-div mt25">
+                <label *ngIf="data?.EstimationRegistered?.applicationTypeCode == 'PD'">
+                  Surrender Date
+                </label>
+                <label *ngIf="data?.EstimationRegistered?.applicationTypeCode !== 'PD'">
+                  Installation Date
+                </label>
+                <div style="display: flex">
+                  <input
+                    type="datetime-local"
+                    class="form-control"
+                    formControlName="workorderInstallationDate"
+                  />
+                </div>
+                <div *ngIf="workExecution.get('workorderInstallationDate').invalid && workExecution.get('workorderInstallationDate').touched" class="error-message">
+                  {{ data?.EstimationRegistered?.applicationTypeCode == 'PD' ? 'Surrender Date is required.' : 'Installation Date is required.' }}
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="txt-area">
+            <label style="width: fit-content">Work Description</label>
+
+            <span>{{ data?.WmWorkorderRegistered?.workDescription }}</span>
+          </div>
+        </div>
+      </form>
+      <div>
+        <div style="overflow: auto; width: 100%; margin-top: 1rem" *ngIf="data.EstimationRegistered?.applicationTypeCode !== 'PD'">
+          <h2>Material</h2>
+          <div class="indicators-line mt-4">
+            <div class="indicators-line-content">
+              <div class="color-div indicator-color-one"></div>
+              <span>will create assests</span>
+            </div>
+            <div class="indicators-line-content">
+              <div class="color-div indicator-color-two"></div>
+              <span>will meter upload</span>
+            </div>
+          </div>
+
+          <div>
+            <table class="table table-bordered text-center mt-4">
+              <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                <tr>
+                  <th scope="col">S. No.</th>
+                  <th scope="col">Rate Type</th>
+                  <th scope="col">Material Name</th>
+                  <th scope="col">Material Code</th>
+                  <th scope="col">Estimated Qty</th>
+                  <th
+                    scope="col"
+                    *ngIf="
+                      (data.WmWorkorderRegistered?.workExecutionMethod !==
+                        'Total Turnkey' &&
+                        data.WmWorkorderRegistered?.workExecutionMethod !==
+                          'Self Execution' &&
+                        data.EstimationRegistered?.applicationTypeName !==
+                          'Emergency Works') ||
+                      (data.WmWorkorderRegistered?.workExecutionMethod !==
+                        'Department' &&
+                        data.EstimationRegistered?.applicationTypeName !==
+                          'Emergency Works')
+                    "
+                  >
+                    Drawn Qty
+                  </th>
+                  <th
+                    scope="col"
+                    *ngIf="
+                      (data.WmWorkorderRegistered?.workExecutionMethod !==
+                        'Total Turnkey' &&
+                        data.WmWorkorderRegistered?.workExecutionMethod !==
+                          'Self Execution' &&
+                        data.EstimationRegistered?.applicationTypeName !==
+                          'Emergency Works') ||
+                      (data.WmWorkorderRegistered?.workExecutionMethod !==
+                        'Department' &&
+                        data.EstimationRegistered?.applicationTypeName !==
+                          'Emergency Works')
+                    "
+                  >
+                    Return Qty
+                  </th>
+                  <th scope="col">Actual Qty</th>
+                  <th scope="col">Balance Qty</th>
+                  <th scope="col">Part #</th>
+                  <th scope="col">Structure</th>
+                  <th
+                    scope="col"
+                    *ngIf="
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Labour Contract' ||
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Partial Turnkey' ||
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Department'
+                    "
+                  >
+                    Stock Available
+                  </th>
+                  <th
+                    scope="col"
+                    *ngIf="
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Labour Contract' ||
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Partial Turnkey' ||
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Department'
+                    "
+                  >
+                    Qty Provided By Vendor
+                  </th>
+                  <th
+                    scope="col"
+                    *ngIf="
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Labour Contract' ||
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Partial Turnkey' ||
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Department'
+                    "
+                  >
+                    Remarks
+                  </th>
+                </tr>
+              </thead>
+              <tbody *ngIf="data?.EstRegisteredResponse">
+                <tr *ngFor="let d of data?.EstRegisteredResponse; index as i">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ d?.rateType }}</td>
+                  <td>
+                    <span
+                      *ngIf="d?.amAssetCategoryMaterialMasterId !== 'null'"
+                      style="color: #028f3a; font-weight: 500"
+                      >{{ d?.materialName }}</span
+                    >
+                    <span
+                      *ngIf="d?.amAssetCategoryMaterialMasterId == 'null'"
+                      >{{ d?.materialName }}</span
+                    >
+                  </td>
+                  <td>
+                    <span
+                      style="color: #f91818; font-weight: 500"
+                      *ngIf="d?.materialType === 'METER'"
+                    >
+                      {{ d?.materialCode }}
+                    </span>
+
+                    <span
+                      style="color: #f91818; font-weight: 500"
+                      *ngIf="
+                        d?.materialType !== 'METER' &&
+                        d?.isUploadSerialMaterial == '1'
+                      "
+                    >
+                      {{ d?.materialCode }}
+                    </span>
+                    <span
+                      *ngIf="
+                        d?.materialType !== 'METER' &&
+                        d?.isUploadSerialMaterial == 'null'
+                      "
+                    >
+                      {{ d?.materialCode }}
+                    </span>
+                    <div>
+                      <ng-container
+                        *ngIf="
+                          d?.materialType == 'METER' &&
+                          d?.isUploadSerialMaterial !== 'null'
+                        "
+                      >
+                        <mat-form-field
+                          class="narrow-dropdown square-dropdown"
+                          appearance="outline"
+                        >
+                          <mat-label>Please select the meter type</mat-label>
+                          <mat-select
+                            [(ngModel)]="d.selectedMeterType"
+                            (selectionChange)="onMeterTypeChange(d, i)"
+                          >
+                            <mat-option value="DT METER">DT Meter</mat-option>
+                            <mat-option value="CONSUMER METER"
+                              >Consumer Meter</mat-option
+                            >
+                          </mat-select>
+                        </mat-form-field>
+                      </ng-container>
+                    </div>
+                  </td>
+                  <td>
+                    {{ d?.estimatedQuantity }}
+                  </td>
+                  <td
+                    *ngIf="
+                      (data.WmWorkorderRegistered?.workExecutionMethod !==
+                        'Total Turnkey' &&
+                        data.WmWorkorderRegistered?.workExecutionMethod !==
+                          'Self Execution' &&
+                        data.EstimationRegistered?.applicationTypeName !==
+                          'Emergency Works') ||
+                      (data.WmWorkorderRegistered?.workExecutionMethod !==
+                        'Department' &&
+                        data.EstimationRegistered?.applicationTypeName !==
+                          'Emergency Works')
+                    "
+                  >
+                    {{ d?.drawnQuantity == "null" ? 0 : d?.drawnQuantity }}
+                  </td>
+                  <td
+                    *ngIf="
+                      (data.WmWorkorderRegistered?.workExecutionMethod !==
+                        'Total Turnkey' &&
+                        data.WmWorkorderRegistered?.workExecutionMethod !==
+                          'Self Execution' &&
+                        data.EstimationRegistered?.applicationTypeName !==
+                          'Emergency Works') ||
+                      (data.WmWorkorderRegistered?.workExecutionMethod !==
+                        'Department' &&
+                        data.EstimationRegistered?.applicationTypeName !==
+                          'Emergency Works')
+                    "
+                  >
+                    {{
+                      d?.returnedQuantity == "null" ? 0 : d?.returnedQuantity
+                    }}
+                  </td>
+                  <td>
+                    <div class="searchbar">
+                      <input
+                        class="form-control"
+                        name="actualQuantity"
+                        [(ngModel)]="d.actualQuantity"
+                        maxlength="6"
+                        [disabled]="
+                          data.WmWorkorderRegistered?.workExecutionMethod ==
+                            'Labour Contract' ||
+                          data.WmWorkorderRegistered?.workExecutionMethod ==
+                            'Partial Turnkey' ||
+                          data.WmWorkorderRegistered?.workExecutionMethod ==
+                            'Department'
+                        "
+                        pattern="^\d{1,5}(\.\d{0,1})?$"
+                        (blur)="
+                          onMaterialQuantity(
+                            $event.target.value,
+                            i,
+                            d?.drawnQuantity,
+                            d?.returnedQuantity,
+                            d?.rateType,
+                            d?.estimatedQuantity
+                          )
+                        "
+                        (keypress)="
+                          isValidInput(
+                            $event,
+                            d.actualQuantity,
+                            d?.isSpanStructure
+                          ) || $event.preventDefault()
+                        "
+                      />
+                    </div>
+                  </td>
+                  <td>{{ d?.balanceQty }}</td>
+                  <td>{{ d?.workPart }}</td>
+                  <td>
+                    <mat-icon
+                      *ngIf="d?.isPoleStructure == '1'"
+                      class="search-icon"
+                      (click)="
+                        openStructureBlockDialog(
+                          d?.materialsMasterId,
+                          d.actualQuantity,
+                          d.estimationMaterialsRegisteredId,
+                          d.workPart,
+                          d.materialCode
+                        )
+                      "
+                      >search</mat-icon
+                    >
+                    <mat-icon
+                      *ngIf="d?.isSpanStructure == '1'"
+                      class="search-icon"
+                      (click)="
+                        openStructureSpanDialog(
+                          d?.materialsMasterId,
+                          d.actualQuantity,
+                          d.estimationMaterialsRegisteredId,
+                          d.workPart,
+                          d.materialCode
+                        )
+                      "
+                      >search</mat-icon
+                    >
+                    <mat-icon
+                      *ngIf="
+                        (d?.materialType === 'METER' &&
+                          d?.selectedMeterType === 'DT METER' &&
+                          d?.isUploadSerialMaterial === '1' &&
+                          d?.actualQuantity > 0) ||
+                        (d?.materialType !== 'METER' &&
+                          d?.isUploadSerialMaterial === '1' &&
+                          !hideSearchIcons[i])
+                      "
+                      class="search-icon"
+                      (click)="
+                        openActualQuantityDialog(
+                          d?.materialsMasterId,
+                          d.actualQuantity,
+                          d.materialCode,
+                          d.workPart,
+                          d.estimationMaterialsRegisteredId
+                        )
+                      "
+                    >
+                      search
+                    </mat-icon>
+                  </td>
+                  <td
+                    *ngIf="
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Labour Contract' ||
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Partial Turnkey' ||
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Department'
+                    "
+                  >
+                    <span *ngIf="d.noStockFlag == '1'">No</span>
+                    <ng-container
+                      *ngIf="
+                        (d.noStockFlag == null || d.noStockFlag == 'null'||d.noStockFlag =='0') &&
+                        d.rateType == 'SR'
+                      "
+                    >
+                      <div class="dropdown-wrapper">
+                        <select
+                          class="form-control custom-dropdown"
+                          [(ngModel)]="d.selectedNoStockOption"
+                          [ngModel]="0"
+                          (change)="
+                            onNoStockOptionChange(i, d.selectedNoStockOption)
+                          "
+                        >
+                          <option value="0" selected>Yes</option>
+                          <option value="1">No</option>
+                        </select>
+                      </div>
+                    </ng-container>
+                  </td>
+                  <td
+                    *ngIf="
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Labour Contract' ||
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Partial Turnkey' ||
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Department'
+                    "
+                  >
+                    <input
+                      class="form-control"
+                      type="number"
+                      [(ngModel)]="d.qtyByVendor"
+                      *ngIf="
+                        d.noStockFlag == '1' ||
+                        ((d.noStockFlag == null || d.noStockFlag == 'null') &&
+                          d.selectedNoStockOption == '1')
+                      "
+                      (blur)="
+                        onQtyProvidedByVendorChange(
+                          i,
+                          $event.target.value,
+                          d.actualQuantity,
+                          d?.estimatedQuantity,
+                          d?.drawnQuantity,
+                          d?.returnedQuantity
+                        )
+                      "
+                      pattern="^\d+(\.\d{0,3})?$"
+                    />
+                  </td>
+
+                  <td
+                    *ngIf="
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Labour Contract' ||
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Partial Turnkey' ||
+                      data.WmWorkorderRegistered?.workExecutionMethod ==
+                        'Department'
+                    "
+                  >
+                    <input
+                      class="form-control"
+                      type="text"
+                      [(ngModel)]="d.remarks"
+                      placeholder="please enter remarks"
+                      maxlength="300"
+                      name="remark"
+                      *ngIf="
+                        d.noStockFlag == '1' || d.selectedNoStockOption == '1'
+                      "
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h2>Labour Details</h2>
+
+            <table class="table table-bordered text-center mt-4">
+              <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                <tr>
+                  <th scope="col">S. No.</th>
+                  <th scope="col">Labour Name</th>
+                  <th scope="col">Labour Code</th>
+                  <th scope="col">Estimated Qty</th>
+                  <th scope="col">Actual Qty</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of data.EstimationLabourResponse; index as i">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ d?.material }}</td>
+                  <td>{{ d?.materialCode }}</td>
+                  <td>{{ d?.quantity }}</td>
+                  <td>
+                    <div class="searchbar">
+                      <input
+                        class="form-control"
+                        type="number"
+                        name="actualQuantity"
+                        [(ngModel)]="d.actualQuantity"
+                        (input)="
+                          onLabourQuantity($event.target.value, i, d?.quantity)
+                        "
+                      />
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="txt-area mt-4">
+          <label style="width: fit-content"
+            >Remarks <span class="star">*</span></label
+          >
+          <textarea
+            class="form-control"
+            cols="10"
+            rows="3"
+            [(ngModel)]="remarks"
+            appAlphaNumeric
+            [maxLength]="300"
+          ></textarea>
+        </div>
+      </div>
+      <div></div>
+
+      <div *ngIf="data?.WmWorkorderInvoiceDetails?.length > 0">
+        <table class="table table-bordered text-center mt-4">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">Sr. No.</th>
+              <th scope="col">Work Order No.</th>
+              <th scope="col">Acknowledgement No</th>
+              <th scope="col">Is Material Returned</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let d of data.WmWorkorderInvoiceDetails; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>
+                <a
+                  style="
+                    text-decoration: underline;
+                    font-weight: 600;
+                    color: #154882;
+                    cursor: pointer;
+                  "
+                  (click)="
+                    openWorkExecutionMaterialDialog(
+                      d?.workorderRegisteredId,
+                      d?.workorderNo
+                    )
+                  "
+                >
+                  {{ d?.workorderNo }}</a
+                >
+              </td>
+              <td>{{ d?.storeInvoice == "null" ? "-" : d?.storeInvoice }}</td>
+              <td>{{ d?.invoiceFlag }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- button box -->
+      <div *ngIf="data?.EstimationRegistered?.applicationTypeCode === 'PD'">
+        <p style="padding: 15px">
+          <input
+            type="checkbox"
+            name="check"
+            id="chc"
+            (click)="onCheckboxChange($event.target.checked)"
+          />
+          <b style="font-size: 15px; color: #eb8634">
+            I hereby declare that i am closing the work execution after
+            verification of all the material and labour items of estimateed
+            quantity, drawn quantity, return quantity and actual quantity.</b
+          >
+        </p>
+      </div>
+      <div class="btn-box mt-4 pb-4">
+        <button
+          *ngIf="data?.EstimationRegistered?.applicationTypeCode === 'PD'"
+          type="button"
+          class="btn btn-primary btn-md"
+          [disabled]="!isClose"
+          (click)="openCloseDialog()"
+        >
+          Close Work Execution
+        </button>
+
+        <button
+          *ngIf="data?.EstimationRegistered?.applicationTypeCode !== 'PD'"
+          type="button"
+          class="btn btn-primary btn-md"
+          [disabled]="!remarks"
+          (click)="confirmBeforeSubmit()"
+        >
+          Preview
+        </button>
+        <!-- || isWorkOrderInvoices -->
+      </div>
+    </section>
+    <!--  -->
+  </div>
+</div>

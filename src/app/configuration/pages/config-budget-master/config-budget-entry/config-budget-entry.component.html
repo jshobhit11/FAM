@@ -1,0 +1,370 @@
+<div class="page-1">
+    <section class="mt-2">
+      <ul>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a routerLink="/configuration">Configuration</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a style="color: lightslategray">Budget Form</a>
+            </li>
+          </ol>
+        </nav>
+      </ul>
+    </section>
+    <section>
+      <form class="form" #budgetForm="ngForm">
+        
+          <div class="page__content shadow p-3 position-relative dis-flex-colu">
+            <h2 class="title-2">Create New Budget</h2>
+        
+          <div class="grid one-row-grid ">
+            <div class="inner-div">
+              <label>Budget Year <span class="mandatory-indicator">*</span></label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="budgetYear"
+                    id="CurrYearBudget"
+                    value="currentYear"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="budgetYear"
+                    (ngModelChange)="onBudgetYearChange()"
+                    checked
+                  />
+                  <label class="form-check-label" for="CurrYearBudget"
+                    >Current year Budget</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="budgetYear"
+                    id="SpillOverBudget"
+                    value="spillOver"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="budgetYear"
+                    (ngModelChange)="onBudgetYearChange()"
+                  />
+                  <label class="form-check-label" for="SpillOverBudget"
+                    >Spill Over Budget</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grid two-row-grid ">
+            <div class="left-div">
+              <div class="inner-div">
+                <label>Budget Financial Year <span class="mandatory-indicator">*</span></label>
+                <select
+                  class="form-select"
+                  style="width: 100%"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="budgetFinancialYear" (ngModelChange)="onBudgetYearChange()"
+                  [disabled]="budgetYear === 'currentYear' ? true : false"
+                >
+                <option *ngFor="let year of budgetFinancialYears" [value]="year">{{ year }}</option>
+                </select>
+              </div>
+              <div class="inner-div">
+                <label>Acc. Head No <span class="mandatory-indicator">*</span></label>
+                <select
+                  class="form-select"
+                  style="width: 100%"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="divisionalAccountHeadNo"
+                  (change)="
+                    onAccountHeadSelectChange(
+                      $event.target.value,
+                      currentFinacialYear
+                    )
+                  "
+                  #accountHeadSelectRef
+                  name="divisionalAccountHeadNo"
+                  [disabled]="!selectedDivisionCode"
+                  [ngClass]="{ 'placeholder-text': !selectedDivisionCode }"
+                  
+                >
+                  <option value="" disabled [selected]="!selectedDivisionCode">Acc.Head No</option>
+                  <ng-container *ngFor="let option of accountHeadoptions">
+                    <option [value]="option">{{ option }}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+            <div>
+              <div class="inner-div">
+                <label>Division <span class="mandatory-indicator">*</span></label>
+                <select
+                  class="form-select"
+                  style="width: 100%"
+                  id="divisionSelect"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="selectedDivisionCode"
+                  (change)="onDivisionChange($event)"
+                  #divisionSelectRef
+                  name="selectedDivisionCode"
+                  required
+                >
+                  <option value="">Select Division</option>
+                  <option
+                    *ngFor="let division of divisionOptions"
+                    [value]="division.officeMasterId"
+                  >
+                    {{ division.divisionCode }} - {{ division.divisionName }}
+                  </option>
+                </select>
+              </div>
+    
+              <div class="inner-div">
+                <label>Acc. Head Description</label>
+                <p #accountHeadDescription>
+                  {{ selectedData?.accountHeadDescription }}
+                </p>
+              </div>
+            </div>
+          </div>
+    
+          <div class="grid two-row-grid ">
+            <div class="left-div">
+              <div class="inner-div">
+                <label>Divisional Budget Head </label>
+                <p *ngIf="divisionalHeadData">
+                  {{ divisionalHeadData.divisionalBudgetHead}}
+                </p>
+              </div>
+              <div class="inner-div">
+                <label>Total Budget Amount</label>
+                <p>{{ divisionalHeadData?.totalBudgetAmount}}</p>
+              </div>
+              <div class="inner-div">
+                <label>Work Order issue Amount</label>
+                <p>{{ divisionalHeadData?.workOrderAmount}}</p>
+              </div>
+              <div class="inner-div">
+                <label>Balance Amount</label>
+                <p>
+                  {{
+                    divisionalHeadData?.totalBudgetAmount -
+                      divisionalHeadData?.workOrderAmount
+                  }}
+                </p>
+              </div>
+            </div>
+            <div>
+              <div class="inner-div">
+                <label>Budget Type</label>
+                <p>{{ divisionalHeadData?.budgetWorkType}}</p>
+              </div>
+              <div class="inner-div">
+                <label>Total Added Amount</label>
+                <p>{{ divisionalHeadData?.TotalAddedAmount}}</p>
+              </div>
+              <div class="inner-div">
+                <label>Total Reduced Amount</label>
+                <p>{{ divisionalHeadData?.TotalReducedAmount}}</p>
+              </div>
+              <div class="inner-div">
+                <label>Expenditure Amount</label>
+                <p>{{ divisionalHeadData?.ExpenditureAmount}}</p>
+              </div>
+            </div>
+          </div>
+    
+          <div class="grid one-row-grid ">
+            <div class="inner-div">
+              <label for="addAmount">Transaction Type</label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="transactionType"
+                    id="addAmount"
+                    value="addAmount"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="selectedTransactionType"
+                    [disabled]="!divisionalHeadData ||reduceAmountRecordsAdded"
+                  />
+                  <label class="form-check-label" for="addAmount">Add Amount</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                  class="form-check-input"
+                  type="radio"
+                  name="transactionType"
+                  id="reduceAmount" 
+                  value="reduceAmount"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="selectedTransactionType"
+                  [disabled]="!divisionalHeadData || addAmountRecordsAdded || divisionalHeadData.totalBudgetAmount === 0" 
+                />
+                  <label class="form-check-label" for="reduceAmount"
+                    >Reduce Amount</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+    
+          <div class="heading mt-4">
+            <h2>Add Amount</h2>
+          </div>
+    
+          <div
+            style="
+              overflow: auto;
+              width: 100%;
+            
+              margin-top: 1rem;
+              height: 200px;
+            "
+          > 
+            <table class="table table-bordered text-center">
+              <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                <tr>
+                  <th scope="col">Request No.</th>
+                  <th scope="col">Amount <span class="star">*</span></th>
+                  <th scope="col">Date <span class="star">*</span></th>
+                  <th scope="col">OM No. <span class="star">*</span></th>
+                  <th scope="col">Remarks <span class="star">*</span></th>
+                  <th scope="col">Add/Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td>
+                    <input
+                      #amountInput
+                      id="amountInput"
+                      type="number"
+                      class="form-control"
+                      name="amountInput"
+                      [disabled]="!selectedTransactionType"
+                      (input)="limitInputToTenDigits($event)"
+                    />
+                  </td>
+                  <td>
+                    <div class="date-field">
+                      <div style="position: relative">
+                        <input
+                        #dateInput
+                        id="dateInput"
+                        matInput
+                        [matDatepicker]="date_picker"
+                        class="form-control"
+                        name="dateInput"
+                        [disabled]="!selectedTransactionType"
+                        (input)="validateDateInput($event)"
+                      />
+                      
+                        <mat-datepicker-toggle
+                          style="position: absolute; top: 0; right: 0"
+                          matIconSuffix
+                          [for]="date_picker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #date_picker></mat-datepicker>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <input
+                      #omNoInput
+                      id="omNoInput"
+                      type="text"
+                      class="form-control"
+                      name="omNoInput"
+                      [disabled]="!selectedTransactionType"
+                      (input)="limitInputToTenDigits($event)"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      #remarksInput
+                      id="remarksInput"
+                      type="text"
+                      class="form-control"
+                      name="remarksInput"
+                      [disabled]="!selectedTransactionType"
+                    />
+                  </td>
+                  <td>
+                    <button
+                    (click)="addData(null, amountInput.value, dateInput.value, omNoInput.value, remarksInput.value); amountInput.value=''; dateInput.value=''; omNoInput.value=''; remarksInput.value='';"
+                    [disabled]="!selectedTransactionType"
+                    style="border: none; background-color: transparent"
+                    >
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngFor="let data of tableData; let index = index">
+                  <td>{{ data.requestNo }}</td>
+                  <td>{{ data.amount }}</td>
+                  <td>{{ data.date }}</td>
+                  <td>{{ data.omNo }}</td>
+                  <td>{{ data.remarks }}</td>
+                  <td>
+                    <button
+                    (click)="deleteRow(index)"
+                      style="border: none; background-color: transparent"
+                    >
+                      <img src="assets/delete-icon.png" alt="" />
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    
+          <div class="heading">
+            <h2>Divisional Acc Head Details</h2>
+          </div>
+          <div
+            style="
+              overflow: auto;
+              width: 100%;
+              margin-top: 1rem;
+              height: 300px;
+            "
+          >
+            <table class="table table-bordered text-center">
+              <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                <tr>
+                  <th scope="col">Divisional Budget Head</th>
+                  <th scope="col">Present Total Budget Amount</th>
+                  <th scope="col">New Total Budget Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of divisionalAccHeadDetails; let index = index">
+                  <td>{{ data.divisionalBudgetHead }}</td>
+                  <td>{{ data.presentTotalBudgetAmount || 0}}</td>
+                  <td>{{ data.newTotalBudgetAmount }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    
+          <div class="btn-box mt-4">
+            <button
+              type="button"
+              class="btn btn-primary btn-md"
+             
+              [disabled]="!divisionalAccHeadDetails.length||!budgetForm.valid"
+              (click)="openConfirmationDialog()"
+            >
+              Save
+            </button>
+            <button type="button" class="btn clor btn-primary btn-md">Close</button>
+          </div>
+          </div>
+      </form>
+    </section>
+    </div>

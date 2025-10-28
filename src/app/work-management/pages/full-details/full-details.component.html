@@ -1,0 +1,1483 @@
+<section
+  class="page__content p-3 p20 shadow dis-fl dis-fl2 position-relative dis-flex-colu"
+>
+  <div class="mt-2 d-flex justify-content-center overflow-x-scroll">
+    <div><h1 style="color: #484848">Status</h1></div>
+    <div class="ms-2"><h1 style="color: #484848">:</h1></div>
+    <div class="ms-2" *ngIf="status == 'pending' && details?.serviceRegistrationResponseDTO?.applicationStatusCode !== '20' && details?.serviceRegistrationResponseDTO?.applicationStatusCode !== '25' && details?.serviceRegistrationResponseDTO?.applicationStatusCode !== '99'"
+    >
+      <h1 class="pending">Pending For</h1>
+    </div>
+    <div class="ms-2">
+      <h1
+        [ngClass]="{
+          pending: status == 'pending',
+          completed: status == 'completed',
+          closed: status == 'closed',
+          rejected: status == 'rejected'
+        }"
+      >
+        {{ details?.serviceRegistrationResponseDTO?.statusName }}
+      </h1>
+    </div>
+    <div class="navigation">
+      <button
+        type="button"
+        class="btn btn-md clor"
+        (click)="navigateToViewDocument()"
+      >
+        View Document
+      </button>
+    </div>
+  </div>
+
+  <!-- Consumer Details -->
+  <div
+    class="row ms-3"
+    *ngIf="
+      details &&
+      details.serviceRegistrationResponseDTO &&
+      details.serviceRegistrationResponseDTO.accountId &&
+      details.serviceRegistrationResponseDTO.accountId !== 'null'
+    "
+  >
+    <div class="work-order">
+      <h2>Consumer Details</h2>
+    </div>
+    <div class="col dis-fl ">
+      <div class="cd-content">
+        <label>Account ID</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.accountId !== "null"
+              ? details?.serviceRegistrationResponseDTO?.accountId
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Name & Address</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.applicantName !== "null"
+              ? details?.serviceRegistrationResponseDTO?.applicantName
+              : "-"
+          }},
+          {{
+            details?.serviceRegistrationResponseDTO?.address !== "null"
+              ? details?.serviceRegistrationResponseDTO?.address
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Land Mark</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.landmark === "null"
+              ? "-"
+              : details?.serviceRegistrationResponseDTO?.landmar
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Email ID</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.email !== "null"
+              ? details?.serviceRegistrationResponseDTO?.email
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Contact No.</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.mobileNumber !== "null"
+              ? details?.serviceRegistrationResponseDTO?.mobileNumber
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Applied Load (KW&HP)</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.loadKw !== "null"
+              ? details?.serviceRegistrationResponseDTO?.loadKw
+              : "-"
+          }}
+          &
+          {{
+            details?.serviceRegistrationResponseDTO?.loadHp !== "null"
+              ? details?.serviceRegistrationResponseDTO?.loadHp
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Total Applied Load ({{details?.serviceRegistrationResponseDTO?.loadUnit}})</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.totalContractedLoad !==
+            "null"
+              ? details?.serviceRegistrationResponseDTO?.totalContractedLoad
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Total Build Up Area</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.buildupAreaSize !== "null"
+              ? details?.serviceRegistrationResponseDTO?.buildupAreaSize
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Total Load DOP</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.totalLoadDop
+              ? details?.serviceRegistrationResponseDTO?.totalLoadDop
+              : details?.serviceRegistrationResponseDTO?.totalContractedLoad || "-"
+          }}
+        </p>
+      </div>
+      
+      <div class="cd-content">
+        <label>Adjacent Consumer No.</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.adjacentAccountNo !==
+            "null"
+              ? details?.serviceRegistrationResponseDTO?.adjacentAccountNo
+              : "-"
+          }}
+        </p>
+      </div>
+    </div>
+
+    <div class="col dis-fl ">
+      <div class="cd-content">
+        <label>Case ID</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.referenceNumber !== "null"
+              ? details?.serviceRegistrationResponseDTO?.referenceNumber
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Applicant Type</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.applicantType !== "null"
+              ? details?.serviceRegistrationResponseDTO?.applicantType
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Application Type</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.applicationType !== "null"
+              ? details?.serviceRegistrationResponseDTO?.applicationType
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Category</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.mainCategoryName !== "null"
+              ? details?.serviceRegistrationResponseDTO?.mainCategoryName
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Tariff</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.tariff === null
+              ? "-"
+              : details?.serviceRegistrationResponseDTO?.tariff
+          }}
+        </p>
+      </div>
+      <div class="cd-content" *ngIf="
+       details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'LE' ||
+      details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'LR' ||
+      details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'NC' ||
+      details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'MC' ||
+      details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'TC'
+    ">
+        <label>Existing Load (KW & HP)</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.existingLoadKw === null ||
+            details?.serviceRegistrationResponseDTO?.existingLoadHp === null
+              ? "-"
+              : details?.serviceRegistrationResponseDTO?.existingLoadKw
+          }}
+          &
+          {{
+            details?.serviceRegistrationResponseDTO?.existingLoadHp === null ||
+            details?.serviceRegistrationResponseDTO?.existingLoadKw === null
+              ? "-"
+              : details?.serviceRegistrationResponseDTO?.existingLoadHp
+          }}
+        </p>
+      </div>
+
+      <div class="cd-content" *ngIf="
+      details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'LE' ||
+     details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'LR'  ||
+      details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'NC' ||
+      details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'MC' ||
+      details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'TC'
+   ">
+        <label>Total Existing Load ({{details?.serviceRegistrationResponseDTO?.existingLoadUnit}})</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.existingTotalLoad === null
+              ? "-"
+              : details?.serviceRegistrationResponseDTO?.existingTotalLoad
+          }}
+        </p>
+      </div>
+
+      <ng-container
+        *ngIf="
+          details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'LE'
+        "
+      >
+        <div class="cd-content">
+          <label>Additional Load (KW & HP)</label>
+          <!-- <p>
+            {{
+              details?.serviceRegistrationResponseDTO?.newLoadKw !== "null"
+                ? details?.serviceRegistrationResponseDTO?.newLoadHp
+                : "-"
+            }}
+          </p> -->
+          <p>
+            {{ details?.serviceRegistrationResponseDTO?.newLoadKw !== "null" ? details?.serviceRegistrationResponseDTO?.newLoadKw + " KW" : "-" }}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {{ details?.serviceRegistrationResponseDTO?.newLoadHp !== "null" ? details?.serviceRegistrationResponseDTO?.newLoadHp + " HP" : "-" }}
+            <!-- {{ data.connectionType !== "null" ? data.connectionType : "-" }} -->
+          </p>
+        </div>
+        <div class="cd-content">
+          <label>Total Additional Load (KW)</label>
+          <p>
+            {{
+              details?.serviceRegistrationResponseDTO?.newTotalLoad !== "null"
+                ? details?.serviceRegistrationResponseDTO?.newTotalLoad
+                : "-"
+            }}
+          </p>
+        </div>
+      </ng-container>
+
+      <ng-container
+        *ngIf="
+          details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'LR'
+        "
+      >
+        <div class="cd-content">
+          <label>Reduction Load (KW & HP)</label>
+          <!-- <p>
+            {{
+              details?.serviceRegistrationResponseDTO?.newLoadKw !== "null"
+                ? details?.serviceRegistrationResponseDTO?.newLoadHp
+                : "-"
+            }}
+          </p> -->
+          <p>
+            {{ details?.serviceRegistrationResponseDTO?.newLoadKw !== "null" ? details?.serviceRegistrationResponseDTO?.newLoadKw + " KW" : "-" }}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            {{ details?.serviceRegistrationResponseDTO?.newLoadHp !== "null" ? details?.serviceRegistrationResponseDTO?.newLoadHp + " HP" : "-" }}
+            <!-- {{ data.connectionType !== "null" ? data.connectionType : "-" }} -->
+          </p>
+        </div>
+        <div class="cd-content">
+          <label>Total Reduction Load (KW)</label>
+          <p>
+            {{
+              details?.serviceRegistrationResponseDTO?.newTotalLoad !== "null"
+                ? details?.serviceRegistrationResponseDTO?.newTotalLoad
+                : "-"
+            }}
+          </p>
+        </div>
+      </ng-container>
+      <div class="cd-content">
+        <label>Type of Connection</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.connectionType !== "null"
+              ? details?.serviceRegistrationResponseDTO?.connectionType
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Phase</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.phase !== "null"
+              ? details?.serviceRegistrationResponseDTO?.phase
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Line Extension</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.isNetworkExtension == null
+              ? "-"
+              : details?.serviceRegistrationResponseDTO?.isNetworkExtension == "0"
+              ? "NO"
+              : "YES"
+          }}
+        </p>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Ref No and App Details -->
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.serviceRegistrationResponseDTO &&
+      details.serviceRegistrationResponseDTO.accountId &&
+      details.serviceRegistrationResponseDTO.accountId === 'null'
+    "
+  >
+    <h2>Consumer Details</h2>
+    <div class="col dis-fl cd-container">
+      <div class="cd-content">
+        <label>Case ID</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.referenceNumber !== "null"
+              ? details?.serviceRegistrationResponseDTO?.referenceNumber
+              : "-"
+          }}
+        </p>
+      </div>
+      <div class="cd-content">
+        <label>Application Type</label>
+        <p>
+          {{
+            details?.serviceRegistrationResponseDTO?.applicationType !== "null"
+              ? details?.serviceRegistrationResponseDTO?.applicationType
+              : "-"
+          }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inspection Details -->
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.siteInspectionResponseDTO &&
+      details.siteInspectionResponseDTO.length
+    "
+  >
+    <h2>Inspection Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Inspected By</th>
+          <th scope="col">Inspected Date</th>
+          <th scope="col">Download</th>
+        </tr>
+      </thead>
+      <tr>
+        <td>{{ details?.siteInspectionResponseDTO[0]?.inspectionBy }}</td>
+        <td>
+          {{
+            details?.siteInspectionResponseDTO[0]?.insertedDate
+              | date : "dd/MM/yyyy"
+          }}
+        </td>
+        <td>
+          <mat-icon
+            class="mat-icon material-icons custom-icon"
+            (click)="
+              generateInspectionReport(
+                details.serviceRegistrationResponseDTO.serviceRegistrationId
+              )
+            "
+            >get_app</mat-icon
+          >
+        </td>
+      </tr>
+    </table>
+  </div>
+  <!-- Filed Report Details -->
+  <h2
+     class="work-order p-3"
+    *ngIf="
+      details &&
+      details.siteInspectionResponseDTO &&
+      details.siteInspectionResponseDTO.length === 0
+    "
+  >
+    Inspection Details
+  </h2>
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.siteInspectionResponseDTO &&
+      details.siteInspectionResponseDTO.length === 0
+    "
+  >
+    <a
+      (click)="viewReport()"
+      style="cursor: pointer; text-decoration: underline; color: blue"
+      >View Field Report</a
+    >
+  </div>
+
+  <!-- Estimation Details -->
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.estimationRegisteredResponseDTO &&
+      details.estimationRegisteredResponseDTO.length
+    "
+  >
+    <h2>Estimation Details</h2>
+    <div style="flex-wrap: wrap; overflow: auto">
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Estimation No</th>
+          <th scope="col">Estimation Date</th>
+          <th scope="col">Estimation Description</th>
+          <th scope="col">Estimation Amount</th>
+          <th *ngIf="hasDCWCharges()" scope="col">Total DCW Charges</th>        
+          <th scope="col">DOP Category</th>
+          <th scope="col">Execution Method</th>
+          <th scope="col">Work Type</th>
+          <th scope="col">Download</th>
+          <th
+            scope="col"
+            *ngIf="
+              details.serviceRegistrationResponseDTO.applicationStatusCode ==
+                '8' &&
+              details.estimationRegisteredResponseDTO[0].approvedName ==
+                loggedInUser &&
+              details.estimationRegisteredResponseDTO[0]
+                .woExecutionMethodName != 'Self Execution' &&
+              details.estimationRegisteredResponseDTO[0].workCategory !=
+                'Deport Contribution Works'
+            "
+          >
+            Edit
+          </th>
+        </tr>
+      </thead>
+      <tr
+        *ngFor="let est of details?.estimationRegisteredResponseDTO; index as i"
+      >
+        <td>{{ est.estimationNo }}</td>
+        <td>{{ est.estimationDate | date : "dd/MM/yyyy" }}</td>
+        <td>{{ est.estimationWorkDesc }}</td>
+        <td>{{ est.estimationTotalCost }}</td>
+        <td *ngIf="est.workCategoryMasterId == 6">{{ est.dcwAmount }}</td>
+        <td>{{ est.workCategory }}</td>
+        <td>{{ est.woExecutionMethodName }}</td>
+        <td>{{est.estWorkType}}</td>
+        <td>
+          <mat-icon
+            class="mat-icon material-icons custom-icon"
+            (click)="generateEstimationReport(est.estimationRegisteredId)"
+            >get_app</mat-icon
+          >
+        </td>
+        <td
+          *ngIf="
+            details.serviceRegistrationResponseDTO.applicationStatusCode ==
+              '8' &&
+            details.estimationRegisteredResponseDTO[0].approvedName ==
+              loggedInUser &&
+            details.estimationRegisteredResponseDTO[0].woExecutionMethodName !=
+              'Self Execution' &&
+            details.estimationRegisteredResponseDTO[0].workCategory !=
+              'Deport Contribution Works'
+          "
+        >
+          <button
+            class="btn btn-md radio-button"
+            (click)="moveToEstimateForms(est)"
+          >
+            Edit
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  </div>
+<!-- Payment Details -->
+
+<div
+class="work-order p-3"
+*ngIf="
+  details &&
+  details.paymentDetailsLogList &&
+  details.paymentDetailsLogList.length
+"
+>
+<h2>Payment Details</h2>
+<table
+  class="table est-config-table"
+  style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+>
+  <thead style="background-color: #dfdfdf">
+    <tr>
+      <th scope="col">Receipt Number</th>
+      <th scope="col">Receipt Date</th>
+      <th scope="col">Charges Name</th>
+      <th scope="col">Amount</th>
+    </tr>
+  </thead>
+  <tr
+    *ngFor="let est of details?.paymentDetailsLogList; index as i"
+  >
+    <td>{{ est.receiptNo }}</td>
+    <td>{{ est.receiptDate.substring(0, 10) | date: 'dd/MM/yyyy' }}</td>
+    <td>{{ est.chargesName }}</td>
+    <td>{{ est.amount }}</td>
+  </tr>
+</table>
+</div>
+  <!-- Estimation & Power Sanction History -->
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.estimationHistoryResponseList &&
+      details.estimationHistoryResponseList.length
+    "
+  >
+    <h2>Estimation & Power Sanction History</h2>
+    <div style="flex-wrap: wrap; overflow: auto">
+      <table
+        class="table est-config-table"
+        style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+      >
+        <thead style="background-color: #dfdfdf">
+          <tr>
+            <th>S. No.</th>
+            <th scope="col">PROCESS TYPE</th>
+            <th scope="col">PROCESSED DATE</th>
+            <th scope="col">PROCESSED BY</th>
+            <th scope="col">FORWARD/RETURN TO</th>
+            <th scope="col">REMARKS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let historyData of details?.estimationHistoryResponseList;
+              index as i
+            "
+            [ngStyle]="{
+              'background-color':
+                historyData.estimationStatus === '1' &&
+                historyData.estimationFlowType === 'REGENERATED'
+                  ? '#ffd8fe'
+                  : 'none'
+            }"
+          >
+            <td>{{ i + 1 }}</td>
+            <td>
+              <b
+                *ngIf="
+                  historyData.estimationFlowType == 'GENERATED' ||
+                  historyData.estimationFlowType == 'REGENERATED'
+                "
+              >
+                <a target="_blank">
+                  <!-- routerLink="/main/estimation-report/{{historyData.estimationRegisteredId}}/{{ data.serviceRegistration.serviceRegistrationId }}" -->
+                  {{ historyData.estimationFlowType }}</a
+                >
+              </b>
+              <b
+                *ngIf="
+                  historyData.estimationFlowType != 'GENERATED' &&
+                  historyData.estimationFlowType != 'REGENERATED'
+                "
+              >
+                {{ historyData.estimationFlowType }}
+              </b>
+            </td>
+            <td>{{ historyData.processedDate | date : "medium" }}</td>
+            <td>{{ historyData.processedByDesigcode }}</td>
+            <td>
+              {{
+                historyData.processSendToDesigcode !== "null"
+                  ? historyData.processSendToDesigcode
+                  : "-"
+              }}
+            </td>
+            <td>{{ historyData?.remarks }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Work Order Details -->
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.wmWorkorderRegisteredResponseList &&
+      details.wmWorkorderRegisteredResponseList.length
+    "
+  >
+    <h2>Work Order Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Work Order No.</th>
+          <th scope="col">Work Order Date</th>
+          <th scope="col">Estimate Type</th>
+          <th scope="col">Execution Method</th>
+          <th scope="col">Work Type</th>
+          <th>Download</th>
+        </tr>
+      </thead>
+      <tr
+        *ngFor="
+          let work of details?.wmWorkorderRegisteredResponseList;
+          index as i
+        "
+      >
+        <td>{{ work.workorderNo }}</td>
+        <td>{{ work.workorderDate | date : "dd/MM/yyyy" }}</td>
+        <td>{{work.estimateType}}</td>
+        <td>{{ work.workExecutionMethod=='null'?'-':work.workExecutionMethod}}</td>
+        <td>{{work.estWorkType}}</td>
+        <td>
+          <mat-icon
+            class="mat-icon material-icons custom-icon"
+            (click)="generateWorkOrderReport(work.wmWorkorderRegisteredId)"
+            >get_app</mat-icon
+          >
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Work Award Details -->
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.wmWorkAwardedLogList &&
+      details.wmWorkAwardedLogList.length
+    "
+  >
+    <h2>Work Award Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Work Award Amount</th>
+          <th scope="col">Work Award Date</th>
+          <th scope="col">Work Awarded By</th>
+          <th>Download</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let workAward of details?.wmWorkAwardedLogList; index as i">
+        <td>{{ workAward?.workAwardedAmount }}</td>
+        <td>
+          {{
+            workAward?.workAwardedDate == "null"
+              ? "-"
+              : (workAward?.workAwardedDate | date : "dd/MM/yyyy")
+          }}
+        </td>
+        <td>{{ workAward?.workAwardedBy }}</td>
+        <td>
+          <mat-icon
+            class="mat-icon material-icons custom-icon"
+            (click)="
+              generateWorkAwardReport(
+                details?.serviceRegistrationResponseDTO.workorderRegisteredId
+              )
+            "
+            >get_app</mat-icon
+          >
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Work Permit Details -->
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.wmPermitWorkResponseList &&
+      details.wmPermitWorkResponseList.length
+    "
+  >
+    <h2>Work Permit Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Work Permit No.</th>
+          <th scope="col">Work Permit Date</th>
+          <th scope="col">Work Permit By</th>
+        </tr>
+      </thead>
+      <tr
+        *ngFor="let workAward of details?.wmPermitWorkResponseList; index as i"
+      >
+        <td>{{ workAward?.permitWorkNumber }}</td>
+        <td>{{ workAward?.dateOfPermitWork | date : "dd/MM/yyyy" }}</td>
+        <td>{{ workAward?.workPermitedBy }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Line Clearance Details -->
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.wmLineClearanceResponseDTO &&
+      details.wmLineClearanceResponseDTO.length
+    "
+  >
+    <h2>Line Clearance Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Shutdown Start Time</th>
+          <th scope="col">Shutdown End Time</th>
+          <th scope="col">Line Clearance Date</th>
+          <th scope="col">Line Clearance By</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let lineClearanceItem of details?.wmLineClearanceResponseDTO">
+        <td>
+          {{ lineClearanceItem.shutdownStartDatetime | date : "dd/MM/yyyy" }}
+        </td>
+        <td>
+          {{ lineClearanceItem.shutdownEndDatetime | date : "dd/MM/yyyy" }}
+        </td>
+        <td>{{ lineClearanceItem.lineClearanceDate | date : "dd/MM/yyyy" }}</td>
+        <td>
+          {{
+            lineClearanceItem.lineClearanceBy == "null"
+              ? "-"
+              : lineClearanceItem.lineClearanceBy
+          }}
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Assign Crew Details -->
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.wmWorkorderRegisteredResponseList &&
+      details.wmWorkorderRegisteredResponseList.length &&
+      details.wmWorkorderRegisteredResponseList[0].crewWorkAssignedBy != 'null'
+    "
+  >
+    <h2>Assign Crew Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Crew Work Assigned By</th>
+          <th scope="col">Crew Work Assigned Date</th>
+        </tr>
+      </thead>
+      <tr>
+        <td>
+          {{
+            details?.wmWorkorderRegisteredResponseList[0]?.crewWorkAssignedBy
+          }}
+        </td>
+        <td>
+          {{
+            details?.wmWorkorderRegisteredResponseList[0]?.crewWorkAssignedDate
+              | date : "dd/MM/yyyy"
+          }}
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Work Execution -->
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.wmWorkorderRegisteredResponseList &&
+      details.wmWorkorderRegisteredResponseList.length &&
+      details.wmWorkorderRegisteredResponseList[0].workorderExecutedDate != 'null'
+    "
+  >
+    <h2>Work Execution</h2>
+    <table
+      class="table est-config-table my-scrollable-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Executed By</th>
+          <th scope="col">Executed Date</th>
+          <th scope="col">Asset Details</th>
+          <th scope="col">Asset BOM Details</th>
+        </tr>
+      </thead>
+      <tr>
+        <td>
+          {{
+            details?.wmWorkorderRegisteredResponseList[0]?.workorderExecutedBy
+          }}
+        </td>
+        <td>
+          {{
+            details?.wmWorkorderRegisteredResponseList[0]
+              ?.workorderExecutedDate == "null"
+              ? "-"
+              : (details?.wmWorkorderRegisteredResponseList[0]
+                  ?.workorderExecutedDate | date : "dd/MM/yyyy")
+          }}
+        </td>
+        <td>
+          <a style="text-decoration: underline" (click)="showAsset()"
+            >Show Asset Details</a
+          >
+        </td>
+        <td>
+          <a style="text-decoration: underline" (click)="showAssetBOM()"
+            >Show Asset BOM Details</a
+          >
+        </td>
+      </tr>
+    </table>
+  </div>
+
+
+  <!-- Meter Energization -->
+<div *ngIf= "details?.serviceRegistrationResponseDTO?.applicationStatusCode == '18'  ||
+             details?.serviceRegistrationResponseDTO?.applicationStatusCode == '19' || 
+             details?.serviceRegistrationResponseDTO?.applicationStatusCode == '20'">
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.wmWorkorderRegisteredResponseList &&
+      details.wmWorkorderRegisteredResponseList.length &&
+      details.wmWorkorderRegisteredResponseList[0].workorderExecutedBy != 'null'
+    "
+  >
+    <!-- <h2>Meter Energization</h2> -->
+    <h2 *ngIf="details?.serviceRegistrationResponseDTO?.applicationTypeCode == 'NC' || details?.serviceRegistrationResponseDTO?.applicationTypeCode == 'TC' 
+    || details?.serviceRegistrationResponseDTO?.applicationTypeCode == 'UMT_MT' || details?.serviceRegistrationResponseDTO?.applicationTypeCode == 'MC'">
+      Meter Energization
+    </h2>
+    <h2 *ngIf="details?.serviceRegistrationResponseDTO?.applicationTypeCode == 'BMR' || details?.serviceRegistrationResponseDTO?.applicationTypeCode == 'SMR'">
+      Meter Replacement
+    </h2>
+    
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+      *ngIf="details?.serviceRegistrationResponseDTO?.applicationTypeCode == 'NC' || details?.serviceRegistrationResponseDTO?.applicationTypeCode == 'TC' 
+    || details?.serviceRegistrationResponseDTO?.applicationTypeCode == 'UMT_MT' || details?.serviceRegistrationResponseDTO?.applicationTypeCode == 'MC' 
+    ||details?.serviceRegistrationResponseDTO?.applicationTypeCode == 'BMR' || details?.serviceRegistrationResponseDTO?.applicationTypeCode == 'SMR'"
+      
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <!-- <th scope="col">Executed By</th>
+          <th scope="col">Executed Date</th> -->
+          <th scope="col">Application Type </th>
+          <th scope="col">Click On</th>
+          <!-- <th scope="col">Meter Replacement Report</th> -->
+        </tr>
+      </thead>
+      <tr>
+      
+        <td>
+          <a 
+            >{{ details?.serviceRegistrationResponseDTO?.applicationType }} </a
+          >
+        </td>
+        <td>
+          <a style="text-decoration: underline" (click)="showMeterDetails()">
+            {{ details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'NC' || details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'TC' 
+            || details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'UMT_MT' || details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'MC' 
+                ? 'Show account id meter mapping Details' 
+                : (details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'BMR' || details?.serviceRegistrationResponseDTO?.applicationTypeCode === 'SMR' 
+                ? 'Show account meter Change Details' 
+                : '') }}
+          </a>
+        </td>
+         <!-- <td>
+          <a style="text-decoration: underline" (click)="showMeterDetails()"
+            >Show  account id meter mapping Details</a
+          >
+        </td> -->
+        <!-- <td>
+          <a style="text-decoration: underline" (click)="showMeterReplacementDetails()"
+            >Show  meter replacement Details</a
+          >
+        </td> -->
+      </tr>
+    </table>
+  </div>
+</div>
+
+  <!-- Bill Submission Details -->
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.billSubmissionLogResponseList &&
+      details.billSubmissionLogResponseList.length
+    "
+  >
+    <h2>Bill Submission Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Sr No.</th>
+          <th scope="col">Bill No</th>
+          <th scope="col">Bill Amount</th>
+          <th scope="col">Bill Date</th>
+          <th scope="col">RC Contractor / Vendor</th>
+        </tr>
+      </thead>
+      <tr
+        *ngFor="let bill of details?.billSubmissionLogResponseList; index as i"
+      >
+        <td>{{ i + 1 }}</td>
+        <td>{{ bill?.billInvoiceNo }}</td>
+        <td>{{ bill?.billAmount }}</td>
+        <td>{{ bill?.billSubmissionDate | date : "dd/MM/yyyy" }}</td>
+        <td>
+          <span *ngIf="bill.workExecutionMethod == 'Labour Contract'">{{
+            bill?.vendorName == "null" ? "-" : bill?.vendorName
+          }}</span>
+          <span *ngIf="bill.workExecutionMethod != 'Labour Contract'">{{
+            bill?.rc == "null" ? "-" : bill?.rc
+          }}</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <!-- Account Id And Meter Mapping -->
+  <div
+    class="work-order p-3"
+    *ngIf="accountMeterMapping.connectionType == 'SC'"
+  >
+    <h2>Account Id & Meter Mapping Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Account ID</th>
+          <th scope="col">Badge Number</th>
+          <th scope="col">Meter Serial No</th>
+          <th scope="col">Meter Type</th>
+          <th scope="col">Reading Date</th>
+        </tr>
+      </thead>
+      <tr>
+        <td>{{ accountMeterMapping.accountId }}</td>
+        <td>{{ accountMeterMapping.badgeNumber }}</td>
+        <td>{{ accountMeterMapping.meterSerialNo }}</td>
+        <td>
+          {{
+            accountMeterMapping?.meterType === "null"
+              ? "-"
+              : accountMeterMapping?.meterType
+          }}
+        </td>
+        <td>{{ accountMeterMapping.readingDate | date : "dd/MM/yyyy" }}</td>
+      </tr>
+    </table>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Read Seq No</th>
+          <th scope="col">Register ID</th>
+          <th scope="col">Register UOM</th>
+          <th scope="col">Register Time Of Use</th>
+          <th scope="col">Register Reading</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let register of details.registers">
+        <td>{{ register.registerReadSeqNo }}</td>
+        <td>{{ register.registerId }}</td>
+        <td>{{ register.registerUom }}</td>
+        <td>
+          {{ register?.registerTou === "null" ? "-" : register?.registerTou }}
+        </td>
+        <td>
+          {{
+            register.registerReading === "null"
+              ? "-"
+              : register?.registerReading
+          }}
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- MC Connection Type Details -->
+  <div *ngIf="accountMeterMapping.connectionType === 'MC'">
+    <h2>Account Id & Meter Mapping Deatils</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Account ID</th>
+          <th scope="col">Badge Number</th>
+          <th scope="col">Meter Serial No</th>
+          <th scope="col">Meter Type</th>
+          <th scope="col">Reading Date</th>
+          <th scope="col">KWH Reading</th>
+          <th scope="col">KVAH Reading</th>
+          <th scope="col">KW Reading</th>
+          <th scope="col">KVA Reading</th>
+          <th scope="col">PF</th>
+        </tr>
+      </thead>
+      <tr>
+        <td>{{ accountMeterMapping.accountId }}</td>
+        <td>{{ accountMeterMapping.badgeNumber }}</td>
+        <td>{{ accountMeterMapping.meterSerialNo }}</td>
+        <td>{{ accountMeterMapping.meterType }}</td>
+        <td>{{ accountMeterMapping.readingDate | date : "dd/MM/yyyy" }}</td>
+        <td>{{ accountMeterMapping.kwhReading }}</td>
+        <td>{{ accountMeterMapping.kvahReading }}</td>
+        <td>{{ accountMeterMapping.kwReading }}</td>
+        <td>{{ accountMeterMapping.kvaReading }}</td>
+        <td>{{ accountMeterMapping.pf }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Work Completion / Joint Inventory Details -->
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.wmWorkorderCompletionVerifiedLogResponseList &&
+      details.wmWorkorderCompletionVerifiedLogResponseList.length
+    "
+  >
+    <h2>Work Completion / Joint Inventory Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Verified By</th>
+          <th scope="col">Verified Date</th>
+          <th
+            scope="col"
+            *ngIf="
+              workExecution == 'Partial Turnkey' ||
+              workExecution == 'Total Turnkey' ||
+              workExecution == 'Self Execution'
+            "
+          >
+            Joint Inventory Report
+          </th>
+          <th
+            scope="col"
+            *ngIf="
+              workExecution == 'Partial Turnkey' ||
+              workExecution == 'Department' ||
+              workExecution == 'Labour Contract'
+            "
+          >
+            Work Completion Report
+          </th>
+        </tr>
+      </thead>
+      <tr
+        *ngFor="
+          let dataItem of details.wmWorkorderCompletionVerifiedLogResponseList;
+          index as i
+        "
+      >
+        <td>{{ dataItem.verifiedBy }}</td>
+        <td>{{ dataItem.verifiedRemarks |  date : "dd/MM/yyyy" }}</td>
+        <td
+          *ngIf="
+            workExecution == 'Partial Turnkey' ||
+            workExecution == 'Total Turnkey' ||
+            workExecution == 'Self Execution'
+          "
+        >
+          <mat-icon
+            class="mat-icon material-icons custom-icon"
+            (click)="
+              generateWorkCompletionReport(
+                details?.serviceRegistrationResponseDTO.workorderRegisteredId,
+                'jointInventory'
+              )
+            "
+            >get_app</mat-icon
+          >
+        </td>
+        <td
+          *ngIf="
+            workExecution == 'Partial Turnkey' ||
+            workExecution == 'Department' ||
+            workExecution == 'Labour Contract'
+          "
+        >
+          <mat-icon
+            class="mat-icon material-icons custom-icon"
+            (click)="
+              generateWorkCompletionReport(
+                details?.serviceRegistrationResponseDTO.workorderRegisteredId,
+                'workCompletion'
+              )
+            "
+            >get_app</mat-icon
+          >
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Material Indent Details -->
+  <div class="work-order p-3" *ngIf="materialIndent && materialIndent.length">
+    <h2>Material Indent Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Material Indent No</th>
+          <th scope="col">Material Indent Date</th>
+          <th scope="col">Indent Status</th>
+          <th scope="col">Download</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let dataItem of materialIndent; index as i">
+        <td>{{ dataItem.materialsIndentNo }}</td>
+        <td>{{ dataItem.materialsIndentDate | date : "dd/MM/yyyy" }}</td>
+        <td>{{ dataItem.indentStatus }}</td>
+        <td>
+          <mat-icon
+            class="mat-icon material-icons custom-icon"
+            (click)="generateMaterialIndentReport(dataItem.wmMaterialsIndentId)"
+            >get_app</mat-icon
+          >
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Material Return Indent Details -->
+  <div
+    class="work-order p-3"
+    *ngIf="materialReturnIndent && materialReturnIndent.length"
+  >
+    <h2>Material Return Indent Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Material Return Indent No</th>
+          <th scope="col">Material Return Indent date</th>
+          <th scope="col">Return Indent Status</th>
+          <th scope="col">Download</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let dataItem of materialReturnIndent; index as i">
+        <td>{{ dataItem.materialsIndentNo }}</td>
+        <td>{{ dataItem.materialsIndentDate | date : "dd/MM/yyyy" }}</td>
+        <td>{{ dataItem.indentStatus }}</td>
+        <td>
+          <mat-icon
+            class="mat-icon material-icons custom-icon"
+            (click)="
+              generateMaterialTypeReport(
+                dataItem.wmMaterialsIndentId,
+                dataItem.workscopeDescCode,
+                'materialReturnIndent'
+              )
+            "
+            >get_app</mat-icon
+          >
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Material Inspection Details -->
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details &&
+      details.materialInspectionLogResponseList &&
+      details.materialInspectionLogResponseList.length
+    "
+  >
+    <h2>Material Inspection Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Inspected By</th>
+          <th scope="col">Inspected Date</th>
+        </tr>
+      </thead>
+      <tr
+        *ngFor="
+          let dataItem of details.materialInspectionLogResponseList;
+          index as i
+        "
+      >
+        <td>{{ dataItem.inspectedBy }}</td>
+        <td>{{ dataItem.inspectedDate }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Material Invoice Details -->
+  <div class="work-order p-3" *ngIf="materialInvoice && materialInvoice.length">
+    <h2>Material Invoice Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Invoice No.</th>
+          <th scope="col">Invoice Date</th>
+          <th scope="col">Download</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let dataItem of materialInvoice; index as i">
+        <td>{{ dataItem.invoiceNo }}</td>
+        <td>{{ dataItem.invoiceDate | date : "dd/MM/yyyy" }}</td>
+        <td>
+          <mat-icon
+            class="mat-icon material-icons custom-icon"
+            (click)="
+              generateMaterialTypeReport(
+                dataItem.wmMaterialsIndentId,
+                null,
+                'materialInvoice'
+              )
+            "
+            >get_app</mat-icon
+          >
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Material Acknowledgement Details -->
+  <div class="work-order p-3" *ngIf="materialAck && materialAck.length">
+    <h2>Material Acknowledgement Details</h2>
+    <table
+      class="table est-config-table"
+      style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+    >
+      <thead style="background-color: #dfdfdf">
+        <tr>
+          <th scope="col">Acknowledgement No.</th>
+          <th scope="col">Acknowledgement Date</th>
+          <th scope="col">Download</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let dataItem of materialAcknowledgement; index as i">
+        <td>{{ dataItem.invoiceNo }}</td>
+        <td>{{ dataItem.invoiceDate | date : "dd/MM/yyyy" }}</td>
+        <td>
+          <mat-icon
+            class="mat-icon material-icons custom-icon"
+            (click)="
+              generateMaterialTypeReport(
+                dataItem.wmMaterialsIndentId,
+                dataItem.workscopeDescCode,
+                'materialAcknowledgement'
+              )
+            "
+            >get_app</mat-icon
+          >
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div
+  class="work-order p-3"
+  *ngIf="
+    details &&
+    details.wmPcTestList &&
+    details.wmPcTestList.length
+  "
+>
+  <h2>PC Report Details</h2>
+  <table
+    class="table est-config-table"
+    style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+  >
+    <thead style="background-color: #dfdfdf">
+      <tr>
+        <th scope="col">Service Request No.</th>
+        <th scope="col">PC Test Date</th>
+        <!-- <th scope="col">Service Reg. No.</th> -->
+        <th scope="col">Remarks</th>
+        <th>Download</th>
+      </tr>
+    </thead>
+    <tr
+      *ngFor="
+        let pctest of details?.wmPcTestList;
+        index as i
+      "
+    >
+      <td>{{ pctest.serviceRequestNo }}</td>
+      <td>{{ pctest.pcTestDate | date : "dd/MM/yyyy" }}</td>
+      <!-- <td>{{ pctest.serviceRegistrationsId }}</td> -->
+      <td>{{ pctest.remarks }}</td>
+      <td>
+        <mat-icon
+          class="mat-icon material-icons custom-icon"
+          (click)="generatePcTestReport(pctest.serviceRegistrationsId)"
+          >get_app</mat-icon
+        >
+      </td>
+    </tr>
+  </table>
+</div>
+  <!-- Work Order Budget Details -->
+  <!-- <b>{{ details?.wmWorkorderRegisteredResponseList[0]?.estimationTotalCost }}</b> -->
+  <!-- <div class="work-order p-3">
+    <h2>Work Order Budget Details</h2>
+    <div class="mt-2 d-flex justify-content-start">
+      <div><b>Work Order Approved Amount</b></div>
+      <div class="ms-4"><b> : </b></div>
+      <div class="ms-4">
+        <b>0</b>
+      </div>
+    </div>
+
+    <div class="mt-2"><b>Invoice Details</b></div>
+    <table class="table est-config-table" style="margin-top: 1rem; width: 100%; flex-wrap: wrap">
+      <thead style="background-color: #dfdfdf">
+      <tr>
+        <th scope="col">Invoice No.</th>
+        <th scope="col">Expenditure Amount</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dataItem of expenditureInvoice; index as i">
+          <td>{{ dataItem.invoiceNo }}</td>
+          <td>{{ dataItem.expenditureAmount }}</td>
+        </tr>
+        <tr>
+          <td>Total Invoice Amount ( A )</td>
+          <td>{{ totalInvoiceAmt }}</td>
+        </tr>
+        <tr>
+          <td>Bill Submission ( B )</td>
+          <td>{{ billSubmissionAmt }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+    <div class="mt-2"><b>Acknowledgement Details</b></div>
+    <table class="table est-config-table" style="margin-top: 1rem; width: 100%; flex-wrap: wrap">
+      <thead style="background-color: #dfdfdf">
+      <tr>
+        <th scope="col">Invoice No.</th>
+        <th scope="col">Expenditure Amount</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dataItem of expenditureAck; index as i">
+          <td>{{ dataItem.invoiceNo }}</td>
+          <td>{{ dataItem.expenditureAmount }}</td>
+        </tr>
+        <tr>
+          <td>Total Acknowledgement Amount ( C )</td>
+          <td>{{ totalAckAmt }}</td>
+        </tr>
+        <tr>
+          <td>Total Expenditure ( A + B ) - C</td>
+          <td>{{ (totalInvoiceAmt + billSubmissionAmt) - totalAckAmt  }}</td>
+        </tr>
+      </tbody>
+    </table>
+   </div> -->
+</section>

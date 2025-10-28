@@ -1,0 +1,796 @@
+export enum APIUrl {
+  MobileLoginThroughKeycloak = '/v1_0_0/KC/GT/FAM',
+  MobileLoginThroughKeycloakTest = '/TEST/KC/GT',
+
+  Login = '/api/login',
+  Dashboard = '/api/dashboard/estimatesCount',
+  WorkOrderDashboard = '/api/dashboard/workOrderCount',
+  DashboardList = '/api/dashboard/estimatesListByStatusCodeAndOffice',
+  cscCount = '/api/dashboard/cscCount',
+  dndCount = '/api/dashboard/dndCount',
+  IMWCount = '/api/dashboard/imwCount',
+  ERWCount = '/api/dashboard/erwCount',
+  BMRCount = '/api/dashboard/bmrCount',
+  GetAllProcessTypeMasterData = '/api/processTypeMaster/getAllProcessTypeMasterData',
+  GetDashboardCounts = '/api/dashboard/getDashboardCounts',
+  //Get ESTIMATES Dashboard Counts
+  GetEstDashboardCounts = '/api/dashboard/getPendingApplicationsForUser',
+  GetWorksPendingIndentApplicationsForUser = '/api/dashboard/getPendingIndentApplicationsForUser',
+  GetPendingStoreApplicationsCountForUser = '/api/dashboard/getPendingStoreApplicationsCountForUser',
+
+
+  DataByAccountId = '/api/serviceRegistration/getDataByAccountId',
+  ParentConstituency = '/api/constituencyMaster/getDataByParentConstituencyId',
+  MainCategoryData = '/api/categoryMaster/getAllMainCategoryData',
+  SubCategoryData = '/api/categoryMaster/getSubCategoryDataByMainCategoryId',
+  ConnectionNatureData = '/api/connectionNatureMaster/getDataByCategoryId',
+  ConstituencyData = '/api/constituencyMaster/getDataByType',
+  ExecutionMethodData = '/api/WOExecutionMethodMaster/getAllData',
+  NetworkExtensionType = '/api/networkExtensionTypeMaster/getAllData',
+  SiteInspectionSaveData = '/api/siteInspection/saveData',
+  ImprovementSiteInspection = '/api/ImprovementSiteInspection/saveData',
+  ViewSiteInspectionData = '/api/siteInspection/viewInspection/byAccountIdAndStatus',
+  EstimationSaveData = '/api/estimationRegistered/saveData',
+  RejectSiteInspectionData = '/api/serviceRegistration/rejectService',
+  DashboardEstimationSubList = '/api/dashboard/estimatesSubListByStatusCodeAndOffice',
+  WoExecution = '/api/WOExecutionMethodMaster/getAllData',
+  EstimateType = '/api/estimateTypeMaster/getAllData',
+  WorkScopeDesc = '/api/workscopeDescMaster/getAllData',
+  MaterialTypeMaster = '/api/materialTypeMaster/getAllData',
+  MaterialLabourMaster = '/api/materialsLabourMaster/getDataByMaterialTypeAndMlTypeAndRateType',
+  EstimationAdditionalCharges = '/api/woExecutionMethod/getwoExecutionMethodId',
+  EstimationReport = '/api/estimationRegistered/getDetailsForEstimationReport',
+  GetDetailsForRevisedEstimation = '/api/estimationRegistered/getDetailsForRevisedEstimation',
+  EstimationApprovalBudgetService = '/api/accountHeadMaster/getAccoutHeadMasterDataByAccountMainHeadCode',
+  DivisionBudgetData = '/api/divisionalBudget/getDataByDivisionOfficeIdAccountHeadMasterId',
+  DivisionBudgetDataFinanceYear = '/api/divisionalBudget/getDataByDivisionOfficeIdAccountHeadMasterIdFinancialYear',
+  GetDivisionalBudgetById = '/api/divisionalBudget/getDataById',
+  ApprovalEstimation = '/api/estimationRegistered/approvalEstimation',
+  ForwardEstimation = '/api/estimationRegistered/forwardEstimation',
+  ReturnEstimation = '/api/estimationRegistered/returnEstimation',
+  EstimationHistory = '/api/estimationRegistered/getEstimationHistory',
+  EstimationRegistrationDetails = '/api/estimationRegistered/getDetailsByserviceRegistrationEstimationRegistration',
+  EstimationDetails = '/api/estimationRegistered/getDetailsByAccountIdAndStatusCode',
+  GetDetailsByServiceRegistrationsIdAndStatusCode = '/api/estimationRegistered/getDetailsByServiceRegistrationsIdAndStatusCode',
+  TemplateList = '/api/estimationTemplateMaster/getTemplateList',
+  GetEstimationTemplateData = '/api/estimationTemplateMaster/getEstimationTemplateData',
+  
+  GetTemplateData = '/api/estimationTemplateMaster/getTemplateData',
+  SaveTemplateData2 = '/api/estimationTemplateConfiguration/saveData',
+  SaveTemplateData = '/api/estimationTemplateMaster/saveData',
+  GetDataByTemplate = '/api/estimationTemplateMaster/getDataByEstimationTemplateNumber',
+  GenerateEstimation = '/api/estimationRegistered/generateEstimation',
+  GenerateServiceLineEstimation = '/api/estimationRegistered/generateServiceLineEstimation',
+  MaterialLabourMapping = '/api/materialLabourMappingMaster/getDataByMaterialMasterId',
+  GetSpecialLocalityAllowanceDataByOfficeId = '/api/specialLocalityAllowanceMaster/getSpecialLocalityAllowanceDataByOfficeId',
+
+  //Additional Charges Master Data
+  AdditionalChargesMAsterData = '/api/additionalChargesMaster/getAllData',
+  updateAdditionalChargesByID = '/api/additionalChargesMaster/getDataById',
+  additionalChargesSaveData = '/api/additionalChargesMaster/saveData',
+  additionalChargesUpdateData = '/api/additionalChargesMaster/updateData',
+
+  // Material Type services URL'S
+  MaterialTypeData = '/api/materialTypeMaster/getAllData',
+  updateMaterialType = '/api/materialTypeMaster/getDataById',
+  UpdateMaterialTypeData = '/api/materialTypeMaster/updateMaterialTypeMasterData',
+  CreateMaterialTypeData = '/api/materialTypeMaster/saveMaterialTypeMasterData',
+
+// Meter type
+MeterTypeData ='/api/meterTypeMaster/getAllData',
+SaveMeterTypeData ='/api/meterTypeMaster/saveMeterTypeMasterData',
+UpdateMeterTypeData ='/api/meterTypeMaster/updateMeterTypeMasterData',
+MeterTypeMasterById = '/api/meterTypeMaster/getDataById',
+SrMaterialsData ='/api/meterTypeMaster/getSrMaterialsData',
+
+// Role resource mapping master
+RoleResourceTypeData ='/api/roleResourceMaster/getAllData',
+SaveRoleResourceTypeData ='/api/roleResourceMaster/saveData',
+designationMasterGetAllData ='/api/designationMaster/getAllData',
+UpdateRoleResourceTypeData ='/api/roleResourceMaster/updateData',
+RoleResourceTypeMasterById = '/api/roleResourceMaster/getDataById',
+
+
+  // Material unit services URL'S
+  MaterialUnitMaster = '/api/materialUnitMaster/getAllData',
+  MaterialUnitMasterById = '/api/materialUnitMaster/getDataById',
+  updateMaterialUnitById = '/api/materialUnitMaster/updateMaterialUnitMasterData',
+  SaveMaterialUnitData = '/api/materialUnitMaster/saveMaterialUnitMasterData',
+
+  //Material master services URL'S
+  SrMaterialMasterAllData = '/api/srMaterialMaster/getAllSrMaterialsMasterData',
+  SrmaterialMasterById = '/api/srMaterialMaster/getSrMaterialsMasterDataById',
+  SrmaterialMasterUpdateData = '/api/srMaterialMaster/updateSrMaterialsMasterData',
+  SrmaterialMasterSaveData = '/api/srMaterialMaster/saveSrMaterialsMasterData',
+  SrmaterialMasterGetDataMlType = '/api/srMaterialMaster/getMaterialByMlType',
+  SrMaterialDatabyMaterialTypeMasterId = '/api/srMaterialMaster/getSrMaterialDatabyMaterialTypeMasterId',
+
+  materialLabourMasterGetDataMlType = '/api/materialsLabourMaster/getDataByMlType',
+  MlTypeAndMaterialTypeMasterId  ='/api/materialsLabourMaster/getDataByMlTypeAndMaterialTypeMasterId',
+  srMaterialMasterGetDataMlType = '/api/srMaterialMaster/getMaterialByMlType',
+  GetDataByMlTypeAndVendorIdForTotalTurnkey = '/api/materialsLabourMaster/getDataByMlTypeAndVendorIdForTotalTurnkey',
+  GetDataByMlTypeAndVendorIdForPartialTurnkey = '/api/materialsLabourMaster/getDataByMlTypeAndVendorIdForPartialTurnkey',
+  GetDataByMaterialTypeAndMlTypeAndRateType = '/api/materialsLabourMaster/getDataByMaterialTypeAndMlTypeAndRateType',
+  GetDataWithStoreQuantityByStoreCode = '/api/materialsLabourMaster/getDataWithStoreQuantityByStoreCode',
+  GetDataOfNDSmaterial='/api/materialsLabourMaster/getDataByNDSRateType',
+  getDataByMlTypeForSmartMeter='/api/materialsLabourMaster/getDataByMlTypeForSmartMeter',
+  getDataByMlTypeAndVendorIdForTotalTurnkeySmartMeterCase ='/api/materialsLabourMaster/getDataByMlTypeAndVendorIdForTotalTurnkeySmartMeterCase',
+  getDataByMlTypeAndVendorIdForPartialTurnkeySmartMeterCase='/api/materialsLabourMaster/getDataByMlTypeAndVendorIdForPartialTurnkeySmartMeterCase',
+  getDataByNdsRateTypeForSmartMeter='/api/materialsLabourMaster/getDataByNdsRateTypeForSmartMeter',
+  getDataByMlTypeCredit='/api/materialsLabourMaster/getDataByMlTypeCredit',
+  //Constituency Master URL'S
+  constituencyMasterAllData = '/api/constituencyMaster/getAllConstituencyDataWithDistrictName',
+  constituencyMasterById = '/api/constituencyMaster/getAllConstituencyDataWithDistrictNameById',
+  constituencyMasterUpdateData = '/api/constituencyMaster/updateData',
+  constituencyMasterSaveData = '/api/constituencyMaster/saveData',
+  constituencyMasterGetDataByConstituencyType = '/api/constituencyMaster/getConstituencyDataWithDistrictNameByConstituencyType',
+  districtMasterData = '/api/district/getAllData',
+  officeMasterData = '/api/officeMaster/getAllData',
+
+  //Material Additional Charges URL'S
+
+  MaterialAdditionalChargesAllData = '/api/estimationAdditionalChargesMaster/getAllAdditionalChargesWithExecutionMethodName',
+  MaterialAdditionalChargesById = '/api/estimationAdditionalChargesMaster/getAllAdditionalChargesWithExecutionMethodNameById',
+  MaterialAdditionalChargesUpdate = '/api/estimationAdditionalChargesMaster/updateData',
+  MaterialAdditionalChargesSaveData = '/api/estimationAdditionalChargesMaster/saveEstimationAdditionalChargesMasterData',
+  materialAddtionalChargeswoExecutionMethodId = '/api/woExecutionMethod/getwoExecutionMethodId',
+
+  //Estimate Type Master URL'S
+  EstimateTypeMasterAllData = '/api/estimateTypeMaster/getAllData',
+  EstimateTypeMasterDataById = '/api/estimateTypeMaster/getDataById',
+  EstimatesTypeMasterUpdateData = '/api/estimateTypeMaster/updateData',
+  EstimatesTypeMasterSaveData = '/api/estimateTypeMaster/saveData',
+
+  //Network Extension Type Master URL'S
+  NetworkExtensionTypeAllData = '/api/networkExtensionTypeMaster/getAllData',
+  NetworkExtensionTypeDataById = '/api/networkExtensionTypeMaster/getDataById',
+  NetworkExtensionTypeUpdateData = '/api/networkExtensionTypeMaster/updateData',
+  NetworkExtensionTypeSaveData = '/api/networkExtensionTypeMaster/saveData',
+
+  // Work Order
+  GetWorkOrderData = '/api/wmWorkorderRegistered/getRegisteredDataByEstimationRegisteredId',
+  WorkOrderApproveData = '/api/wmWorkorderRegistered/approveData',
+  saveWorkOrderData = '/api/wmWorkorderRegistered/saveData',
+  forwardWorkOrderData = '/api/wmWorkorderRegistered/forwordWorkorder',
+  // saveRevisedWorkOrderData = '/api/wmWorkorderRegistered/saveRevisedWorkorder',
+  saveRevisedWorkOrderData = '/api/wmWorkorderRegistered/saveData',
+
+  // Line Clearance
+  GetLineClearanceData = '/api/wmPermitWork/getDataByWorkorderRegisteredId',
+  saveLineClearanceData = '/api/wmLineClearance/saveData',
+
+  // Work Award
+  GetWorkAwardData = '/api/workAward/getDataByWorkOrderNumber',
+  GetDataByOfficeId = '/api/vendorMaster/getDataByOfficeId',
+  saveWorkAward = '/api/workAward/saveData',
+  GetPendingWorkAwardByVendorId = '/api/wmWorkorderRegistered/getPendingWorkOrdersByVendorId',
+
+  //permit to work URL'S
+  accountMeterMapping = '/api/wmAccountMeterMapping/getWorkorderDetailsForAccountMeterMapping',
+  PermitWorkSaveData = '/api/wmPermitWork/saveData',
+  accountMeterData = '/api/materialSerialStock/getMaterialStockByWorkorderNo',
+  meterData = '/api/meterRegistersLog/getMeterRegistersLogDataByServiceRegistrationsId',
+
+  accountMeterMappingReport = '/api/wmAccountMeterMapping/getNcTcUnmeterData',
+  accountMeterMappingReportMC = '/api/wmAccountMeterMapping/getMcConnectionData',
+  meterReplacementReport = '/api/wmAccountMeterMapping/getSmrConnectionData',
+  meterReplacementReportMC = '/api/wmAccountMeterMapping/getBmrRelatedData',
+  // Materials Intent
+  GetMaterialsIntentAllData = '/api/wmMaterialsIndent/getAllData',
+  GetUnApprovedListByOffice = '/api/wmMaterialsIndent/getUnApprovedListByOffice',
+  GetUnApprovedListDataByOffice = '/api/wmMaterialsIndent/getUnApprovedListByOfficeForMaterialTransfer',
+  getStorePass = '/api/storeMaster/getStoreMasterByOfficeMaster',
+  getSuspenseStoreMasterByOfficeMasterId = '/api/storeMaster/getSuspenseStoreMasterByOfficeMaster',
+
+  // Vendor Master
+  getVendorData = '/api/vendorMaster/getDataByVendorMasterId',
+  getAllDataVendor = '/api/vendorMaster/getAllData',
+  getSaveDataVendor = '/api/vendorMaster/saveData',
+  getUpdateDataVendor = '/api/vendorMaster/updateData',
+  getVendorByOfficeId = '/api/vendorMaster/getDataByOfficeId',
+
+  //Deviation Type Master
+  DeviationType = '/api/deviationType/getAllData',
+  DeviationTypeAddData = '/api/deviationType/saveDeviationTypeData',
+  DeviationGetById = '/api/deviationType/getById',
+  DevitionUpdate = '/api/deviationType/updateDeviationTypeData',
+
+  //Connection Type Master
+  ConnectionTypeAllData = '/api/connectionType/getAllData',
+  ConnectionTypeGetById = '/api/connectionType/getById',
+  ConnectionTypeAddData = '/api/connectionType/saveConnectionTypeData',
+  ConnectionTypeUpdate = '/api/connectionType/updateConnectionTypeData',
+
+  //Connection Nature Master
+  connectionNature = '/api/connectionNatureMaster/getAllConnectionNatureMasterDataWithCategoryName',
+  connectionNatureGetById = '/api/connectionNatureMaster/getAllConnectionNatureMasterDataWithCategoryNameById',
+  connectionNatureAddData = '/api/connectionNatureMaster/saveconnectionNatureMasterData',
+  connectionNatureUpdateData = '/api/connectionNatureMaster/updateConnectionNatureMasterData',
+  connectionNatureDatabyCategoryId = '/api/connectionNatureMaster/getDataByCategoryId',
+
+  //Workscope Description Master
+  WorkscopeDes = '/api/workscopeDescMaster/getAllData',
+  WorkscopeGetById = '/api/workscopeDescMaster/getDataById',
+  WorkscopeSaveData = '/api/workscopeDescMaster/saveWorkscopeDescMasterData',
+  WorkscopeUpdateData = '/api/workscopeDescMaster/updateWorkscopeDescMasterData',
+
+  //Application Type Master
+  ApplicationType = '/api/applicationType/getAllData',
+  ApplicationTypeGetById = '/api/applicationType/getById',
+  ApplicationSaveData = '/api/applicationType/saveApplicationTypeMasterData',
+  ApplicationUpdateData = '/api/applicationType/updateApplicationTypeMasterData',
+
+  //Applicant Type Master
+  ApplicantType = '/api/applicantType/getAllData',
+  ApplicantTypeGetDataById = '/api/applicantType/getDataById',
+  ApplicantTypeSaveData = '/api/applicantType/saveAppicantTypeData',
+  ApplicantTypeUpdateData = '/api/applicantType/updateAppicantTypeData',
+
+  //Account Head Master
+  AccountHead = '/api/accountHeadMaster/getAllAccoutHeadMasterData',
+  AccountHeadDataById = '/api/accountHeadMaster/getAccoutHeadMasterDataById',
+  AccountHeadSaveData = '/api/accountHeadMaster/saveAccoutHeadMasterData',
+  AccountHeadUpdate = '/api/accountHeadMaster/updateAccoutHeadMaster',
+
+  //Asset Category Master
+  AssetCategoryGetAllData = '/api/amAssetCategoryMaster/getAllData',
+  AssetCategorySaveData = '/api/amAssetCategoryMaster/saveData',
+  AssetCategoryGetDataById = '/api/amAssetCategoryMaster/getDataById',
+  AssetCategoryUpdateData = '/api/amAssetCategoryMaster/updateData',
+
+  //Employee Master
+  EmpMasteGetAllData = '/api/employeeMaster/getAllData',
+  EmpMasterSaveData = '/api/employeeMaster/saveEmployeeMasterData',
+  EmpMasterGetDataById = '/api/employeeMaster/getDataById',
+  EmpMasterUpdateData = '/api/employeeMaster/updateEmployeeMasterData',
+
+  //Work Order Series Master
+  WorkOrdSeriesGetAllData = '/api/workOrderSeriesMaster/getAllData',
+  WorkOrderSeriesGetAllData = '/api/workOrderSeriesMaster/getDataByOfficeIdWise',
+  WorkOrdSeriesSaveData = '/api/workOrderSeriesMaster/saveData',
+  WorkOrdSeriesGetById = '/api/workOrderSeriesMaster/getDataByWorkOrderSeriesMaster',
+  WorkOrdSeriesUpdateData = '/api/workOrderSeriesMaster/updateData',
+
+  //Account Head Main Master
+  AccHeadMainGetAllData = '/api/amAccountHeadMainMaster/getAllAmAccountHeadMainMasterData',
+  AccHeadMainSaveData = '/api/amAccountHeadMainMaster/saveAccountHeadMainData',
+  AccHeadMainGetDataById = '/api/amAccountHeadMainMaster/getDataByAmAccountHeadMainMasterId',
+  AccHeadMainUpdateData = '/api/amAccountHeadMainMaster/updateAccountHeadMainData',
+
+  //Account Head Submain Master
+  AccHeadSubmainAllData = '/api/amAccountHeadSubmainMaster/getAllData',
+  AccHeadSubmainSaveData = '/api/amAccountHeadSubmainMaster/saveAmAccountHeadSubmainMasterData',
+  AccHeadSubmainGetDataById = '/api/amAccountHeadSubmainMaster/getDataByAmAccountHeadSubmainMasterId',
+  AccHeadSubmainUpdateData = '/api/amAccountHeadSubmainMaster/updateAmAccountHeadSubmainMasterData',
+
+  //Asset Category Material Mapping
+  AssetCatMaterialAllData = '/api/amAssetCategoryMaterialMaster/getAllAmAssetCategoryMaterialMasterData',
+  AssetCatMaterialSaveData = '/api/amAssetCategoryMaterialMaster/saveAmAssetCategoryMaterialMasterData',
+  AssetCatMaterialMasterDataById = '/api/amAssetCategoryMaterialMaster/getAmAssetCategoryMaterialMasterDataById',
+  AssetCatMaterialUpdateData = '/api/amAssetCategoryMaterialMaster/updateAmAssetCategoryMaterialMasterData',
+
+  //Work Execution Method Master
+  WorkExecutionGetAllData = '/api/WOExecutionMethodMaster/getAllData',
+  WorkExecutionGetDataById = '/api/WOExecutionMethodMaster/getDataById',
+  WorkExecutionSavaData = '/api/WOExecutionMethodMaster/saveWOExecutionMethodMasterData',
+  WorkExecutionUpdateDate = '/api/WOExecutionMethodMaster/updateWOExecutionMethodMasterData',
+
+  //Work Category Master
+  WorkCategoryGetAllData = '/api/workCategoryMaster/getAllData',
+  WorkCategorySaveData = '/api/workCategoryMaster/saveData',
+  WorkCategoryGetById = '/api/workCategoryMaster/getDataByworkCategoryMaster',
+  WorkCategoryUpdateData = '/api/workCategoryMaster/updateData',
+
+  //Application Status Master
+  ApplicationStatusAllData = '/api/applicationStatus/getAllApplicationStatusData',
+  ApplicationStatusSaveData = '/api/applicationStatus/saveApplicationStatusData',
+  ApplicationStatusGetById = '/api/applicationStatus/getApplicationStatusDataById',
+  ApplicationStatusUpdate = '/api/applicationStatus/updateApplicationStatusData',
+
+  //Store Master
+  StoreMasterGetAllData = '/api/storeMaster/getAllStoreMasterData',
+  StoreMasterGetDatabyMasterId = '/api/storeMaster/getStoreMasterDataById',
+  StoreMasterSaveData = '/api/storeMaster/saveStoreMasterData',
+  StoreMasterUpdateData = '/api/storeMaster/updateStoreMaster',
+
+  //Special locality allowance master
+  SpecialLocalityGetAllData = '/api/specialLocalityAllowanceMaster/getDataWithOfficeNameAndDistrictName',
+  SpecialLocalitySaveData = '/api/specialLocalityAllowanceMaster/saveSpecialLocalityAllowanceMasterData',
+  SpecialLocalityUpdate = '/api/specialLocalityAllowanceMaster/updateSpecialLocalityAllowanceMasterData',
+  SpecialLocalityGetById = '/api/specialLocalityAllowanceMaster/getDataWithOfficeNameAndDistrictName',
+
+  //Material and Labour Mapping
+  MaterialLabourMappingGetAllData = '/api/materialLabourMappingMaster/getDataWithMaterialNameLabourNameMlType',
+  MaterialLabourMappingGetDataById = '/api/materialLabourMappingMaster/getDataById',
+  MaterialLabourMappingSaveData = '/api/materialLabourMappingMaster/saveMaterialLabourMappingMasterData',
+  MaterialLabourMappingUpdateData = '/api/materialLabourMappingMaster/updateMaterialLabourMappingMasterData',
+  MaterialLabourMasterData = '/api/materialsLabourMaster/getAllData',
+  MaterialLabourGetDataByMaterialTypeMasterId = '/api/materialsLabourMaster/getDataByMaterialTypeMasterId',
+
+  GetAllDataByOfficeAndWorkExecutionMethod = '/api/wmWorkorderRegistered/getAllDataByOfficeAndWorkExecutionMethod',
+  GetByWmWorkorderRegisteredId = '/api/wmWorkorderRegistered/getByWmWorkorderRegisteredId',
+  GetDataByEstimationRegisteredId = '/api/estimationMaterialsRegistered/getDataByEstimationRegisteredId',
+  SaveDataMaterialsIntent = '/api/wmMaterialsIndent/saveData',
+  GetStoreDataByStoreMasterId = '/api/storeMaster/getStoreMasterDataById',
+  GetApproveMaterialIndentData = '/api/wmMaterialsIndent/getApproveMaterialIndentData',
+  GetApproveMaterialIndentEstData = '/api/wmMaterialsIndent/getApproveMaterialIndentEstData',
+  MaterialIntentApproveData = '/api/wmMaterialsIndent/approveData',
+
+  // Assign Crew
+  GetAssignCrewData = '/api/assignCrew/getWoAssignCrewDataByWorkorderRegisteredId',
+  GetAssignCrewStoreData = '/api/employeeMaster/getDataByOfficeId',
+  SaveAssignCrewData = '/api/assignCrew/saveData',
+  GetDesignationData = '/api/designationMaster/getDataById',
+  // Upload Material
+  GetUploadMaterialStoreData = '/api/storeMaster/getStoreMasterByOfficeMaster',
+  saveUploadMaterialData = '/api/smInventoryUploadMaterialsLog/saveUploadMaterialsDataInSmInventoryUploadMaterialsLog',
+  MeterUploadSave = '/api/materialSerialStock/saveUploadMeterData',
+  transformerUpload='/api/materialSerialStock/saveUploadTransformerData',
+  meterSaveByWorkOrder ='/api/materialSerialStock/saveUploadMeterDataByWorkorder',
+  // Upload Material Approval
+  GetUploadMaterialApprovalData = '/api/uploadMaterialApproval/getUploadMaterialApprovalDataByOfficeId',
+  GetUploadMaterialDataByInventoryUploadId = '/api/uploadMaterialApproval/getUploadMaterialApprovalDataByInventoryUploadReqId',
+  saveUploadMaterialApprovalData = '/api/uploadMaterialApproval/saveUploadMaterialApprovalData',
+  // Store Manager
+  GetAllStoreMasterData = '/api/storeMaster/getAllStoreMasterData',
+  GetStoreOfficeApprovalListData = '/api/storeOfficeApproval/getStoreOfficeApprovalListData',
+  GetStoreMasterByOfficeMaster = '/api/storeMaster/getStoreMasterByOfficeMaster',
+  GetStoreOfficeApprovalShowMaterialIndentdata = '/api/storeOfficeApproval/getStoreOfficeApprovalShowMaterialIndentdata',
+  SaveStoreOfficeApproval = '/api/storeOfficeApproval/saveStoreOfficeApproval',
+  // Gate Pass
+  GetGatePassDataByOfficeId = '/api/gatePass/getGatepassListByOfficeId',
+  GetGatePassDataById = '/api/gatePass/getGatepassDataByWmMaterialsIndentId',
+  UpdateGatePassData = '/api/gatePass/updateGatePass',
+  GetGatePassReportData = '/api/gatePass/getGatepassReportDataByWmMaterialsIndentId',
+  GenerateMaterialInvoiceWithGatePassReport = '/api/materialInvoice/generateMaterialInvoiceWithGatePassReport',
+  // Material Invoice
+  GetMaterialInvoiceDataByOfficeId = '/api/materialInvoice/getMaterialInvoiceDataByOfficeId',
+  getMaterialReturnDataByOfficeId = '/api/materialInvoice/getMaterialInvoiceDataByOfficeIdForMaterialAcknowledgement',
+  GetMaterialInvoiceByMaterialIndentId = '/api/materialInvoice/getMaterialInvoiceByMaterialIndentId',
+  GetSerializeMaterialsByMaterialMasterIdAndStoreOfficeId = '/api/materialSerialStock/getNewMaterialSerialStock',
+  GetSerializeMaterialsByMaterialMasterIdAndStoreOfficeIdUsed = '/api/materialSerialStock/getUsedMaterialSerialStock',
+  SaveMaterialInvoice = '/api/materialInvoice/saveMaterialInvoice',
+  GetMaterialInvoiceReport = '/api/materialInvoice/getMaterialInvoiceReport',
+  getMaterialSuspenseStoreDataById = '/api/materialInvoice/getMaterialInvoiceDataByMaterialIndentIdForSuspense',
+  // Service Registration
+  GetDataByAccountIdAndOfficeId = '/api/serviceRegistration/getDataByAccountIdAndOfficeId',
+  GetDataByWorkOrderNoAndOfficeId = '/api/serviceregistration/getDataByWorkorderNoAndOfficeId',
+  GetDataByEstimationNoAndOfficeId = '/api/serviceregistration/getDataByEstimationNoAndOfficeId',
+  GetDataByEstimationNo =  '/api/estimationRegistered/getDataByEstimationNo',
+  GetDataByWorkorderNo ='/api/workorderRegistered/getDataByWorkorderNo',
+  GetDataByIndentNo='/api/wmMaterialsIndent/getDataByMaterialsIndentNo',
+
+  // Work Execution
+  GetWorkExecutionData = '/api/workExcecution/getDataByWmWorkorderRegisteredId',
+  GetWorkExecutionMaterialIndentData = '/api/workExecution/getMaterialsIndentSerializeLogData',
+  SaveWorkExecutionData = '/api/workExecution/saveWorkExecutionData',
+  GetWorkExecutionAmAssetDetails = '/api/workExecution/getAmAssetRegisterLogByWorkorderRegisteredId',
+  // Work Completion
+  GetWorkCompletionData = '/api/workCompletion/getWorkCompletionByByOfficeId',
+  GetWorkCompletionDataByRegisteredId = '/api/workCompletion/getWorkCompletionByWmWorkorderRegisteredId',
+  SaveWorkCompletion = '/api/workCompletion/saveWorkCompletion',
+
+  //Bill Submission
+  GetBillSubmissionData = '/api/billSubmissionLog/getBillSubmissionListByOfficeId',
+  billSubmissionGetbyId = '/api/wmPermitWork/getWorkorderDataByWorkorderRegisteredId',
+  SaveBillSubmission = '/api/billSubmissionLog/saveData',
+
+  // Report
+  GetWorkOrderReport = '/api/workOrder/generateWorkorderReport',
+  GetCreditAndRegularWorkOrderData = '/api/wmWorkorderRegistered/getRegularAndCreditWorkorderRegisteredList',
+  GenerateWorkOrderCreditReport = '/api/workOrder/generateWorkorderCreditReport',
+
+  //divisional budget head URL's
+  SaveDivsionalBudgetData = '/api/divisionalBudget/saveMaultipleDivisionalBudgetData',
+  DivisionAccountHeadData = '/api/accountHeadMaster/getAllAccoutHeadMasterData',
+  DivisionOfficeId = '/api/officeMaster/getAllDivisionsByOfficeTypeAndOfficeMasterId',
+  DataFinacialYear = '/api/divisionalBudget/getDataByDivisionOfficeIdAccountHeadMasterIdBudgetTypeYear',
+  DivisionalBudgetHead = '/api/divisionalBudget/getDataByDivisionalBudgetHead',
+
+  // Work award url's
+  GetWorkAwardReport = '/api/workAward/generateWorkAwardReport',
+  // Asset BOM
+  GetAssetBOMDataByOfficeId = '/api/assetBOM/getAssetBOMListDataByOfficeMasterId',
+  GetAssetListData = '/api/assetBOM/getAssetListDataByWmWorkorderRegisteredId',
+  SaveAssetBOMData = '/api/assetBOM/saveAssetList',
+  // Upload Inventory Excel File
+  GetUploadInventoryExcelFile = '/api/smInventoryUploadMaterialsLog/getExceptionLogExcel',
+  //Generated Asset UID'S
+  AssetUIDSelectbox = '/api/wmWorkorderRegistered/getAllWmWorkorderRegisteredData',
+  BMROfficeMasterIDSelectbox = '/api/bmrReport/GenerateBmrSuccessReport',
+  BMROfficeMasterIDSelectboxForErrorReportpdf = '/api/bmrReport/GenerateBmrErrorReport',
+  BMROfficeMasterIDSelectboxForErrorReportxls = '/api/bmrReport/GenerateBmrErrorReportXL',
+  PCTestReportpdf = '/api/pcTest/generatePcTestReport',
+  PendingSuspenceMeterReportpdf = '/api/pendingRegistration/generatePendingSuspenceMeterReport',
+  PendingSuspenceMeterReportxls = '/api/pendingRegistration/generatePendingSuspenceMeterReportXLS',
+
+  //Designation Master
+  GetAllDesignationMasterData = '/api/designationMaster/getAllData',
+  SaveDesignationMasterData = '/api/designationMaster/saveDesignationMasterData',
+  UpdateDesignationMasterData = '/api/designationMaster/updateDesignationMasterData',
+  DesignationMasterGetDataById = '/api/designationMaster/getDataById',
+  DesignationMasterGetDataByName = '/api/designationMaster/getAllDataWithReportingDesigName',
+
+  // Exception Log Report
+  GetExcptionLogReport = '/api/InventoryDataPortingExceptionsLog/getDistinctDataBetweenPortingStartDateAndPortingEndDate',
+  DownloadExceptionLogReport = '/api/smInventoryUploadMaterialsLog/getExceptionLogExcel',
+  //Rc Rates
+  getRcRatesData = '/api/materialsLabourMaster/getRcRatesData',
+  getAllDataRcRates = '/api/srMaterialMaster/getAllSrMaterialsMasterData',
+  // rcRatesSaveData='/api/materialsLabourMaster/saveData',
+  rcMultipleSaveData = '/api/materialsLabourMaster/saveMultipleMaterialsLabourMasterData',
+  rcRatesUpdateData = '/api/materialsLabourMaster/updateData',
+  rcGetAllNameData = '/api/rateContractMaster/getAllData',
+
+  // office master
+  OfficeIdByDiscomCodeData = '/api/officeMaster/getOfficeIdByDiscomCode',
+
+  //rc contract master
+  getAllContractData = '/api/rateContractMaster/getAllDataByQuery',
+  getDataById = '/api/rateContractMaster/getDataById',
+  getUpdateData = '/api/rateContractMaster/updateData',
+  getSaveData = '/api/rateContractMaster/saveData',
+  getAllDiscomData = '/api/officeMaster/getAllDiscomData',
+  // Material Inspection
+  SaveMaterialInspection = '/api/materialInspectionLog/saveMaterialInspectionData',
+
+  // Work Award Approval
+  WorkAwardForwardData = '/api/workAward/forwardData',
+  WorkAwardApprovalData = '/api/workAward/approvalData',
+  // Vendor Details
+  GetVendorDetails = '/api/vendorMaster/getVendorDetailsByOfficeIdForWorkAward',
+  //budget entry & approval URL's
+  saveBudgetEntry = '/api/budgetTransactions/saveMultipleBudgetTransactionsData',
+  // budgetapprovalGetAllData = '/api/budgetTransactions/getAllData',
+  budgetapprovalGetAllData='/api/budgetTransactions/getAllBudgetApproveData',
+  UpdateAprroveData = '/api/divisionalBudget/updateDivisionalbudgetAndBudgetTransactionsData',
+  //stock log report
+  GenerateStoreInventoryAbstractReport = '/api/storeInventory/generateStoreInventoryAbstractReport',
+  GenerateStoreInventoryAbstractReportXLS = '/api/storeInventory/generateStoreInventoryAbstractReportXLS',
+  GenerateStockLogReportXLS = '/api/storeInventory/generateStockLogReportXLS',
+  GenerateStockLogReportXML = '/api/storeInventory/generateStockLogReportXML',
+  GenerateStockLogReportPDF = '/api/storeInventory/generateStockLogReportPDF',
+  // Revised Estimates
+  RevisedEstimatesList = '/api/estimationRegistered/revisedEstimatesList',
+  RevisedEstimatesApprovalList = '/api/estimationRegistered/revisedEstimatesApprovalList',
+  // Estimation Creation and Estimation Approval
+  ImprovementEstimatesList = '/api/estimationRegistered/getImprovementEstimateList',
+  ImprovementEstimatesApprovalList = '/api/estimationRegistered/getImprovementEstimateSanctionList',
+  // Improvement Site Inspection
+  SaveImprovementSiteInspection = '/api/ImprovementSiteInspection/saveData',
+  SanctionEstimation = '/api/estimationRegistered/sanctionEstimation',
+  ApprovalForServiceMainEstimates = '/api/estimationRegistered/approvalForServiceMainEstimates',
+  RevisedEstimationApproval = '/api/estimationRegistered/revisedEstimationApproval',
+  //Delegation of Power Master
+  DelegationPowerMasterGetAll = '/api/delegationOfPowerMaster/getAllData',
+  DelegationPowerMasterGetById = '/api/delegationOfPowerMaster/getDataById',
+  DelegationPowerMasterSave = '/api/delegationOfPowerMaster/saveDelegationOfPowerMasterData',
+  DelegationWorkCategory = '/api/workCategoryMaster/getAllData',
+  DelegationWorkExecution = '/api/WOExecutionMethodMaster/getAllData',
+  Category = '/api/categoryMaster/getAllMainCategoryData',
+  DelegationPowerMasterUpdate = '/api/delegationOfPowerMaster/updateDelegationOfPowerMasterData',
+  GetDetailsForImprovementEstimation = '/api/estimationRegistered/getDetailsForImprovementEstimation',
+  GetDetailsForImprovementEstimationReport = '/api/estimationRegistered/getDetailsForImprovementEstimationReport',
+  GenerateImprovementEstimationDetailsReport = '/api/estimationRegistered/generateImprovementEstimationDetailsReport',
+
+  // Material Transfer
+  SaveMaterialTransferData = '/api/wmMaterialsIndent/saveData',
+  GetMaterialApprovedListData = '/api/wmMaterialsIndent/getApproveMaterialSuspenseIndentData',
+  SaveMaterialIndentApproveData = '/api/wmMaterialsIndent/approveData',
+
+  SaveStoreInventoryAdjustment = '/api/storeAdjReasonMaster/saveStoreMaterialAdjRequest',
+
+  //SR/RC Rates
+  UploadMaterialData = '/api/materialsLabourMaster/saveMaterialsLabourDataFromXLS',
+  getExcelsheetData = '/api/materialsLabourMaster/generateMaterialsDataByRateTypeAndRateContractMasterIdXLSX',
+
+  // Store Material
+  GetUnApprovedStoreListDataByOffice = '/api/wmMaterialsIndent/getUnApprovedListByOfficeForStoreTransfer',
+  GetRecevierStoreCode = '/api/wmMaterialsIndent/getReceiverStoreCodeByUserMasterId',
+  GetSenderStoreCode = '/api/wmMaterialsIndent/getSenderStoreCodeByUserMasterId',
+  SenderReceiverDivisionOffice = '/api/wmMaterialsIndent/getDivisionOfficeByDivisionStoreCode',
+  SaveStoreTransferApprovalData = '/api/wmMaterialsIndent/storeTransferRequestApproval',
+  GetOfficeMasterByOfficeMasterId = '/api/officeMaster/getOfficeMasterByOfficeMasterId',
+  RejectStoreTransferApprovalData = '/api/wmMaterialsIndent/rejectIndent',
+  // Material Return Indent
+  getAllReturnUnapprovedList = '/api/wmMaterialsIndent/getUnApprovedListByOffice',
+  GetAllDataByOfficeForReturnIndent = '/api/wmWorkorderRegistered/getAllDataByOfficeIdForReturnIndent',
+  GetDataByEstimationRegisteredIdReturn = '/api/estimationMaterialsRegistered/getDataByEstimationRegisteredIdForReturnIndent',
+  GetSuspenseOffice = '/api/storeMaster/getSuspenseStoreForEmergencyEstimation',
+
+  // Gate Pass acknowledment
+  SaveGatePassAcknowledgement = '/api/gatePass/saveGatepassAcknowledgement',
+  GatePassAcknowledgementById = '/api/gatePass/getGatepassDataByWmMaterialsIndentId',
+  savedocumentUpoload = '/api/documentUpload/storeDocumentFile',
+  getDetailsByServiceregistion = '/api/documentUpload/getDetailsByServiceRegistrationsId',
+  // Emergency list
+  GetApproveStoreTransferData = '/api/wmMaterialsIndent/getApproveMaterialForStoreTransfer',
+  GetEmergencyEstimationList = '/api/estimationRegistered/getEmergencyEstimationList',
+  GetEmergencyEstimationApprovalList = '/api/estimationRegistered/getEmergencyEstimationApprovalList',
+  GetBmrEstimationApprovalList = '/api/estimationRegistered/getBmrEstimationApprovalList',
+  //Material Suspense
+  GetStoreOfficeApprovalShowSuspenseMaterialIndentdata = '/api/storeOfficeApproval/getStoreOfficeApprovalShowSuspenseIndentdata',
+  GetStoreOfficeApprovalShowStoreMaterialIndentdata = '/api/storeOfficeApproval/getStoreOfficeApprovalShowSuspenseIndentdata',
+  GetMaterialInvoiceSuspenseReport = '/api/materialInvoice/getMaterialInvoiceReportForSuspense',
+  GetMaterialSuspenseByMaterialId = '/api/materialInvoice/getMaterialInvoiceDataByMaterialIndentIdForSuspense',
+  GetMateralSuspenseAcknowledgement = '/api/materialInvoice/getMaterialInvoiceReportForSuspense',
+  SaveMaterialAcknowledgement = '/api/materialAcknowledgement/saveMaterialAcknowledgement',
+  //For Alternate Material
+  AlternateMaterialRateAndMaterialBymaterialMasterId = '/api/wmMaterialsIndent/getAlternateMaterialsDetails',
+  StoreInventoryDataForAlternateMaterials = '/api/storeOfficeApproval/getStoreInventoryDataForAlternateMaterials',
+  saveAlternateMaterial = '/api/wmMaterialsIndent/saveAlternateMaterialsData',
+  GetCreditWorkOrderData = '/api/wmWorkorderRegistered/getCreditWorkorderDataById',
+
+  GetDataBySearchType = '/api/serviceRegistration/getDataBySearchType',
+  getDataByWorkorderNo= '/api/workorderRegistered/getDataByWorkorderNo',
+  getDataByEstimationNo= '/api/estimationRegistered/getDataByEstimationNo',
+
+  // C REGISTERED
+  GetCRegisteredInvoiceData = '/api/cregister/materialIndentInvoice/getDataList',
+  GetCRegisteredInvoiceDetailData = '/api/cregister/materialIndentInvoice/getDataByWmMaterialsIndentId',
+  SaveCRegisteredInvoiceData = '/api/cregister/materialIndentInvoice/confirmData',
+
+  GetMaterialAcknowledgement = '/api/cregister/MaterialAcknowledgement/getDataList',
+  GetMaterialAcknowledgementDetails = '/api/cregister/MaterialAcknowledgement/getDataByWmMaterialsIndentId',
+  SaveAcknowledgementData = '/api/cregister/materialAcknowledgement/confirmData',
+  GetFullDetailsByWorkOrderRegisteredId = '/api/cregister/getFullDetailsByWmWorkorderRegisteredId',
+  fieldReportData = '/api/saServiceHistoryDetails/getHistoryDetailsByServiceRegistrationsId',
+  GetBillSubmissionList = '/api/cregister/billSubmissionLog/getDataList',
+  GetBillSubmissionDetailsByBillSubmissionLogId = '/api/cregister/billSubmissionLog/getDataByBillSubmissionLogId',
+  SaveBillSubmissionLogData = '/api/cregister/billSubmissionLog/confirmData',
+  GetEntireApplicationDetails = '/api/applicationDetails/getEntireApplicationDetails',
+
+  //Process Type Master
+  processTypeGetAllData = '/api/processTypeMaster/getAllProcessTypeMasterData',
+  processTypeSaveData = '/api/processTypeMaster/saveProcessTypeMastersData',
+  processTypeGetById = '/api/processTypeMaster/getProcessTypeMastersDataById',
+  processTypeUpdateData = '/api/processTypeMaster/updateProcessTypeMasterData',
+
+  //Application Status Process Mapping
+  appStatusProMapGetAllData = '/api/applicationStatusProcessMaster/getAllApplicationStatusProcessData',
+  appStatusProMapSaveData = '/api/applicationStatusProcessMaster/saveApplicationStatusMasterData',
+  appStatusProMapGetById = '/api/applicationStatusProcessMaster/getApplicationStatusProcessDataById',
+  appStatusProMapUpdateData = '/api/applicationStatusProcessMaster/updateApplicationStatusMasterData',
+
+  //Financial Year Master
+  finanacialYearGetAllData = '/api/finacialYearMaster/getAllFinacialYear',
+  financialYearSaveData = '/api/finacialYearMaster/saveFinancialYearMasterData',
+  financialYearGetById = '/api/finacialYearMaster/getFinancialYearMasterDataById',
+  financialYearUpdateData = '/api/finacialYearMaster/updateFinancialYearMasterData',
+
+  //store-indent-approval
+  GetUnApprovedReceiveStoreListDataByOffice = '/api/wmMaterialsIndent/getUnApprovedListByOfficeForMaterialTransferByReceiver',
+  GetMaterialApprovedReceiveListData = '/api/wmMaterialsIndent/getApproveMaterialForStoreTransfer',
+  SaveReceiveStoreTransferApprovalData = '/api/wmMaterialsIndent/storeTransferRequestApproval',
+  GetUnApprovedSenderStoreListDataByOffice = '/api/wmMaterialsIndent/getUnApprovedListByOfficeForMaterialTransferBySender',
+  GetMaterialApprovedSenderListData = '/api/wmMaterialsIndent/getApproveMaterialForStoreTransfer',
+  SaveSenderStoreTransferApprovalData = '/api/wmMaterialsIndent/storeTransferRequestApproval',
+
+  //Store Adjustment Reason Master
+  storeReasonGetAllData = '/api/storeAdjReasonMaster/getAllStoreAdjReasonMasterData',
+  storeReasonSaveData = '/api/storeAdjReasonMaster/saveStoreAdjReasonMasterData',
+  storeReasonGetById = '/api/storeAdjReasonMaster/getStoreAdjReasonMasterDataById',
+  storeReasonUpdateData = '/api/storeAdjReasonMaster/updateStoreAdjReasonMasterData',
+
+  // Material process generated pdf
+  MaterialIndentGeneratePdf = '/api/materialIndent/generateMaterialIndentReport',
+  getGenerateOfficeForIndent = '/api/wmMaterialsIndent/saveData',
+
+  // Account Meter Mapping
+  SaveAccountMeterMapping = '/api/wmAccountMeterMapping/saveData',
+  GetWmAccountMeterMappingDataById = '/api/wmAccountMeterMapping/getWmAccountMeterMappingDataById',
+  GetDataByServiceRegistrationsId = '/api/wmAccountMeterMapping/getDataByServiceRegistrationsId',
+  meterReplicateData = '/api/wmAccountMeterMapping/replicateMeterFromWamsByCcb',
+  meterValidateData = '/api/wmAccountMeterMapping/validateMeterFromCcb',
+  saveAccountMeterSingle = '/api/wmAccountMeterMapping/saveDataForsingle',
+  // Meter Change Details
+  SaveMeterChangeDetails = '/api/WmMeterChangeDetails/saveData',
+  GetMeterChangeDetailsDataById = '/api/WmMeterChangeDetails/WmMeterChangeDetailsDataById',
+  GetDataByWorkOrderRegisteredId = '/api/WmMeterChangeDetails/getDataByWorkOrderRegisteredId',
+  ValidateMaterials = '/api/wmAccountMeterMapping/validateMaterials',
+  //Exceptional Report
+  ExceptionalPortingData = '/api/inventoryDataPortingExceptionsLog/getDistinctDataBetweenPortingStartDateAndPortingEndDate',
+  ExceptionalReortData = '/api/smInventoryUploadMaterialsLog/getExceptionLogExcel',
+
+  //Maintenance Scheduler
+  maintenaceSchudulerGetAllData = '/api/mmMaintenanceSchedulerMaster/getAllData',
+  getMaintenanceFrequencyMaster = '/api/mmMaintenanceFrequencyMaster/getAllData',
+  getMaintenanceChecklistMaster = '/api/mmMaintenanceChecklistMaster/getAllData',
+  saveMaintenaceSchedulerData = '/api/mmMaintenanceSchedulerMaster/saveData',
+  getMaintenaceSchudulerGetByID ='/api/mmMaintenanceSchedulerMaster/getDataById',
+  MaintenanceAssetType = '/api/mmMaintenanceAssetTypeMaster/getAllData',
+  updateMaintenanceSchedularData = '/api/mmMaintenanceSchedulerMaster/updateData',
+
+  //GIS Integration API
+  GISTappingDetails = 'integration/api/gis/tappingDetails',
+  GISSavedTappingDetails = 'integration/api/gis/getSavedTappingDetails',
+  GISFeasibilityDetails = 'integration/api/gis/siteInspection/checkFeasibility',
+  GISUpdatedFeasibility = 'integration/api/gis/siteInspection/getUpdatedFeasibilityReport',
+ // IMW GIS Integration API'S
+  withOutAccountTappingDetails='integration/api/gis/siteInspection/getTappingAssetDetails',
+  //Maintenance Asset Type Master
+  AssetTypeGetAllData = '/api/mmMaintenanceAssetTypeMaster/getAllData',
+  AssetTypeSaveData = '/api/mmMaintenanceAssetTypeMaster/saveData',
+  AssetTypeGetById = '/api/mmMaintenanceAssetTypeMaster/getDataById',
+  AssetTypeUpdateData = '/api/mmMaintenanceAssetTypeMaster/updateData',
+
+  // Frequnecy Type Master
+
+  frequencyTypeGetAllData = '/api/mmMaintenanceFrequencyMaster/getAllData',
+  frequncyTypeSaveData = '/api/mmMaintenanceFrequencyMaster/saveData',
+  frequencyTypeGetById = '/api/mmMaintenanceFrequencyMaster/getDataById',
+  frequencyTypeUpdateData = '/api/mmMaintenanceFrequencyMaster/updateData',
+
+  // category master
+  categoryMaterialGetById = '/api/categoryMaster/getDataById',
+
+  //estimates maintenance type url's
+  getDetailsForInspectionType = '/api/mmMaintenanceSchedulerTask/getDetailsForInspectionType',
+  getDetailsForPreventiveType = '/api/mmMaintenanceSchedulerTask/getDetailsForPreventiveType',
+  getDetailsForOverhualType = '/api/mmMaintenanceSchedulerTask/getDetailsForOverhaulType',
+  getDetailsByMaintenancSechedulerId = '/api/mmMaintenanceSchedulerTask/getDetailsByMmMaintenanceSchedulerTaskId',
+  getDetailsByMaintenancSechedulerMasterId = '/api/mmMaintenanceChecklistMaster/getDetailsByMmMaintenanceSchedulerMasterId',
+
+  //Area Specific Loader Master
+  AreaSpecificLoaderGetAllData = '/api/areaSpecificLoadingChargesMaster/getAllData',
+  AreaSpecificLoaderSaveData = '/api/areaSpecificLoadingChargesMaster/saveData',
+  AreaSpecificLoaderGetById = '/api/areaSpecificLoadingChargesMaster/getDataById',
+  AreaSpecificLoaderUpdateData = '/api/areaSpecificLoadingChargesMaster/updateData',
+
+  //PC List
+  PcListData = '/api/WmPcTest/getPcTestList',
+  PcTestGetDataById = '/api/WmPcTest/getPcTestRequestData',
+  PcTestSaveData = '/api/WmPcTest/savePcTestData',
+  DocumentUploadSaveData = '/api/documentUpload/storeDocumentFile',
+
+  // Additional Charges Master
+  AdditionalChargesGetAllData = '/api/additionalChargesMaster/getAllData',
+  // Meter Upload API
+  getMeterUploadDataByWmWorkorderRegisteredId ='/api/meterStock/getMeterUploadDataByWmWorkorderRegisteredId',
+  // Csc site Inspection meter data
+  getMeterRegistersLogDataByServiceRegistrationsId= '/api/meterRegistersLog/getMeterRegistersLogDataByServiceRegistrationsId',
+ // LE or LE power sanction URL's
+ forwardPowerSanctionLELR='/api/estimationRegistered/forwardPowerSanctionLELR',
+ approvalPowerwithoutMtrLELR='/api/estimationRegistered/approvalPowerwithoutMtrLELR',
+ returnPowerSanctionLELR='/api/estimationRegistered/returnPowerSanctionLELR',
+
+//Document Store URL's
+documentStoredata='/api/documentUpload/storeDocumentFile',
+uploadDocSample = '/api/documentUpload/storeDocumentFile',
+  
+
+//single meter replacement 
+meterReplacementSaveData ='/api/meterReplacement/saveMeterReplacementData',
+SaveMultipleMeterChangeDetails ='/api/WmMeterChangeDetails/saveWmMeterChangeDetailsData',
+PermitWorkGetDataById = '/api/wmPermitWork/getDataByWorkorderRegisteredId',
+
+// Excel sheet URL's For Account id meter mapping and the Meter
+accountMeterExcelData='/api/materialSerialStock/generateAccMeterAndMeterReplReportXLS',
+getSampleFileData='/api/wmAccountMeterMapping/generateAccountMeterMappingTemplate',
+
+//meter selction url's for jvs
+getSuspenseMeterlistData='/api/materialSerialStock/getSuspenseStoreMetersList',
+updateUploadMeterDataForJVS='/api/materialSerialStock/updateUploadMeterDataForJVS',
+
+//Material Acknowledgement Serial No
+getAssignedMaterialForMaterialAcknowledgement='/api/materialSerialStock/getAssignedMaterialForMaterialAcknowledgement',
+getInstalledMaterialForMaterialAcknowledgement='/api/materialSerialStock/getInstalledMaterialForMaterialAcknowledgement',
+//service Main Material Data
+getServiceMainMaterialData='/api/workExecution/getServiceMainMaterialData',
+
+// meter Replacement single
+getSingleMeterReplacementData='/api/meterRegistersLog/getOldAndNewMeterRegistersByServiceRegistrationsId',
+getOldMeterRegistersByServiceRegistrationsId ='/api/meterRegistersLog/getOldMeterRegistersByServiceRegistrationsId',
+getNewMeterRegistersByServiceRegistrationsId='/api/meterRegistersLog/getNewMeterRegistersByServiceRegistrationsId',
+// Revised Estimation Approval
+revisedEstimationsApproval='/api/estimationRegistered/sanctionEstimation',
+
+//Meter change validation Api
+meterReplacementValidation='/api/WmMeterChangeDetails/validateMeterChangeData',
+// Account id meter mapping single
+
+getAccountSingleMeterData='/api/materialSerialStock/getMaterialSerialStockByWmWorkorderRegisteredId',
+
+//Dash board get data using the service registration and application status code
+
+getDataByServiceIdAndApplicationStatus='/api/serviceRegistration/getDataByServiceIdAndApplicationStatus',
+getDetailsByServiceIdAndStatusCode='/api/estimationRegistered/getDetailsByServiceIdAndStatusCode',
+getDetailsForEstimationReportByServiceId='/api/estimationRegistered/getDetailsForEstimationReportByServiceId',
+//meter validator ccb api
+
+meterReplicatorAndMeterValidatorInCcb='/api/wmAccountMeterMapping/meterReplicatorAndMeterValidatorInCcb',
+
+// Upload pc test
+uploadLTPcTestDetails='/api/wmPcTest/uploadPcTestDetails',
+uploadHTPcTestDetails='/api/wmPcTest/uploadHTPcTestDetails',
+
+//Field Resolution URL'S
+getFieldDataByAccountId='/api/far/getDataByAccountId',
+getDataByCaseIdForAfterPowerSanction='/api/far/getDataByCaseIdForAfterPowerSanction',
+getDataByWorkorderNoToMoveBackToMeterUpload='/api/far/getDataByWorkorderNoToMoveBackToMeterUpload',
+getDataByWorkorderNoToUpdateExecutionMethodToSE='/api/far/getDataByWorkorderNoToUpdateExecutionMethodToSE',
+getDataByWorkorderNoForProcurementLetter='/api/far/getDataByWorkorderNoForProcurementLetter',
+getWrongAssignOfWorkorderCreation='/api/far/getWrongAssignOfWorkorderCreation',
+getDataByReferenceNoMoveToEstimationApproval='/api/far/getDataByReferenceNoMoveToEstimationApproval',
+getWrongEstimationDataByReferenceNoForSMR='/api/far/getWrongEstimationDataByReferenceNoForSMR',
+moveBackToSiteInspection ='/api/far/moveBackToSiteInspection',
+afterPowerSanctionApproval ='/api/far/afterPowerSanctionApproval/updtParameters',
+putBackToWorkExecution ='/api/far/putBackToWorkExecution',
+moveBackToMeterUpload ='/api/far/moveBackToMeterUpload/FromAccountMeterMapping',
+getDataByWorkorderNoMoveBackToWorkExecutionForLineExt='/api/far/getDataByWorkorderNoMoveBackToWorkExecutionForLineExt',
+procurementLetterNotGeneratedCase ='/api/far/procurementLetterNotGeneratedCase',
+afterWorkOrderMoveToMeterUploadSelf='/api/far/afterWorkOrderMoveToMeterUpload/LineExt/SelfExecution',
+afterWorkOrderMoveToMeterUploadOther='/api/far/afterWorkOrderMoveToMeterUpload/LineExt/OtherThanSelfExecution',
+getDataByWorkorderNoForWithoutLineExtToMtrUpload = '/api/far/getDataByWorkorderNoForWithoutLineExtToMtrUpload',
+withoutLineExt='/api/far/moveBackToMeterUpload/withoutLineExt',     
+whenDOPCategorySCW='/api/far/updateExecutionMethodToSE/whenDOPCategorySCW', 
+getDataByWorkorderNoToUpdateWorkCategoryToSCN='/api/far/getDataByWorkorderNoToUpdateWorkCategoryToSCN',
+whenSelfExecutionWorks='/api/far/updateWorkCategoryToSCN/whenSelfExecutionWorks',
+updateDesignation='/api/far/wrongAssignOfWorkorderCreation/updateDesignation',
+forSingleMeterReplacement='/api/far/moveBackToEstimation/forSingleMeterReplacement',
+fromAwaitingForPaymentsToEstimationApproval='/api/far/moveToEstimationApproval/fromAwaitingForPayments',
+getWrongWImprovementDataByWorkOrderNo='/api/far/getWrongEstimationDataByWorkorderNoForIMW',
+forWorkImprovementsToEstimate='/api/far/moveBackToEstimation/forImprovementMaintenanceWorks',
+getDataByWorkorderNoToWorkExecution='/api/far/getDataByWorkorderNoMoveBackToWorkExecutionFromAssetMappingWorkCompletionAndClosed',
+updateToWorkExecution='/api/far/putBackToWorkExecutionFromAssetMappingWorkCompletionAndClosed',
+getDateByWorkOrderNoForServiceMainEstimate='/api/far/getDataByWorkorderNoMoveBackToServiceMainEstimate',
+putBackToServiceMainEstimate='/api/far/putBackToServiceMainEstimate',
+getSmrDataByReferenceNumber='/api/far/getSmrDataByReferenceNumber',
+getNcAccountMeterMappingData='/api/far/getNcAccountMeterMappingData',
+deactiveValidatorReplicatorForNC='/api/far/deactiveValidatorReplicatorForNC',
+getMeterReplacementData='/api/far/getMeterReplacementData',
+deactiveMeterValidatorReplicatorForMeterReplacement='/api/far/deactiveMeterValidatorReplicatorForMeterReplacement',
+getDataToGenerateMeterFileForMc='/api/far/getDataToGenerateMeterFileForMc',
+deactiveUploadedMcMeterFile='/api/far/deactiveUploadedMcMeterFile',
+getDataToGenerateMeterFileForBmr='/api/far/getDataToGenerateMeterFileForBmr',
+deactiveUploadedBmrMeterFile='/api/far/deactiveUploadedBmrMeterFile',
+getDataToCallEstAlternateMatProcedure='/api/far/getDataToCallEstAlternateMatProcedure',
+callEstimationAltMatProc='/api/far/callEstimationAltMatProc',
+
+//Revenue Maintenance Estimation
+getQmmtEstimationApprovalList='/api/estimationRegistered/getQmmtEstimationApprovalList',
+getQmomEstimationApprovalList='/api/estimationRegistered/getQmomEstimationApprovalList',
+
+//Layout Validation 
+validateLayoutCase='/api/ImprovementSiteInspection/validateLayoutCase',
+newConvalidateLayoutCase='/api/ImprovementSiteInspection/validateImprovementCase',
+
+//Indent Process Validation 
+validateQuarter='/api/mmMaintenanceFrequencyMaster/validateQuarter',
+
+//To Display Exception Message at Draw Smart Meter From Outlet
+getExceptionMessage='/api/amiWebservicesLog/getExceptionMessage'
+}
+
+export interface ApiError {
+  statusCode: number;
+  error: string;
+  message: string;
+  isHandledGlobally: boolean;
+  details: any;
+  data: any;
+}
+
+export class ApiFetchError implements ApiError {
+  statusCode: number;
+  error: string;
+  message: string;
+  isHandledGlobally: boolean;
+  details: any;
+  data: any;
+  constructor(e: any) {
+    this.message = e.message;
+    this.statusCode = e.statusCode;
+    this.data = e.data || null;
+    this.isHandledGlobally = true;
+    this.error = e.message;
+  }
+}
+
+export enum RequestMethod {
+  Get = 'GET',
+  Post = 'POST',
+  Put = 'PUT',
+  Patch = 'PATCH',
+  Delete = 'DELETE',
+}

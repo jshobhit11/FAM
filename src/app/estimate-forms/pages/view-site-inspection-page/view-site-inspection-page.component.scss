@@ -1,0 +1,105 @@
+h1 {
+  color: #484848;
+  margin: unset !important;
+}
+
+section {
+  margin: 0.5rem;
+
+}
+
+.two-row-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.left-div {
+  width: 50% !important;
+}
+
+.inner-div {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+
+  h3 {
+    width: 50%;
+    margin: unset;
+    // font-size: 1.1rem;
+  }
+
+  p {
+    width: 40%;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.5rem;
+    border-radius: 10px;
+  }
+}
+
+.report-list-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inspected-checkbox {
+  display: flex;
+  gap: 1rem;
+
+  div {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  label {
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+}
+
+.radio-btns {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+
+  label {
+    font-family: "Inter";
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: #484848;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  section {
+    margin: 1rem;
+  }
+
+  .two-row-flex {
+    .left-div {
+      width: unset !important;
+    }
+
+    .inner-div {
+      h3,
+      p {
+        font-size: unset;
+      }
+    }
+  }
+
+  .report-list-content {
+    gap: 0.5rem;
+    .inner-div {
+      flex-direction: column;
+      gap: 2rem;
+
+      h3,
+      span {
+        width: 100%;
+      }
+    }
+  }
+}

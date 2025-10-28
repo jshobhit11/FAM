@@ -1,0 +1,30 @@
+<div [ngSwitch] = "action">
+    <h2 *ngSwitchCase="'approve'">Are you sure you want to Approve Power Sanction?</h2>
+    <h2 *ngSwitchCase="'submit'">Are you sure you want to Submit?</h2>
+    <h2 *ngSwitchCase="'forward'">Are you sure you want to Forward Power Sanction?</h2>
+    <h2 *ngSwitchCase="'return'">Are you sure you want to Return?</h2>
+    <h2 *ngSwitchCase="'edit'">Are you sure you want to Edit?</h2>
+    <h2 *ngSwitchCase="'sanction'">Are you sure you want to Approve the Estimation Sanction?</h2>
+    <h2 *ngSwitchCase="'approve_serve'">Are you sure you want to Approve?</h2>
+    <h2 *ngSwitchCase="'forward_serve'">Are you sure you want to Forward?</h2>
+    <h2 *ngSwitchCase="'return_serve'">Are you sure you want to Return?</h2>
+    <h2 *ngSwitchCase="'close'">Are you sure you want to close the work execution?</h2>
+    <h2 *ngSwitchCase="'estimation_approve'">Are you sure you want to Approve Estimation?</h2>
+    <h2 *ngSwitchCase="'generate_bmr'">Are you sure you want to Generate Estimation?</h2>
+    <h2 *ngSwitchCase="'i_approve'">Are you sure you want to Approve?</h2>
+    <h2 *ngSwitchCase="'re-generate'">Are you sure you want to Re-Generate Estimation?</h2>
+    <h2 *ngSwitchCase="'bmr_save'">Are you sure you want Save Estimation?</h2>
+    <h2 *ngSwitchCase="'execution_edit'">Are you sure you want to change the work execution? If you proceed, all material details need to be entered again.</h2>
+
+    <!-- filed activity confirmation -->
+    <h2 *ngSwitchCase="'return_site_inspection'">Are you sure you want return to Site Inspection.</h2>
+    <h2 *ngSwitchCase="'after-approval'">Are you sure you want Update Details.</h2>
+  </div>
+  
+  <div class="btn-box mt-3">
+    <button class="btn" mat-button mat-dialog-close="yes" >
+      Yes
+    </button>
+    <button class="btn clor" mat-button mat-dialog-close="no">No</button>
+  </div>
+  

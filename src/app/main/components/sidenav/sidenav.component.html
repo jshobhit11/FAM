@@ -1,0 +1,46 @@
+<!-- <mat-nav-list class="top">
+  <div class="logo py-3">
+    <a routerLink="/main/dashboard"><img src="assets/escoms.png" style="height: auto;" alt="" /></a>
+  </div>
+</mat-nav-list> -->
+<mat-divider></mat-divider>
+<mat-nav-list>
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="/main/dashboard" style="margin-top: 3rem">
+    <img
+          src="assets/icons/dashboard.svg" class="icon_configuration" alt="Dashboard"
+        /> Dashboard
+  </a>
+
+<form [formGroup]="searchForm">
+  <div class="text-center mt-4 p-2">
+    <select class="form-control form-select" formControlName="searchBy" (change)="onChangeSearchBy($event.target.value)">
+      <option value="" disabled>Search By</option>
+      <option value="REFERENCE_NO">Case ID</option>
+      <option value="ACCOUNT_ID">Account ID</option>
+      <option value="ESTIMATION_NO">Estimation No.</option>
+      <option value="WORKORDER_NO">Work Order No.</option>
+      <option value="INDENT_NO">Indent No.</option>
+      
+    </select>
+  </div>
+
+  <div class="text-center p-2" *ngIf="searchForm.get('searchBy').value">
+    <select class="form-control form-select" formControlName="searchType">
+      <option value="" disabled>Search Type</option>
+      <option value="EQUALS">Equals</option>
+      <option value="START_WITH">Start With</option>
+      <option value="END_WITH">End With</option>
+    </select>
+  </div>
+
+  <div class="text-center p-2" *ngIf="searchForm.get('searchBy').value">
+    <input class="form-control me-2" formControlName="accountId" type="text" [placeholder]="placeholder"
+      name="accountId" minlength="4" aria-label="Search" />
+  </div>
+  <div style="display: flex; flex-direction: row; justify-content: space-evenly; margin-top: 2rem;">
+    <button type="button" class="btn btn-light" [disabled]="!searchForm.valid" (click)="search()">
+      Search
+    </button>
+  </div>
+</form>
+</mat-nav-list>

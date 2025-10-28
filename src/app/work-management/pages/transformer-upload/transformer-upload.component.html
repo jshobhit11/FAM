@@ -1,0 +1,159 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/store-management/dashboard">Works</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Transformer Upload</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <section>
+    <form class="form" [formGroup]="transformerUploadForm">
+      <div class="page__content shadow p-3 position-relative dis-flex-colu">
+        <h2 class="title-2">Transformer /DT Meter Upload</h2>
+        <div class="store-head">
+          <div class="col-xl-10 d-flex align-items-center">
+            <div class="col-xl-6 d-flex align-items-center px-2">
+              <div class="label-container">
+                <label>File <span class="star">*</span></label>
+              </div>
+              <div class="input-container">
+                <input
+                  class="btn btn-upload"
+                  type="file"
+                  id="actual-btn"
+                  style="color: black;"
+                  (change)="onFileChange($event)"
+                  formControlName="file"
+                  accept=".xlsx,.xls,.xlsm"
+                  required
+                />
+                <mat-error *ngIf="transformerUploadForm.get('file').hasError('required') && transformerUploadForm.get('file').touched">
+                  {{ fileErrorMessage }}
+                </mat-error>
+                <mat-error *ngIf="transformerUploadForm.get('file').hasError('invalidFileType')">
+                  {{ invalidFileTypeMessage }}
+                </mat-error>
+                <mat-error *ngIf="fileSizeError">
+                  {{ fileSizeErrorMessage }}
+                </mat-error>
+              </div>
+            </div>
+            <div class="col-xl-6 d-flex align-items-center px-2">
+              <div class="label-container">
+                <label>Upload File Type <span class="star">*</span></label>
+              </div>
+              <div class="input-container">
+                <select
+                  class="form-control"
+                  name="store"
+                  [(ngModel)]="saveData.docType"
+                  formControlName="uploadfiletype"
+                  required
+                >
+                  <option disabled>-- select --</option>
+                  <option value="mtr">Transformer Sample Doc</option>
+                  <option value="meter">DT Meter Sample Doc</option>
+                </select>
+                <mat-error *ngIf="transformerUploadForm.get('uploadfiletype').hasError('required') && transformerUploadForm.get('uploadfiletype').touched">
+                  Please select this field
+                </mat-error>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-10 mb-4">
+            <p class="d-flex justify-content-end">
+              <a
+                href="assets/transformers_upload.xlsx"
+                target="_blank"
+                download="transformers_upload.xlsx"
+                class="download-link"
+                style="white-space: nowrap;"
+              >
+                (Download Transformer Sample Doc)
+              </a>
+            </p>
+            <p class="d-flex justify-content-end">
+              <a
+                href="assets/Meter_upload_by_workorder.xlsx"
+                target="_blank"
+                download="DT_Meter_Sample.xlsx"
+                class="download-link"
+                style="white-space: nowrap;"
+              >
+                (Download DT Meter Sample Doc)
+              </a>
+            </p>
+          </div>
+          <div class="txt-area col-xl-10 px-2">
+            <div class="label-container mt-2 label-column">
+              <label>Remarks <span class="star">*</span></label>
+            </div>
+            <div class="w-100">
+              <textarea
+                class="form-control-p"
+                cols="100"
+                rows="3"
+                name="remarks"
+                [(ngModel)]="saveData.Remarks"
+                formControlName="remarks"
+                required
+                appAlphaNumeric
+                [maxLength]="300" style="width:100%">
+              </textarea>
+              <mat-error *ngIf="transformerUploadForm.get('remarks').hasError('required') && transformerUploadForm.get('remarks').touched">
+                Please select this field
+              </mat-error>
+            </div>
+          </div>
+
+          <div *ngIf="showData">
+            <div *ngIf="showtable" style="overflow: auto; width: 100%; border: 2px solid #c2c2c2; margin-top: 1rem;">
+              <table class="table table-bordered text-center">
+                <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                  <tr>
+                    <th scope="col">File Name</th>
+                    <th scope="col">Record Count</th>
+                    <th scope="col">Success Count</th>
+                    <th scope="col">Failure Count</th>
+                    <th scope="col">Upload Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ showData.fileName }}</td>
+                    <td>{{ showData.RecordCount }}</td>
+                    <td>{{ showData.SuccessCount }}</td>
+                    <td>
+                      <span *ngIf="showData.FailureCount == 0">{{ showData.FailureCount }}</span>
+                      <a style="cursor: pointer" *ngIf="showData.FailureCount > 0" (click)="downloadExcelFile()">{{ showData.FailureCount }}</a>
+                    </td>
+                    <td>{{ showData.uploadDate }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+
+          <div class="btn-box mt-4 pb-4">
+            <button [disabled]="isLoading" type="button" class="btn btn-primary btn-md" (click)="openConfirmationpopupDialog()">
+              {{ uploadButtonText }}
+            </button>
+            <button type="button" class="btn clor btn-primary btn-md" (click)="reloadPage()">Reload</button>
+          </div>
+          <div *ngIf="uploadButtonText" [ngClass]="{'text-success': uploadButtonText === 'Upload Success', 'text-danger': uploadButtonText === 'Upload Failure'}" class="mt-3">
+            <p *ngIf="uploadButtonText === 'Upload Success'">Upload was successful! Your file has been processed successfully, Please check the Downloads.</p>
+            <p *ngIf="uploadButtonText === 'Upload Failure'">There was an issue with the upload. Please check your download folder for Excel data corrections.</p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+</div>

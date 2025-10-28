@@ -1,0 +1,54 @@
+section {
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  h1 {
+    color: #484848;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  
+  .content-fields {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .two-row-fields {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+  }
+  
+  .btn-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  
+  .clor {
+    background-color: white;
+    color: #4472c4;
+    border: 2px solid #4472c4;
+  
+    &:hover {
+      background-color: #d8d7d7;
+      color: #4472c4;
+    }
+  }
+  
+  @media only screen and (max-width: 1000px) {
+    section {
+      padding: unset;
+    }
+  
+    .content-fields {
+      flex-direction: column;
+    }
+  
+    .two-row-fields {
+      flex-direction: column;
+    }
+  }
+  

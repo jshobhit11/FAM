@@ -1,0 +1,202 @@
+<div *ngIf="showMainTable">
+  <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+    <h2 class="title-2"> Add SR/RC Rates</h2>
+    <div class="input-controlsleft col-xl-6 input-control block-div" style="display: flex; margin-top: 10px">
+      <label for="discom" style="display: inline-block; margin-right: 1rem">Discom</label>
+      <select name="discom" id="discomSelect" class="form-select" style="flex: 1; margin-left: 120px"  [(ngModel)]="selectedDiscomCode" (change)="onDiscomSelectChange($event)">
+        <ng-container *ngFor="let discom of DicomData">
+          <option [value]="discom.discomCode" *ngIf="discom.discomName !== 'null'">{{ discom.discomName }}</option>
+        </ng-container>
+      </select>
+    </div>
+    <div class="col-xl-6 input-control block-div" style="display: flex; margin-top: 10px">
+      <div class="input-controlsleft" style="flex: 1">
+        <label for="rateType" style="display: inline-block; margin-right: 1rem">Rate Type</label>
+        <select id="rateType" class="form-select" style="flex: 1" (click)="loadRateTypeOptions()"
+          [(ngModel)]="selectedRateType" (change)="onRateTypeChange()">
+          <ng-container *ngIf="showRateTypeOptions">
+            <option *ngFor="let rateType of rateTypeOptions" [value]="rateType">
+              {{ rateType }}
+            </option>
+          </ng-container>
+        </select>
+      </div>
+    </div>
+    <div class="col-xl-6 input-control block-div" style="display: flex; margin-top: 10px">
+      <div class="input-controlsvendor" style="flex: 1" *ngIf="selectedRateType !== 'SR'">
+        <label for="rcvendorNameSelect" style="display: inline-block; margin-right: 1rem">RC Vendor Name</label>
+        <select id="rcvendorNameSelect" class="form-select" style="flex: 1" (click)="showRcVendorNameOptions = true"
+          (change)="onVendorNameSelected(selectedVendorName)" [(ngModel)]="rcvendorName"
+          [disabled]="selectedRateType === 'SR'">
+          <ng-container *ngIf="showRcVendorNameOptions">
+            <option *ngFor="let vendor of vendorData" [ngValue]="vendor.vendorId">
+              {{vendor.rcCode}}-{{ vendor.vendorOrganizationName }}
+            </option>
+          </ng-container>
+        </select>
+      </div>
+    </div>
+
+    <div class="center-container">
+      <div class="col mt-4 disp-flex">
+        <label class="form-label" for="yes_or_no_upload" style="display: inline-block; margin-right: 1rem;">Do you want
+          to upload materials?</label>
+        <input type="radio" id="yes_of_is_you_want_to_upload_meters" name="isYouWantToUploadMeters"
+          [(ngModel)]="isYouWantToUploadMeters" value="1" (click)="showBox()" />
+        <label for="yes_of_is_you_want_to_upload_meters"
+          style="display: inline-block; margin-right: 1rem;padding-left: 5px;"> Yes</label>
+        <input type="radio" id="no_of_is_you_want_to_upload_meters" name="isYouWantToUploadMeters"
+          [(ngModel)]="isYouWantToUploadMeters" value="0" (click)="hideBox()" />
+        <label for="no_of_is_you_want_to_upload_meters" style="display: inline-block;padding-left: 5px;"> No</label>
+      </div>
+    </div>
+
+    <div *ngIf="isYouWantToUploadMeters === '1'">
+      <div class="btn-box mt-4" style="flex-direction: column" [ngStyle]="{ display: showBtn ? 'none' : '' }">
+        <a download target="_blank" download="Material_Labour_Data.xlsx" (click)="downloadExcelFile()" style="
+          font-size: 1rem;
+          font-weight: 600;
+          color: #44c477;
+          text-decoration: none;
+          cursor: pointer; /* Add this line to set the cursor style */
+        ">
+          Click here to Download Upload materials sample Document &#9660;
+        </a>
+        <div style="
+          display: flex;
+          gap: 1rem;
+          align-items: baseline;
+          flex-wrap: wrap;
+        ">
+          <input class="btn btn-upload" type="file" id="actual-btn" (change)="onFileChange($event)" />
+          <button class="btn btn-md" (click)="openConfirmationpopupDialog()">Upload</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isYouWantToUploadMeters === '0' && uniqueMaterialTypes.length > 0">
+      <div class="col-xl-6 input-control block-div">
+        <h2>Material Type Name</h2>
+      </div>
+
+      <div class="mat-tab-container" *ngIf="uniqueMaterialTypes.length > 0">
+        <mat-tab-group [selectedIndex]="selectedTabIndex" (selectedTabChange)="onTabSelected($event)">
+          <mat-tab class="custom-tab-header" *ngFor="let materialTypeName of uniqueMaterialTypes; let i = index"
+            [label]="getTabLabel(materialTypeName)">
+            <ng-template matTabLabel>
+              {{ materialTypeName }} ({{
+              visibleMaterialCounts[materialTypeName] || 0
+              }}/{{ getTotalCount(materialTypeName) }})
+            </ng-template>
+            <ng-template matTabContent>
+              <div class="material-type-label">
+                &nbsp;{{ materialTypeName }}
+                <span class="visible-count">{{
+                  visibleMaterialCounts[materialTypeName]
+                  }}</span>
+              </div>
+              <table class="table table-bordered text-center">
+                <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                  <tr>
+                    <th scope="col">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="flexCheckDefault" (change)="
+                          selectAllCheckboxByMaterialType(
+                            $event.target.checked,
+                            materialTypeName
+                          )
+                        " />
+                        <label class="form-check-label" for="flexCheckDefault">Select All</label>
+                      </div>
+                    </th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Material Code</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Unit</th>
+                    <th scope="col">Rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="
+                    let row of getTableDataByMaterialType(materialTypeName)
+                  ">
+                    <td>
+                      <div class="form-check">
+                        <input class="form-check-input" style="
+                          width: 1rem !important;
+                          height: 1rem !important;
+                          min-width: unset !important;
+                          margin-left: 30px;
+                        " type="checkbox" [(ngModel)]="row.selected" (change)="onSelectField(row.mlName)" />
+                      </div>
+                    </td>
+                    <td>{{ row.mlType }}</td>
+                    <td>{{ row.mlCode }}</td>
+                    <td style="text-align: left">{{ row.mlName }}</td>
+                    <td>{{ row.mlUnit }}</td>
+                    <td>
+                      <input class="form-control" type="text" [(ngModel)]="row.rate"
+                        (input)="validateRateInput($event)" />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+        <div class="btn-box">
+          <button type="button" class="btn btn-primary btn-md" id="next-btn" (click)="onNext()">
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isYouWantToUploadMeters === '0' && uniqueMaterialTypes.length > 0">
+      <div class="btn-box mt-4">
+        <button *ngIf="!showPreviewTable" type="button" class="btn btn-primary btn-md" (click)="togglePreviewMode()"
+          [disabled]="hasMissingRates() || noItemsSelected || isSnackbarDisplayed">
+          Preview
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="showPreviewTable">
+  <h2><strong>Preview</strong></h2>
+  <table class="table table-bordered text-center">
+    <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Type</th>
+        <th>Material Code</th>
+        <th>Description</th>
+        <th>Unit</th>
+        <th>Rate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let typeGroup of selectedRowsForPreview">
+        <tr>
+          <strong>{{ typeGroup.materialTypeName }}</strong>
+        </tr>
+        <tr *ngFor="let row of typeGroup.rows; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ row.mlType }}</td>
+          <td>{{ row.mlCode }}</td>
+          <td style="text-align: left">{{ row.mlName }}</td>
+          <td>{{ row.mlUnit }}</td>
+          <td>{{ row.rate }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  <div class="btn-box mt-4">
+    <button *ngIf="showPreviewTable && !isSnackbarDisplayed" type="button" class="btn btn-primary btn-lg"
+      (click)="onBackToMain()" [disabled]="isSnackbarDisplayed">
+      Back
+    </button>
+    <button type="button" class="btn btn-primary btn-lg" (click)="onAddRcRateType()">
+      Save
+    </button>
+  </div>
+</div>

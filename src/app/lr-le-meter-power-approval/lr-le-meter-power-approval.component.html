@@ -1,0 +1,477 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/main/dashboard">Dashboard </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Load Power Sanction Approval </a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+
+  <section *ngIf="data && data.serviceRegistration">
+    <form class="form" id="printForm">
+      <div class="page__content shadow p-3 position-relative dis-flex-colu">
+        <h2 class="title-2">Load Power Sanction Approval Form </h2>
+
+        <div class="two-row-grid mt-4">
+          <div class="left-div">
+            <div class="inner-div">
+              <label>Account ID</label>
+              <p>{{ data.serviceRegistration.accountId }}</p>
+            </div>
+            <div class="inner-div">
+              <label>Name & Address</label>
+              <p>
+                {{ data.serviceRegistration.applicantName }} ,
+                {{ data.serviceRegistration.address }}
+              </p>
+            </div>
+            <div class="inner-div">
+              <label>Application Category</label>
+              <p>{{ data.serviceRegistration.categoryCode }}</p>
+            </div>
+            <div class="inner-div">
+              <label>Email ID</label>
+              <p>
+                {{
+                  data.serviceRegistration.email !== "null"
+                    ? data.serviceRegistration.email
+                    : "-"
+                }}
+              </p>
+            </div>
+            <div class="inner-div">
+              <label>Contact No.</label>
+              <p>
+                {{
+                  data.serviceRegistration.mobile !== "null"
+                    ? data.serviceRegistration.mobile
+                    : "-"
+                }}
+              </p>
+            </div>
+            <div class="inner-div">
+              <label>Applicant Type</label>
+              <p>
+                {{
+                  data.serviceRegistration.applicantType === "null"
+                    ? "-"
+                    : data.serviceRegistration.applicantType
+                }}
+              </p>
+            </div>
+            <div class="inner-div">
+              <label>Application Type</label>
+              <p>{{ data.serviceRegistration.connectionType }}</p>
+            </div>
+            <div class="inner-div">
+              <label>Tariff Classification & Nature of Services</label>
+              <p>
+                {{
+                  data.serviceRegistration.tariff === "null"
+                    ? "-"
+                    : data.serviceRegistration.tariff
+                }}
+              </p>
+            </div>
+          </div>
+          <div>
+            <div class="inner-div">
+              <label>Applied Load (KW)</label>
+              <p>{{ data.serviceRegistration.loadKw }}</p>
+            </div>
+            <div class="inner-div">
+              <label>Applied Load (HP)</label>
+              <p>{{ data.serviceRegistration.loadHp }}</p>
+            </div>
+            <div class="inner-div">
+              <label>Total Load / Phase</label>
+              <p>
+                {{ data.serviceRegistration.totalContractedLoad }}
+                {{ data.serviceRegistration.loadUnit }} /
+                {{ data.serviceRegistration.phase }} Phase
+              </p>
+            </div>
+            <div class="inner-div">
+              <label>Location Type</label>
+              <p>{{ data.serviceRegistration.officeName }}</p>
+            </div>
+            <div class="inner-div">
+              <label>Adjacent Account ID</label>
+              <p>{{ data.serviceRegistration.serviceRegistrationId }}</p>
+            </div>
+            <div class="inner-div">
+              <label>Buildup Area :</label>
+              <p>
+                {{
+                  data.serviceRegistration.buildupAreaSize === "null"
+                    ? 0
+                    : data.serviceRegistration.buildupAreaSize
+                }}
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <h2>Load Details</h2>
+
+        <div class="two-row-grid mt-4">
+          <div class="left-div">
+            <div *ngIf="data?.serviceRegistration">
+              <!-- Existing Load KW -->
+              <div class="inner-div" *ngIf="data?.serviceRegistration?.existingLoadUnit === 'KW'">
+                <label>Existing Load (KW)</label>
+                <p>{{ data?.serviceRegistration?.existingLoadKw }}</p>
+                <label><strong>Existing Total Load {{ data?.serviceRegistration?.existingLoadUnit }}</strong></label>
+                <p><strong>{{ data?.serviceRegistration?.existingTotalLoad }}</strong></p>
+              </div>
+        
+              <!-- Existing Load HP -->
+              <div class="inner-div" *ngIf="data?.serviceRegistration?.existingLoadUnit === 'HP'">
+                <label><strong>Existing Total Load {{ data?.serviceRegistration?.existingLoadUnit }}</strong></label>
+                <p><strong>{{ data?.serviceRegistration?.existingTotalLoad }}</strong></p>
+              </div>
+        
+              <!-- Existing Load KVA -->
+              <div class="inner-div" *ngIf="data?.serviceRegistration?.existingLoadUnit === 'KVA'">
+                <label><strong>Existing Total Load {{ data?.serviceRegistration?.existingLoadUnit }}</strong></label>
+                <p><strong>{{ data?.serviceRegistration?.existingTotalLoad }}</strong></p>
+              </div>
+        
+              <!-- Additional and Reduction Load for KW -->
+              <div class="inner-div" *ngIf="data?.serviceRegistration?.existingLoadUnit === 'KW'">
+                <ng-container *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LE'; else checkReductionLoadKw">
+                  <label>Additional Load (KW)</label>
+                  <p>{{ data?.serviceRegistration?.newLoadKw }}</p>
+                  <label><strong>Additional Total Load {{ data?.serviceRegistration?.existingLoadUnit }}</strong></label>
+                  <p><strong>{{ data?.serviceRegistration?.existingTotalLoad }}</strong></p>
+                </ng-container>
+        
+                <ng-template #checkReductionLoadKw>
+                  <ng-container *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LR'; else defaultLoadKw">
+                    <label>Reduction Load (KW)</label>
+                    <p>{{ data?.serviceRegistration?.newLoadKw }}</p>
+                    <label><strong>Reduction Total Load {{ data?.serviceRegistration?.existingLoadUnit }}</strong></label>
+                    <p><strong>{{ data?.serviceRegistration?.existingTotalLoad }}</strong></p>
+                  </ng-container>
+                </ng-template>
+        
+                <ng-template #defaultLoadKw>
+                  <label>New Load (KW)</label>
+                  <p>{{ data?.serviceRegistration?.newLoadKw }}</p>
+                  <label><strong>New Total Load {{ data?.serviceRegistration?.existingLoadUnit }}</strong></label>
+                  <p><strong>{{ data?.serviceRegistration?.existingTotalLoad }}</strong></p>
+                </ng-template>
+              </div>
+        
+              <!-- Sanction Load KW -->
+              <div class="inner-div" *ngIf="data?.serviceRegistration?.loadUnit === 'KW'">
+                <label>Sanction Load (KW)</label>
+                <p>{{ data?.serviceRegistration?.loadKw }}</p>
+                <label><strong>Sanction Total Load {{data?.serviceRegistration?.loadUnit}}</strong></label>
+                <p><strong>{{ data?.serviceRegistration?.totalContractedLoad }}</strong></p>
+              </div>
+        
+              <!-- Sanction Load HP -->
+              <div class="inner-div" *ngIf="data?.serviceRegistration?.loadUnit === 'HP'">
+                <label><strong>Sanction Total Load {{data?.serviceRegistration?.loadUnit}}</strong></label>
+                <p><strong>{{ data?.serviceRegistration?.totalContractedLoad }}</strong></p>
+              </div>
+        
+              <!-- Sanction Load KVA -->
+              <div class="inner-div" *ngIf="data?.serviceRegistration?.loadUnit === 'KVA'">
+                <label>Sanction Total Load {{data?.serviceRegistration?.loadUnit}}</label>
+                <p>{{ data?.serviceRegistration?.totalContractedLoad }}</p>
+              </div>
+            </div>
+          </div>
+        
+          <div class="right-div">
+            <!-- Existing Load HP -->
+            <div class="inner-div" *ngIf="data?.serviceRegistration?.existingLoadUnit === 'KW'">
+              <label>Existing Load HP</label>
+              <p>{{ data?.serviceRegistration?.existingLoadHp }}</p>
+            </div>
+            <div style="margin-bottom:50px;"></div>
+            <!-- Additional and Reduction Load for HP -->
+            <div *ngIf="data?.serviceRegistration?.existingLoadUnit === 'KW'">
+              <ng-container *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LE'; else checkReductionLoadHpRight">
+                <div class="inner-div">
+                  <label>Additional Load HP</label>
+                  <p>{{ data?.serviceRegistration?.newLoadHp }}</p>
+                </div>
+              </ng-container>
+        
+              <ng-template #checkReductionLoadHpRight>
+                <ng-container *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LR'; else defaultLoadHpRight">
+                  <div class="inner-div">
+                    <label>Reduction Load HP</label>
+                    <p>{{ data?.serviceRegistration?.newLoadHp }}</p>
+                  </div>
+                </ng-container>
+              </ng-template>
+        
+              <ng-template #defaultLoadHpRight>
+                <div class="inner-div">
+                  <label>New Load HP</label>
+                  <p>{{ data?.serviceRegistration?.newLoadHp }}</p>
+                </div>
+              </ng-template>
+            </div>
+            <div style="margin-bottom:50px;"></div>
+            <!-- Sanction Load HP -->
+            <div *ngIf="data?.serviceRegistration?.loadUnit === 'KW'">
+              <div class="inner-div">
+                <label>Sanction Load HP</label>
+                <p>{{ data?.serviceRegistration?.loadHp }}</p>
+              </div>
+            </div>
+            <div *ngIf="data?.serviceRegistration?.loadUnit === 'HP'">
+              <div class="inner-div">
+                <label>Sanction Load HP</label>
+                <p>{{ data?.serviceRegistration?.loadHp }}</p>
+              </div>
+            </div>
+            <div *ngIf="data?.serviceRegistration?.loadUnit === 'KVA'">
+              <div class="inner-div">
+                <label>Sanction Load HP</label>
+                <p>{{ data?.serviceRegistration?.loadHp }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+                   
+        <div
+          class="heading"
+          style="
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 0 2rem;
+          "
+        >
+        <h4>Approve/Return/Forward</h4>
+        </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0.9rem;
+          "
+        >
+          <h6 style="font-size: 0.9rem; font-weight: 600">
+            {{ displayText }}
+          </h6>
+        </div>
+
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            padding: 0.9rem;
+          "
+        >
+          <label class="sm" *ngIf="isApproved">
+            <input
+              [value]="1"
+              [(ngModel)]="sh"
+              name="sh"
+              type="radio"
+              [checked]="isChecked"
+            />
+            Approve
+          </label>
+          <label class="sm" *ngIf="isDivisionalBudgetSCValid">
+            <!-- <label class="sm"> -->
+            <input
+              [value]="2"
+              [(ngModel)]="sh"
+              name="sh"
+              type="radio"
+              (change)="radioType('forward')"
+              [checked]="!isChecked"
+            />
+            Forward
+          </label>
+          <label class="sm" *ngIf="!isAE">
+            <input
+              [value]="3"
+              [(ngModel)]="sh"
+              name="sh"
+              type="radio"
+              [checked]="!isChecked"
+              (change)="radioType('return')"
+            />
+            Return
+          </label>
+        </div>
+
+        <div class="text-center purple" *ngIf="sh == 1 && isApproved">
+          <div class="container text-center">
+            <div class="row">
+              <div
+                class="col"
+                style="display: flex; flex-direction: column; gap: 2rem"
+              >
+                <h4>Approve By</h4>
+                <h4>Approve Date</h4>
+                <h4>Remarks<span class="star"> *</span></h4>
+              </div>
+              <div
+                class="col"
+                style="display: flex; flex-direction: column; gap: 2rem"
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  style="width: 80%"
+                  id=""
+                  name="forwardBy"
+                  [(ngModel)]="forwardData.forwardBy"
+                />
+                <input
+                  type="date"
+                  class="form-control"
+                  style="width: 80%"
+                  id=""
+                  name="forwardDate"
+                  [(ngModel)]="forwardData.forwardDate"
+                />
+                <textarea
+                  type="text"
+                  class="form-control"
+                  style="width: 80%"
+                  id=""
+                  name="Remarks"
+                  [(ngModel)]="forwardData.Remarks"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="radio-button">
+            <button
+            [disabled]="isLoading" 
+              class="btn btn-md radio-button"
+              style="background-color: #4472c4; color: white"
+              (click)="openApproveDialog()"
+            >
+              Approve
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="sh == 2">
+          <div class="container text-center">
+            <div class="row">
+              <!-- Labels Column -->
+              <div class="col" style="display: flex; flex-direction: column; gap: 2rem">
+                <h4>Forwarded By</h4>
+                <h4>Forwarded To</h4>
+                <h4>Forwarded Date</h4>
+                <h4>Remarks<span class="star"> *</span></h4>
+              </div>
+        
+              <!-- Input Column -->
+              <div class="col" style="display: flex; flex-direction: column; gap: 2rem">
+                <input type="text" class="form-control" style="width: 80%" name="forwardBy" [(ngModel)]="forwardData.forwardBy" />
+                
+                <!-- Forward Control Select -->
+                <select class="form-select" style="width: 80%" [formControl]="forwardControl">
+                  <option value="" disabled>Select</option>
+                  <option *ngFor="let optionItem of forwardData.forwardTo" [value]="optionItem.designationCode">
+                    {{ optionItem.designationCode }}
+                  </option>
+                </select>
+                
+                <input type="date" class="form-control" style="width: 80%" name="forwardDate" [(ngModel)]="forwardData.forwardDate" />
+                <textarea class="form-control" style="width: 80%" name="Remarks" [(ngModel)]="forwardData.Remarks"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="radio-button">
+            <button [disabled]="isLoading" class="btn btn-md" style="background-color: #4472c4; color: white" (click)="openForwardDialog()">
+              Forward
+            </button>
+          </div>
+        </div>
+        
+        <div *ngIf="sh == 3">
+          <div class="container text-center">
+            <div class="row">
+              <!-- Labels Column -->
+              <div class="col" style="display: flex; flex-direction: column; gap: 2rem">
+                <h4>Return By</h4>
+                <h4>Return To</h4>
+                <h4>Return Date</h4>
+                <h4>Remarks<span class="star"> *</span></h4>
+              </div>
+        
+              <!-- Input Column -->
+              <div class="col" style="display: flex; flex-direction: column; gap: 2rem">
+                <input type="text" class="form-control" style="width: 80%" name="returnBy" [(ngModel)]="forwardData.forwardBy" />
+                
+                <!-- Return Control Select -->
+                <select class="form-select" style="width: 80%" [formControl]="returnControl">
+                  <option value="" disabled>Select</option>
+                  <option *ngFor="let optionItem of forwardData.forwardTo" [value]="optionItem.designationCode">
+                    {{ optionItem.designationCode }}
+                  </option>
+                </select>
+                
+                <input type="date" class="form-control" style="width: 80%" name="returnDate" [(ngModel)]="forwardData.forwardDate" />
+                <textarea class="form-control" style="width: 80%" name="remarks" [(ngModel)]="forwardData.Remarks"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="radio-button">
+            <button class="btn btn-md" style="background-color: #4472c4; color: white" (click)="openReturnDialog()">
+              Return
+            </button>
+          </div>
+        </div>
+        
+
+        <div *ngIf="sh == 4">
+          <div class="container text-center">
+            <div class="row">
+              <div
+                class="col"
+                style="display: flex; flex-direction: column; gap: 2rem"
+              >
+                <!-- <h4><b>Approve Date</b></h4> -->
+              </div>
+              <div
+                class="col"
+                style="display: flex; flex-direction: column; gap: 2rem"
+              >
+                <!-- <input
+                type="text"
+                class="form-control"
+                style="width: 80%"
+                id=""
+                placeholder="09-09-2023"
+              /> -->
+              </div>
+            </div>
+          </div>
+          <!-- <div class="radio-button">
+          <button class="btn btn-md radio-button" (click)="moveToEstimateForms()">
+            Edit
+          </button>
+        </div> -->
+        </div>
+      </div>
+    </form>
+  </section>
+</div>

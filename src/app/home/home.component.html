@@ -1,0 +1,81 @@
+<section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/main/dashboard">Dashboard </a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '1'">
+            <a class="bg_li_gr">Site Inspection </a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '2'">
+            <a class="bg_li_gr">Estimation</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '5'">
+            <a class="bg_li_gr">Estimate Approval </a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '3'">
+            <a class="bg_li_gr">Power Sanction Approval </a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '4'">
+            <a class="bg_li_gr">Awaiting For Payments</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '6'">
+            <a class="bg_li_gr">Service Line Estimate</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '7'">
+            <a class="bg_li_gr">Service Line Estimate Approval</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '8'">
+            <a class="bg_li_gr">Work Order Creation</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '9'">
+            <a class="bg_li_gr">Work Order Approval</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '10'">
+            <a class="bg_li_gr">Permit To Work Request</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '11'">
+            <a class="bg_li_gr">Line Clearance</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '12'">
+            <a class="bg_li_gr">Work Award Approval</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '13'">
+            <a class="bg_li_gr">Assign Crew</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '14'">
+            <a class="bg_li_gr">Material Inspection</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '15'">
+            <a class="bg_li_gr">Meter Upload</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '16'">
+            <a class="bg_li_gr">Work Execution</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '17'">
+            <a class="bg_li_gr">Account Id And Meter Mapping</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '18'">
+            <a class="bg_li_gr">Asset BOM Mapping</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '19'">
+            <a class="bg_li_gr">Work Completion</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '20'">
+            <a class="bg_li_gr">Work Order Closed</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '21'">
+            <a class="bg_li_gr">Waiting For Work Order Generation</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '43'">
+            <a class="bg_li_gr">Estimate Sanction</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <app-filter-table
+  headingName="List Summary" [isOffice]="true" titleName="main"
+  [cols]="cols" [rows]="rows" [data]="rows" [filterFields]="filterFields" [loading]="true">
+  </app-filter-table>

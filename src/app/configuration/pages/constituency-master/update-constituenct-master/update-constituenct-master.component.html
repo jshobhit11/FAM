@@ -1,0 +1,51 @@
+<section>
+  <form class="form" [formGroup]="constituencyTypeForm">
+  <h1 mat-dialog-title>Update Constituency Master</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field appearance="fill">
+        <mat-label>Constituency Type</mat-label>
+          <mat-select formControlName="constituencyType" required>
+          <mat-option *ngFor="let main of constituencyTypes" [value]="main" [maxLength]="10">
+            {{main}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="constituencyTypeForm.get('constituencyType').hasError('required') && constituencyTypeForm.get('constituencyType').touched">
+          Please select in this field
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>District Name</mat-label>
+          <mat-select formControlName="districtId" required>
+          <mat-option *ngFor="let main of districtData" [value]="main.districtId" [maxLength]="50">
+          {{main.districtName}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="constituencyTypeForm.get('districtId').hasError('required') && constituencyTypeForm.get('districtId').touched">
+          Please select in this field
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Constituency Name</mat-label>
+        <input matInput placeholder="Ex. Conductor" formControlName="constituencyName" [maxLength]="50" required/>
+        <mat-error *ngIf="constituencyTypeForm.get('constituencyName').hasError('required') && constituencyTypeForm.get('constituencyName').touched">
+          Please enter in this field.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Constituency Code</mat-label>
+        <input matInput placeholder="Ex. Conductor" formControlName="constituencyCode" [maxLength]="50" required/>
+        <mat-error *ngIf="constituencyTypeForm.get('constituencyCode').hasError('required') && constituencyTypeForm.get('constituencyCode').touched">
+          Please enter in this field.
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onConstituentMaster()" [disabled]="notificationRef">Update</button>
+    <button class="btn clor" mat-button mat-dialog-close [disabled]="notificationRef">Close</button>
+  </div>
+  </form>
+</section>

@@ -1,0 +1,46 @@
+<section>
+  <form class="form" [formGroup]="specialLocalityForm">
+  <h1 mat-dialog-title>Update Special Locality Allowance Master</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field appearance="fill">
+        <mat-label>District Name</mat-label>
+        <mat-select formControlName="district" required>
+          <mat-option *ngFor="let main of districtData" [value]="main.districtId">
+            {{main.districtName}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="specialLocalityForm.get('district').invalid && specialLocalityForm.get('district').touched">
+          Please select in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label> Percentage*</mat-label>
+        <input matInput placeholder="Ex. 234"
+        formControlName="percentage" appAlphaNumeric [maxLength]="75" required />
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="modal-input-control">
+  <div class="col-sm-6">
+    Office Name<br>
+    <div class="card flex justify-content-center">
+        <form [formGroup]="treeForm">
+            <p-treeSelect class="md:w-20rem w-full"
+            containerStyleClass="w-full"
+            formControlName="selectedNodes"
+            (onNodeSelect)="nodeSelect($event.node)"
+            selectionMode="single"
+            (onNodeUnselect)="nodeUnselect()"
+            [(ngModel)]="selectedOfficeNode"
+            [options]="nodes"
+        > </p-treeSelect>
+        </form>
+      </div>
+  </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onSpecialLocalityUpdate()" [disabled]="notificationRef">Update</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+  </form>
+</section>

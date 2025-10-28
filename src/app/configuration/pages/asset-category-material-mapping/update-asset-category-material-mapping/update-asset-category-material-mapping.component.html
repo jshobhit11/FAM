@@ -1,0 +1,35 @@
+<section>
+  <form [formGroup]="assestCategoryForm">
+    <h1 mat-dialog-title>Update Asset Category Material Mapping</h1>
+    <div class="content-fields mt-4" mat-dialog-content style="flex-direction: column;">
+      <div class="modal-input-control">
+        <mat-form-field appearance="fill">
+          <mat-label>Asset Category Name</mat-label>
+          <mat-select formControlName="AssetCategoryMasterId">
+            <mat-option *ngFor="let main of assetCategoryData" [value]="main.amAssetCategoryMasterId">
+              {{main.assetCategoryName}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="assestCategoryForm.get('AssetCategoryMasterId').hasError('required') && assestCategoryForm.get('AssetCategoryMasterId').touched">
+            Please select in this field
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Material Name</mat-label>
+          <mat-select formControlName="materialsLabourMasterId">
+            <mat-option *ngFor= "let main of materialsLabourData" [value]="main.mlCode + '-' + main.mlName">
+              {{ main.mlCode }} - {{ main.mlName }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="assestCategoryForm.get('materialsLabourMasterId').hasError('required') && assestCategoryForm.get('materialsLabourMasterId').touched">
+            Please select in this field
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="onAssetCatMatUpdate()">Update</button>
+      <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+  </form>
+</section>

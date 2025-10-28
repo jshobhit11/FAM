@@ -1,0 +1,76 @@
+<div class="box">
+  <div>
+    <p class="quantity highlighted">Actual Quantity ({{ quantityCount }})</p>
+    <button mat-button mat-dialog-close class="cross-button">
+      <img src="assets/cross-icon.png" alt="" class="cross-icon" />
+    </button>
+  </div>
+  <div class="content mt-4" mat-dialog-content>
+    <table class="table text-center" style="width: 100%">
+      <thead>
+        <tr>
+          <th scope="col">Material Code</th>
+          <th scope="col">Part</th>
+          <th scope="col">Serial No</th>
+          <th scope="col">Badge Number</th>
+          <th scope="col">Manufacture</th>
+          <th scope="col">Add</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ materialCode }}</td>
+          <td>{{ workPart }}</td>
+          <td>
+            <mat-form-field appearance="fill">
+              <mat-select placeholder="Select Serial No" (selectionChange)="onSerialNoChange($event.value)">
+                <mat-option *ngFor="let serialNo of availableSerialNumbers" [value]="serialNo">
+                  {{ serialNo }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>          
+          <td>{{ selectedBadgeNumber }}</td>
+          <td>{{ selectedManufacture }}</td>
+          <td>
+            <button mat-icon-button (click)="addDataToAddedData()" [disabled]="addedData.length >= quantityCount">
+              <mat-icon>add</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="addedData.length > 0">
+      <h3>Added Data</h3>
+      <table class="table text-center" style="width: 100%">
+        <thead>
+          <tr>
+            <th scope="col">Material Code</th>
+            <th scope="col">Part</th>
+            <th scope="col">Serial No</th>
+            <th scope="col">Badge Number</th>
+            <th scope="col">Manufacture</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of addedData; let i = index">
+            <td>{{ materialCode }}</td>
+            <td>{{ workPart }}</td>
+            <td>{{ item.serialNo }}</td>
+            <td>{{ item.badgeNumber }}</td>
+            <td>{{ item.manufacture }}</td>
+            <td>
+              <button mat-icon-button color="warn" (click)="removeData(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <mat-dialog-actions class="actions">
+    <button class="btn clor" (click)="onApply()" [disabled]="addedData.length != quantityCount">Save</button>
+  </mat-dialog-actions>
+</div>

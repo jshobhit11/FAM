@@ -1,0 +1,43 @@
+<div class="page-1">
+        <ul>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a routerLink="/work-management/dashboard">Works</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a style="color: lightslategray">Material Indent Request Genarated</a>
+              </li>
+            </ol>
+          </nav>
+        </ul>
+    <section class="page__content p-3 p20 shadow dis-fl dis-fl2 position-relative dis-flex-colu" style="background-color: white;">
+    <h2 class="heading">Material Indent Request Generated</h2>
+    
+    <div class="work-order">
+      <table class="my-scrollable-table">
+        <tr>
+          <th scope="col">Indent No.</th>
+          <th scope="col">Indent Date</th>
+          <th scope="col">Download PDF</th>
+        </tr>
+        <ng-container>
+          <tr>
+            <td>{{ materialsIndentNo }}</td>
+            <td>{{ materialsIndentDate | date: 'yyyy-MM-dd' }}</td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-primary btn-md"
+                style="background-color: #4472c4;"
+                (click)="generateIndentReport(wmMaterialsIndentId)"
+              >
+                Download
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </table>
+    </div>
+    </section>
+    </div>

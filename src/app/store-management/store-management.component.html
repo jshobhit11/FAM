@@ -1,0 +1,19 @@
+<mat-drawer-container>
+  <mat-drawer mode="side" [opened]="sideBarOpen">
+    <div style="display: flex; justify-content: flex-end; padding: 10px;">
+      <button mat-icon-button (click)="sideBarToggler()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <app-menubar></app-menubar>
+    <app-store-management-sidenav></app-store-management-sidenav>
+  </mat-drawer>
+  <mat-drawer-content>
+    <app-header (toggleSidebarForMe)="sideBarToggler()"></app-header>
+    <!-- <app-menubar></app-menubar> -->
+    <router-outlet>
+    </router-outlet>
+    <app-footer class="mt-auto"></app-footer>
+  </mat-drawer-content>
+</mat-drawer-container>

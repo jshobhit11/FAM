@@ -1,0 +1,85 @@
+section {
+  margin: 0.5rem;
+  
+}
+h1 {
+  color: #484848;
+  margin: unset !important;
+}
+
+.two-row-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 4rem;
+
+  .inner-div {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: baseline;
+
+    label {
+      margin: unset;
+      
+    }
+
+    .form-control {
+      padding: 0.5rem;
+      border: 1px solid #939393;
+      background-color: #f5f5f5;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .form-select {
+      cursor: pointer;
+    }
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  section {
+    margin: 1rem;
+  }
+
+  .two-row-grid {
+    grid-template-columns: 1fr;
+
+    .inner-div {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+
+      label,
+      input,
+      p,
+      select {
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .txt-area {
+    flex-direction: column;
+
+    textarea {
+      width: 100% !important;
+    }
+  }
+}
+.work-description {
+  display: flex;
+  align-items: baseline;
+}
+
+.description-label {
+  flex-shrink: 0;
+  margin-right: 1rem;
+  font-size: 0.9rem; 
+  font-weight: 500;
+ margin-top: -1rem;
+}
+
+.description-content {
+ 
+  margin-left: 7.8rem;
+}

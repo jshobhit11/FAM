@@ -1,0 +1,234 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/dashboard">Works</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/acknowledgment-verification"
+              >Acknowledgement Pricing</a
+            >
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray"
+              >Acknowledgement Pricing Details</a
+            >
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <section>
+    <form class="form">
+      <div class="page__content shadow p-3 position-relative dis-flex-colu">
+        <h2 class="title-2">Acknowledgement Pricing Details</h2>
+
+        <div class="container mt-4">
+          <div class="row mb-4">
+            <div class="col-2">Invoice No</div>
+            <div class="col-2">
+              {{
+                acknowledgementData?.materialIndentAndWorkorderResponseDTO
+                  ?.invoiceNo == "null"
+                  ? "-"
+                  : acknowledgementData?.materialIndentAndWorkorderResponseDTO
+                      ?.invoiceNo
+              }}
+            </div>
+            <div class="col-2">Invoice Date</div>
+            <div class="col-2">
+              {{
+                acknowledgementData?.materialIndentAndWorkorderResponseDTO
+                  ?.transactionDate | date : "dd/MM/yyyy"
+              }}
+            </div>
+            <div class="col-2">Store Code</div>
+            <div class="col-2">
+              {{
+                acknowledgementData?.materialIndentAndWorkorderResponseDTO
+                  ?.storeCode
+              }}
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-2">Work Order No</div>
+            <div class="col-2">
+              {{
+                acknowledgementData?.materialIndentAndWorkorderResponseDTO
+                  ?.workorderNo
+              }}
+            </div>
+            <div class="col-2">Work Order Date</div>
+            <div class="col-2">
+              {{
+                acknowledgementData?.materialIndentAndWorkorderResponseDTO
+                  ?.workorderDate | date : "dd/MM/yyyy"
+              }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">Work Description</div>
+            <div class="col-10">
+              {{
+                acknowledgementData?.materialIndentAndWorkorderResponseDTO
+                  ?.workDescription
+              }}
+            </div>
+          </div>
+        </div>
+
+        <div
+          style="
+            overflow: auto;
+            width: 100%;
+            border: 2px solid #c2c2c2;
+            margin-top: 1rem;
+          "
+        >
+          <table class="table table-bordered text-center">
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th class="main-heading">S.No</th>
+                <th class="main-heading">Material Name</th>
+                <th class="main-heading">Material Code</th>
+                <th class="main-heading">Unit</th>
+
+                <!-- <th class="main-heading">Issed New Rate</th> -->
+                <th class="main-heading">Estimated Qty</th>
+                <th class="main-heading">Drawn Qty</th>
+                <th class="main-heading">Drawn New Qty</th>
+                <th class="main-heading">Rate</th>
+                <th class="main-heading">Amount</th>
+                <th class="main-heading">Drawn Used Qty</th>
+                <th class="main-heading">Used Item Rate</th>
+                <th class="main-heading">Used Item Amount</th>
+
+                <th class="main-heading part-col">Part #</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let dataItem of acknowledgementData?.materialDetailsInvoceNoResponseList;
+                  index as i
+                "
+              >
+                <td>{{ i + 1 }}</td>
+                <td class="horizontal-scroll">{{ dataItem.mlName }}</td>
+                <td>{{ dataItem.mlCode }}</td>
+                <td>{{ dataItem.mlUnit }}</td>
+
+                <!-- <td>{{ dataItem }}</td> -->
+                <td>{{ dataItem.estimatedQuantity }}</td>
+                <td>{{ dataItem.drawnQuantity }}</td>
+                <td>
+                  {{
+                    dataItem.issuedNewQty == "null"
+                      ? "-"
+                      : dataItem.issuedNewQty
+                  }}
+                </td>
+                <td>{{ dataItem.issuedRate }}</td>
+                <td>{{ dataItem.issuedAmount }}</td>
+                <td>
+                  {{
+                    dataItem.issuedUsedQty === "null"
+                      ? "-"
+                      : dataItem.issuedUsedQty
+                  }}
+                </td>
+                <td>
+                  <input
+                    *ngIf="dataItem?.issuedUsedQty > 0"
+                    class="form-control"
+                    type="number"
+                    min="0"
+                    id="irate"
+                    name="irate"
+                    placeholder="Used Item Rate"
+                    [(ngModel)]="dataItem.usedItemRate"
+                    (input)="
+                      onUsedItemRateChange(
+                        i,
+                        dataItem.usedItemRate,
+                        dataItem?.issuedUsedQty
+                      )
+                    "
+                  />
+                </td>
+                <td>{{ dataItem?.usedItemAomount }}</td>
+
+                <td>{{ dataItem?.part }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="container mt-4">
+          <div class="row mt-4">
+            <div class="col">Account Head & Description</div>
+            <div class="col">
+              {{ budgetDetails.accountHeadCode }} &nbsp; &nbsp;
+              {{ budgetDetails.accountHeadDescription }}
+            </div>
+            <div class="col">Total Budget Amount</div>
+            <div class="col">
+              {{
+                budgetDetails.totalBudgetAmount == "null"
+                  ? "0"
+                  : budgetDetails.totalBudgetAmount
+              }}
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col">Division Budget Head</div>
+            <div class="col">
+              {{
+                budgetDetails.divisionalBudgetHead == "null"
+                  ? "-"
+                  : budgetDetails.divisionalBudgetHead
+              }}
+            </div>
+            <div class="col">Existing Total Expenditure (A)</div>
+            <div class="col">
+              {{
+                budgetDetails.totalExpenditureAmount == "null"
+                  ? "0"
+                  : budgetDetails.totalExpenditureAmount
+              }}
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col">Current Expenditure Amount (B)</div>
+            <div class="col">
+              {{ currentExpenditure | number }}
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col">Total Expenditure Amount (A - B)</div>
+            <div class="col">
+              {{ totalExpenditureAmount | number }}
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <button
+            type="button"
+            class="btn btn-md"
+            style="background-color: #4472c4; color: white"
+            (click)="openConfirmationpopupDialog()"
+          >
+            Cost Verified
+          </button>
+        </div>
+      </div>
+    </form>
+  </section>
+</div>

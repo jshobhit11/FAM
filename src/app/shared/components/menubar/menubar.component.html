@@ -1,0 +1,48 @@
+<section>
+  <ul class="menu-bar p-2">
+    <li>
+      <a routerLink="/main/dashboard" routerLinkActive="active"
+        ><img
+          src="assets/icons/dashboard.svg" class="icon_configuration" alt="Dashboard"
+        />Dashboard</a
+      >
+    </li>
+    <li>
+      <a routerLink="/estimates/dashboard" routerLinkActive="active"
+        ><img
+          src="assets/icons/blackboard.svg"
+          class="icon_configuration"
+          alt="Estimates"
+        />Estimates</a
+      >
+    </li>
+    <li>
+      <a routerLink="/work-management/dashboard" routerLinkActive="active"
+        ><img src="assets/icons/agenda.svg" class="icon_configuration" alt="Works" /> Works</a
+      >
+    </li>
+    <!-- <li>
+      <a routerLink="/store-management/dashboard" routerLinkActive="active"
+        ><img src="assets/icons/envelope.svg" class="icon_configuration" alt="Store" /> Store</a
+      >
+    </li> -->
+    <!-- <li *ngIf="isAdmin">
+      <a routerLink="/configuration" routerLinkActive="active"
+        ><img
+          src="assets/icons/settings.svg"
+          class="icon_configuration" 
+          alt="Configuration"
+        />Configuration</a
+      >
+    </li> -->
+    <li *ngIf="isHelpDesk">
+      <a routerLink="/field-resolution" routerLinkActive="active"
+        ><img
+          src="assets/icons/settings.svg"
+          class="icon_configuration" 
+          alt="Field-Resolution"
+        />Field-Resolution</a
+      >
+    </li>
+  </ul>
+</section>

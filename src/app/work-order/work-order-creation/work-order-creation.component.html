@@ -1,0 +1,106 @@
+<div class="container-fluid page">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/main">Dashboard</a></li>
+          <li
+            class="breadcrumb-item"
+            *ngIf="labelName === 'WORK ORDER CREATION'"
+          >
+            <a style="color: lightslategray">Work Order Creation</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <!-- <div class="page__content shadow p-3 position-relative dis-flex-colu">
+    <h2
+      style="
+        margin: 1.5rem 0 0 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #3e3e3e;
+      "
+    >
+      {{ labelName }}
+    </h2>
+
+    <div style="display: flex; flex-wrap: wrap; overflow: auto">
+      <table
+        class="table table-bordered text-center"
+        style="margin-top: 2rem; width: 100%; flex-wrap: wrap"
+      >
+        <thead>
+          <tr>
+            <th scope="col">Estimation No.</th>
+            <th scope="col">Estimation Date</th>
+            <th scope="col">Office Name</th>
+            <th scope="col">Status Pending For</th>
+            <th scope="col">Registered Source</th>
+            <th scope="col">Registered On</th>
+          </tr>
+        </thead>
+        <tbody style="cursor: pointer">
+          <tr *ngFor="let estimate of estimatesList">
+            <td>
+              <a routerLink (click)="navigation(estimate)">{{
+                estimate.estimationNo
+              }}</a>
+            </td>
+            <td>{{ estimate.estimationDate }}</td>
+            <td>
+              {{ estimate.officeName }}
+            </td>
+            <td>
+              <span
+                *ngIf="
+                  estimate.estimationType === 'RE' &&
+                    (estimate.applicationStatusCode === '8' ||
+                      estimate.applicationStatusCode === '9' ||
+                      estimate.applicationStatusCode === '12' ||
+                      estimate.applicationStatusCode === '22');
+                  else otherestimate
+                "
+              >
+                REVISED {{ estimate.statusName }}
+              </span>
+              <span
+                *ngIf="
+                  estimate.estimationType !== 'RE' &&
+                    (estimate.applicationStatusCode !== '8' ||
+                      estimate.applicationStatusCode !== '9' ||
+                      estimate.applicationStatusCode !== '12' ||
+                      estimate.applicationStatusCode !== '22');
+                  else otherestimate
+                "
+              >
+                {{ estimate.statusName }}
+              </span>
+            </td>
+            <td>
+              <a>{{ estimate.registeredSource }}</a>
+            </td>
+            <td>
+              <a>{{ estimate.registeredOn | date : "medium" }}</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    
+   
+    </div>
+  </div> -->
+  <app-filter-table
+    [headingName]="labelName"
+    [isOffice]="true"
+    [type]="type"
+    [statusCode]="statusCode"
+    [cols]="cols"
+    [rows]="estimatesList"
+    [data]="estimatesList"
+    [filterFields]="filterFields"
+    [loading]="false"
+  >
+  </app-filter-table>
+</div>

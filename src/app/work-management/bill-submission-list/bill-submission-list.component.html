@@ -1,0 +1,75 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/dashboard">Works</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Bill Submission List</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <!-- <div class="container-fluid page">
+  <div class="page__content shadow p-3 position-relative dis-flex-colu">
+    <h2 class="title-2">Bill Submission List  </h2>
+    <div style="display: flex; flex-wrap: wrap; overflow: auto">
+      <table
+        class="table table-bordered text-center"
+        style="margin-top: 2rem; width: 100%; flex-wrap: wrap"
+      >
+        <thead>
+          <tr>
+            <th scope="col">Work Order No.</th>
+            <th scope="col">Work Order Date</th>
+            <th scope="col">Office Name</th>
+            <th scope="col">Status Name</th>
+            <th scope="col">Registered Source</th>
+            <th scope="col">Registered On</th>
+          </tr>
+        </thead>
+        <tbody style="cursor: pointer">
+          <tr *ngFor="let bills of billSubmission">
+            <td>
+              <a
+                (click)="navigateToBillSubmission(bills)"
+                class="work-order-link"
+              >
+                {{ bills.workorderNo }}</a
+              >
+            </td>
+            <td>
+              <a>{{ bills.workorderDate }}</a>
+            </td>
+            <td>
+              <a>{{ bills.officeName }}</a>
+            </td>
+            <td>
+              <a>{{ bills.statusName }}</a>
+            </td>
+            <td>
+              <a>{{ bills.registeredSource }}</a>
+            </td>
+            <td>
+              <a>{{ bills.registeredOn }}</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> -->
+  <app-filter-table
+    [headingName]="labelName"
+    [isOffice]="true"
+    [cols]="cols"
+    [rows]="billSubmission"
+    [data]="billSubmission"
+    [filterFields]="filterFields"
+    [loading]="false"
+  >
+  </app-filter-table>
+</div>

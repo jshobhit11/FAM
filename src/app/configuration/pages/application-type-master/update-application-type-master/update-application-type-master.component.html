@@ -1,0 +1,40 @@
+<section>
+  <form [formGroup]="applicationTypeForm">
+    <h1 mat-dialog-title>Update Application Type Master</h1>
+    <div class="content-fields mt-4" mat-dialog-content>
+      <div class="modal-input-control">
+        <mat-form-field class="example-full-width">
+          <mat-label>Application Type Name</mat-label>
+          <input matInput placeholder="Ex. Conductor" formControlName="applicationTypeName" [maxLength]="50" required/>
+          <mat-error *ngIf="applicationTypeForm.get('applicationTypeName').hasError('required') && applicationTypeForm.get('applicationTypeName').touched">
+            Please enter in this field.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Application Type Code</mat-label>
+          <input matInput placeholder="Ex. 234" formControlName="applicationTypeCode" [maxLength]="20" required />
+          <mat-error *ngIf="applicationTypeForm.get('applicationTypeCode').hasError('required') && applicationTypeForm.get('applicationTypeCode').touched">
+            Please enter in this field.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+      <div class="modal-input-control">
+        <mat-form-field class="example-full-width">
+          <mat-label>Registered Source Type</mat-label>
+          <mat-select formControlName="registeredSourceType" required>
+            <mat-option *ngFor="let main of processData" [value]="main.processTypeName" [maxLength]="5">
+              {{ main.processTypeName }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="applicationTypeForm.get('registeredSourceType').hasError('required') && applicationTypeForm.get('registeredSourceType').touched">
+            Please select in this field
+          </mat-error>
+        </mat-form-field>
+      </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="onApplicationUpdate()">Update</button>
+      <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+  </form>
+</section>

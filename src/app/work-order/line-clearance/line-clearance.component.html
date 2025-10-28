@@ -1,0 +1,123 @@
+<div class="page-1">
+  <section>
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/main">Dashboard</a></li>
+          <li class="breadcrumb-item">
+            <a routerLink (click)="navigate('LINE CLEARANCE', '11')"
+              >Line Clearance</a
+            >
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Create Line Clearance</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <section>
+    <form class="form" [formGroup]="lineClearanceForm">
+      <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+        <h2 class="title-2">Line Clearance</h2>
+        <br />
+        <div class="two-row-grid" style="justify-content: space-evenly">
+          <div class="left-div" style="width: unset !important">
+            <div class="inner-div">
+              <label>Work Order No</label>
+              <p>{{ data.workorderNo }}</p>
+            </div>
+            <br />
+            <div class="inner-div">
+              <label>Estimation No</label>
+              <p>{{ data.estimationNo }}</p>
+            </div>
+            <br />
+            <div class="inner-div">
+              <label>Work Description</label>
+              <p>{{ data?.workDescription }}</p>
+            </div>
+            <br />
+            <div class="inner-div">
+              <label>Line Clearance Shutdown Start Date <span class="star">*</span></label>
+              <div class="date-field">
+                <div style="position: relative">
+                  <input
+                    type="datetime-local"
+                    class="form-control"
+                    name="shutdownStartDate"
+                    [(ngModel)]="data.shutdownStartDate"
+                    formControlName="shutdownStartDate"
+                  />
+                  <mat-error class="startdate" *ngIf="lineClearanceForm.get('shutdownStartDate').hasError('required') && lineClearanceForm.get('shutdownStartDate').touched">
+                    Please select this field.
+                  </mat-error>
+                </div>
+              </div>
+            </div>
+  
+            <div class="inner-div">
+              <label>Line Clearance Shutdown End Date <span class="star">*</span></label>
+              <div class="date-field">
+                <div style="position: relative">
+                  <input
+                    type="datetime-local"
+                    class="form-control"
+                    name="shutdownEndDate"
+                    [(ngModel)]="data.shutdownEndDate"
+                    formControlName="shutdownEndDate"
+                    appLineDate
+                    [fromDateControlName]="'shutdownStartDate'"
+                  />
+                  <mat-error *ngIf="lineClearanceForm.get('shutdownEndDate').hasError('required') && lineClearanceForm.get('shutdownEndDate').touched">Please select this field</mat-error>
+                  <mat-error *ngIf="lineClearanceForm.get('shutdownEndDate').hasError('dateRangeError')">shutdownEndDate cannot be before shutdownStartDate.</mat-error>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="right-div">
+            <div class="inner-div">
+              <label>Work Order Date</label>
+              <p>{{ data.workorderEndDate }}</p>
+            </div>
+            <br />
+            <div class="inner-div">
+              <label>Execution Method</label>
+              <p>{{ data.workExecutionMethod }}</p>
+            </div>
+            <br />
+          </div>
+        </div>
+        <br />
+        <div class="txt-area">
+          <label style="width: fit-content">Remarks <span class="star">*</span></label>
+          <textarea
+            class="form-control"
+            cols="10"
+            rows="3"
+            name="remarks"
+            [(ngModel)]="data.remarks"
+            formControlName="remarks"
+            appAlphaNumeric
+            [maxLength]="300"
+          ></textarea>
+        </div>
+        <mat-error class="remarks" *ngIf="lineClearanceForm.get('remarks').hasError('required') && lineClearanceForm.get('remarks').touched">
+          Please fill in this field
+        </mat-error>
+        <!-- button box -->
+        <div class="btn-box mt-4 pb-4">
+          <button
+          [disabled]="isLoading"
+            type="button"
+            class="btn clor btn-primary btn-md"
+            (click)="openConfirmationpopupDialog()"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </form>
+  </section>
+  </div>
+  

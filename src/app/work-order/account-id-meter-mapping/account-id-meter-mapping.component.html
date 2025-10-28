@@ -1,0 +1,193 @@
+
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/main">Dashboard</a></li>
+        <li class="breadcrumb-item">
+          <a
+            routerLink
+            (click)="navigate('ACCOUNT ID AND METERS MAPPING', '17')"
+            >Account Id And Meter Mapping</a
+          >
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray"
+            >Create Account Id And Meter Mapping</a
+          >
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<ng-container *ngIf="!showErrorTemplate; else errorTemplate">
+<section>
+  <form class="form" *ngIf="data?.length>0">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Account Meter Mapping</h2>
+      <div>
+        <div class="two-column-grid">
+          <div class="left-column">
+            <div class="inner-div">
+              <label>Work Order No :</label>
+               <!-- <p>{{ workorderNo }}</p> -->
+               <p>{{ data[0]?.workorderNo }}</p>
+            </div>
+          </div>
+          <div class="right-column">
+            <div class="inner-div">
+                <label>Work Description :</label>
+               <!-- <p>{{ workDescription }}</p> -->
+               <p>{{ data[0]?.workDescription }}</p>
+              </div>
+          </div>     
+          <!-- <div> 
+            <label style="margin-right:20px;">Download Account Meter Upload Sheet:</label>
+            <button
+              class="btn btn-sm"
+              style="background-color: #4472c4; color: white; "
+              (click)="downloadSampleFile()"
+            >
+              Download
+            </button>
+          </div>
+          <div>
+            <label style="margin-right:20px;">Download Meter Data:</label>
+            <button
+              class="btn btn-sm"
+              style="background-color: #4472c4; color: white;"
+              (click)="downloadFile()"
+            >
+              Download
+            </button>
+          </div> -->
+          <div> 
+            <label style="margin-right:20px;">Download Account Meter Upload Sheet:</label>
+            <a
+              href="javascript:void(0);"
+              style="color: #4472c4; text-decoration: none;"
+              (click)="downloadSampleFile()"
+              title="Download Account Meter Upload Sheet"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4472c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download" style="vertical-align: middle;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </a>
+          </div>
+          <div>
+            <label style="margin-right:20px;">Download Meter Data:</label>
+            <a
+              href="javascript:void(0);"
+              style="color: #4472c4; text-decoration: none;"
+              (click)="downloadFile()"
+              title="Download Meter Data"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4472c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download" style="vertical-align: middle;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </a>
+          </div>
+          
+          
+        </div>
+        <div class="mt-4">
+          <div class="right-column mr-4">
+              <label>File : <span class="star">*</span></label>
+              <input
+                class="btn btn-upload"
+                type="file"
+                style="color: black;"
+                id="actual-btn"
+                accept=".xlsx,.xls"
+                (change)="onFileChange($event)"
+              />
+              <button
+              class="btn btn-sm"
+              style="background-color: #4472c4; color: white;"
+              (click)="processFile()"
+            >
+              Upload
+            </button>
+          </div>
+          <div class="mt-3" *ngIf="showTableData">
+            <p class="record">
+              Total Records Count : {{ finalContent.length }} <br>
+            </p>
+            <p class="mt-2 record error">
+              Error Records Count : {{ errCount() }} 
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div style="
+        overflow: auto;
+        width: 100%;
+        border: 2px solid #c2c2c2;
+        margin-top: 1rem;">
+      <table class="table table-bordered text-center">
+        <thead style="background-color: #f2f2f2; color: #3e3e3e">
+          <tr>
+            <th scope="col">S.No</th>
+            <!-- <th scope="col">SR</th> -->
+            <th scope="col">Account ID</th>
+            <th scope="col">Material Code</th>
+            <th scope="col">Badge Number</th>
+            <th scope="col">Serial Number</th>
+            <th scope="col">Reading Date</th>
+            <th scope="col">KWH Reading</th>
+            <th scope="col">KVAH Reading</th>
+            <th scope="col">KILLOWATT Demand</th>
+            <th scope="col">PF Number</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="showTableData">
+          <tr *ngFor="let row of finalContent; let i = index" [ngClass]="{'error-row': row.includes(true)}">
+            <td>{{ i + 1 }}</td>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+            <td>{{ row[7] }}</td>
+            <td>{{ row[8] }}</td>
+            <td>
+              <button style="border: none" (click)="removeData(i)">
+                <img src="assets/delete-icon.png" alt="" />
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        
+      </table>
+    </div>
+      <div class="btn-box mt-4 pb-4">
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          (click)="openConfirmationpopupDialog()"
+          [disabled]="!saveDataEnabled"
+        >
+          Submit
+        </button>
+        <button type="button" class="btn clor btn-primary btn-sm" (click)="close()">Close</button>
+      </div>
+    </div>
+  </form>
+</section>
+</ng-container>
+<ng-template #errorTemplate>
+  <div class="page__content shadow p-3 position-relative dis-flex-colu">
+    <h2 class="title-2">Account Meter Mapping</h2>
+    <p *ngIf="isFaReceived==0" class="alert alert-danger mt-3">Kindly create energization field activity in CCB.</p>
+    <p *ngIf="isFaReceived==2" class="alert alert-danger mt-3">Kindly complete the PC-TEST process.</p>
+    
+</div>
+</ng-template>

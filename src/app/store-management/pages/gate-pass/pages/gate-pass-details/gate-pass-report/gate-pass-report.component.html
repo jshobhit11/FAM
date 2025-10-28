@@ -1,0 +1,163 @@
+<section class="page__content p-3 p20 shadow dis-fl dis-fl2 position-relative dis-flex-colu">
+<div class="container-fluid page" id="print-content">
+  <div class="work-order">
+    <h2 class="heading">Bangalore Electricity Supply Company Limited</h2>
+    <h3 class="heading">(Wholly owned Govt. of Karnataka Undertaking)</h3>
+    <br />
+    <table class="my-scrollable-table">
+      <tr *ngIf="data && data.smStoreDispatchedInvoice && data.smStoreDispatchedInvoice.length">
+        <td>
+          <label>Store Code:
+            {{
+            data?.smStoreDispatchedInvoice[0]?.storeCode
+            ? data?.smStoreDispatchedInvoice[0]?.storeCode
+            : ""
+            }}</label>
+        </td>
+        <td>
+          Indent No:
+          {{
+          data?.wmMaterialIndent?.materialsIndentNo
+          ? data?.wmMaterialIndent?.materialsIndentNo
+          : ""
+          }}
+        </td>
+      </tr>
+      <tr *ngIf="data && data.smStoreDispatchedInvoice && data.smStoreDispatchedInvoice.length">
+        <td><label>Store Name:CENTRAL STORES</label></td>
+        <td>
+          Invoice No:
+          {{
+          data?.smStoreDispatchedInvoice[0]?.storeInvoice
+          ? data?.smStoreDispatchedInvoice[0]?.storeInvoice
+          : ""
+          }}
+        </td>
+      </tr>
+      <tr *ngIf="data && data.smStoreDispatchedInvoice && data.smStoreDispatchedInvoice.length">
+        <td><label>Transaction Date:</label></td>
+        <td>
+          {{
+          data?.smStoreDispatchedInvoice[0]?.issueDate | date : "yyyy/MM/dd"
+          }}
+        </td>
+      </tr>
+      <tr>
+        <td><label>Name of the Work:</label></td>
+        <td>
+          Estimate for quarterly maintainance of DTC's, RMU's HT/ LT lines of
+          O&M Unit-19, <br />Nayandahalli ,W6 Sub Division, Bangalore, from
+          01.10.2021 to 31.12.2021
+        </td>
+      </tr>
+      <tr *ngIf="data && data.smStoreDispatchedInvoice && data.smStoreDispatchedInvoice.length">
+        <td><label>Work Order No:</label></td>
+        <td>
+          {{
+          data?.smStoreDispatchedInvoice[0]?.wmWorkorderRegistrationsId
+          ? data?.smStoreDispatchedInvoice[0]?.wmWorkorderRegistrationsId
+          : ""
+          }}
+        </td>
+      </tr>
+      <tr>
+        <td><label>Office Order No:</label></td>
+        <td>G-4589</td>
+      </tr>
+      <tr>
+        <td><label>Account Head:</label></td>
+        <td>
+          {{
+          data?.DivisionalBudget?.divisionalBudgetHead
+          ? data?.DivisionalBudget?.divisionalBudgetHead
+          : ""
+          }}
+        </td>
+      </tr>
+      <tr>
+        <td><label>Work Order Active Date:</label></td>
+        <td>26-NOV-21</td>
+      </tr>
+      <tr>
+        <td><label>Requestor Name:</label></td>
+        <td>ROOPA_B</td>
+      </tr>
+      <tr>
+        <td><label>SECTION</label></td>
+        <td>150098-NAYANDAHALLI OMU</td>
+      </tr>
+      <tr>
+        <td><label>SUBDIVISION</label></td>
+        <td>140033-W6 BYATARAYANAPURA</td>
+      </tr>
+    </table>
+    <br />
+    <table class="table table-bordered text-center">
+      <thead style="background-color: #f2f2f2; color: #3e3e3e">
+        <tr>
+          <th scope="col">S.No</th>
+          <th scope="col">Material Code</th>
+          <th scope="col">Material Description</th>
+          <!-- <th scope="col">Comp.Id</th> -->
+          <th scope="col">Requested Qty</th>
+          <th scope="col">UOM</th>
+          <th scope="col">Issued Qty</th>
+          <th scope="col">Unit Rate in Rs</th>
+          <th scope="col">Total Amount in Rs</th>
+          <th scope="col">Remainig Qty (WO)</th>
+          <th scope="col">Balance Store Qty</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let d of data?.WmMaterialsIndentTransLog; index as i">
+        <tr>
+          <td style="text-align: center">{{ i + 1 }}</td>
+          <td style="text-align: center">{{ d.materialCode }}</td>
+          <td>{{ d.materialName }}</td>
+          <!-- <td></td> -->
+          <td>{{ d.requestQuantity }}</td>
+          <td>{{ d?.materialUnit }}</td>
+          <td>{{ d.issuedQuantity }}</td>
+          <td>{{ d?.materialRate }}</td>
+          <td>{{ d?.issuedAmount }}</td>
+          <td>{{ d?.receivedQuantity }}</td>
+          <td>{{ d?.storeBalanceQuantity }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <table class="table-size">
+            <tr>
+                <td><label>Requestor/Receiver's Signature and Designation
+                        ROOPA_B
+                    </label></td>
+                <td>Store Keeper Signature</td>
+                <td>Vehicle Number</td>
+                <td>Price entered by</td>
+            </tr>
+            <tr>
+                <td><label>All the above materials have been received
+                        correctly</label></td>
+                <td>Drivers Signature</td>
+                <td>Entry Done In Account Book By</td>
+                <td>Verified by</td>
+            </tr>
+            <tr>
+                <td><label></label></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><label></label></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table> -->
+    <div class="download-btn btn-box mt-4 pb-4" *ngIf="!isGeneratingPDF">
+      <button type="button" class="btn btn-primary btn-lg" (click)="generateWorkOrderReport()">
+        Download
+      </button>
+    </div>
+  </div>
+</div>
+</section>

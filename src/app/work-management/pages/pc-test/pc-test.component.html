@@ -1,0 +1,174 @@
+<section>
+  <form class="form" [formGroup]="pcTestForm">
+    <div class="page__content p-3 p20 shadow dis-fl dis-fl2 position-relative dis-flex-colu">
+      <h2 class="title-2">PC Test</h2>
+      <br />
+      <div class="two-row-grid" style="justify-content: space-evenly">
+        <div class="left-div" style="width: unset !important">
+          <div class="inner-div">
+            <label>Reference No : </label>
+            {{ caseId }}
+          </div>
+          <br />
+          <br />
+          <div class="inner-div">
+            <label>PC Test Date <span class="star">*</span></label>
+            <div class="date-field">
+              <div style="position: relative">
+                <input
+                  matInput
+                  [matDatepicker]="date_picker"
+                  class="form-control"
+                  name="dateOfPermitWork"
+                  formControlName="pcTestDate"
+                  appDate
+                  [readonly]="true" [disabled]="false"
+                  required
+                />
+                <mat-datepicker-toggle
+                  style="position: absolute; top: 0; right: 0"
+                  matIconSuffix
+                  [for]="date_picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #date_picker></mat-datepicker>
+                <mat-error *ngIf="pcTestForm.get('pcTestDate').hasError('required') && pcTestForm.get('pcTestDate').touched">
+                  Please select this field
+                </mat-error>
+              </div>
+            </div>
+        
+            <div class="label-container" [class.error]="pcTestForm.get('pdfFile').invalid && pcTestForm.get('pdfFile').touched">
+              <label>Document Upload <span class="star">*</span></label>
+            </div>
+            <div class="input-container">
+              <input
+                class="file-upload"
+                type="file"
+                #pdfFileInput (change)="onFileChange($event)" accept="" formControlName="pdfFile" required  appFileSizeValidator="5" 
+              />
+              <mat-error *ngIf="pcTestForm.get('pdfFile').hasError('required') && pcTestForm.get('pdfFile').touched">
+                Please select this field
+              </mat-error>
+              <mat-error *ngIf="fileSizeError && pcTestForm.get('pdfFile').touched">
+                File size must be up to 5MB.
+              </mat-error>
+            </div>
+            <div class="label-container">
+              <label for="reportType" class="inline-label">Select Type of Report <span class="star">*</span></label>
+            </div>
+            <div class="input-container">
+              <mat-form-field appearance="outline"style="width:100%;">
+                <mat-label>HT/LT Report</mat-label>
+                <mat-select formControlName="reportType" required>
+                  <mat-option value="HT">HT</mat-option>
+                  <mat-option value="LT">LT</mat-option>
+                </mat-select>
+                <mat-error *ngIf="pcTestForm.get('reportType').hasError('required') && pcTestForm.get('reportType').touched">
+                  Please select this field
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-div">
+          <div class="inner-div">
+            <label>Account No : </label>
+            {{ accountId }}
+          </div>
+          <br />
+          <br />
+          <div class="inner-div">
+            <label>Problem Description : </label>
+            {{ problemDescription }}
+          </div>
+
+          <!-- Separate HT and LT download links -->
+          <div class="download-sheet"> 
+            <label>Download HT Report:</label>
+            <a
+              href="javascript:void(0);"
+              style="color: #4472c4; text-decoration: none;margin-left:8rem;"
+              (click)="downloadHtFile()"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4472c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download" style="vertical-align: middle;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </a>
+          </div>
+          <div class="download-sheet"> 
+            <label>Download LT Report:</label>
+            <a
+              href="javascript:void(0);"
+              style="color: #4472c4; text-decoration: none;margin-left:8rem;"
+              (click)="downloadLtFile()"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4472c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download" style="vertical-align: middle;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+      <div class="txt-area">
+        <label style="width: fit-content">Remarks<span class="star">*</span></label>
+        <div class="remarks">
+          <textarea
+            class="form-control"
+            cols="100"
+            rows="3"
+            name="remarks"
+            [(ngModel)]="remarks"
+            formControlName="remarks"
+            appAlphaNumeric
+            [maxLength]="300"
+          >
+          </textarea>
+          <mat-error *ngIf="pcTestForm.get('remarks').hasError('required') && pcTestForm.get('remarks').touched">
+            Please select this field
+          </mat-error>
+        </div>
+      </div>
+      <br>
+      <br>
+      <!-- button box -->
+      <div class="btn-box mt-4 pb-4">
+        <button
+        [disabled]="isLoading"
+          type="button"
+          class="btn clor btn-primary btn-md"
+          (click)="openConfirmationpopupDialog()"
+        >
+          Submit
+        </button>
+
+        <button
+          *ngIf="pcReportHt"
+          type="button"
+          class="btn clor btn-primary btn-md"
+          (click)="generateHtPcTestReport('HT')"
+        >
+          Download HT Test Report
+        </button>
+
+        <button
+          *ngIf="pcReportLt"
+          type="button"
+          class="btn clor btn-primary btn-md"
+          (click)="generatePcLtTestReport('LT')"
+        >
+          Download LT Test Report
+        </button>
+      
+      </div>
+      
+      <form class="form"></form>
+    </div>
+  </form>
+</section>

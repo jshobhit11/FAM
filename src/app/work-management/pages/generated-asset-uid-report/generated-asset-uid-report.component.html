@@ -1,0 +1,94 @@
+<div class="page-1">
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/work-management/dashboard">Works</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Generated-Asset-UID's-Report</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+
+<section>
+  <form [formGroup]="cRegisteredForm">
+  <div class="container">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Generated-Asset-UID's Report</h2>
+      <div style="width: 100%;">
+        <div class="inner-div">
+          <label>Work Order No <span class="star">*</span></label>
+          <input
+          type="text"
+          class="form-control"
+          name="searchInput"
+          [formControl]="searchInput"
+          placeholder="Search"
+          matInput 
+          formControlName="workOrderNo"
+          [matAutocomplete]="auto"
+          appAlphaNumeric
+          [maxLength]="10"
+          (input)="filterWorkOrders($event.target.value)"
+        />
+          <mat-error  *ngIf="cRegisteredForm.get('workOrderNo').hasError('required') && cRegisteredForm.get('workOrderNo').touched">
+            Please fill this field
+          </mat-error>
+        
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selectWorkOrder($event.option.value)"
+          >
+            <mat-option
+              *ngFor="let option of filteredWorkOrderOptions | async"
+              [value]="option"
+            >
+              {{ option.workOrderNo }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+        <div class="offset-sm-5">
+          <div class="row mt-2 mb-2 align-items-center col-sm-4">
+            <fieldset class="scheduler-border">
+              <legend class="scheduler-border">Output Format</legend>
+              <div
+              class="output-format-box"
+              style="display: flex; align-items: center; justify-content: center"
+            >
+              <div class="radio-buttons">
+                <input
+                  type="radio"
+                  name="output-format"
+                  value="pdf"
+                  id="pdf"
+                  checked="true"
+                />
+                <label for="pdf">PDF <span class="star">*</span></label>
+                <input type="radio" name="output-format" value="xls" id="xls" />
+                <label for="xls">XLS  <span class="star">*</span></label>
+              </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="offset-sm-5 mt-2 mb-4">
+          <button
+            type="submit"
+            class="btn btn-primary btn-md" 
+            style="background-color: #4472c4;" 
+            (click)="generateAssetUIDReport()"
+          >
+            Download
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+</section>
+</div>

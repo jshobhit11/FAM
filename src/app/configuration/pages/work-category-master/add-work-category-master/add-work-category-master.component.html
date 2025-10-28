@@ -1,0 +1,46 @@
+<section [formGroup]="workCategoryForm">
+  <h1 mat-dialog-title>Add Work Category Master</h1>
+  <div class="modal-input-control">
+    <mat-form-field class="example-full-width">
+      <mat-label>Work Category Name</mat-label>
+      <input matInput placeholder="Ex. Each" formControlName="workCategoryName" [maxLength]="50" appAlphaNumeric required />
+      <mat-error *ngIf="workCategoryForm.get('workCategoryName').hasError('required')">
+        Please enter in this field.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Work Category Code</mat-label>
+      <input matInput placeholder="Ex. Each" formControlName="workCategoryCode" [maxLength]="5" appAlphaNumeric required />
+      <mat-error *ngIf="workCategoryForm.get('workCategoryCode').hasError('required')">
+        Please enter in this field.
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="modal-input-control">
+    <mat-form-field class="example-full-width">
+      <mat-label>Work Category Type</mat-label>
+      <mat-select formControlName="bugdetType" required>
+        <mat-option *ngFor="let main of bugdetTypes" [value]="main">
+          {{main}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="workCategoryForm.get('bugdetType').hasError('required')">
+        Please select this field.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Budget Check Required</mat-label>
+      <mat-select formControlName="bugdetCheckFlag" required>
+        <mat-option value="1">Yes</mat-option>
+        <mat-option value="0">No</mat-option>
+      </mat-select>
+      <mat-error *ngIf="workCategoryForm.get('bugdetCheckFlag').hasError('required')">
+        Please select this field.
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onAddWorkCategoryType()">Add</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+</section>

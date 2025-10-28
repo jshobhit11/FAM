@@ -1,0 +1,47 @@
+<section>
+  <form [formGroup]="storeMasterForm">
+  <h1 mat-dialog-title>Update Store Master</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="fill">
+        <mat-label>Store Name</mat-label>
+        <input matInput placeholder="Ex. Each" formControlName="storeName" appAlphaNumeric [maxLength]="500"/>
+        <mat-error *ngIf="storeMasterForm.get('storeName').hasError('required') && storeMasterForm.get('storeName').touched">
+          Please enter in this field.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Store Address</mat-label>
+        <input matInput placeholder="Ex. Each" formControlName="storeAddress" appAlphaNumeric [maxLength]="500"/>
+        <mat-error *ngIf="storeMasterForm.get('storeAddress').hasError('storeAddress') && storeMasterForm.get('storeName').touched">
+          Please enter in this field.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="modal-input-control">
+        <mat-form-field appearance="fill">
+          <mat-label>Store Type</mat-label>
+            <mat-select formControlName="storeType" required>
+            <mat-option *ngFor="let main of storeTypes" [value]="main" [maxLength]="10">
+              {{main}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="storeMasterForm.get('storeType').hasError('required') && storeMasterForm.get('storeType').touched">
+            Please select in this field
+          </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label> Store Code</mat-label>
+        <input matInput placeholder="Ex. Each" formControlName="storeCode" [maxLength]="5" appAlphaNumeric/>
+        <mat-error *ngIf="storeMasterForm.get('storeCode').hasError('required') && storeMasterForm.get('storeCode').touched">
+          Please enter in this field.
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onStoreMasterUpdate()">Update</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+</form>
+</section>

@@ -1,0 +1,17 @@
+{
+  "name": "cordova-plugin-openintent",
+  "version": "0.0.1",
+  "description": "Plugin to Open Android Intents",
+  "cordova": {
+    "id": "cordova-plugin-openintent",
+    "platforms": [
+      "android"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "Kameswara Rao Nittala <kameswarar@infinite.com>",
+  "license": "ISC"
+}

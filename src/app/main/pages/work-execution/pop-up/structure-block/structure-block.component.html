@@ -1,0 +1,98 @@
+<div class="box">
+  <div class="box-header">
+    <h1 mat-dialog-title id="heading" class="structure-heading">
+      Structure
+      <button mat-button mat-dialog-close class="cross-button">
+        <img src="assets/cross-icon.png" alt="" class="cross-icon" />
+      </button>
+    </h1>
+  </div>
+  <div class="box-content">
+    <div>
+      <div class="row">
+        <div class="col">
+          <p class="quantity">
+            Actual Quantity: {{ totalQuantity ? totalQuantity : 0 }}
+          </p>
+        </div>
+        <div class="col align-right"></div>
+      </div>
+    </div>
+    <div class="content mt-4" mat-dialog-content>
+      <table class="table text-center" style="width: 100%">
+        <thead style="background-color: #f3f7fa">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Material Code</th>
+            <th scope="col">Part</th>
+            <th scope="col">Structure</th>
+            <th scope="col">Assetized Quantity</th>
+            <th scope="col">Total Quantity</th>
+            <th scope="col">Is DT Structure</th>
+          </tr>
+        </thead>
+        <tbody style="cursor: pointer">
+          <tr *ngFor="let item of tableData; let i = index">
+            <td>{{ i + 1 }}</td>
+            <!-- Sequential Serial Number -->
+            <td>{{ item.materialCode }}</td>
+            <td>{{ item.part }}</td>
+            <td>{{ item.structure }}</td>
+            <td>
+              <input
+                type="number"
+                [(ngModel)]="item.assetizedQuantity"
+                (blur)="calculateTotalQuantityCount($event, i, item.structure)"
+                min="0"
+              />
+            </td>
+            <td>
+              {{ item.totalQuantity ? item.totalQuantity : 0 }}
+            </td>
+            <td>
+              <label>
+                <input
+                  type="radio"
+                  name="busbar{{ i }}"
+                  value="1"
+                  [(ngModel)]="item.isDTStructure"
+                />
+                Yes
+              </label>
+              &nbsp;
+              <label>
+                <input
+                  type="radio"
+                  name="busbar{{ i }}"
+                  value="0"
+                  [(ngModel)]="item.isDTStructure"
+                />
+                No
+              </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="structre">
+      <div class="row">
+        <div class="col"></div>
+        <div class="col align-right">
+          <p class="balance" *ngIf="totalQuantityCount >= 0">
+            Balance: {{ totalQuantityCount }}
+          </p>
+          <p class="balance" *ngIf="totalQuantityCount < 0">Balance: 0</p>
+        </div>
+      </div>
+    </div>
+    <mat-dialog-actions class="actions">
+      <button
+        class="btn clor"
+        (click)="onApply()"
+        [disabled]="totalQuantityCount !== 0"
+      >
+        Save
+      </button>
+    </mat-dialog-actions>
+  </div>
+</div>

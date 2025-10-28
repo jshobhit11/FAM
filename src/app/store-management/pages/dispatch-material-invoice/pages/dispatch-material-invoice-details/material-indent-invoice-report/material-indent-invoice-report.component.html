@@ -1,0 +1,108 @@
+<section class="page__content p-3 p20 shadow dis-fl dis-fl2 position-relative dis-flex-colu">
+<div class="container-fluid page" id="print-content">
+  <div class="work-order">
+    <h2 class="heading">Bangalore Electricity Supply Company Limited</h2>
+    <h3 class="heading">(Wholly owned Govt. of Karnataka Undertaking)</h3>
+    <br />
+    <table class="my-scrollable-table">
+      <tr>
+        <td>
+          <label>Store Code: {{ data?.workorderRegistered?.storeCode }}</label>
+        </td>
+        <td>Indent No: {{ data?.workorderRegistered?.materialsIndentNo }}</td>
+      </tr>
+      <tr>
+        <td>
+          <label>Store Name </label>
+        </td>
+        <td>{{ data?.workorderRegistered?.storeName }}</td>
+        <!-- <td>Invoice No : {{ data?.workorderRegistered?.storeInvoice }}</td> -->
+      </tr>
+      <tr>
+        <td><label>Transaction Date:</label></td>
+        <td>
+          {{ data?.workorderRegistered?.transactionDate | date : "dd/MM/yyyy" }}
+        </td>
+      </tr>
+      <tr>
+        <td><label>Name of the Work:</label></td>
+        <td>{{ data?.workorderRegistered?.workDescription }}</td>
+      </tr>
+      <tr>
+        <td><label>Work Order No:</label></td>
+        <td>{{ data?.workorderRegistered?.workorderNo }}</td>
+      </tr>
+      <!-- <tr>
+        <td><label>Office Order No:</label></td>
+        <td></td>
+      </tr> -->
+      <tr>
+        <td><label>Account Head:</label></td>
+        <td>{{ data?.workorderRegistered?.divisionalBudgetHead }}</td>
+      </tr>
+      <tr>
+        <td><label>Work Order Active Date:</label></td>
+        <td>
+          {{ data?.workorderRegistered?.workorderDate | date : "dd/MM/yyyy" }}
+        </td>
+      </tr>
+      <tr>
+        <td><label>Requestor Name:</label></td>
+        <td>{{ data?.workorderRegistered?.requestorName }}</td>
+      </tr>
+      <tr>
+        <td><label>SECTION</label></td>
+        <td>{{ data?.workorderRegistered?.sectionName }}</td>
+      </tr>
+      <tr>
+        <td><label>SUBDIVISION</label></td>
+        <td>{{ data?.workorderRegistered?.subdivisionName }}</td>
+      </tr>
+    </table>
+    <br />
+    <table class="table table-bordered text-center">
+      <thead style="background-color: #f2f2f2; color: #3e3e3e">
+        <tr>
+          <th scope="col">S.No</th>
+          <th scope="col">Store Code</th>
+          <th scope="col">Material Description</th>
+          <th scope="col">Requested Qty</th>
+          <th scope="col">UOM</th>
+          <th scope="col">Issued Qty</th>
+          <th scope="col">Unit Rate in Rs</th>
+          <th scope="col">Total Amount in Rs</th>
+          <th scope="col">Remaining Qty (WO)</th>
+          <th scope="col">Balance Store Qty</th>
+          <th scope="col">Stock Available</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let dataItem of data?.wmMaterialsIndentTransLog; index as i"
+        >
+          <td>{{ i + 1 }}</td>
+          <td [class.green-text]="dataItem.alternateFlag === '1'">{{ dataItem.storeCode }}</td>
+          <td class="horizontal-scroll">{{ dataItem.materialName }}</td>
+          <td>{{ (dataItem.requestQuantity === "null" ? 0 : dataItem.requestQuantity) }}</td>
+          <td>{{ dataItem.materialUnit }}</td>
+          <td>{{ (dataItem.issuedQuantity === "null" ? 0 : dataItem.issuedQuantity) }}</td>
+          <td>{{ dataItem.materialRate }}</td>
+          <td>{{ (dataItem.issuedAmount === "null" ? 0 :dataItem.issuedAmount) }}</td>
+          <td>{{ (dataItem.matBalancequantity=== "null" ? 0 :dataItem.matBalancequantity)| number: '1.2-2' }}</td>
+          <td>{{ (dataItem.storeBalanceQuantity === "null" ? 0 :dataItem.storeBalanceQuantity) }}</td>
+          <td>{{dataItem.noStockFlag === "0" ? 'Yes' : (dataItem.noStockFlag === "1" ? 'No' : '')}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="download-btn btn-box mt-4 pb-4" *ngIf="!isGeneratingPDF">
+      <button
+        type="button"
+        class="btn btn-primary btn-md"
+        (click)="generateInvoiceReportReport()"
+      >
+        Download
+      </button>
+    </div>
+  </div>
+</div>
+</section>

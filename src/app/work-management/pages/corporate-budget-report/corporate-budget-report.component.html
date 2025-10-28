@@ -1,0 +1,127 @@
+<div class="page-1">
+  <section class="mt-2">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/work-management/dashboard">Works</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Corporate Budget Report</a>
+        </li>
+      </ol>
+    </nav>
+  </section>
+
+  <section>
+    <form class="form" [formGroup]="formGroup">
+      <div class="container-fluid page">
+        <div class="page__content shadow p-3 position-relative dis-flex-colu">
+          <h2 class="title-2">Corporate Budget Report</h2>
+          <div class="form-section">
+            
+            <div class="row g-4 align-items-center">
+              <!-- Office Name Field -->
+              <div class="col-sm-6" id="office">
+                <label for="office">Office Name <span style="color: red"> *</span></label>
+                <div class="card flex justify-content-center mt-1">
+                  <p-treeSelect
+                    class="md:w-20rem w-full"
+                    containerStyleClass="w-full"
+                    formControlName="selectedNodes"
+                    (onNodeSelect)="nodeSelect($event.node)"
+                    selectionMode="single"
+                    (onNodeUnselect)="nodeUnselect()"
+                    [(ngModel)]="selected"
+                    [options]="nodes"
+                    [filter]="true"
+                    [filterInputAutoFocus]="true"
+                    [scrollHeight]="'200px'"
+                  ></p-treeSelect>
+                </div>
+              </div>
+              
+              <!-- Financial Year Field -->
+              <div class="col-sm-6">
+                <label class="form-label" for="financial-year">Financial Year <span style="color: red"> *</span></label>
+                <select
+                  id="financial-year"
+                  class="form-select"
+                  name="financial-year"
+                  formControlName="financialYear"
+                  required
+                >
+                  <option value="2023-24">2023-24</option>
+                  <option value="2024-25">2024-25</option>
+                  <option value="2025-26">2025-26</option>
+                </select>
+                <mat-error *ngIf="formGroup.get('financialYear').invalid && formGroup.get('financialYear').touched">
+                  Please select this field
+                </mat-error>
+              </div>
+            </div>
+
+            <!-- Output Format Field -->
+            <div class="row mt-2 mb-2 align-items-center offset-sm-5">
+              <div class="col-sm-4">
+                <fieldset class="scheduler-border">
+                  <legend class="scheduler-border">Output Format <span class="star"> *</span></legend>
+                  <div class="mt-2">
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="inlineRadioOptions"
+                        id="inlineRadio1"
+                        value="pdf"
+                        (change)="onRadioChange($event.target.value)"
+                        checked
+                      />
+                      <label class="form-check-label" for="inlineRadio1">PDF</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="inlineRadioOptions"
+                        id="inlineRadio2"
+                        value="xlsx"
+                        (change)="onRadioChange($event.target.value)"
+                      />
+                      <label class="form-check-label" for="inlineRadio2">XLS</label>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+            
+            <!-- Generate Buttons -->
+            <div class="row">
+              <div class="offset-sm-5 mt-2 mb-2">
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-md"
+                  *ngIf="pdfType == 'pdf'"
+                  (click)="generateBudgetAbstractReport()"
+                >
+                  Generate PDF
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-md"
+                  *ngIf="pdfType == 'xlsx'"
+                  (click)="downloadExcelFile()"
+                >
+                  Generate XLSX
+                </button>
+              </div>
+              <!-- Uncomment the following lines if you want to display an error message -->
+              <!-- <div class="offset-sm-5">
+                <span *ngIf="error" style="color: red">{{ error }}</span>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+</div>

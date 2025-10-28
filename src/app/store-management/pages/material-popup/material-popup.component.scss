@@ -1,0 +1,147 @@
+.mat-dialog-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  color: #484848;
+  font-weight: 600;
+  margin: unset !important;
+}
+
+section {
+  margin: 2rem;
+  box-shadow: 0px 14px 40px rgb(0 0 0 / 21%);
+}
+
+th {
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #f0f6ff;
+}
+
+td {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #757575;
+
+  input {
+    min-width: 2rem !important;
+  }
+}
+
+.txt-area {
+  display: flex;
+  gap: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+
+  textarea {
+    padding: 0.5rem;
+    border: 1px solid #939393;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    width: 80%;
+  }
+}
+
+.form-control {
+  border: 1px solid #939393;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+}
+
+.form-select {
+  cursor: pointer;
+}
+.btn-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+
+  .btn {
+    padding: 0.4rem 1rem;
+    background-color: #4472c4;
+    color: white;
+    min-height: 1.5rem !important;
+    min-width: 3rem !important;
+
+    &:hover {
+      background-color: #7f9cce;
+    }
+  }
+
+
+  .clor {
+    background-color: white;
+    color: #4472c4;
+    border: 2px solid #4472c4;
+
+    &:hover {
+      background-color: #d8d7d7;
+      color: #4472c4;
+    }
+  }
+}
+
+.overlayed {
+  position: relative;
+  pointer-events: none;
+}
+
+.overlayed::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+}
+
+.wider-input {
+  width: 50px;
+}
+
+.link-like {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+$bg-issue-qty-color: #9ccf9f;
+$bg-store-current-qty-color: #d7d4b5;
+$bg-store-balance-qty-color: #7ba1c0;
+
+
+.bg-issue-qty {
+  background-color: $bg-issue-qty-color;
+}
+
+.bg-store-current-qty {
+  background-color: $bg-store-current-qty-color;
+}
+
+.bg-store-balance-qty {
+  background-color: $bg-store-balance-qty-color;
+}
+.mt-1 {
+  margin-top: -2.75rem!important;
+}
+.headings1{
+  margin-left: 30px;
+}
+.table-head{
+  overflow: auto;
+  width:99%;
+  border: 2px solid #c2c2c2;
+  margin-left: 8px;
+}
+.d-btn{
+  border: none;
+  background: transparent;
+}

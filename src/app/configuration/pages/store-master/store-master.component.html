@@ -1,0 +1,86 @@
+<div class="container-fluid page-3">
+<ul>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/configuration">Configuration</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a style="color: lightslategray">Store Master</a>
+      </li>
+    </ol>
+  </nav>
+</ul>
+
+  <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+    <h2 class="title-2">Store Master  </h2>
+
+  <div style="display: flex; flex-wrap: wrap; overflow: auto">
+    <div class="top-row">
+      <div class="input-control">
+        <mat-form-field class="example-full-width">
+          <mat-label>Search By Store Name</mat-label>
+          <input
+            (keyup)="applyFilter($event.target.value)"
+            matInput
+            placeholder="Ex. Conductor"/>
+        </mat-form-field>
+      </div>
+      <div class="button-control">
+        <button mat-button class="c-btn" (click)="openAddStoreTypeDialog()">
+          Add Store Type Data
+        </button>
+      </div>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="mt-4">
+      <!-- SLNO Column -->
+      <ng-container matColumnDef="slno">
+        <th mat-header-cell *matHeaderCellDef>SL NO</th>
+        <td mat-cell *matCellDef="let element; index as i">{{ i + 1 }}</td>
+      </ng-container>
+
+      <!-- Store Name Column -->
+      <ng-container matColumnDef="storeName">
+        <th mat-header-cell *matHeaderCellDef>Store Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.storeName }}</td>
+      </ng-container>
+
+      <!-- Store Address Column -->
+      <ng-container matColumnDef="storeAddress">
+        <th mat-header-cell *matHeaderCellDef>Store Address</th>
+        <td mat-cell *matCellDef="let element">{{ element.storeAddress }}</td>
+      </ng-container>
+
+      <!-- Store Code Column -->
+      <ng-container matColumnDef="storeCode">
+        <th mat-header-cell *matHeaderCellDef>Store Code</th>
+        <td mat-cell *matCellDef="let element">{{ element.storeCode }}</td>
+      </ng-container>
+
+      <!-- Store Type Column -->
+      <ng-container matColumnDef="storeType">
+        <th mat-header-cell *matHeaderCellDef>Store Type</th>
+        <td mat-cell *matCellDef="let element">{{ element.storeType }}</td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            style="border: none; background-color: transparent"
+            (click)="openUpdateStoreTypeDialog(element.storeMasterId)"
+          >
+            <mat-icon color="error">edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+  </mat-paginator>
+

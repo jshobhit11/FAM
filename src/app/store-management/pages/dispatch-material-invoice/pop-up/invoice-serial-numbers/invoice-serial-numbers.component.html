@@ -1,0 +1,157 @@
+<section>
+  <form class="form">
+      <div class="heading">
+        <h2>Material Serial Numbers</h2>
+      </div>
+      <div class="record-box">
+        <div class="record-boxes">
+          <div style="width: 100%">
+            <table class="table table-bordered text-center">
+              <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                <tr>
+                  <th scope="col">New Qunatity</th>
+                  <th scope="col">Used Qunatity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ newCurrentQty }}</td>
+                  <td>{{ usedCurrentQty }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row mt-0.5 mb-1">
+            <div class="col-lg-2 label-column">
+              <label class="record-boxes-heading mb-2">Item Type</label>
+            </div>
+            <div class="col-lg-5 select-column">
+              <select
+                class="form-select w-53"
+                name="Material"
+                [(ngModel)]="selectedType"
+                (change)="updateSerialNumbers()"
+              >
+                <option value="" selected disabled>Select</option>
+                <option *ngIf="newCurrentQty > 0" value="new">New</option>
+                <option *ngIf="usedCurrentQty > 0" value="used">Used</option>
+              </select>
+            </div>
+          </div>
+          <div class="top-row mt-1">
+            <mat-form-field class="ms-2 ps-2" style="width: 75% !important">
+              <input
+                matInput
+                placeholder="Search By Serial No."
+                [formControl]="serialControl"
+                [matAutocomplete]="unitAuto"
+              />
+              <mat-autocomplete
+                #unitAuto="matAutocomplete"
+                (optionSelected)="addSerialNumbers($event)"
+              >
+                <mat-option
+                  *ngFor="let unit of filteredSerialNumbers | async"
+                  [value]="unit"
+                >
+                  {{ unit }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <button
+              type="button"
+              class="btn btn-primary btn-md ms-3"
+              (click)="addSNo()"
+            >
+              Add
+            </button>
+          </div>
+          <div class="record-boxes">
+            <div style="overflow: auto; width: 100%">
+              <h1 class="record-boxes-heading">New Items</h1>
+              <table class="table table-bordered text-center">
+                <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Serial No.</th>
+                    <th scope="col">Badge Number.</th>
+                    <th scope="col">Remove</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let dataItem of newSerialNumbers; index as i">
+                    <td>
+                      <input
+                        type="checkbox"
+                        [(ngModel)]="dataItem.isSelected"
+                        name="{{ i }}"
+                        (change)="selectedKey(i)"
+                        id="{{ i }}"
+                      />
+                    </td>
+                    <td>{{ dataItem.serialNo }}</td>
+                    <td>{{ dataItem.badgeNumber }}</td>
+                    <td>
+                      <i
+                        class="btn bi bi-trash"
+                        title="Remove"
+                        (click)="deleteSerialNo(dataItem.serialNo, i)"
+                      ></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- <ng-container>
+              <p class="record-not-found">-- No Records Found --</p>
+            </ng-container> -->
+            </div>
+          </div>
+          <div class="record-boxes">
+            <div style="overflow: auto; width: 100%">
+              <h1 class="record-boxes-heading">Used Items</h1>
+              <table class="table table-bordered text-center">
+                <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Serial No.</th>
+                    <th scope="col">Badge Number.</th>
+                    <th scope="col">Remove</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let dataItem of usedSerialNumbers; index as i">
+                    <td>
+                      <input
+                        type="checkbox"
+                        [(ngModel)]="dataItem.isSelected"
+                        name="{{ i }}"
+                        (change)="selectedKey(i)"
+                        id="{{ i }}"
+                      />
+                    </td>
+                    <td>{{ dataItem.serialNo }}</td>
+                    <td>{{ dataItem.badgeNumber }}</td>
+                    <td>
+                      <i
+                        class="btn bi bi-trash"
+                        title="Remove"
+                        (click)="deleteSerialNo(dataItem.serialNo, i)"
+                      ></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="btn-box mt-2">
+      <button type="button" class="btn btn-primary btn-md" (click)="onApply()">
+        Add
+      </button>
+      <button mat-dialog-close class="btn clor btn-primary btn-md">
+        Close
+      </button>
+    </div>
+  </form>
+</section>

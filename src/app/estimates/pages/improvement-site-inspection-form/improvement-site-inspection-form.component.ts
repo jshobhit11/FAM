@@ -1,0 +1,593 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import * as dayjs from 'dayjs';
+import { DashboardService } from '../../../services/dashboard.service';
+import { SiteInspectionService } from '../../../services/siteInspection.service';
+import { ConfirmationPopupComponent } from '../../../shared/components/confirmation-popup/confirmation-popup.component';
+import { ViewPopUpComponent } from 'src/app/estimate-forms/components/view-pop-up/view-pop-up.component';
+import { GisServicesService } from 'src/app/services/gis-services.service';
+import { PopupGisContentComponent } from 'src/app/popup-gis-content/popup-gis-content.component';
+import { ViewPointPopupComponent } from 'src/app/view-point-popup/view-point-popup.component';
+import { MobileUtils } from 'src/app/lib/mobile-utils';
+import { LoaderService } from 'src/app/services/loader.service';
+
+// import { LoaderService } from 'src/app/services/loader.service';
+// const networkExtensionForm = new FormGroup({
+//   networkAssetNo: new FormControl('', Validators.required),
+//   nearestNetwork: new FormControl('', Validators.required),
+//   latitude: new FormControl('',[]),
+//   longitude: new FormControl('', []),
+//   networkExtensionType: new FormControl('', []),
+//   nameOfTheTransformer: new FormControl('', []),
+//   feederName: new FormControl('', []),
+//   substationName: new FormControl('', []),
+//   inspectedByAE: new FormControl('AE', []),
+//   inspectedByAEE: new FormControl('', []),
+//   inspectedByEE: new FormControl('', []),
+//   inspectedBySE: new FormControl('', []),
+//   inspectedByCE: new FormControl('', []),
+//   inspectionDate: new FormControl(dayjs().format('YYYY-MM-DD'), [Validators.required]),
+// });
+
+@Component({
+  selector: 'app-improvement-site-inspection-form',
+  templateUrl: './improvement-site-inspection-form.component.html',
+  styleUrls: ['./improvement-site-inspection-form.component.scss'],
+})
+export class ImprovementSiteInspectionFormComponent
+  implements OnInit, OnDestroy
+{
+  networkExtensionForm: FormGroup;
+  isNetworkExtensionType: boolean = true;
+  networkExtensionType: any;
+  label: any;
+  isNetworkAssetNo: boolean = false;
+  tappingInProgress: boolean = false;
+  showViewPointButton: boolean = false;
+  data: any;
+  dialogRef: MatDialogRef<PopupGisContentComponent>;
+  storedParsedServiceResponse: any;
+  referenceNo: string;
+  isLoading: boolean = false;
+  discom: number | null = null;
+
+  isLayoutWork: boolean = false;
+  layoutValidationSuccess: boolean = false;
+  layoutValidationFailure: boolean = false;
+  validatedCaseId: string = '';
+  validatedAccountId: string = '';
+  validateData: any[] = [];
+  serviceRegistrationsId: any;
+
+  constructor(
+    private _formBuilder: FormBuilder,
+    public dialog: MatDialog,
+    private route: ActivatedRoute,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private dashboardService: DashboardService,
+    private siteInspectionService: SiteInspectionService,
+    private gisservice: GisServicesService,
+    private loader: LoaderService
+  ) {
+    const storedDiscom = sessionStorage.getItem('discom');
+    this.discom = storedDiscom ? parseInt(storedDiscom, 10) : null;
+    this.initializeForm();
+  }
+  initializeForm() {
+    // if (this.discom == 1) {
+    //   this.networkExtensionForm = new FormGroup({
+    //     networkAssetNo: new FormControl('', Validators.required),
+    //     nearestNetwork: new FormControl('', Validators.required),
+    //     latitude: new FormControl('', Validators.required),
+    //     longitude: new FormControl('', Validators.required),
+    //     networkExtensionType: new FormControl('', []),
+    //     nameOfTheTransformer: new FormControl('', Validators.required),
+    //     feederName: new FormControl('', Validators.required),
+    //     substationName: new FormControl('', Validators.required),
+    //     tappingAssestId: new FormControl('', [
+    //       Validators.required,
+    //       Validators.pattern('^[0-9]{11,13}$'),
+    //     ]),
+    //     inspectedByAE: new FormControl('AE', []),
+    //     inspectedByAEE: new FormControl('', []),
+    //     inspectedByEE: new FormControl('', []),
+    //     inspectedBySE: new FormControl('', []),
+    //     inspectedByCE: new FormControl('', []),
+    //     inspectionDate: new FormControl(dayjs().format('YYYY-MM-DD'), [
+    //       Validators.required,
+    //     ]),
+    //     layoutCaseId: new FormControl('', []),
+    //   });
+    // } else {
+      this.networkExtensionForm = new FormGroup({
+        networkAssetNo: new FormControl('', Validators.required),
+        nearestNetwork: new FormControl('', Validators.required),
+        latitude: new FormControl({ value: '', disabled: true }),
+        longitude: new FormControl({ value: '', disabled: true }),
+        networkExtensionType: new FormControl('', []),
+        nameOfTheTransformer: new FormControl({ value: '', disabled: true }),
+        feederName: new FormControl({ value: '', disabled: true }),
+        substationName: new FormControl({ value: '', disabled: true }),
+        inspectedByAE: new FormControl('AE', []),
+        inspectedByAEE: new FormControl('', []),
+        inspectedByEE: new FormControl('', []),
+        inspectedBySE: new FormControl('', []),
+        inspectedByCE: new FormControl('', []),
+        inspectionDate: new FormControl(dayjs().format('YYYY-MM-DD'), [
+          Validators.required,
+        ]),
+        layoutCaseId: new FormControl('', []),
+      });
+    // }
+  }
+
+  ngOnInit() {
+    this.route.paramMap.subscribe(async (params: ParamMap) => {
+      console.log(params);
+      const apiKey = sessionStorage.getItem('api-key');
+      const serviceKey = sessionStorage.getItem('service-key');
+      const userRole = sessionStorage.getItem('user-role');
+      const userName = sessionStorage.getItem('user-name');
+      const userCode = sessionStorage.getItem('user-code');
+
+      const filterParams: any = {
+        apiKey,
+        serviceKey,
+        userRole,
+        userName,
+        userCode,
+      };
+      this.networkExtensionType =
+        await this.dashboardService.getNetworkExtensionTypeData(filterParams);
+    });
+  }
+
+  onLayoutWorkSelection(isLayout: boolean) {
+    this.isLayoutWork = isLayout;
+    if (!isLayout) {
+      this.validatedCaseId = null;
+      this.validatedAccountId = null;
+      this.serviceRegistrationsId = null;
+      this.layoutValidationSuccess = false;
+      this.layoutValidationFailure = false;
+    }
+  }
+
+  async validateLayoutCaseId(caseInput: HTMLInputElement) {
+    const caseId = caseInput.value.trim();
+    if (!caseId) return;
+
+    const apiKey = sessionStorage.getItem('api-key');
+    const serviceKey = sessionStorage.getItem('service-key');
+    const userRole = sessionStorage.getItem('user-role');
+    const userName = sessionStorage.getItem('user-name');
+    const userCode = sessionStorage.getItem('user-code');
+    const referenceNumber = caseId;
+    const discom = this.discom;
+
+    const filterParams: any = {
+      apiKey,
+      serviceKey,
+      userRole,
+      userName,
+      userCode,
+      referenceNumber,
+      discom,
+    };
+
+    try {
+      const response = await this.dashboardService.validateLayoutCase(
+        filterParams
+      );
+
+      if (response?.referenceNumber && response?.accountNumber) {
+        this.layoutValidationSuccess = true;
+        this.layoutValidationFailure = false;
+        this.validatedCaseId = response.referenceNumber;
+        this.validatedAccountId = response.accountNumber;
+        this.serviceRegistrationsId = response.serviceRegistrationsId;
+      } else {
+        this.layoutValidationSuccess = false;
+        this.layoutValidationFailure = true;
+        this.serviceRegistrationsId = null;
+        setTimeout(() => {
+          this.layoutValidationFailure = false;
+        }, 3000);
+      }
+    } catch (error) {
+      console.error('API Error:', error);
+      this.layoutValidationSuccess = false;
+      this.layoutValidationFailure = true;
+      this.serviceRegistrationsId = null;
+    }
+  }
+
+  async onTapping() {
+    if (this.tappingInProgress) {
+      return;
+    }
+    this.tappingInProgress = true;
+    try {
+      this.referenceNo = this.getReferenceNo();
+      const gisparms: any = {
+        AssetID: this.networkExtensionForm.get('networkAssetNo').value,
+        TargetAsset: this.networkExtensionForm.get('nearestNetwork').value,
+        Ref_No: this.referenceNo,
+        SectionCode: sessionStorage.getItem('office-id'),
+      };
+      const gistappingDetails =
+        await this.gisservice.getwithoutAccountTappingDetails(gisparms);
+      console.log('gistappingDetails=', gistappingDetails);
+      this.showViewPointButton = true;
+      if (typeof cordova !== 'undefined') {
+        await MobileUtils.openGisApp(gisparms.AssetID, gisparms.TargetAsset, gisparms.Ref_No);
+        this.tappingInProgress = false;
+      } else {
+        this.dialogRef = this.dialog.open(PopupGisContentComponent, {
+          width: '100%',
+          height: '95%',
+          disableClose: true,
+          data: gistappingDetails.sURL,
+        });
+        this.dialogRef.afterClosed().subscribe(() => {
+          this.onViewPoint();
+          this.tappingInProgress = false;
+        });
+      }
+    } catch (error) {
+      console.error('Error occurred during tapping:', error);
+      this.tappingInProgress = false;
+    }
+  }
+
+  async onViewPoint() {
+    // const gisSaveParams: any = {
+    //   referenceCode: String(113293050396),
+    // };
+    const gisSaveParams: any = {
+      referenceCode: this.referenceNo,
+    };
+    const response = await this.gisservice.getSaveGisViewData(gisSaveParams);
+
+    if (response && response.serviceResponse) {
+      const parsedServiceResponse = this.parseServiceResponse(
+        response.serviceResponse
+      );
+
+      // Store parsedServiceResponse in the class-level variable
+      this.storedParsedServiceResponse = parsedServiceResponse;
+
+      console.log(
+        'storedParsedServiceResponse===',
+        this.storedParsedServiceResponse
+      );
+
+      const {
+        latitude,
+        longitude,
+        nameOfTheTransformer,
+        feederName,
+        substationName,
+      } = parsedServiceResponse;
+      const cleanedSubstationName = substationName.endsWith(')')
+        ? substationName.slice(0, -1)
+        : substationName;
+      const formatValue = (value: any): string => {
+        return value !== null && value !== undefined
+          ? parseFloat(value).toFixed(2)
+          : '0.00';
+      };
+
+      const formattedLatitude = formatValue(latitude);
+      const formattedLongitude = formatValue(longitude);
+
+      this.networkExtensionForm.get('latitude').setValue(formattedLatitude);
+      this.networkExtensionForm.get('longitude').setValue(formattedLongitude);
+
+      this.networkExtensionForm
+        .get('nameOfTheTransformer')
+        .setValue(nameOfTheTransformer);
+      this.networkExtensionForm.get('feederName').setValue(feederName);
+      this.networkExtensionForm
+        .get('substationName')
+        .setValue(cleanedSubstationName);
+      const dialogRef = this.dialog.open(ViewPointPopupComponent, {
+        width: '400px',
+        disableClose: true,
+        data: parsedServiceResponse,
+      });
+    } else {
+      console.error('Failed to get valid response data.');
+    }
+  }
+
+  getReferenceNo() {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+    const hours = String(today.getHours()).padStart(2, '0');
+    const minutes = String(today.getMinutes()).padStart(2, '0');
+    const officeId = sessionStorage.getItem('office-id');
+    const referenceNo = officeId + day + month + year + hours + minutes;
+    console.log('referenceNo==', referenceNo);
+
+    return referenceNo;
+  }
+
+  parseServiceResponse(serviceResponse: string): any {
+    const data: any = {};
+    const matches = serviceResponse.match(/(\w+)\s*=\s*([^,]+)/g);
+    if (matches) {
+      matches.forEach((match) => {
+        const [key, value] = match.split('=');
+        const trimmedKey = key.trim();
+        const trimmedValue = value.trim();
+        data[trimmedKey] = trimmedValue;
+      });
+    }
+    return data;
+  }
+
+  onNetworkExtentionRequiredChange(event) {
+    if (event == 1) {
+      this.isNetworkExtensionType = false;
+    } else {
+      this.isNetworkExtensionType = true;
+    }
+  }
+
+  async submitForm() {
+    // if (this.discom == 1) {
+    //   let siteInspectionDTO: any = {
+    //     isNetworkExtRequired: Number(
+    //       this.networkExtensionForm.value.isNetworkExtensionRequired
+    //     ),
+    //     dtrId:
+    //       !this.networkExtensionForm.get('nameOfTheTransformer').value ||
+    //       this.networkExtensionForm.get('nameOfTheTransformer').value == '-'
+    //         ? ''
+    //         : this.networkExtensionForm.get('nameOfTheTransformer').value,
+    //     feederName: this.networkExtensionForm.get('feederName').value,
+    //     substationName: this.networkExtensionForm.get('substationName').value,
+    //     networkAssetNo: this.networkExtensionForm.value.networkAssetNo,
+    //     nearestNetwork: this.networkExtensionForm.value.nearestNetwork,
+    //     latitude: this.networkExtensionForm.get('latitude').value,
+    //     longitude: this.networkExtensionForm.get('longitude').value,
+    //     inspectionDate: this.networkExtensionForm.value.inspectionDate,
+    //     tpAssetId: this.networkExtensionForm.get('tappingAssestId').value,
+    //     tpGisUid: 'null',
+    //     tpParentUid: 'null',
+    //     inspectedByAe:
+    //       this.networkExtensionForm.value.inspectedByAE == true ? 1 : 0,
+    //     inspectedByAee:
+    //       this.networkExtensionForm.value.inspectedByAEE == true ? 1 : 0,
+    //     inspectedByEe:
+    //       this.networkExtensionForm.value.inspectedByEE == true ? 1 : 0,
+    //     inspectedBySe:
+    //       this.networkExtensionForm.value.inspectedBySE == true ? 1 : 0,
+    //     inspectedByCe:
+    //       this.networkExtensionForm.value.inspectedByCE == true ? 1 : 0,
+    //   };
+    //   const apiKey = sessionStorage.getItem('api-key');
+    //   const serviceKey = sessionStorage.getItem('service-key');
+    //   const userRole = sessionStorage.getItem('user-role');
+    //   const userName = sessionStorage.getItem('user-name');
+    //   const userCode = sessionStorage.getItem('user-code');
+    //   // this.loader.show('Improvement site inspection data is saving...');
+    //   this.isLoading = true;
+    //   const save =
+    //     await this.siteInspectionService.saveImprovementSiteInspection(
+    //       {
+    //         apiKey,
+    //         serviceKey,
+    //         userCode,
+    //         userName,
+    //         userRole,
+    //       },
+    //       {
+    //         siteInspectionDTO,
+    //         serviceRegistrationDTO: {
+    //           isLayoutCase: this.layoutValidationSuccess ? 1 : 0,
+    //           layoutRefServiceRegistrationsId: this.layoutValidationSuccess
+    //             ? this.serviceRegistrationsId
+    //             : null,
+    //         },
+    //       }
+    //     );
+    //   console.log(save);
+    //   if (save.messageType == 'SUCCESS') {
+    //     // this.loader.hide();
+    //     const snackBarRef = this.snackBar.open(
+    //       'Improvement site inspection saved successfully And Reference No: ' +
+    //         save.referenceNumber||save.messageText,
+    //       'OK',
+    //       {
+    //         verticalPosition: 'top',
+    //       }
+    //     );
+    //     snackBarRef.onAction().subscribe(() => {
+    //       this.snackBar.dismiss();
+    //       this.networkExtensionForm.reset();
+    //       this.layoutValidationSuccess = false;
+    //       this.layoutValidationFailure = false;
+    //       this.serviceRegistrationsId = null;
+    //       this.isNetworkAssetNo = false;
+    //       this.isLoading = false;
+    //     });
+    //   } else if(save.messageType == 'FAILURE'){
+    //     const snackBarRef = this.snackBar.open(
+    //      save.messageText,
+    //       'OK',
+    //       {
+    //         verticalPosition: 'top',
+    //       }
+    //     );
+    //     snackBarRef.onAction().subscribe(() => {
+    //       this.snackBar.dismiss();
+    //       this.networkExtensionForm.reset();
+    //       this.layoutValidationSuccess = false;
+    //       this.layoutValidationFailure = false;
+    //       this.serviceRegistrationsId = null;
+    //       this.isNetworkAssetNo = false;
+    //       this.isLoading = false;
+    //     });
+    //   }
+    // } else {
+      let siteInspectionDTO: any = {
+        isNetworkExtRequired: Number(
+          this.networkExtensionForm.value.isNetworkExtensionRequired
+        ),
+        dtrId: this.networkExtensionForm.get('nameOfTheTransformer').value,
+        feederName: this.networkExtensionForm.get('feederName').value,
+        substationName: this.networkExtensionForm.get('substationName').value,
+        networkAssetNo: this.networkExtensionForm.value.networkAssetNo,
+        nearestNetwork: this.networkExtensionForm.value.nearestNetwork,
+        latitude: this.networkExtensionForm.get('latitude').value,
+        longitude: this.networkExtensionForm.get('longitude').value,
+        inspectionDate: this.networkExtensionForm.value.inspectionDate,
+        inspectedByAe:
+          this.networkExtensionForm.value.inspectedByAE == true ? 1 : 0,
+        inspectedByAee:
+          this.networkExtensionForm.value.inspectedByAEE == true ? 1 : 0,
+        inspectedByEe:
+          this.networkExtensionForm.value.inspectedByEE == true ? 1 : 0,
+        inspectedBySe:
+          this.networkExtensionForm.value.inspectedBySE == true ? 1 : 0,
+        inspectedByCe:
+          this.networkExtensionForm.value.inspectedByCE == true ? 1 : 0,
+      };
+      if (this.storedParsedServiceResponse) {
+        siteInspectionDTO.tpAssetId = this.storedParsedServiceResponse.assetId;
+        siteInspectionDTO.tpAssetType =
+          this.storedParsedServiceResponse.assetType;
+        siteInspectionDTO.tpGisUid = this.storedParsedServiceResponse.gisUid;
+        siteInspectionDTO.tpParentUid =
+          this.storedParsedServiceResponse.parentUid;
+      } else {
+        // siteInspectionDTO.tpAssetId = 'null';
+        // siteInspectionDTO.tpAssetType = 'null';
+        // siteInspectionDTO.tpGisUid = 'null';
+        // siteInspectionDTO.tpParentUid = 'null';
+        this.snackBar
+          .open(
+            'Latitude and Longitude of the location details are required. Please Click on Get Tapping Point',
+            'OK',
+            { verticalPosition: cordova !== undefined ? 'bottom' : 'top' }
+          )
+          .onAction()
+          .subscribe(() => {
+            this.snackBar.dismiss();
+          });
+        return;
+      }
+
+      const apiKey = sessionStorage.getItem('api-key');
+      const serviceKey = sessionStorage.getItem('service-key');
+      const userRole = sessionStorage.getItem('user-role');
+      const userName = sessionStorage.getItem('user-name');
+      const userCode = sessionStorage.getItem('user-code');
+
+      this.isLoading = true;
+    this.loader.show('Submitting Data...');
+    try {
+      const save =
+        await this.siteInspectionService.saveImprovementSiteInspection(
+          {
+            apiKey,
+            serviceKey,
+            userCode,
+            userName,
+            userRole,
+          },
+          {
+            siteInspectionDTO,
+            serviceRegistrationDTO: {
+              isLayoutCase: this.layoutValidationSuccess ? 1 : 0,
+              layoutRefServiceRegistrationsId: this.layoutValidationSuccess
+                ? this.serviceRegistrationsId
+                : null,
+            },
+          }
+        );
+      console.log(save);
+      if (save.messageType == 'SUCCESS') {
+        // this.loader.hide();
+        const snackBarRef = this.snackBar.open(
+          'Improvement site inspection saved successfully And Reference No: ' +
+            save.referenceNumber,
+          'OK',
+          {
+            verticalPosition: cordova !== undefined ? 'bottom' : 'top',
+          }
+        );
+        snackBarRef.onAction().subscribe(() => {
+          this.snackBar.dismiss();
+          this.networkExtensionForm.reset();
+          this.layoutValidationSuccess = false;
+          this.layoutValidationFailure = false;
+          this.serviceRegistrationsId = null;
+          this.isNetworkAssetNo = false;
+          this.isLoading = false;
+        });
+      }
+      // }
+    } catch (error) {
+      this.snackBar.open(
+        'An error occurred while saving site inspection data',
+        'OK'
+      );
+    } finally {
+      this.loader.hide();
+    }
+  }
+
+  onNearestNetworkChange(val) {
+    this.label = val;
+    this.isNetworkAssetNo = true;
+  }
+  isValidForm(): boolean {
+    this.networkExtensionForm.markAllAsTouched();
+    console.log('Form Valid?', this.networkExtensionForm.valid);
+    let hasError = false;
+
+    Object.keys(this.networkExtensionForm.controls).forEach((key) => {
+      const control = this.networkExtensionForm.get(key);
+
+      if (control && (control.invalid || control.untouched)) {
+        hasError = true;
+      }
+    });
+
+    if (hasError) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  openConfirmationpopupDialog() {
+    this.networkExtensionForm.markAllAsTouched();
+    if (this.isValidForm()) {
+      const dialogRef = this.dialog.open(ConfirmationPopupComponent);
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result === 'yes') {
+          this.submitForm();
+        }
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    this.networkExtensionForm.get('nearestNetwork').reset();
+  }
+}

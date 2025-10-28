@@ -1,0 +1,182 @@
+<section>
+    <form [formGroup]="vendorForm">
+    <h1 mat-dialog-title>Update Vendor</h1>
+        <div class="modal-input-control">
+            <div class="col-sm-6">
+                Office Name<br>
+                <div class="card flex justify-content-center">
+                    <form [formGroup]="treeForm">
+                        <p-treeSelect class="md:w-20rem w-full"
+                        containerStyleClass="w-full"
+                        formControlName="selectedNodes"
+                        (onNodeSelect)="nodeSelect($event.node)"
+                        selectionMode="single"
+                        (onNodeUnselect)="nodeUnselect()"
+                        [(ngModel)]="selectedOfficeNode"
+                        [options]="nodes"
+                        [filter]="true"
+                        [scrollHeight]="'250px'"
+                    > </p-treeSelect>
+                    </form>
+                  </div>
+              </div>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Registration No</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="vendorRegistrationNo"
+                [maxLength]="20" appAlphaNumeric />
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Organization Name</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="vendorOrganizationName" 
+                [maxLength]="100" appAlphaNumeric/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field appearance="fill" class="custom-datepicker-field">
+                <mat-datepicker-toggle matSuffix [for]="vendorRegistrationDate"></mat-datepicker-toggle>
+                <mat-label>Vendor Registration Date</mat-label>
+                <input matInput [matDatepicker]="vendorRegistrationDate" 
+                  formControlName="vendorRegistrationDate" readonly>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker #vendorRegistrationDate></mat-datepicker>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="custom-datepicker-field">
+                <mat-datepicker-toggle matSuffix [for]="vendorRegistrationValidUpto"></mat-datepicker-toggle>
+                <mat-label>Vendor Registration Valid Upto</mat-label>
+                <input matInput [matDatepicker]="vendorRegistrationValidUpto"
+                    formControlName="vendorRegistrationValidUpto" readonly>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker #vendorRegistrationValidUpto></mat-datepicker>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Code</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="vendorCode" [maxLength]="20" appAlphaNumeric required/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <mat-label>vendor Type</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="vendorType" [maxLength]="20" appAlphaNumeric required/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor License Number</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="vendorLicenseNumber" [maxLength]="50" appAlphaNumeric />
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Contact Details</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="vendorContactDetails" [maxLength]="10" appMobileValidation />
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Website</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="vendorWebsite" appWebsiteUrlValidator [maxLength]="100"/>
+                <mat-error>Please enter valid website.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Address</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="vendorAddress" [maxLength]="200" appAlphaNumeric />
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Email ID</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="vendorEmailId" appEmailValidator [maxLength]="50"/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Person Name</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="contactPersonName" appAlphaNumeric [maxLength]="100"/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Person Phone No</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="contactPhoneNo" appMobileValidation [maxLength]="10" />
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Person Email ID</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="contactPersonEmailId"  [maxLength]="50" />
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Person Address</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="contactPersonAddress" appAlphaNumeric [maxLength]="200"/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>No of Work Allocated</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="noofworksAllocated" appNumbers [maxLength]="5"/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Emd Receipt No</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="emdReceiptNo" appAlphaNumeric [maxLength]="20" />
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="custom-datepicker-field">
+                <mat-datepicker-toggle matSuffix [for]="emdReceiptDate"></mat-datepicker-toggle>
+                <mat-label>Emd Receipt Date</mat-label>
+                <input matInput [matDatepicker]="emdReceiptDate"
+                    formControlName="emdReceiptDate" readonly>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker #emdReceiptDate></mat-datepicker>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Emd Amount</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="emdAmount" appIndianCurrency [maxLength]="10" />
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Emd Eligibility %</mat-label>
+                <input matInput placeholder="Ex. Each" formControlName="emdEligibilityPercentage" appPercentageValidator [maxLength]="4"/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="fill">
+                <mat-label>Discom</mat-label>
+                <mat-select [(ngModel)]="getData.discom" formControlName="discom" required>
+                  <mat-option *ngFor="let main of DiscomData" [value]="main.discomCode">
+                    {{ main.discomName }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="vendorForm.get('discom').invalid && vendorForm.get('discom').touched">
+                  Please select in this field.</mat-error> 
+              </mat-form-field>
+        </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+        <button class="c-btn" mat-button (click)="onUpdate()" >Update</button>
+        <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+</form>
+</section>

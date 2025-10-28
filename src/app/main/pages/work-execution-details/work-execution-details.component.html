@@ -1,0 +1,417 @@
+<section
+  class="page__content p-3 p20 shadow dis-fl dis-fl2 position-relative dis-flex-colu"
+>
+  <form class="form">
+    <div class="col-lg-6" style="width: 100% !important; padding: 0.5rem">
+      <div class="heading">
+        <h2>Work Execution</h2>
+      </div>
+    </div>
+    <div style="border: 3px solid #c2c2c2; padding: 2px">
+      <table class="table table-bordered text-center mt-4">
+        <thead style="background-color: #f2f2f2; color: #3e3e3e">
+          <tr>
+            <th scope="col">S. No.</th>
+            <th scope="col">Material Name</th>
+            <th scope="col">Material Code</th>
+            <th scope="col">Estimated Qty</th>
+            <th
+              scope="col"
+              *ngIf="
+                (data.WmWorkorderRegistered?.workExecutionMethod !==
+                  'Total Turnkey' &&
+                  data.WmWorkorderRegistered?.workExecutionMethod !==
+                    'Self Execution' &&
+                  data.EstimationRegistered?.applicationTypeName !==
+                    'Emergency Works') ||
+                (data.WmWorkorderRegistered?.workExecutionMethod !==
+                  'Department' &&
+                  data.EstimationRegistered?.applicationTypeName !==
+                    'Emergency Works')
+              "
+            >
+              Drawn Qty
+            </th>
+            <th
+              scope="col"
+              *ngIf="
+                (data.WmWorkorderRegistered?.workExecutionMethod !==
+                  'Total Turnkey' &&
+                  data.WmWorkorderRegistered?.workExecutionMethod !==
+                    'Self Execution' &&
+                  data.EstimationRegistered?.applicationTypeName !==
+                    'Emergency Works') ||
+                (data.WmWorkorderRegistered?.workExecutionMethod !==
+                  'Department' &&
+                  data.EstimationRegistered?.applicationTypeName !==
+                    'Emergency Works')
+              "
+            >
+              Return Qty
+            </th>
+            <th scope="col">Actual Qty</th>
+            <th scope="col">Balance Qty</th>
+            <th scope="col">Part #</th>
+            <th
+              scope="col"
+              *ngIf="
+                data.WmWorkorderRegistered?.workExecutionMethod ==
+                  'Labour Contract' ||
+                data.WmWorkorderRegistered?.workExecutionMethod ==
+                  'Partial Turnkey' ||
+                data.WmWorkorderRegistered?.workExecutionMethod == 'Department'
+              "
+            >
+              Stock Available
+            </th>
+            <th
+              scope="col"
+              *ngIf="
+                data.WmWorkorderRegistered?.workExecutionMethod ==
+                  'Labour Contract' ||
+                data.WmWorkorderRegistered?.workExecutionMethod ==
+                  'Partial Turnkey'
+              "
+            >
+              Qty Provided By Vendor
+            </th>
+            <th
+              scope="col"
+              *ngIf="
+                data.WmWorkorderRegistered?.workExecutionMethod ==
+                  'Labour Contract' ||
+                data.WmWorkorderRegistered?.workExecutionMethod ==
+                  'Partial Turnkey'
+              "
+            >
+              Remarks
+            </th>
+            <!-- <th scope="col">Structure</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of data.EstRegisteredResponse; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>
+              <span
+              *ngIf="d?.amAssetCategoryMaterialMasterId === '0'"
+              style="color: #028f3a; font-weight: 500"
+            >
+              {{ d?.materialName }}
+            </span>
+            <span
+              *ngIf="d?.amAssetCategoryMaterialMasterId !== 'null' && d?.amAssetCategoryMaterialMasterId !== '0'"
+              style="color: #028f3a; font-weight: 500"
+            >
+              {{ d?.materialName }}
+            </span>
+            <span
+              *ngIf="d?.amAssetCategoryMaterialMasterId === 'null'"
+            >
+              {{ d?.materialName }} 
+            </span>
+            
+            </td>
+            <td>
+              <span
+                style="color: #f91818; font-weight: 500"
+                *ngIf="
+                  d?.isUploadSerialMaterial == '1' ||
+                  d?.isUploadSerialMaterial == '0'
+                "
+              >
+                {{ d?.materialCode }}
+              </span>
+              <span *ngIf="d?.isUploadSerialMaterial == 'null'">
+                {{ d?.materialCode }}
+              </span>
+            </td>
+            <td>
+              {{ d?.estimatedQuantity }}
+            </td>
+            <td
+              *ngIf="
+                (data.WmWorkorderRegistered?.workExecutionMethod !==
+                  'Total Turnkey' &&
+                  data.WmWorkorderRegistered?.workExecutionMethod !==
+                    'Self Execution' &&
+                  data.EstimationRegistered?.applicationTypeName !==
+                    'Emergency Works') ||
+                (data.WmWorkorderRegistered?.workExecutionMethod !==
+                  'Department' &&
+                  data.EstimationRegistered?.applicationTypeName !==
+                    'Emergency Works')
+              "
+            >
+              {{ d?.drawnQuantity == "null" ? 0 : d?.drawnQuantity }}
+            </td>
+            <td
+              *ngIf="
+                (data.WmWorkorderRegistered?.workExecutionMethod !==
+                  'Total Turnkey' &&
+                  data.WmWorkorderRegistered?.workExecutionMethod !==
+                    'Self Execution' &&
+                  data.EstimationRegistered?.applicationTypeName !==
+                    'Emergency Works') ||
+                (data.WmWorkorderRegistered?.workExecutionMethod !==
+                  'Department' &&
+                  data.EstimationRegistered?.applicationTypeName !==
+                    'Emergency Works')
+              "
+            >
+              {{ d?.returnedQuantity == "null" ? 0 : d?.returnedQuantity }}
+            </td>
+            <td>
+              <div class="searchbar">
+                {{ d?.actualQuantity == "null" ? 0 : d?.actualQuantity }}
+              </div>
+            </td>
+            <td>{{ d?.balanceQty }}</td>
+
+            <td>{{ d?.workPart }}</td>
+            <td
+              *ngIf="
+                data.WmWorkorderRegistered?.workExecutionMethod ==
+                  'Labour Contract' ||
+                data.WmWorkorderRegistered?.workExecutionMethod ==
+                  'Partial Turnkey' ||
+                data.WmWorkorderRegistered?.workExecutionMethod == 'Department'
+              "
+            >
+              <span *ngIf="d.noStockFlag == '1'">No</span>
+            </td>
+            <td
+              *ngIf="
+                data.WmWorkorderRegistered?.workExecutionMethod ==
+                  'Labour Contract' ||
+                data.WmWorkorderRegistered?.workExecutionMethod ==
+                  'Partial Turnkey'
+              "
+            >
+              <span *ngIf="d.noStockFlag == '1'">{{ d?.qtyByVendor }}</span>
+            </td>
+            <td
+              *ngIf="
+                data.WmWorkorderRegistered?.workExecutionMethod ==
+                  'Labour Contract' ||
+                data.WmWorkorderRegistered?.workExecutionMethod ==
+                  'Partial Turnkey'
+              "
+            >
+              <span *ngIf="d.noStockFlag == '1'">{{ d?.remarks }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="overflow: auto; width: 100%; margin-top: 0.1rem">
+        <div
+          class="heading"
+          style="
+            display: flex;
+            align-items: baseline;
+            padding: 0 0.5rem;
+            flex-wrap: wrap;
+          "
+        >
+          <div
+            style="background-color: #f0f0f0; padding: 1px 0.5rem"
+            *ngIf="materialActualQuantityData.length > 0"
+          >
+            <span>DT Structure:</span>
+          </div>
+        </div>
+        <div *ngIf="materialActualQuantityData.length > 0">
+          <table
+            class="table table-bordered text-center mt-4"
+            style="border-collapse: collapse"
+          >
+            <thead>
+              <tr style="background-color: #f2f2f2; color: #3e3e3e">
+                <th scope="col" style="width: 7%">S.No</th>
+                <th scope="col" style="width: 16%">Material Code</th>
+                <th scope="col" style="width: 16%">Part</th>
+                <th scope="col" style="width: 16%">Badge Number</th>
+                <th scope="col" style="width: 16%">Serial No</th>
+                <th scope="col" style="width: 16%">Manufacture</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let detail of materialActualQuantityData; let i = index"
+              >
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="text-center">{{ detail.materialCode }}</td>
+                <td class="text-center">{{ detail.part }}</td>
+                <td class="text-center">{{ detail.badgeNumber }}</td>
+                <td class="text-center">{{ detail.serialNo }}</td>
+                <td class="text-center">{{ detail.manufacture || "N/A" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="overflow: auto; width: 100%; margin-top: 0.1rem"></div>
+
+      <div style="overflow: auto; width: 100%">
+        <div
+          class="heading"
+          style="
+            display: flex;
+            align-items: baseline;
+            padding: 0 0.1rem;
+            flex-wrap: wrap;
+          "
+        >
+          <div
+            style="background-color: #f0f0f0; padding: 1px 0.5rem"
+            *ngIf="flattenedSpanData.length > 0"
+          >
+            <span style="text-align: center">Span Structure:</span>
+          </div>
+          <div class="indicators-line mt-4"></div>
+        </div>
+        <table
+          class="table table-bordered text-center mt-4"
+          style="border-collapse: collapse"
+          *ngIf="flattenedSpanData.length > 0"
+        >
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">Material Code</th>
+              <th scope="col">Part</th>
+              <th scope="col">Spans</th>
+              <th scope="col">Length</th>
+              <th scope="col">Is Busbar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let span of flattenedSpanData; let i = index">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td class="text-center">{{ span.materialCode }}</td>
+              <td class="text-center">{{ span.part }}</td>
+              <td class="text-center">{{ span.span }}</td>
+              <td class="text-center">{{ span.length }}</td>
+              <td class="text-center">
+                {{ span.isBusbar === "0" ? "No" : "Yes" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="overflow: auto; width: 100%; margin-top: 0.1rem"></div>
+
+      <div style="overflow: auto; width: 100%">
+        <div
+          class="heading"
+          style="
+            display: flex;
+            align-items: baseline;
+            padding: 0 0.5rem;
+            flex-wrap: wrap;
+          "
+        >
+          <div
+            style="background-color: #f0f0f0; padding: 1px 0.5rem"
+            *ngIf="materialData.data && materialData.data.length > 0"
+          >
+            <span style="text-align: center">Pole Structure:</span>
+          </div>
+          <div class="indicators-line mt-2"></div>
+        </div>
+        <table
+          class="table table-bordered text-center mt-4"
+          style="border-collapse: collapse"
+          *ngIf="materialData.data && materialData.data.length > 0"
+        >
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">Material Code</th>
+              <th scope="col">Part</th>
+              <th scope="col">Is DT Structure</th>
+              <th scope="col">Structure</th>
+              <th scope="col">Assetized Quantity</th>
+              <th scope="col">Total Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let material of materialData.data; let i = index">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td class="text-center">{{ material.materialCode }}</td>
+              <td class="text-center">{{ material.part }}</td>
+              <td class="text-center">
+                {{ material.isDTStructure == '1' ? 'Yes' : 'No' }}
+              </td>
+              <td class="text-center">{{ material.structure }}</td>
+              <td class="text-center">{{ material.assetizedQuantity }}</td>
+              <td class="text-center">{{ material.totalQuantity }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="overflow: auto; width: 100%">
+        <table class="table table-bordered table-striped text-center mt-4">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">S.No</th>
+              <th scope="col">Labour Name</th>
+              <th scope="col">Labour Code</th>
+              <th scope="col">Estimated Qty</th>
+              <th scope="col">Actual Qty</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let d of data?.EstimationLabourResponse; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>{{ d?.material }}</td>
+              <td>{{ d?.materialCode }}</td>
+              <td>{{ d?.quantity }}</td>
+              <td>
+                {{ d?.actualQuantity }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <p style="padding: 15px">
+        <input
+          type="checkbox"
+          name="check"
+          id="chc"
+          (click)="onCheckboxChange($event.target.checked)"
+        />
+        <b style="font-size: 15px; color: #eb8634">
+          I hereby declare that i am closing the work execution after
+          verification of all the material and labour items of estimateed
+          quantity, drawn quantity, return quantity and actual quantity.</b
+        >
+      </p>
+    </div>
+    <div class="btn-box mt-4 pb-4">
+      <button
+        type="button"
+        class="btn btn-primary btn-md"
+        routerLink="/main/work-execution-details"
+        (click)="openCloseDialog()"
+        [disabled]="!isClose || isButtonDisabled"
+      >
+        Close Work Execution
+      </button>
+      <button
+        type="button"
+        class="btn clor btn-primary btn-md"
+        (click)="navigate()"
+      >
+        Back
+      </button>
+    </div>
+  </form>
+</section>

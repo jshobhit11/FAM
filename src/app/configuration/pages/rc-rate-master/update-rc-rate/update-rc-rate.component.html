@@ -1,0 +1,71 @@
+<section>
+  <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+    <h2 class="title-2"> Update SR/RC Rates</h2>
+      <div class="col-xl-6" style="width: 100%; margin-top: 15px;">
+        <div class="col-xl-6 input-control block-div" style="display: flex;">
+          <div class="input-controlsleft" style="flex: 1;">
+            <label for="rateType" style="display: inline-block; margin-right: 1rem;">Rate Type</label>
+            <select id="rateType" class="form-select" style="flex: 1;">
+              <option value="rateType1">SR Rate/RC Rate</option>
+              <option value="rateType2">SR Rate/RC Rate</option>
+              <option value="rateType3">SR Rate/RC Rate</option>
+            </select>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-xl-6" style="width: 100%; margin-top: 15px;">
+        <div class="col-xl-6 input-control block-div" style="display: flex;">
+          <div class="input-controlsvendor" style="flex: 1;">
+            <label for="rcvendorName" style="display: inline-block; margin-right: 1rem;">RC Vendor Name</label>
+            <select id="rcvendorName" class="form-select" style="flex: 1;">
+              <option value="rcvendorName1">rc vendor name1</option>
+              <option value="rcvendorName2">rc vendor name2</option>
+              <option value="rcvendorName3">rc vendor name3</option>
+            </select>
+          </div>
+        </div>
+      </div>
+  
+      <div style="overflow: auto; width: 100%; border: 2px solid #c2c2c2; margin-top: 1rem;">
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="flexCheckDefault" />
+                  <label class="form-check-label" for="flexCheckDefault">Select All</label>
+                </div>
+              </th>
+              <th scope="col">Ml Type</th>
+              <th scope="col">Material Type</th>
+              <th scope="col">Material Code</th>
+              <th scope="col">Materil Name</th>
+              <th scope="col">Unit</th>
+              <th scope="col">Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input class="form-check-input" style="width: 1rem !important; height: 1rem !important; min-width: unset !important; margin-left: 30px;" type="checkbox" />
+                </div>
+              </td>
+              <td>material</td>
+              <td>pole</td>
+              <td>12121</td>
+              <td>9 mtr pole</td>
+              <td>kw</td>
+              <td><input class="form-control" type="text"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="btn-box mt-4">
+        <button type="button" class="btn btn-primary btn-md">Save</button>
+        <button class="btn clor" (click)="toRcRates()">Close</button>
+      </div>
+    </div>
+  </section>
+  

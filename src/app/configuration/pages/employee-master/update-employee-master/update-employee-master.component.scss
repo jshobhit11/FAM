@@ -1,0 +1,74 @@
+section {
+  width: 100%;
+  padding: 1rem;
+}
+
+h1 {
+  color: #484848;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.content-fields mat-form-field+two-row-fields {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+}
+
+.two-row-fields {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.btn-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.clor {
+  background-color: white;
+  color: #4472c4;
+  border: 2px solid #4472c4;
+
+  &:hover {
+    background-color: #d8d7d7;
+    color: #4472c4;
+  }
+}
+
+.radio-buttons {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 0;
+
+  label {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  mat-radio-group {
+    display: flex;
+    gap: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  section {
+    padding: unset;
+  }
+
+  .content-fields {
+    flex-direction: column;
+    align-items: flex-start;
+
+  }
+
+  .two-row-fields {
+    flex-direction: column;
+  }
+}

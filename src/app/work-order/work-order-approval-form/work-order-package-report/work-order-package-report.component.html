@@ -1,0 +1,298 @@
+<!-- <p>Estimate for arranging power supply on H.T./L.T. basis in favour OF MUDDASSIR MAHMOOD ACCOUNT
+            ID:8095552687 IN for
+            "Field Study Multi Connctn.,
+            Tl Of All Appls : 10-Kw, Phase: Three, Voltage Requirement: 440-V, Tno Of Appls: 4, No Of Dom Appl: 0, No Of
+            Com
+            Appl: 4, No Of Edu Appl: 0, No Of Indl
+            Appl: 0." Under SERV CONECTION works in O&M 150088 of sub division W5 cubbanpete</p> -->
+<!-- <div class="container-fluid page" id="print-content">
+  <div class="work-order" *ngIf="data && data.wmWorkorderRegistered">
+    <h2 class="heading">Work Order Report</h2>
+
+ 
+
+    <p class="left-align">
+      {{ data?.wmWorkorderRegistered?.workDescription }}
+    </p>
+
+    <p class="left-align">
+      <b
+        >The details of sanctioned estimate/Work order issued are as follows:</b
+      >
+    </p>
+
+    <table class="my-scrollable-table">
+      <tr>
+        <td><label>Work Order No:</label></td>
+        <td>{{ data?.wmWorkorderRegistered?.workorderNo }}</td>
+      </tr>
+      <tr>
+        <td><label>Status:</label></td>
+        <td>ACTIVE</td>
+      </tr>
+      <tr>
+        <td><label>Manual WO/Tentative No issued:</label></td>
+        <td>{{ data?.wmWorkorderRegistered?.manualTentativeWorkorderNo }}</td>
+      </tr>
+      <tr>
+        <td><label>Stock Transfer No:</label></td>
+        <td>NA</td>
+      </tr>
+      <tr>
+        <td><label>Award no and Date:</label></td>
+        <td>
+          {{ data?.wmWorkorderRegistered?.workAwardNo }}
+          {{ data?.wmWorkorderRegistered?.workAwardDate | date }}
+        </td>
+      </tr>
+      <tr>
+        <td><label>Contract Awarded to:</label></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><label>Project/Budget head:</label></td>
+        <td>{{ data?.estimationRegistered?.divisionalBudgetHead }}</td>
+      </tr>
+      <tr>
+        <td><label>Estimate Created Date:</label></td>
+        <td>26-NOV-21 17:39:14</td>
+      </tr>
+      <tr>
+        <td><label>Estimate Sanctioned Authority and Date:</label></td>
+        <td>{{ data?.estimationRegistered?.estimateApprovedBy }} and {{ data?.estimationRegistered?.estimationApprovedDate | date}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="border: 2px solid #e1e1e1; padding: 1rem">
+    <div class="heading" *ngFor="let e of globalArray">
+      <h2 style="background-color: #f0f0f0">
+        {{ e.estimate.workType }}- {{ e.estimate.workPart }}-
+        {{ e.estimate.workscopeDescription }}
+      </h2>
+
+      <div style="display: flex; flex-wrap: wrap; overflow: auto">
+        <table
+          class="table text-center"
+          style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+        >
+          <thead style="background-color: #dfdfdf">
+            <tr>
+              <th scope="col">Rate Type</th>
+              <th scope="col">Description of Material</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Unit</th>
+              <th scope="col">Rate</th>
+              <th scope="col">Materials Amount</th>
+              <th scope="col">Labour Rate</th>
+              <th scope="col">Labour Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of e.data">
+              <td>{{ item.rateType }}</td>
+              <td style="text-align: left">{{ item.materialCode }} - {{ item.materialName }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.materialUnit }}</td>
+              <td>{{ item.materialRate }}</td>
+              <td>{{ item.materailAmount }}</td>
+              <td>{{ item.labourRate }}</td>
+              <td>{{ item.labourAmount }}</td>
+            </tr>
+          </tbody>
+          <tr>
+            <h1>Total</h1>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ e.estimate.materialCost }}</td>
+            <td></td>
+            <td>{{ e.estimate.labourCost }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="col-lg-6 mt-4" style="width: 100% !important; padding: 1rem">
+    <div class="heading" style="background-color: #f0f0f0">
+      <h1>Typical Cost Data Sheet</h1>
+    </div>
+
+    <div class="two-row-grid mt-3" style="grid-template-columns: 1fr;justify-items: flex-end;border: 2px solid #f0f0f0;padding: 1rem;">
+      <div class="data-sheet">
+        <div class="inner-div">
+          <label style="font-size: medium;">Material Cost</label>
+          <p style="font-size: medium;">
+            {{ data?.estimationRegistered?.estimationMaterialCost }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <label style="font-size: medium;">Labour Cost</label>
+          <p style="font-size: medium;">
+            {{ data?.estimationRegistered?.estimationLabourCost }}
+          </p>
+        </div>
+        <div class="inner-div" *ngFor="let item of addChargesBeforeTotalLabour">
+          <label *ngIf="item.chargeType == 'PERCENTAGE'">{{ item.chargeTypeValue }}%
+            {{ item.additionalChargeName }}</label>
+          <label *ngIf="item.chargeType == 'FLAT'">{{
+            item.additionalChargeName
+            }}</label>
+          <p>{{ item.amount }}</p>
+        </div>
+        <div class="inner-div">
+          <label style="font-size: medium;">Total Labour Charges</label>
+          <p style="font-size: medium;">{{ data.estimationRegistered?.totalLabourCharges }}</p>
+        </div>
+        <div class="inner-div" *ngFor="let item of addChargesAfterTotalLabour">
+          <label *ngIf="item.chargeType == 'PERCENTAGE'">{{ item.chargeTypeValue }}%
+            {{ item.additionalChargeName }}</label>
+          <label *ngIf="item.chargeType == 'FLAT'">{{
+            item.additionalChargeName
+            }}</label>
+          <p>{{ item.amount }}</p>
+        </div>
+        <div class="inner-div">
+          <label style="font-size: medium;">Total Estimate Amount</label>
+          <p style="font-size: medium;">{{ data?.estimationRegistered?.estimationTotalCost }}</p>
+        </div>
+      </div>
+     
+    </div>
+  </div>
+
+
+
+  <h2 class="heading">Payment certificate:</h2>
+  <p class="left-align">
+    <b>The applicant has paid the following deposit charges:</b>
+  </p>
+  <div class="work-order">
+    <table class="my-scrollable-table">
+      <tr>
+        <th scope="col">Sl NO</th>
+        <th scope="col">Particulars/deposit charges</th>
+        <th scope="col">Amount paid in Rs</th>
+        <th scope="col">Receipt no</th>
+        <th scope="col">Receipt date</th>
+        <th scope="col">Payment ID</th>
+      </tr>
+      <tr>
+        <td><label>1</label></td>
+        <td>SLC</td>
+        <td>5370</td>
+        <td>809555283489</td>
+        <td>29-NOV-21 00:00:00</td>
+        <td>809555283489</td>
+      </tr>
+      <tr>
+        <td><label>2</label></td>
+        <td>ASLC</td>
+        <td>8260</td>
+        <td>809555239645</td>
+        <td>29-NOV-21 00:00:00</td>
+        <td>809555239645</td>
+      </tr>
+      <tr>
+        <td><label>3</label></td>
+        <td>2MMD</td>
+        <td>5360</td>
+        <td>809555292145</td>
+        <td>29-NOV-21 00:00:00</td>
+        <td>809555292145</td>
+      </tr>
+    </table>
+  </div>
+  <div class="download-btn btn-box mt-4 pb-4" *ngIf="!isGeneratingPDF">
+    <button
+      type="button"
+      class="btn btn-primary btn-lg"
+      (click)="generateWorkOrderReport()"
+    >
+      Download
+    </button>
+  </div>
+</div> -->
+
+<h2 class="heading">Work Order Report </h2>
+
+<div class="work-order p-3">
+  <table class="my-scrollable-table">
+    <tr>
+      <th scope="col">Sr No.</th>
+      <th scope="col">Work Order No</th>
+      <th scope="col">Download</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>
+        {{ creditRegularList?.regularWorkorderRegisteredDTO?.workorderNo }}
+      </td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-primary btn-md"
+          (click)="
+            generateWorkOrderReport(
+              creditRegularList?.regularWorkorderRegisteredDTO?.wmWorkorderRegisteredId
+            )
+          "
+        >
+          Download
+        </button>
+      </td>
+    </tr>
+    <tr
+      *ngFor="
+        let data of creditRegularList?.creditWmWorkorderRegisteredList;
+        index as i
+      "
+    >
+      <td>{{ i + 2 }}</td>
+      <td>{{ data?.workorderNo }}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-primary btn-md"
+          (click)="generateCreditWorkOrderReport(data.wmWorkorderRegisteredId)"
+        >
+          Download
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<!-- <h2 class="heading">Regular</h2> -->
+<!-- 
+<div class="work-order p-3">
+  <table class="my-scrollable-table">
+    <tr>
+      <th scope="col">Sr No.</th>
+      <th scope="col">Work Order No</th>
+      <th scope="col">Download</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>
+        {{ creditRegularList?.regularWorkorderRegisteredDTO?.workorderNo }}
+      </td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-primary btn-lg"
+          (click)="
+            generateWorkOrderReport(
+              creditRegularList?.regularWorkorderRegisteredDTO
+                ?.wmWorkorderRegisteredId
+            )
+          "
+        >
+          Download
+        </button>
+      </td>
+    </tr>
+  </table>
+</div> -->

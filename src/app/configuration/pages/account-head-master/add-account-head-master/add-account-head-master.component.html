@@ -1,0 +1,51 @@
+<section>
+  <form class="form" [formGroup] = "accountHeadMasterForm" >
+  <h1 mat-dialog-title>Add Account Head Master</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Account Main Head</mat-label>
+        <mat-select (selectionChange)="selectAccountMainHead($event.value)"
+          [(ngModel)]="accountHeadObj.accountMainHeadCode" formControlName="accountHeadMainName"  required>
+          <mat-option *ngFor="let main of accountMainData" [value]="main.accountHeadMainCode">
+            {{main.accountHeadMainCode}}-{{main.accountHeadMainName}}
+          </mat-option>
+        </mat-select>
+        <mat-error>Please slelect this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Account Sub Main Head</mat-label>
+        <mat-select [(ngModel)]="accountHeadObj.accountSubmainHeadCode" formControlName="accountHeadSubmainCode"  required>
+          <mat-option *ngFor="let submain of accountSubMainData" [value]="submain.accountHeadSubmainCode">
+            {{submain.accountHeadSubmainCode}}-{{submain.accountHeadSubmainName}}
+          </mat-option>
+        </mat-select>
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Account Head Name</mat-label>
+        <input matInput placeholder="Ex. Each" [(ngModel)]="accountHeadObj.accountHeadDescription"  formControlName="accountHeadDescription" required/>
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Account Head Code</mat-label>
+        <input matInput placeholder="Ex. Each" [(ngModel)]="accountHeadObj.accountHeadCode"  formControlName="accountHeadCode" required/>
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button
+      class="c-btn"
+      mat-button
+      (click)="onAddAccountHeadMaster()"
+      [disabled]="notificationRef"
+    >
+      Add
+    </button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+  </form>
+</section>

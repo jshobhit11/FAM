@@ -1,0 +1,470 @@
+<div class="container-fluid page-2">
+  <section class="mt-2 ms-4">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/estimates/dashboard">Estimates </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">
+              Improvement Site Inspection Form
+            </a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <form class="form" [formGroup]="networkExtensionForm">
+    <div class="col-lg-6 mt-4 shadow dis-fl dis-fl2 premisesInspe">
+      <div class="page__content shadow p-3 position-relative dis-flex-colu">
+        <h2 class="title-2">Improvement Site Inspection Form</h2>
+
+        <div class="col mt-3 disp-flex align-items-center">
+          <label class="form-label mr-3"
+            >This work belongs to Layout Works?</label
+          >
+          <div class="layout-radio d-flex align-items-center">
+            <input
+              type="radio"
+              id="layoutYes"
+              name="layoutWorks"
+              value="Yes"
+              (change)="onLayoutWorkSelection(true)"
+            />
+            <label for="layoutYes" class="me-4">Yes</label>
+            <input
+              type="radio"
+              id="layoutNo"
+              name="layoutWorks"
+              value="No"
+              (change)="onLayoutWorkSelection(false)"
+              checked
+            />
+            <label for="layoutNo">No</label>
+          </div>
+        </div>
+
+        <div class="col mt-4 disp-flex" *ngIf="isLayoutWork">
+          <label class="form-label">Please enter the Layout Case ID</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Layout Case ID"
+            formControlName="layoutCaseId"
+            #caseInput
+          />
+          <button
+            class="btn-layout"
+            *ngIf="!layoutValidationSuccess && !layoutValidationFailure"
+            (click)="validateLayoutCaseId(caseInput)"
+          >
+            Validate
+          </button>
+          <div class="mt-2">
+            <img
+              *ngIf="layoutValidationSuccess"
+              src="assets/check.png"
+              alt="Success"
+              class="validation-icon"
+            />
+            <img
+              *ngIf="layoutValidationFailure"
+              src="assets/remove.png"
+              alt="Error"
+              class="validation-icon"
+            />
+          </div>
+        </div>
+        <mat-error class="custom-error" *ngIf="layoutValidationFailure">
+          Newcon Layout case is not found, Please check it.
+        </mat-error>
+        <div class="col mt-0 disp-flex" *ngIf="layoutValidationSuccess">
+          <label class="form-label"></label>
+          <label><strong>Case ID:</strong> {{ validatedCaseId }}</label
+          ><br />
+          <label><strong>Account ID:</strong> {{ validatedAccountId }}</label>
+        </div>
+
+        <div class="col mt-2 disp-flex">
+          <label class="form-label"
+            >Nearest Network <span class="star">*</span></label
+          >
+          <select
+            class="form-select"
+            name="Nearest Network"
+            formControlName="nearestNetwork"
+            (change)="onNearestNetworkChange($event.target.value)"
+          >
+            <option value="" disabled>Select Nearest Network</option>
+            <option value="LTPole">LT POLE</option>
+            <option value="HTPole">HT POLE</option>
+            <option value="DistributionTransformer">DTC</option>
+            <option value="FeederTap">FEEDER</option>
+          </select>
+        </div>
+        <mat-error
+          class="custom-error"
+          *ngIf="
+            networkExtensionForm.get('nearestNetwork').hasError('required') &&
+            networkExtensionForm.get('nearestNetwork').touched
+          "
+        >
+          Please select this field.
+        </mat-error>
+        <div class="col mt-4 disp-flex" *ngIf="isNetworkAssetNo">
+          <label class="form-label"
+            >Nearest Network Asset Number<span class="star">*</span></label
+          >
+          <input
+            type="text"
+            name="networkassetno"
+            class="form-control"
+            id=""
+            placeholder="Enter Nearest Network Asset Number"
+            formControlName="networkAssetNo"
+            appAlphaNumeric
+            [maxLength]="50"
+          />
+        </div>
+        <mat-error
+          class="custom-error"
+          *ngIf="
+            networkExtensionForm.get('networkAssetNo').hasError('required') &&
+            networkExtensionForm.get('networkAssetNo').touched
+          "
+        >
+          Please fill in this field.
+        </mat-error>
+
+        <div class="col mt-4 disp-flex dis-old-acc">
+          <label class="form-label"
+            >Latitude and Longitude of the location</label
+          >
+          <div>
+            <ng-container *ngIf="discom == 1; else otherDiscom">
+              <input
+                type="text"
+                [class.is-invalid]="
+                  networkExtensionForm.get('latitude')?.invalid &&
+                  networkExtensionForm.get('latitude')?.touched
+                "
+                class="form-control-p col-md-2"
+                name="latitude"
+                formControlName="latitude"
+                placeholder="Latitude"
+              />
+              <input
+                type="text"
+                class="form-control-p col-md-2"
+                name="longitude"
+                formControlName="longitude"
+                [class.is-invalid]="
+                  networkExtensionForm.get('longitude')?.invalid &&
+                  networkExtensionForm.get('longitude')?.touched
+                "
+                placeholder="Longitude"
+              />
+            </ng-container>
+
+            <ng-template #otherDiscom>
+              <input
+                type="text"
+                class="form-control-p disabled-input col-md-2"
+                name="latitude"
+                formControlName="latitude"
+                placeholder="Latitude"
+                readonly
+              />
+              <input
+                type="text"
+                class="form-control-p disabled-input col-md-2"
+                name="longitude"
+                formControlName="longitude"
+                placeholder="Longitude"
+                readonly
+              />
+            </ng-template>
+
+            <button
+              class="btn-tapping"
+              *ngIf="discom !== 1"
+              (click)="onTapping()"
+            >
+              Get Tapping Point
+            </button>
+          </div>
+        </div>
+        <p class="star mt-2" *ngIf="discom == 1">
+          Note: The "Get Tapping" functionality is disabled due to the
+          in-operation of the GIS application. Please continue the process by
+          manually entering the mandatory fields:
+          <strong>Latitude</strong>, <strong>Longitude</strong>, and
+          <strong>Tapping Asset ID</strong>.
+        </p>
+        <div class="col disp-flex dis-old-acc" *ngIf="showViewPointButton">
+          <button class="btn-tapping" (click)="onViewPoint()">
+            View Tapping Point
+          </button>
+        </div>
+        <!-- Container for Discom 1 -->
+        <ng-container *ngIf="discom == 1">
+          <div class="col mt-3 disp-flex" *ngIf="!isNetworkExtensionType">
+            <label class="form-label"
+              >Network Extension Type <span class="star">*</span></label
+            >
+            <select
+              class="form-select"
+              name="networkExtensionType"
+              formControlName="networkExtensionType"
+            >
+              <option value="">Select Network Extension Type</option>
+              <option
+                *ngFor="let networkExtensionTypeItem of networkExtensionType"
+                [value]="networkExtensionTypeItem.networkExtensionTypeMasterId"
+              >
+                {{ networkExtensionTypeItem.networkExtensionTypeName }}
+              </option>
+            </select>
+          </div>
+          <mat-error
+            class="custom-error"
+            *ngIf="
+              networkExtensionForm
+                .get('networkExtensionType')
+                .hasError('required') &&
+              networkExtensionForm.get('networkExtensionType').touched
+            "
+          >
+            Please select this field.
+          </mat-error>
+
+          <div class="col mt-3 disp-flex">
+            <label class="form-label"
+              >Tapping Asset Id Number <span class="star">*</span></label
+            >
+            <input
+              type="text"
+              name="tappingAssestId"
+              class="form-control disabled-input"
+              placeholder="Please enter asset id number."
+              formControlName="tappingAssestId"
+              maxlength="13"
+              [class.is-invalid]="
+                networkExtensionForm.get('tappingAssestId')?.invalid &&
+                networkExtensionForm.get('tappingAssestId')?.touched
+              "
+            />
+          </div>
+          <div
+            *ngIf="
+              networkExtensionForm
+                .get('tappingAssestId')
+                ?.hasError('required') &&
+              networkExtensionForm.get('tappingAssestId')?.touched
+            "
+            class="text-danger error-message"
+          >
+            Tapping Asset Id Number is required.
+          </div>
+          <div
+            *ngIf="
+              networkExtensionForm
+                .get('tappingAssestId')
+                ?.hasError('pattern') &&
+              networkExtensionForm.get('tappingAssestId')?.touched
+            "
+            class="text-danger error-message"
+          >
+            Tapping Asset Id must be at least 11 digits.
+          </div>
+
+          <ng-container
+            *ngFor="
+              let field of [
+                'nameOfTheTransformer',
+                'feederName',
+                'substationName'
+              ]
+            "
+          >
+            <div class="col mt-3 disp-flex">
+              <label class="form-label">
+                {{
+                  field === "nameOfTheTransformer"
+                    ? "Distribution Transformer Name"
+                    : field === "feederName"
+                    ? "Feeder Name"
+                    : "SubStation Name"
+                }}
+                <span class="star">*</span>
+              </label>
+              <input
+                type="text"
+                [name]="field"
+                class="form-control disabled-input"
+                [placeholder]="
+                  field === 'nameOfTheTransformer'
+                    ? 'Distribution Transformer Name'
+                    : field === 'feederName'
+                    ? 'Feeder Name'
+                    : 'Station Name'
+                "
+                [formControlName]="field"
+              />
+            </div>
+          </ng-container>
+        </ng-container>
+
+        <!-- Container for Other Discoms -->
+        <ng-container *ngIf="discom !== 1">
+          <div class="col mt-3 disp-flex" *ngIf="!isNetworkExtensionType">
+            <label class="form-label"
+              >Network Extension Type <span class="star">*</span></label
+            >
+            <select
+              class="form-select"
+              name="networkExtensionType"
+              formControlName="networkExtensionType"
+            >
+              <option value="">Select Network Extension Type</option>
+              <option
+                *ngFor="let networkExtensionTypeItem of networkExtensionType"
+                [value]="networkExtensionTypeItem.networkExtensionTypeMasterId"
+              >
+                {{ networkExtensionTypeItem.networkExtensionTypeName }}
+              </option>
+            </select>
+          </div>
+          <mat-error
+            class="custom-error"
+            *ngIf="
+              networkExtensionForm
+                .get('networkExtensionType')
+                .hasError('required') &&
+              networkExtensionForm.get('networkExtensionType').touched
+            "
+          >
+            Please select this field.
+          </mat-error>
+
+          <ng-container
+            *ngFor="
+              let field of [
+                'nameOfTheTransformer',
+                'feederName',
+                'substationName'
+              ]
+            "
+          >
+            <div class="col mt-3 disp-flex">
+              <label class="form-label">
+                {{
+                  field === "nameOfTheTransformer"
+                    ? "Distribution Transformer Name"
+                    : field === "feederName"
+                    ? "Feeder Name"
+                    : "SubStation Name"
+                }}
+              </label>
+              <input
+                type="text"
+                [name]="field"
+                class="form-control disabled-input"
+                [placeholder]="
+                  field === 'nameOfTheTransformer'
+                    ? 'Distribution Transformer Name'
+                    : field === 'feederName'
+                    ? 'Feeder Name'
+                    : 'Station Name'
+                "
+                [formControlName]="field"
+                readonly="true"
+              />
+            </div>
+          </ng-container>
+        </ng-container>
+
+        <div class="col mt-3 disp-flex">
+          <label class="form-label">Inspected By</label>
+          <div class="inspected-checkbox">
+            <div>
+              <input
+                type="checkbox"
+                formControlName="inspectedByAE"
+                id="AE"
+                name="AE"
+                value="AE"
+              />
+              <label for="AE">AE</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="inspectedByAEE"
+                id="AEE"
+                name="AEE"
+                value="AEE"
+              />
+              <label for="AEE">AEE</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="inspectedByEE"
+                id="EE"
+                name="EE"
+                value="EE"
+              />
+              <label for="EE">EE</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="inspectedBySE"
+                id="SE"
+                name="SE"
+                value="SE"
+              />
+              <label for="SE">SE</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                formControlName="inspectedByCE"
+                id="CE"
+                name="CE"
+                value="CE"
+              />
+              <label for="CE">CE</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="col mt-3 disp-flex">
+          <label class="form-label"> Inspection Date </label>
+          <div class="date-field">
+            <input
+              class="form-control"
+              type="date"
+              formControlName="inspectionDate"
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="mt-4 mb-2 text-center">
+            <button
+              [disabled]="isLoading"
+              type="button"
+              class="btn btn-primary btn-md"
+              (click)="openConfirmationpopupDialog()"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

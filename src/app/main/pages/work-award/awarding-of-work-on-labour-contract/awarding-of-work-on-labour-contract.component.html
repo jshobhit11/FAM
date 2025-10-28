@@ -1,0 +1,93 @@
+
+  <section  class="page__content p-3 p20 shadow dis-fl dis-fl2 position-relative dis-flex-colu">
+<div class="container-fluid page">
+  <div class="work-order">
+    <h3 class="heading">AWARDING OF WORK ON LABOUR CONTRACT</h3>
+    <p>{{ data?.wmWorkOrderRegistered?.workDescription }}</p>
+    <p>05/19/INR/14-400/F-6561 Dated; 30/12/2019</p>
+    <p *ngIf="officeData && officeData.length">
+      I recommend awarding the works detailed hereunder to
+      {{ officeData[0].vendorOrganizationName }} ,
+      {{ officeData[0].vendorAddress }} on labour contract basis as per standard
+      terms and condition of the company.
+    </p>
+    <table class="table table-bordered text-center">
+      <thead style="background-color: #f2f2f2; color: #3e3e3e">
+        <tr>
+          <th scope="col">S.NO</th>
+          <th scope="col">PARTICULARS</th>
+          <th scope="col">UNIT</th>
+          <th scope="col">QTY</th>
+          <th scope="col">RATE</th>
+          <th scope="col">AMOUNT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let dataItem of data?.estimationMaterialLabourDetails;
+            index as i
+          "
+        >
+          <td>{{ i + 1 }}</td>
+          <td>{{ dataItem.materialName }}</td>
+          <td>{{ dataItem.unit }}</td>
+          <td>{{ dataItem.quantity }}</td>
+          <td>{{ dataItem.rate }}</td>
+          <td>{{ dataItem.amount }}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>Total</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{ total ? total : 0 }}</td>
+        </tr>
+        <tr *ngFor="let item of data.estimationAddlChargesRegisteredDetails">
+          <td></td>
+          <td>
+            <label *ngIf="item.chargeType == 'PERCENTAGE'"
+              >{{ item.chargeTypeValue }}%
+              {{ item.additionalChargeName }}</label
+            >
+            <label *ngIf="item.chargeType == 'FLAT'">{{
+              item.additionalChargeName
+            }}</label>
+          </td>
+
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>
+            <p>{{ item.amount }}</p>
+          </td>
+          <!-- <td>{{ gsttotal ? gsttotal : 0 }}</td> -->
+        </tr>
+        <tr>
+          <td></td>
+          <td>Grand Total (Labour Charges)</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{ workAwardedAmount ? workAwardedAmount : 0 }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      certified that above materials mentioned in work award are not available
+      in East division BESCOM of execution of work.
+    </p>
+    <!-- <button type="button" class="btn btn-primary btn-lg">Download</button>      -->
+    <div class="center-container">
+      <button
+        type="button"
+        class="btn btn-primary btn-md"
+        (click)="generateWorkAwardReport()"
+      >
+        Download
+      </button>
+    </div>
+  </div>
+</div>
+</section>

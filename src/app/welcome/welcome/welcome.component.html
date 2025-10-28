@@ -1,0 +1,40 @@
+<div class="welcome-page">
+
+  <div class="welcome-card" style="background-image: url('./assets/login-form-bg.png');">
+      <h1>Welcome</h1>
+      <h2>To Estimates and Asset Management System!</h2>
+      <p>Please click on the Dashboard to view the pending count activity.</p>
+      <button mat-raised-button class="c-btn" (click)="navigateToDashboard()">Go to Dashboard</button>
+    </div>
+    
+    <marquee class="marquee" width="40%" direction="up" height="400px" behavior="scroll" scrollamount="3" onmouseenter="this.stop();" onmouseleave="this.start();">
+      <p>Dear all,</p>
+      <p>Since roll out of new EAM, many observations have been reported from field. Some of these observations are resolved as on today. The details of these observations resolved are as below:</p>
+      <p>1.<strong>Indent Process</strong> : In the store office approval, duplicate materials were displayed due to the same store code existing in all DISCOMs. This issue has been resolved.</p>
+      <p>2.<strong>Forward and Return in Estimate</strong>: The issue has been resolved.</p>
+      <p>3.<strong>Store Inventory Upload</strong>: When a non-serial file was uploaded, the quantity was not reflecting in the store inventory. This issue has been resolved.</p>
+      <p>4.<strong>Work Execution Issue</strong>: Due to a data issue, the work category was null for some of the migrated data. This has now been resolved.</p>
+      <p>5.<strong>Single Account Meter Mapping</strong>: The issue of duplicate work order generation for old cases has been resolved.</p>
+      <p>6.<strong>Delegation of Power for Service Main Estimate:</strong> The service main estimate for self-execution was showing "SE" instead of the correct value. This has been resolved.</p>
+      <p>7.<strong>MSB Display:</strong> The issue with MSB showing to LT5, LT7, and HT has been resolved.</p>
+      <p>8.<strong>Estimate Edit Issue:</strong> The issue related to editing Line Estimate, Service Main Estimate, Improvement Estimate, and BMR Estimate has been resolved.</p>
+      <p>9.<strong>Exception and Success Report Log</strong>: Logs have been provided for Transformer/DT meters.</p>
+      <p>10.<strong>Exception and Success Report Log</strong>: Logs have been provided for meter upload.</p>
+      <p>11.<strong>Meter Replacement Upload Excel</strong>: An additional validation has been included in the Meter Replacement upload Excel sheet.</p>
+      <p>12.<strong>BMR Success and Error Reports</strong>: These reports are now available.</p>
+      <p>13.<strong>Scrap Material Amount:</strong> The material amount was showing in the estimate for scrap; this has been corrected.</p>
+      <p>14.<strong>Load Enhancement</strong>: The system was asking for latitude and longitude when submitting for site inspection. This issue has been resolved.</p>
+      <p>15.<strong>MC line 2225, bulk update</strong>: To self-execution category irrespective of work execution.</p>
+      <p>16. The search list now is showing in descending order. This has been resolved.</p>
+      <p>17. Work order closed its showing at SE, instead of EE. This has been resolved.</p>
+    
+      <p>18) Migration related :</p>
+      <p>a) Only meter estimate flowing to work execution instead of meter upload.<br>b) Second SR open but WO closed.<br>c) missing load details in LE/LR cases<br>d) SP ID migration<br>19) Assembly constituency list updated.<br>20) Improvement works : R&amp;M category - 74 series added<br>21) Improvement works : DOP category - self execution and execution method - self execution - Added<br>22) JE role and privileges resolved<br>23) work order series for 15.999 and 16.999 are added automatically by system<br>24) SMR case - payment requirement - removed.<br>25) Appropriate Budget heads configured for all works<br>26) LT7- 22.731 budget not mandatory.<br>27) GIS tapping point removed for Name change, Tariff change, SMR,<br>28) Application inconsistency<br>29) save button - Remaining characters shown while typing report.</p>
+      <p>The other observations reported are in progress and would also be completed shortly.</p>
+      <p>Users are requested to verify all the above 29 points and revert.</p>
+      <p>Request for your kind cooperation and support.</p>
+      <p>Regards,<br>IT team, BESCOM</p>
+    </marquee>
+    
+  </div>
+  

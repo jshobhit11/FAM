@@ -1,0 +1,66 @@
+<div class="container-fluid page">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/main">Dashboard</a></li>
+          <li
+            class="breadcrumb-item"
+            *ngIf="labelName === 'WORK AWARD REQUEST'"
+          >
+            <a style="color: lightslategray">Work Award Request</a>
+          </li>
+          <li
+            class="breadcrumb-item"
+            *ngIf="labelName === 'MATERIAL INSPECTION'"
+          >
+            <a style="color: lightslategray">Material Inspection</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="labelName === 'LINE CLEARANCE'">
+            <a style="color: lightslategray">Line Clearance</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="labelName === 'PERMIT TO WORK'">
+            <a style="color: lightslategray">Permit To Work Request</a>
+          </li>
+          <li
+            class="breadcrumb-item"
+            *ngIf="labelName === 'WORK AWARD APPROVAL'"
+          >
+            <a style="color: lightslategray">Work Award Approval</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="labelName === 'ASSIGN CREW'">
+            <a style="color: lightslategray">Assign Crew</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="labelName === 'WORK EXECUTION'">
+            <a style="color: lightslategray">Work Execution</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="labelName === 'METER UPLOAD'">
+            <a style="color: lightslategray">Meter Upload</a>
+          </li>
+          <li
+          class="breadcrumb-item"
+          *ngIf="labelName === 'METER REPLICATE AND VALIDATE'"
+        >
+          <a style="color: lightslategray">METER REPLICATE AND VALIDATE</a>
+        </li>
+          <li
+            class="breadcrumb-item"
+            *ngIf="labelName === 'ACCOUNT ID AND METERS MAPPING'"
+          >
+            <a style="color: lightslategray">Account ID And Meters Mapping</a>
+          </li>
+          <li
+            class="breadcrumb-item"
+            *ngIf="labelName === 'METER REPLACEMENT'"
+          >
+            <a style="color: lightslategray">Meter Replacement</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+    <app-filter-table
+    [headingName]="labelName" [isOffice]="true" [type]="type" [statusCode]="statusCode"
+    [cols]="cols" [rows]="estimatesList" [data]="estimatesList" [filterFields]="filterFields" [loading]="false">
+    </app-filter-table>
+</div>

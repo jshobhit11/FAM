@@ -1,0 +1,152 @@
+<div class="page-1">
+    <section class="mt-2">
+        <ul>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a routerLink="/store-management/dashboard">Estimates</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a style="color: lightslategray">Maintenance Rejected Works Report</a>
+                    </li>
+                </ol>
+            </nav>
+        </ul>
+    </section>
+    <section>
+        <form class="form" [formGroup]="maintenanceRejectedForm">
+            <div class="mt-2 heading">
+                <div class="page__content shadow p-3 position-relative dis-flex-colu">
+                    <h2 class="title-2">Maintenance Rejected Works Report </h2>
+                    <div style="width: 100%; margin-top: 1rem">
+                        <div class="p-3 mb-2 ">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-sm-2">
+                                  <label class="form-label" for="MaintenanceType"> Maintenance Type <span style="color: red"> *</span></label>
+                                </div>
+                                <div class="col-sm-4">
+                                  <select
+                                    class="form-select"
+                                    name="division"
+                                    style="width: 100%"
+                                    id="maintenanceSelect"
+                                    formControlName="maintenanceType"
+                                    required
+                                  >
+                                    <option value="Inspection">Inspection</option>
+                                    <option value="Preventive">Preventive</option>
+                                    <option value="Overhual">Overhual</option>
+                                  </select>
+                                  <mat-error *ngIf="maintenanceRejectedForm.get('maintenanceType').invalid && maintenanceRejectedForm.get('maintenanceType').touched">
+                                    Please select this field
+                                  </mat-error>
+                                </div>
+                                <div class="col-sm-2">
+                                  <label class="form-label" for="MaintenanceAssetType">Maintenance Asset Type <span style="color: red"> *</span></label>
+                                </div>
+                                <div class="col-sm-4">
+                                  <select
+                                    id="maintenanceAsset"
+                                    class="form-select"
+                                    name="maintenanceAssetType"
+                                    formControlName="assetType"
+                                    required
+                                  >
+                                  <option
+                                  *ngFor="let maintenance of assetTypeData"
+                                  [value]="maintenance.assetType"
+                                >
+                                  {{ maintenance.assetType }}
+                                </option>
+                                  </select>
+                                  <mat-error *ngIf="maintenanceRejectedForm.get('assetType').invalid && maintenanceRejectedForm.get('assetType').touched">
+                                    Please select this field
+                                  </mat-error>
+                                </div>
+                              </div>
+
+                            <div class="row mt-2 g-4 align-items-center">
+                                <div class="col-sm-2">
+                                    <label for="fromDate">From Date<span class="star"> *</span></label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="date" class="form-control" id="from-date" formControlName="fromDate" />
+                                    <mat-error *ngIf="maintenanceRejectedForm.get('fromDate').hasError('required') && maintenanceRejectedForm.get('fromDate').touched">
+                                        Please select this field
+                                    </mat-error>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="To Date">To Date <span class="star"> *</span></label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="date" class="form-control" id="to-date" formControlName="toDate"   />
+                                    <mat-error *ngIf="maintenanceRejectedForm.get('toDate').hasError('required') && maintenanceRejectedForm.get('toDate').touched">Please select this field</mat-error>
+                                    <mat-error *ngIf="maintenanceRejectedForm.get('toDate').hasError('dateRangeError')">To Date cannot be before From Date</mat-error>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2 g-4 align-items-center">
+                            </div>
+                            <div class="offset-sm-5">
+                                <div class="row mt-2 mb-2 align-items-center col-sm-4">
+                                  <fieldset class="scheduler-border">
+                                    <legend class="scheduler-border">Output Format <span class="star"> *</span></legend>
+                                    <div class="mt-2">
+                                      <div class="form-check form-check-inline">
+                                        <input
+                                          class="form-check-input"
+                                          type="radio"
+                                          name="inlineRadioOptions"
+                                          id="inlineRadio1"
+                                          value="pdf"
+                                          (change)="onRadioChange($event.target.value)"
+                                          checked
+                                        />
+                                        <label class="form-check-label" for="inlineRadio1"
+                                          >PDF</label
+                                        >
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input
+                                          class="form-check-input"
+                                          type="radio"
+                                          name="inlineRadioOptions"
+                                          id="inlineRadio2"
+                                          value="xlsx"
+                                          (change)="onRadioChange($event.target.value)"
+                                        />
+                                        <label class="form-check-label" for="inlineRadio2"
+                                          >XLS </label
+                                        >
+                                      </div>
+                                    </div>
+                                  </fieldset>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="offset-sm-5 mt-2 mb-2">
+                                  <button
+                                    type="submit"
+                                    class="btn btn-primary btn-md"
+                                    *ngIf="pdfType == 'pdf'"
+                                    (click)="generateMaintenanceRejectReport()"
+                                  >
+                                    Generate PDF
+                                  </button>
+                                  <button
+                                    type="submit"
+                                    class="btn btn-primary btn-md"
+                                    *ngIf="pdfType == 'xlsx'"
+                                    (click)="downloadExcelFile()"
+                                  >
+                                    Generate XSLX
+                                  </button>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>

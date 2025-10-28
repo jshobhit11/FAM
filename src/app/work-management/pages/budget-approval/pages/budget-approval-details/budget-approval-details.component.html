@@ -1,0 +1,147 @@
+<section>
+  <form class="form">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Budget Approval </h2>
+
+
+      <h3>Transaction Details</h3>
+      <div style=" padding: 0.5rem">
+        <div class="grid two-row-grid three-row-grid">
+          <div class="left-div">
+            <div class="inner-div">
+              <label>Division</label>
+              <p></p>
+            </div>
+            <div class="inner-div">
+              <label>Divisional Acc. Head No</label>
+              <p></p>
+            </div>
+            <div class="inner-div">
+              <label>Budget Year</label>
+              <p></p>
+            </div>
+            <div class="inner-div">
+              <label>Divisional Budget Head </label>
+              <p></p>
+            </div>
+            <div class="inner-div">
+              <label>Total Budget Amount</label>
+              <p></p>
+            </div>
+            <div class="inner-div">
+              <label>Work Order issue Amount</label>
+              <p></p>
+            </div>
+            <div class="inner-div">
+              <label>Balance Amount</label>
+              <p></p>
+            </div>
+            <div class="inner-div">
+              <label>Transaction Type</label>
+              <p></p>
+            </div>
+          </div>
+
+          <div>
+            <div class="inner-div">
+              <label>Budget</label>
+              <p></p>
+            </div>
+            <div class="inner-div">
+              <label>Divisional Acc. Head Description</label>
+              <p></p>
+            </div>
+            <div class="inner-div">
+              <br/><br><br>
+            </div>
+            <div class="inner-div">
+              <label>Budget Type</label>
+              <p></p>
+            </div>
+            <div class="inner-div">
+              <label>Total Added Amount</label>
+              <p></p>
+            </div>
+            <div class="inner-div">
+              <label>Total Reduced Amount</label>
+              <p></p>
+            </div>
+            <div class="inner-div">
+              <label>Expenditure Amount</label>
+              <p></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2>Add Amount</h2>
+      <div
+        style="
+          overflow: auto;
+          width: 100%;
+          margin-top: 1rem;
+        "
+      >
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">Request No.</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Date</th>
+              <th scope="col">OM No.</th>
+              <th scope="col">Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let transaction of budgetData">
+              <td>{{ transaction.referenceNo }}</td>
+              <td>{{ transaction.amount }}</td>
+              <td>{{ transaction.allocatedBudgetDate }}</td>
+              <td>{{ transaction.omNumber }}</td>
+              <td>{{ transaction.remarks }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <ng-container>
+          <p class="record-not-found">-- No Data Found --</p>
+        </ng-container> -->
+      </div>
+
+      <h2>Divisional Acc Head Details</h2>
+      <div
+        style="
+          overflow: auto;
+          width: 100%;
+          margin-top: 1rem;
+        "
+      >
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">Divisional Budget Head</th>
+              <th scope="col">Present Total Bugdet Amount</th>
+              <th scope="col">New Total Budget Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of divisionalAccHeadDetails">
+              <td>{{ data.divisionalBudgetHead }}</td>
+              <td>{{ data.presentTotalBudgetAmount }}</td>
+              <td>{{ data.newTotalBudgetAmount }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <ng-container>
+          <p class="record-not-found">-- No Data Found --</p>
+        </ng-container> -->
+      </div>
+
+      <div class="btn-box mt-4">
+        <button type="button" class="btn btn-primary btn-md" (click)="approveBudget()">Approve</button>
+        <button type="button" class="btn clor btn-primary btn-md">
+          Reject
+        </button>
+      </div>
+    </div>
+  </form>
+</section>

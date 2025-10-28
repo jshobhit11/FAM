@@ -1,0 +1,1396 @@
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import * as FileSaver from 'file-saver';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import * as _ from 'lodash';
+import { StoreOfficeService } from 'src/app/services/storeOffice.service';
+import { LoaderService } from 'src/app/services/loader.service';
+import { Table } from 'primeng/table';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { NavigationExtras } from '@angular/router';
+import { MobileUtils } from 'src/app/lib/mobile-utils';
+@Component({
+  selector: 'app-filter-table',
+  styleUrls: ['./filter-table.component.scss'],
+  templateUrl: './filter-table.component.html',
+})
+export class FilterTableComponent implements OnInit, OnDestroy {
+  treeControl = new FormControl('', []);
+  clearControl = new FormControl('', []);
+  @Input() dataKey: string = 'accountId';
+  @Input() headingName: string = '';
+  @Input() rows: any | null = null;
+  @Input() selectedAccounts: any[] = [];
+  @Input() loading: boolean = true;
+  @Input() cols: any[] = [];
+  @Input() filterFields: string[] = [];
+  @Input() data: any[] = [];
+  @Input() isOffice: boolean = false;
+  @Input() type: string = '';
+  @Input() statusCode: string = '';
+  @Input() titleName: string = '';
+  @Input() connectionTypeCode: string = '';
+  @Input() mmMaintenanceSchedulerTaskId: string = '';
+  @Input() taskNo: string = '';
+  @Input() accountId: string = '';
+  nodes: any[] = [];
+  label: string[] = [];
+  blob: any;
+  intervalId: any;
+  apiUrl = environment.baseURL;
+  constructor(
+    private storeOfficeService: StoreOfficeService,
+    private loader: LoaderService,
+    private router: Router,
+    private snackbar: MatSnackBar,
+    private http: HttpClient
+  ) {}
+
+  async ngOnInit() {
+    this.loader.show('Data loading...');
+    const apiKey = sessionStorage.getItem('api-key');
+    const serviceKey = sessionStorage.getItem('service-key');
+    const userRole = sessionStorage.getItem('user-role');
+    const userName = sessionStorage.getItem('user-name');
+    const userCode = sessionStorage.getItem('user-code');
+    const officeId = sessionStorage.getItem('office-id');
+    const filter: any = {
+      apiKey,
+      serviceKey,
+      userRole,
+      userName,
+      userCode,
+      officeMasterId: officeId,
+    };
+    const officeData =
+      (await this.storeOfficeService.getOfficeMasterByOfficeMasterId(
+        filter
+      )) as Array<any>;
+    const parent = officeData.find((v: any) => v.officeMasterId === officeId);
+    const data = officeData
+      .map((v) => {
+        const newObject = { ...v };
+        if (newObject.hasOwnProperty('officeName')) {
+          newObject[
+            'label'
+          ] = `${newObject['officeCode']} - ${newObject['officeName']}`;
+          delete newObject['officeName'];
+        }
+        if (newObject['officeCode'] === 'onefilter') {
+          return null;
+        }
+        newObject.icon = 'pi pi-file';
+        return newObject;
+      })
+      .filter((v) => v !== null);
+    this.officeHierarchy(data, parent.parentId);
+    this.treeControl.setValue(this.nodes);
+    this.loader.hide();
+    this.startInterval();
+  }
+
+  ngOnDestroy() {
+    this.clearInterval();
+  }
+
+  intervalFunction() {
+    if (this.rows) {
+      this.loading = false;
+      this.clearInterval();
+    }
+  }
+
+  startInterval() {
+    this.intervalId = setInterval(() => {
+      this.intervalFunction();
+    }, 100);
+  }
+
+  clearInterval() {
+    clearInterval(this.intervalId);
+  }
+
+  routerPath(data: any, item: any) {
+    if (item.route == 'bmr-estimation-approval') {
+      this.router.navigate([
+        `/estimates/${item.route}/${data.estimationRegisteredId}/${data.serviceRegistrationsId}`,
+      ]);
+    }
+    if (this.statusCode == '8') {
+      this.router.navigate([item.route], {
+        queryParams: {
+          estimationRegisteredId: data.estimationRegisteredId,
+          estimationType: data.estimationType,
+          type: this.type,
+          workorderRegisteredId: data.workorderRegisteredId,
+          serviceRegistrationsId: data.serviceRegistrationsId,
+        },
+      });
+    } else if (this.statusCode == '9') {
+      this.router.navigate([item.route], {
+        queryParams: {
+          estimationRegisteredId: data.estimationRegisteredId,
+          workorderRegisteredId: data.workorderRegisteredId,
+          type: this.type,
+        },
+      });
+    } else if (this.statusCode == '10') {
+      this.router.navigate([item.route], {
+        queryParams: {
+          estimateNo: data.workorderRegisteredId,
+          type: this.type,
+        },
+      });
+    } else if (this.statusCode == '11') {
+      this.router.navigate([item.route], {
+        queryParams: {
+          workorderNo: data.workorderRegisteredId,
+          accountId: data.accountId,
+          type: this.type,
+        },
+      });
+    } else if (this.statusCode == '12') {
+      this.router.navigate([item.route], {
+        queryParams: {
+          workorderRegisteredId: data.workorderRegisteredId,
+          type: this.type,
+        },
+      });
+    } else if (this.statusCode == '13') {
+      this.router.navigate([item.route], {
+        queryParams: {
+          workOrderRegisteredId: data.workorderRegisteredId,
+          type: this.type,
+        },
+      });
+    } else if (this.statusCode == '14') {
+      this.router.navigate([item.route], {
+        queryParams: {
+          workOrderRegisteredId: data.workorderRegisteredId,
+          type: this.type,
+        },
+      });
+    } else if (this.statusCode == '15') {
+      this.router.navigate([item.route], {
+        queryParams: {
+          workOrderRegisteredId: data.workorderRegisteredId,
+          type: this.type,
+        },
+      });
+    } else if (this.statusCode == '16') {
+      this.router.navigate([item.route], {
+        queryParams: {
+          workOrderRegisteredId: data.workorderRegisteredId,
+          type: this.type,
+        },
+      });
+    } else if (this.statusCode == '17') {
+      if (
+        data.connectionTypeCode === 'MC' ||
+        data.connectionTypeCode === 'MC-MSB' ||
+        data.connectionTypeCode === 'MC-JVS'
+      ) {
+        this.router.navigate([`/main/account-id-meter-mapping`], {
+          queryParams: {
+            workOrderRegisteredId: data.workorderRegisteredId,
+            type: this.type,
+          },
+        });
+      } else {
+        this.router.navigate([`/main/account-id-meter-mapping-sc`], {
+          queryParams: {
+            workOrderRegisteredId: data.workorderRegisteredId,
+            type: this.type,
+          },
+        });
+      }
+    } else if (this.statusCode == '22') {
+      this.router.navigate([item.route], {
+        queryParams: {
+          workOrderRegisteredId: data.workorderRegisteredId,
+          type: this.type,
+        },
+      });
+    } else if (this.statusCode == '23') {
+      if (data.applicationTypeCode === 'BMR') {
+        this.router.navigate([`/main/meter-replacement`], {
+          queryParams: {
+            workOrderRegisteredId: data.workorderRegisteredId,
+            type: this.type,
+          },
+        });
+      } else {
+        this.router.navigate([`/main/meter-replacement-sc`], {
+          queryParams: {
+            workOrderRegisteredId: data.workorderRegisteredId,
+            type: this.type,
+          },
+        });
+      }
+    } else if (this.statusCode == '24') {
+      this.router.navigate([item.route], {
+        queryParams: {
+          workOrderRegisteredId: data.workorderRegisteredId,
+          type: this.type,
+        },
+      });
+    }
+    if (
+      this.titleName == 'searchByAccountId' &&
+      (item.key === 'accountId' ||
+        item.key === 'referenceNumber' ||
+        item.key === 'estimationNo' ||
+        item.key === 'workorderNo' ||
+        item.key === 'materialsIndentNo')
+    ) {
+      const code: number = Number(data.applicationStatusCode);
+      if (code === 1) {
+        const queryParams = {
+          serviceRegistrationsId: data.serviceRegistrationsId,
+        };
+        const navigationExtras: NavigationExtras = {
+          queryParams,
+          skipLocationChange: true,
+        };
+        if (
+          data.registeredSource === 'CSC' ||
+          data.registeredSource === 'DND'
+        ) {
+          this.router.navigate(
+            [
+              `/main/cscSiteInspection/${code}/${data.registeredSource}/${data.serviceRegistrationsId}`,
+            ],
+            navigationExtras
+          );
+        } else {
+          this.router.navigate(
+            [
+              `/main/siteInspection/${code}/${data.registeredSource}/${data.serviceRegistrationsId}`,
+            ],
+            navigationExtras
+          );
+        }
+      } else if (code === 2) {
+        if (
+          data.registeredSource === 'EAM_IMW' &&
+          data.applicationStatusCode == '2'
+        ) {
+          this.router.navigate([
+            `/estimates/improvement-estimation/${code}/${data.serviceRegistrationsId}`,
+          ]);
+        } else {
+          this.router.navigate([
+            `/main/estimate-forms/${code}/${data.registeredSource}/${data.serviceRegistrationsId}`,
+          ]);
+        }
+      } else if (code === 3) {
+        if (
+          (data.applicationTypeCode == 'LE' ||
+            data.applicationTypeCode == 'LR') &&
+          data.meterRequiredFlag == '0' &&
+          data.isCtChangeReq == '0' &&
+          data.applicationStatusCode == '3'
+        ) {
+          this.router.navigate([
+            `/main/load-power-sanction/${code}/${data.registeredSource}/${data.serviceRegistrationsId}`,
+          ]);
+        } else {
+          this.router.navigate([
+            `/main/estimation-approval/${code}/${data.registeredSource}/${data.serviceRegistrationsId}`,
+          ]);
+        }
+      } else if (code === 5) {
+        if (
+          data.registeredSource === 'CSC' ||
+          data.registeredSource === 'DND'
+        ) {
+          this.router.navigate([
+            `/main/other-estimation-approval/${code}/${data.registeredSource}/${data.serviceRegistrationsId}`,
+          ]);
+        } else if (
+          data.registeredSource == 'EAM_BMR' &&
+          data.applicationStatusCode == '5'
+        ) {
+          this.router.navigate([
+            `/estimates/bmr-estimation-approval/${data.estimationRegisteredId}/${data.serviceRegistrationsId}`,
+          ]);
+        } else if (
+          data.registeredSource == 'EAM_QMOM' &&
+          data.applicationStatusCode == '5'
+        ) {
+          this.router.navigate([
+            `/estimates/qmom-estimation-approval/${data.estimationRegisteredId}/${data.serviceRegistrationsId}`,
+          ]);
+        } else if (
+          data.registeredSource == 'EAM_QMMT' &&
+          data.applicationStatusCode == '5'
+        ) {
+          this.router.navigate([
+            `/estimates/qmmt-estimation-approval/${data.estimationRegisteredId}/${data.serviceRegistrationsId}`,
+          ]);
+        }else if (
+          data.registeredSource == 'EAM_IMW' &&
+          data.applicationStatusCode == '5'
+        ) {
+          this.router.navigate([
+            `/estimates/improvement-estimation-approval/${data.estimationRegisteredId}/${data.serviceRegistrationsId}`,
+          ]);
+        } else {
+          this.router.navigate([
+            `/main/estimation-sanction/${code}/${data.registeredSource}/${data.serviceRegistrationsId}`,
+          ]);
+        }
+      } else if (code === 6) {
+        this.router.navigate([
+          `/main/service-line-estimate/${code}/${data.registeredSource}/${data.serviceRegistrationsId}`,
+        ]);
+      } else if (code === 7) {
+        this.router.navigate([
+          `/main/service-line-estimate-approval/${code}/${data.registeredSource}/${data.serviceRegistrationsId}`,
+        ]);
+      } else if (code === 8) {
+        this.router.navigate(['/main/create-work-order-form'], {
+          queryParams: {
+            estimationRegisteredId: data.estimationRegisteredId,
+            estimationType: data.estimationType,
+            workorderRegisteredId: data.workorderRegisteredId,
+            serviceRegistrationsId: data.serviceRegistrationsId,
+            type: 'list',
+          },
+        });
+      } else if (code === 9) {
+        this.router.navigate(['/main/work-order-approval'], {
+          queryParams: {
+            estimationRegisteredId: data.estimationRegisteredId,
+            workorderRegisteredId: data.workorderRegisteredId,
+            type: 'list',
+          },
+        });
+      } else if (code === 10) {
+        this.router.navigate(['/main/permit-to-work-request'], {
+          queryParams: {
+            estimateNo: data.workorderRegisteredId,
+            type: 'list',
+          },
+        });
+      } else if (code === 11) {
+        this.router.navigate(['/main/line-clearance'], {
+          queryParams: {
+            workorderNo: data.workorderRegisteredId,
+            accountId: data.accountId,
+            type: 'list',
+          },
+        });
+      } else if (code === 12) {
+        this.router.navigate(['/main/work-award'], {
+          queryParams: {
+            workorderRegisteredId: data.workorderRegisteredId,
+            type: 'list',
+          },
+        });
+      } else if (code === 13) {
+        this.router.navigate(['/main/assign-crew-form'], {
+          queryParams: {
+            workOrderRegisteredId: data.workorderRegisteredId,
+            type: 'list',
+          },
+        });
+      } else if (code === 14) {
+        this.router.navigate(['/main/material-inspection'], {
+          queryParams: {
+            workOrderRegisteredId: data.workorderRegisteredId,
+            type: 'list',
+          },
+        });
+      } else if (code === 15) {
+        this.router.navigate(['/main/meter-uploads'], {
+          queryParams: {
+            workOrderRegisteredId: data.workorderRegisteredId,
+            type: 'list',
+          },
+        });
+      } else if (code === 16) {
+        this.router.navigate(['/main/work-execution'], {
+          queryParams: {
+            workOrderRegisteredId: data.workorderRegisteredId,
+            type: 'list',
+          },
+        });
+      } else if (code === 17) {
+        if (
+          data.connectionCode === 'MC' ||
+          data.connectionCode === 'MC-MSB' ||
+          data.connectionCode === 'MC-JVS' ||
+          data.connectionTypeCode === 'MC' ||
+          data.connectionTypeCode === 'MC-MSB' ||
+          data.connectionTypeCode === 'MC-JVS'
+        ) {
+          this.router.navigate([`/main/account-id-meter-mapping`], {
+            queryParams: {
+              workOrderRegisteredId: data.workorderRegisteredId,
+              type: this.type,
+            },
+          });
+        } else {
+          this.router.navigate([`/main/account-id-meter-mapping-sc`], {
+            queryParams: {
+              workOrderRegisteredId: data.workorderRegisteredId,
+              type: this.type,
+            },
+          });
+        }
+      } else if (code === 18) {
+        this.router.navigate(['work-management/asset-bom-mapping'], {
+          queryParams: {
+            workorderRegisteredId: data.workorderRegisteredId,
+          },
+        });
+      } else if (code === 19) {
+        this.router.navigate(['work-management/work-complition'], {
+          queryParams: {
+            workorderRegisteredId: data.workorderRegisteredId,
+          },
+        });
+      } else if (code === 22) {
+        this.router.navigate(['main/create-work-award-request'], {
+          queryParams: {
+            workOrderRegisteredId: data.workorderRegisteredId,
+            type: 'list',
+          },
+        });
+      } else if (code === 23) {
+        if (data.applicationTypeCode == 'BMR') {
+          this.router.navigate([`/main/meter-replacement`], {
+            queryParams: {
+              workOrderRegisteredId: data.workorderRegisteredId,
+              type: this.type,
+            },
+          });
+        } else {
+          this.router.navigate([`/main/meter-replacement-sc`], {
+            queryParams: {
+              workOrderRegisteredId: data.workorderRegisteredId,
+              type: this.type,
+            },
+          });
+        }
+      } else if (code === 24 && this.data[0].statusName !=='ACCOUNT ID AND METERS MAPPING') {
+        this.router.navigate(['main/draw-smart-meter'], {
+          queryParams: {
+            workOrderRegisteredId: data.workorderRegisteredId,
+            type: 'list',
+          },
+        });
+      } else if (code == 50) {
+        this.router.navigate([
+          `estimates/revised-estimation/${data.estimationRegisteredId}/${data.serviceRegistrationsId}`,
+        ]);
+      } else if (code == 51) {
+        this.router.navigate([
+          `estimates/revised-estimation-approval/${data.estimationRegisteredId}/${data.serviceRegistrationsId}`,
+        ]);
+      }
+    }
+    if (
+      this.titleName === 'main' &&
+      (item.key === 'accountId' || item.key === 'referenceNumber')
+    ) {
+      const queryParams = {
+        serviceRegistrationsId: data.serviceRegistrationsId,
+        statusCode: data.applicationStatusCode,
+      };
+      const navigationExtras: NavigationExtras = {
+        queryParams,
+        skipLocationChange: true,
+      };
+
+      if (
+        (data.applicationTypeCode == 'LE' ||
+          data.applicationTypeCode == 'LR') &&
+        data.meterRequiredFlag == '0' &&
+        data.isCtChangeReq == '0' &&
+        data.statusCode == '3'
+      ) {
+        item.route = 'main/load-power-sanction/3/NSC';
+        this.router.navigate(
+          [`${item.route}/${data.serviceRegistrationsId}`],
+          navigationExtras
+        );
+      } else {
+        this.router.navigate(
+          [`${item.route}/${data.serviceRegistrationsId}`],
+          navigationExtras
+        );
+      }
+
+      if (data.applicationTypeCode === 'IMW' && data.statusCode === '3') {
+        this.router.navigate([
+          `${item.route}/${data.serviceRegistrationsId}/${data.estimationRegisteredId}`,
+        ]);
+      }
+      if (data.applicationTypeCode === 'IMW' && data.statusCode === '5') {
+        this.router.navigate([
+          `${item.route}/${data.estimationRegisteredId}/${data.serviceRegistrationsId}`,
+        ]);
+      }
+      if (data.applicationTypeCode === 'IMW' && data.statusCode === '2') {
+        this.router.navigate(
+          [
+            `estimates/improvement-estimation/${data.statusCode}/${data.serviceRegistrationsId}`,
+          ],
+          navigationExtras
+        );
+      }
+
+      if (data.statusCode === '6' && data.processType === 'NSC') {
+        this.router.navigate([
+          `main/service-line-estimate/${data.statusCode}/NSC/${data.serviceRegistrationsId}`,
+        ]);
+      }
+    }
+
+    if (this.titleName == 'improvement-creation') {
+      this.router.navigate([
+        `${item.route}/${data.applicationStatusCode}/${data.serviceRegistrationsId}`,
+      ]);
+    }
+    if (
+      this.titleName == 'improvement-approval' ||
+      this.titleName == 'emergency'
+    ) {
+      this.router.navigate([
+        `${item.route}/${data.estimationRegisteredId}/${data.serviceRegistrationsId}`,
+      ]);
+    }
+    if (this.titleName == 'revised') {
+      this.router.navigate([
+        `${item.route}/${data.estimationRegisteredId}/${data.serviceRegistrationId}`,
+      ]);
+    }
+    if (
+      this.titleName == 'materialIndentApproval' ||
+      this.titleName == 'materialReturnApproval' ||
+      this.titleName == 'suspenseMaterialApproval' ||
+      this.titleName == 'receiverDivisionStoreTransferApproval' ||
+      this.titleName == 'senderDivisionStoreTransferApproval' ||
+      this.titleName == 'storeMaterialTransferApproval'
+    ) {
+      this.router.navigate([`${item.route}/${data.wmMaterialsIndentId}`]);
+    }
+    if (this.titleName == 'gatePassAcknowledgement') {
+      const queryParams: any = {
+        requestBy: data.requestedBy,
+        materialsIndentDate: data.materialsIndentDate,
+      };
+      const navigationExtras: NavigationExtras = {
+        queryParams,
+        skipLocationChange: true,
+      };
+      this.router.navigate(
+        [`${item.route}/${data.wmMaterialsIndentId}`],
+        navigationExtras
+      );
+    }
+    if (this.titleName == 'storeManagerApproval') {
+      if (data.typeOfIndent == 'INDENT') {
+        this.router.navigate([
+          `${item.route}/store-manager-approval-details/${data.wmMaterialsIndentId}`,
+        ]);
+      } else if (data.typeOfIndent == 'RETURN_INDENT') {
+        this.router.navigate([
+          `${item.route}/store-manager-return-approval-details/${data.wmMaterialsIndentId}`,
+        ]);
+      } else if (data.typeOfIndent == 'SUSPENSE_INDENT') {
+        this.router.navigate([
+          `${item.route}/store-manager-suspense-approval-details/${data.wmMaterialsIndentId}`,
+        ]);
+      } else {
+        this.router.navigate([
+          `${item.route}/store-manager-store-indent-approval-details/${data.wmMaterialsIndentId}`,
+        ]);
+      }
+    }
+    if (this.titleName == 'dispatchMaterialInvoice') {
+      const queryParams: any = {
+        requestBy: data.requestedBy,
+        fromOffice: data.officename,
+      };
+      const navigationExtras: NavigationExtras = {
+        queryParams,
+        skipLocationChange: true,
+      };
+      if (data.typeOfIndent == 'INDENT') {
+        this.router.navigate(
+          [
+            `${item.route}/dispatch-material-invoice-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (data.typeOfIndent == 'SUSPENSE_INDENT') {
+        this.router.navigate(
+          [
+            `${item.route}/material-suspense-invoice-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (data.typeOfIndent == 'STOCK_INDENT') {
+        this.router.navigate(
+          [
+            `${item.route}/material-store-invoice-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      }
+    }
+    if (this.titleName == 'materialAcknowledgement') {
+      const queryParams: any = {
+        requestBy: data.requestedBy,
+        fromOffice: data.officename,
+      };
+      const navigationExtras: NavigationExtras = {
+        queryParams,
+        skipLocationChange: true,
+      };
+      if (data.typeOfIndent == 'RETURN_INDENT') {
+        this.router.navigate(
+          [
+            `${item.route}/material-acknowledgement-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (data.typeOfIndent == 'SUSPENSE_INDENT') {
+        this.router.navigate(
+          [
+            `${item.route}/material-suspense-ackonowledgement-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (data.typeOfIndent == 'STOCK_INDENT') {
+        this.router.navigate(
+          [
+            `${item.route}/material-store-ackonowledgement-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      }
+    }
+    if (item.route == '/work-management/asset-bom-mapping') {
+      this.router.navigate(['/work-management/asset-bom-mapping'], {
+        queryParams: { workorderRegisteredId: data.workorderRegisteredId },
+      });
+    }
+    if (item.route == '/work-management/work-complition') {
+      this.router.navigate(['/work-management/work-complition'], {
+        queryParams: {
+          workorderRegisteredId: data.workorderRegisteredId,
+        },
+      });
+    }
+    if (item.route == '/work-management/pc-list') {
+      this.router.navigate(['/work-management/pc-list'], {
+        queryParams: {
+          workorderRegisteredId: data.workorderRegisteredId,
+        },
+      });
+    }
+    if (item.route == '/work-management/bill-submission') {
+      this.router.navigate(['/work-management/bill-submission'], {
+        queryParams: {
+          workorderRegisteredId: data.workorderRegisteredId,
+          workorderNo: data.workorderNo,
+        },
+      });
+    }
+    if (item.route == '/work-management/invoice-verification') {
+      this.router.navigate([`/work-management/invoice-verification-details`], {
+        queryParams: {
+          smStoreDispatchedInvoiceId: data.smStoreDispatchedInvoiceId,
+          wmMaterialsIndentId: data.wmMaterialsIndentId,
+        },
+      });
+    }
+    if (item.route == '/work-management/acknowledgment-verification') {
+      this.router.navigate([`/work-management/acknowledgment-details`], {
+        queryParams: {
+          smStoreDispatchedInvoiceId: data.smStoreDispatchedInvoiceId,
+          wmMaterialsIndentId: data.wmMaterialsIndentId,
+        },
+      });
+    }
+    if (item.route == '/work-management/c-register-bill-submission') {
+      this.router.navigate([
+        `/work-management/c-register-bill-submission-details/${data.billSubmissionLogId}`,
+      ]);
+    }
+    if (item.route == '/main/meter-replacement') {
+      this.router.navigate(['/main/meter-replacement'], {
+        queryParams: {
+          workorderRegisteredId: data.workorderRegisteredId,
+        },
+      });
+    }
+    if (item.title === 'Reference No.') {
+      this.router.navigate([
+        `${item.route}/${data.estimationRegisteredId}/${data.serviceRegistrationsId}`,
+      ]);
+    }
+    if (this.titleName === 'improvement-creation') {
+      this.router.navigate([
+        `${item.route}/${data.applicationStatusCode}/${data.serviceRegistrationsId}`,
+      ]);
+    }
+    if (item.title == 'Task No.') {
+      const navigationExtras = {
+        queryParams: {
+          taskNo: data.taskNo,
+          mmMaintenanceSchedulerTaskId: data.mmMaintenanceSchedulerTaskId,
+        },
+      };
+      this.router.navigate([`${item.route}`], navigationExtras);
+    }
+
+    if (item.route == '/work-management/pc-test') {
+      this.router.navigate(['/work-management/pc-test'], {
+        queryParams: {
+          ccbServiceRequestId: data.ccbServiceRequestId,
+        },
+      });
+    }
+    if (
+      this.titleName == 'searchByAccountId' &&
+      item.key === 'materialsIndentNo'
+    ) {
+      const queryParams: any = {
+        requestBy: data.officeName,
+        materialsIndentDate: data.materialsIndentDate,
+      };
+      const navigationExtras: NavigationExtras = {
+        queryParams,
+        skipLocationChange: true,
+      };
+      if (data.statusName === 'MATERIAL INDENT APPROVAL') {
+        this.router.navigate(
+          [
+            `/work-management/material-indent-approval-form/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (
+        data.statusName === 'MATERIAL RETURN INDENT APPROVAL' &&
+        data.typeOfIndent === 'RETURN_INDENT'
+      ) {
+        this.router.navigate(
+          [
+            `/work-management/materials-return-approval-form/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (
+        data.statusName === 'SUSPENSE MATERIAL TRANSFER APPROVAL' &&
+        data.typeOfIndent === 'SUSPENSE_INDENT'
+      ) {
+        this.router.navigate(
+          [
+            `/work-management/materials-transfer-approval-form/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (
+        data.statusName === 'STORE OFFICER APPROVAL' &&
+        data.typeOfIndent === 'INDENT'
+      ) {
+        this.router.navigate(
+          [
+            `/store-management/store-manager-approval-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (
+        data.statusName === 'STORE OFFICER APPROVAL' &&
+        data.typeOfIndent === 'RETURN_INDENT'
+      ) {
+        this.router.navigate(
+          [
+            `/store-management/store-manager-return-approval-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (
+        data.statusName === 'STORE OFFICER APPROVAL' &&
+        data.typeOfIndent === 'SUSPENSE_INDENT'
+      ) {
+        this.router.navigate(
+          [
+            `/store-management/store-manager-suspense-approval-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (
+        data.statusName === 'STORE OFFICER APPROVAL' &&
+        data.typeOfIndent === 'STOCK_INDENT'
+      ) {
+        this.router.navigate(
+          [
+            `/store-management/store-manager-store-indent-approval-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (
+        data.statusName === 'MATERIAL INVOICE' &&
+        data.typeOfIndent === 'INDENT'
+      ) {
+        this.router.navigate(
+          [
+            `/store-management/dispatch-material-invoice-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (
+        data.statusName === 'MATERIAL INVOICE' &&
+        data.typeOfIndent === 'SUSPENSE_INDENT'
+      ) {
+        this.router.navigate(
+          [
+            `/store-management/material-suspense-invoice-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (
+        data.statusName === 'MATERIAL INVOICE' &&
+        data.typeOfIndent === 'STOCK_INDENT'
+      ) {
+        this.router.navigate(
+          [
+            `/store-management/material-store-invoice-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (
+        data.statusName === 'MATERIAL ACKNOWLEDGEMENT' &&
+        data.typeOfIndent === 'RETURN_INDENT'
+      ) {
+        this.router.navigate(
+          [
+            `/store-management/material-acknowledgement-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (
+        data.statusName === 'MATERIAL ACKNOWLEDGEMENT' &&
+        data.typeOfIndent === 'STOCK_INDENT'
+      ) {
+        this.router.navigate(
+          [
+            `/store-management/material-store-ackonowledgement-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (data.typeOfIndent=='SUSPENSE_INDENT'&&data.statusName=='MATERIAL ACKNOWLEDGEMENT'&&data.indentStatusCode=='38'){
+          this.router.navigate(
+          [
+            `/store-management/material-suspense-ackonowledgement-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      } else if (data.statusName === 'GATEPASS') {
+        this.router.navigate(
+          [
+            `/store-management/gate-pass-ackowledgement-details/${data.wmMaterialsIndentId}`,
+          ],
+          navigationExtras
+        );
+      }
+    }
+  }
+
+  exportPdf(dt: Table) {
+    if (
+      (dt.filteredValue && dt.filteredValue.length == 0) ||
+      (dt.dataToRender && dt.dataToRender.length == 0)
+    ) {
+      this.snackbar.open('No Records Found', 'OK');
+    } else {
+      const doc = new jsPDF();
+      var arr = [];
+      if (dt.filteredValue == null) {
+        for (let i = 0; i < this.rows.length; i++) {
+          const element = Object.values(this.rows[i]);
+          arr.push(element);
+        }
+      } else {
+        for (let i = 0; i < dt.filteredValue.length; i++) {
+          const element = Object.values(dt.filteredValue[i]);
+          arr.push(element);
+        }
+      }
+      autoTable(doc, {
+        head: [dt.columns],
+        body: arr,
+      });
+      doc.save('data.pdf');
+    }
+  }
+
+  splitCamelCase(camelCaseString: string) {
+    const result = camelCaseString
+      .replace(/([A-Z][a-z])/g, ' $1')
+      .replace(/([A-Z]+)/g, ' $1')
+      .replace(/ +/g, ' ')
+      .replace(/^ +/g, '');
+    return result.charAt(0).toUpperCase() + result.slice(1);
+  }
+
+  exportExcel(dt: Table) {
+    if (
+      (dt.filteredValue && dt.filteredValue.length == 0) ||
+      (dt.dataToRender && dt.dataToRender.length == 0)
+    ) {
+      this.snackbar.open('No Records Found', 'OK', {
+        verticalPosition: cordova !== undefined ? 'bottom' : 'top',
+      });
+    } else {
+      const val = dt.filteredValue == null ? this.rows : dt.filteredValue;
+      var arr = [];
+      for (const key of val) {
+        const newHashmap = Object.entries(key).reduce(
+          (acc, [k, v]) => ({
+            ...acc,
+            [this.splitCamelCase(k)]: v,
+          }),
+          {}
+        );
+        arr.push(newHashmap);
+      }
+      import('xlsx').then((xlsx) => {
+        const worksheet = xlsx.utils.json_to_sheet(arr);
+        const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+        const excelBuffer: any = xlsx.write(workbook, {
+          bookType: 'xlsx',
+          type: 'array',
+        });
+        this.saveAsExcelFile(excelBuffer, 'data');
+      });
+    }
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    let EXCEL_TYPE =
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    let EXCEL_EXTENSION = '.xlsx';
+    const data: Blob = new Blob([buffer], {
+      type: EXCEL_TYPE,
+    });
+    FileSaver.saveAs(
+      data,
+      fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
+    );
+  }
+
+  reset() {
+    this.rows = this.data;
+    this.treeControl.setValue(this.nodes);
+  }
+
+  clear(table: Table) {
+    this.clearControl.patchValue('', { emitEvent: false });
+    table.clear();
+  }
+
+  nodeSelect(node: any) {
+    console.log(node.label);
+    this.label = [node.label];
+    this.parseNestedObject(node);
+    let row = [];
+    this.rows = [];
+    this.label.forEach((l) => {
+      let rowData: any[] = [];
+      const exists = this.data.some((item) =>
+        item.hasOwnProperty('officeName')
+      );
+      if (exists) {
+        rowData = this.data.filter(
+          (v: any) => v.officeName.toLowerCase().indexOf(l.toLowerCase()) > -1
+        );
+      } else {
+        rowData = this.data.filter(
+          (v: any) => v.office.toLowerCase().indexOf(l.toLowerCase()) > -1
+        );
+      }
+      if (rowData.length) {
+        row.push(rowData);
+      }
+    });
+    this.rows = _.flatten(row);
+  }
+
+  parseNestedObject(item: any) {
+    let origItem = { ...item };
+    for (let key in item) {
+      delete item['parent'];
+      if (_.isPlainObject(item[key])) {
+        if (origItem[key].label) {
+          this.label.push(origItem[key].label);
+        }
+        this.parseNestedObject(item[key]);
+      } else if (Array.isArray(item[key])) {
+        this.parseNestedObject(item[key]);
+      }
+    }
+  }
+
+  officeHierarchy(data: any[], parentId: any) {
+    const idMapping = data.reduce((acc, el, i) => {
+      acc[el.officeMasterId] = i;
+      return acc;
+    }, {});
+    let root: any;
+    data.forEach((v) => {
+      if (v.parentId == parentId) {
+        root = v;
+        return;
+      }
+      const parent = data[idMapping[v.parentId]];
+      if (!parent) {
+        return;
+      }
+      parent.children = [...(parent.children || []), v];
+    });
+    this.nodes = [
+      {
+        label: root.label,
+        icon: 'pi pi-folder',
+        children: root.children,
+        expanded: true,
+      },
+    ];
+  }
+
+  isDesignationRole(shortCode: string): boolean {
+    if (shortCode) {
+      const userRole = sessionStorage.getItem('user-role');
+      if (shortCode == userRole.split('_')[1]) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  async downloadPDF(data: any) {
+    console.log('data of pdf', data);
+    if (this.titleName == 'materialReturnApproval') {
+      this.generateReturnIndentReport(
+        data.wmMaterialsIndentId,
+        data.workscopeDescCode
+      );
+    } else if (this.titleName == 'suspenseMaterialApproval') {
+      this.generateSuspenseIndentReport(data.wmMaterialsIndentId);
+    } else if (this.titleName == 'storeMaterialTransferApproval') {
+      this.generateStockIndentReport(data.wmMaterialsIndentId);
+    } else if (this.titleName == 'materialIndentApproval') {
+      this.generateIndentReport(data.wmMaterialsIndentId);
+    } else if (data.typeOfIndent == 'INDENT') {
+      this.generateIndentReport(data.wmMaterialsIndentId);
+    } else if (data.typeOfIndent == 'RETURN_INDENT') {
+      this.generateReturnIndentReport(
+        data.wmMaterialsIndentId,
+        data.workscopeDescCode
+      );
+    } else if (data.typeOfIndent == 'SUSPENSE_INDENT') {
+      this.generateSuspenseIndentReport(data.wmMaterialsIndentId);
+    } else if (this.titleName == 'STOCK_INDENT') {
+      this.generateStockIndentReport(data.wmMaterialsIndentId);
+    }
+  }
+async downloadIndent(data:any){
+    if (data.typeOfIndent == 'SUSPENSE_INDENT') {
+      this.generateSuspenseIndentReport(data.wmMaterialsIndentId);
+    } else if(data.typeOfIndent == 'STOCK_INDENT') {
+      this.generateStockIndentReport(data.wmMaterialsIndentId);
+    }
+  }
+  async downloadInvoice(data: any) {
+    if (data.typeOfIndent == 'SUSPENSE_INDENT') {
+      this.generateSuspenseInvoiceReportReport(data.wmMaterialsIndentId);
+    } else if (data.typeOfIndent == 'STOCK_INDENT') {
+      this.generateStockInvoiceIndentReport(data.wmMaterialsIndentId);
+    }
+  }
+  
+  async generateSuspenseInvoiceReportReport(wmMaterialsIndentId: string) {
+    this.getPdf(wmMaterialsIndentId).subscribe((data: any) => {
+      this.blob = new Blob([data.body], { type: 'application/pdf' });
+      const fileURL = URL.createObjectURL(this.blob);
+      const link = document.createElement('a');
+      link.href = fileURL;
+      link.download = 'Material Suspense Invoice Report' + '.pdf';
+      if (typeof cordova !== 'undefined') { MobileUtils.downloadFileOnMobileByNameOnly(link.download, this.blob); } else { link.click(); }
+    });
+  }
+  
+  getPdf(wmMaterialsIndentId: string) {
+    const apiKey = sessionStorage.getItem('api-key');
+    const serviceKey = sessionStorage.getItem('service-key');
+    const userRole = sessionStorage.getItem('user-role');
+    const userName = sessionStorage.getItem('user-name');
+    const userCode = sessionStorage.getItem('user-code');
+  
+    return this.http.get(
+      `${this.apiUrl}/api/materialInvoice/generateMaterialInvoiceWithGatePassReportForSuspenseAndStore?userName=${userName}&userCode=${userCode}&userRole=${userRole}&apiKey=${apiKey}&serviceKey=${serviceKey}&wmMaterialsIndentId=${wmMaterialsIndentId}`,
+      { observe: 'response', responseType: 'blob' }
+    );
+  }
+  async generateStockInvoiceIndentReport(wmMaterialsIndentId: string) {
+    this.stockInvoice(wmMaterialsIndentId).subscribe((data: any) => {
+      this.blob = new Blob([data.body], { type: 'application/pdf' });
+      const fileURL = URL.createObjectURL(this.blob);
+      const link = document.createElement('a');
+      link.href = fileURL;
+      link.download = 'Stock Material Acknowledgement Report' + '.pdf';
+      if (typeof cordova !== 'undefined') { MobileUtils.downloadFileOnMobileByNameOnly(link.download, this.blob); } else { link.click(); }
+    });
+  }
+  stockInvoice(wmMaterialsIndentId: string) {
+    const apiKey = sessionStorage.getItem('api-key');
+    const serviceKey = sessionStorage.getItem('service-key');
+    const userRole = sessionStorage.getItem('user-role');
+    const userName = sessionStorage.getItem('user-name');
+    const userCode = sessionStorage.getItem('user-code');
+    return this.http.get(
+      `${this.apiUrl}/api/materialInvoice/generateMaterialInvoiceWithGatePassReportForSuspenseAndStore?userName=${userName}&userCode=${userCode}&userRole=${userRole}&apiKey=${apiKey}&serviceKey=${serviceKey}&wmMaterialsIndentId=${wmMaterialsIndentId}`,
+      { observe: 'response', responseType: 'blob' }
+    );
+  }
+
+  async generateIndentReport(wmMaterialsIndentId: string) {
+    if (wmMaterialsIndentId) {
+      this.downloadMaterialIndentPdf(wmMaterialsIndentId).subscribe((data: any) => {
+        this.blob = new Blob([data.body], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(this.blob);
+        const link = document.createElement('a');
+        link.href = fileURL;
+        link.download = 'MaterialIndentGenerate' + '.pdf';
+        if (typeof cordova !== 'undefined') { MobileUtils.downloadFileOnMobileByNameOnly(link.download, this.blob); } else { link.click(); }
+      });
+    }
+  }
+
+  downloadMaterialIndentPdf(wmMaterialsIndentId: string) {
+    const apiKey = sessionStorage.getItem('api-key');
+    const serviceKey = sessionStorage.getItem('service-key');
+    const userRole = sessionStorage.getItem('user-role');
+    const userName = sessionStorage.getItem('user-name');
+    const userCode = sessionStorage.getItem('user-code');
+    return this.http.get(
+      `${this.apiUrl}/api/materialIndent/generateMaterialIndentReport?userName=${userName}&userCode=${userCode}&userRole=${userRole}&apiKey=${apiKey}&serviceKey=${serviceKey}&wmMaterialsIndentId=${wmMaterialsIndentId}`,
+      { observe: 'response', responseType: 'blob' }
+    );
+  }
+
+  async generateReturnIndentReport(
+    wmMaterialsIndentId: string,
+    workscopeDescCode: string
+  ) {
+    if (wmMaterialsIndentId) {
+      this.downloadReturnMaterialIndentPdf(
+        wmMaterialsIndentId,
+        workscopeDescCode
+      ).subscribe((data: any) => {
+        this.blob = new Blob([data.body], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(this.blob);
+        const link = document.createElement('a');
+        link.href = fileURL;
+        link.download = 'MaterialReturnIndentGenerate' + '.pdf';
+        if (typeof cordova !== 'undefined') { MobileUtils.downloadFileOnMobileByNameOnly(link.download, this.blob); } else { link.click(); }
+      });
+    }
+  }
+
+  downloadReturnMaterialIndentPdf(
+    wmMaterialsIndentId: string,
+    workscopeDescCode: string
+  ) {
+    const apiKey = sessionStorage.getItem('api-key');
+    const serviceKey = sessionStorage.getItem('service-key');
+    const userRole = sessionStorage.getItem('user-role');
+    const userName = sessionStorage.getItem('user-name');
+    const userCode = sessionStorage.getItem('user-code');
+    return this.http.get(
+      `${this.apiUrl}/api/materialIndent/generateMaterialIndentReportForReturnIndent?userName=${userName}&userCode=${userCode}&userRole=${userRole}&apiKey=${apiKey}&serviceKey=${serviceKey}&wmMaterialsIndentId=${wmMaterialsIndentId}&workscopeDescCode=${workscopeDescCode}`,
+      { observe: 'response', responseType: 'blob' }
+    );
+  }
+
+  async generateSuspenseIndentReport(wmMaterialsIndentId: string) {
+    if (wmMaterialsIndentId) {
+      this.downloadSuspenseMaterialIndentPdf(wmMaterialsIndentId).subscribe(
+        (data: any) => {
+          this.blob = new Blob([data.body], { type: 'application/pdf' });
+          const fileURL = URL.createObjectURL(this.blob);
+          const link = document.createElement('a');
+          link.href = fileURL;
+          link.download = 'MaterialSuspenseIndentGenerate' + '.pdf';
+          if (typeof cordova !== 'undefined') { MobileUtils.downloadFileOnMobileByNameOnly(link.download, this.blob); } else { link.click(); }
+        }
+      );
+    }
+  }
+
+  downloadSuspenseMaterialIndentPdf(wmMaterialsIndentId: string) {
+    const apiKey = sessionStorage.getItem('api-key');
+    const serviceKey = sessionStorage.getItem('service-key');
+    const userRole = sessionStorage.getItem('user-role');
+    const userName = sessionStorage.getItem('user-name');
+    const userCode = sessionStorage.getItem('user-code');
+    return this.http.get(
+      `${this.apiUrl}/api/materialIndent/generateMaterialIndentReportForSuspenseAndStore?userName=${userName}&userCode=${userCode}&userRole=${userRole}&apiKey=${apiKey}&serviceKey=${serviceKey}&wmMaterialsIndentId=${wmMaterialsIndentId}`,
+      { observe: 'response', responseType: 'blob' }
+    );
+  }
+
+  async generateStockIndentReport(wmMaterialsIndentId: string) {
+    if (wmMaterialsIndentId) {
+      this.downloadStoreMaterialIndentPdf(wmMaterialsIndentId).subscribe(
+        (data: any) => {
+          this.blob = new Blob([data.body], { type: 'application/pdf' });
+          const fileURL = URL.createObjectURL(this.blob);
+          const link = document.createElement('a');
+          link.href = fileURL;
+          link.download = 'MaterialStoreIndentGenerate' + '.pdf';
+          if (typeof cordova !== 'undefined') { MobileUtils.downloadFileOnMobileByNameOnly(link.download, this.blob); } else { link.click(); }        }
+      );
+    }
+  }
+
+  downloadStoreMaterialIndentPdf(wmMaterialsIndentId: string) {
+    const apiKey = sessionStorage.getItem('api-key');
+    const serviceKey = sessionStorage.getItem('service-key');
+    const userRole = sessionStorage.getItem('user-role');
+    const userName = sessionStorage.getItem('user-name');
+    const userCode = sessionStorage.getItem('user-code');
+    return this.http.get(
+      `${this.apiUrl}/api/materialIndent/generateMaterialIndentReportForSuspenseAndStore?userName=${userName}&userCode=${userCode}&userRole=${userRole}&apiKey=${apiKey}&serviceKey=${serviceKey}&wmMaterialsIndentId=${wmMaterialsIndentId}`,
+      { observe: 'response', responseType: 'blob' }
+    );
+  }
+
+  async generateStoreManager(wmMaterialsIndentId: string) {
+    if (wmMaterialsIndentId) {
+      this.downloadStoreManagerPdf(wmMaterialsIndentId).subscribe(
+        (data: any) => {
+          this.blob = new Blob([data.body], { type: 'application/pdf' });
+          const fileURL = URL.createObjectURL(this.blob);
+          const link = document.createElement('a');
+          link.href = fileURL;
+          link.download = 'MaterialStoreApprovalGenerate' + '.pdf';
+          if (typeof cordova !== 'undefined') { MobileUtils.downloadFileOnMobileByNameOnly(link.download, this.blob); } else { link.click(); }        }
+      );
+    }
+  }
+
+  downloadStoreManagerPdf(wmMaterialsIndentId: string) {
+    const apiKey = sessionStorage.getItem('api-key');
+    const serviceKey = sessionStorage.getItem('service-key');
+    const userRole = sessionStorage.getItem('user-role');
+    const userName = sessionStorage.getItem('user-name');
+    const userCode = sessionStorage.getItem('user-code');
+    return this.http.get(
+      `${this.apiUrl}/api/materialIndent/generateMaterialIndentReportForSuspenseAndStore?userName=${userName}&userCode=${userCode}&userRole=${userRole}&apiKey=${apiKey}&serviceKey=${serviceKey}&wmMaterialsIndentId=${wmMaterialsIndentId}`,
+      { observe: 'response', responseType: 'blob' }
+    );
+  }
+
+  async generateMaterialInvoice(wmMaterialsIndentId: string) {
+    if (wmMaterialsIndentId) {
+      this.downloadMaterialInvoicePdf(wmMaterialsIndentId).subscribe(
+        (data: any) => {
+          this.blob = new Blob([data.body], { type: 'application/pdf' });
+          const fileURL = URL.createObjectURL(this.blob);
+          const link = document.createElement('a');
+          link.href = fileURL;
+          link.download = 'MaterialMaterialInvoiceIndentGenerate' + '.pdf';
+          if (typeof cordova !== 'undefined') { MobileUtils.downloadFileOnMobileByNameOnly(link.download, this.blob); } else { link.click(); }        }
+      );
+    }
+  }
+
+  downloadMaterialInvoicePdf(wmMaterialsIndentId: string) {
+    const apiKey = sessionStorage.getItem('api-key');
+    const serviceKey = sessionStorage.getItem('service-key');
+    const userRole = sessionStorage.getItem('user-role');
+    const userName = sessionStorage.getItem('user-name');
+    const userCode = sessionStorage.getItem('user-code');
+    return this.http.get(
+      `${this.apiUrl}/api/materialIndent/generateMaterialIndentReportForSuspenseAndStore?userName=${userName}&userCode=${userCode}&userRole=${userRole}&apiKey=${apiKey}&serviceKey=${serviceKey}&wmMaterialsIndentId=${wmMaterialsIndentId}`,
+      { observe: 'response', responseType: 'blob' }
+    );
+  }
+
+  async generateMaterialAcknowledgement(wmMaterialsIndentId: string) {
+    if (wmMaterialsIndentId) {
+      this.downloadMaterialAcknowledmentPdf(wmMaterialsIndentId).subscribe(
+        (data: any) => {
+          this.blob = new Blob([data.body], { type: 'application/pdf' });
+          const fileURL = URL.createObjectURL(this.blob);
+          const link = document.createElement('a');
+          link.href = fileURL;
+          link.download = 'MaterialAcknowledmentGenerate' + '.pdf';
+          if (typeof cordova !== 'undefined') { MobileUtils.downloadFileOnMobileByNameOnly(link.download, this.blob); } else { link.click(); }        }
+      );
+    }
+  }
+
+  downloadMaterialAcknowledmentPdf(wmMaterialsIndentId: string) {
+    const apiKey = sessionStorage.getItem('api-key');
+    const serviceKey = sessionStorage.getItem('service-key');
+    const userRole = sessionStorage.getItem('user-role');
+    const userName = sessionStorage.getItem('user-name');
+    const userCode = sessionStorage.getItem('user-code');
+    return this.http.get(
+      `${this.apiUrl}/api/materialIndent/generateMaterialIndentReportForSuspenseAndStore?userName=${userName}&userCode=${userCode}&userRole=${userRole}&apiKey=${apiKey}&serviceKey=${serviceKey}&wmMaterialsIndentId=${wmMaterialsIndentId}`,
+      { observe: 'response', responseType: 'blob' }
+    );
+  }
+
+  viewStatus(data: any) {
+    this.loader.show('Loading Data');
+    const serviceRegistrationId = data.serviceRegistrationsId
+      ? data.serviceRegistrationsId
+      : data.serviceRegistrationId;
+
+    this.router
+      .navigate(['/main', 'full-details', serviceRegistrationId])
+      .then((success) => {
+        if (success) {
+          // setTimeout(() => {(this.loader.hide()) },1000)
+          console.log('Navigation successful');
+        }
+      })
+      .catch((err) => {
+        this.loader.hide();
+        console.error('Navigation failed:', err);
+      });
+  }
+
+  navigateToDetails(mmMaintenanceSchedulerTaskId: string) {
+    if (this.titleName == 'inspection maintenance list') {
+      this.router.navigate(['/estimates/inspection-maintenance-details'], {
+        queryParams: { mmMaintenanceSchedulerTaskId },
+      });
+    } else if (this.titleName == 'Preventive Maintenance List') {
+      this.router.navigate(['/estimates/preventive-maintenance-details'], {
+        queryParams: { mmMaintenanceSchedulerTaskId },
+      });
+    } else if (this.titleName == 'Overhual Maintenance List') {
+      this.router.navigate(['/estimates/overhual-maintenance-details'], {
+        queryParams: { mmMaintenanceSchedulerTaskId },
+      });
+    }
+  }
+}

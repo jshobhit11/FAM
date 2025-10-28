@@ -1,0 +1,110 @@
+section {
+  margin: 0.5rem;
+}
+h1 {
+  color: #484848;
+
+  margin: unset !important;
+}
+
+.two-row-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 4rem;
+
+  .inner-div {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: baseline;
+
+    label {
+      margin: unset;
+     
+    }
+
+    .form-control {
+      padding: 0.5rem;
+      border: 1px solid #939393;
+      background-color: #f5f5f5;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .form-select {
+      cursor: pointer;
+    }
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  section {
+    margin: 1rem;
+  }
+
+  .two-row-grid {
+    grid-template-columns: 1fr;
+
+    .inner-div {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+
+      label,
+      input,
+      p,
+      select {
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .txt-area {
+    flex-direction: column;
+
+    textarea {
+      width: 100% !important;
+    }
+  }
+}
+.work-description {
+  display: flex;
+  align-items: center;
+}
+
+.description-label {
+  flex-shrink: 0; /* Prevent label from shrinking */
+  margin-right: 1rem; /* Add spacing between label and content */
+  font-size: 0.8rem; /* Increase the font size */
+  font-weight: 500;
+  margin-top: -1rem;
+}
+
+.description-content {
+  flex-grow: 1; /* Allow content to expand and fill remaining space */
+  margin-left: 3.5rem;
+}
+
+.forward-approved {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  padding: 0.5rem;
+}
+.form-control {
+  display: block;
+  width: 80%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0.375rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}

@@ -1,0 +1,162 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/dashboard">Works</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Suspense Transfer Request</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <section>
+    <form class="form" [formGroup]="suspenseForm">
+      <div class="container-fluid page">
+        <div class="page__content shadow p-3 position-relative dis-flex-colu">
+          <h2 class="title-2">Suspense Material Request  </h2>
+  
+  
+        <div class="container mt-4">
+          <div class="row">
+            <div class="col-lg-2">Suspense Store <span class="star">*</span></div>
+            <div class="col-lg-7">
+              <select
+                class="form-select select-box"
+                style="width: 100%"
+                name="suspense"
+                (change)="onSuspenseStoreChange($event.target.value)"
+                [(ngModel)]="payload.suspenseStoreId"
+                formControlName="suspenseStore"
+              >
+                <option selected disabled>Select One</option>
+                <option
+                  [value]="store.storeMasterId"
+                  *ngFor="let store of suspenseStoreData"
+                >
+                  {{ store.storeName }}
+                </option>
+              </select>
+              <mat-error  *ngIf="suspenseForm.get('suspenseStore').hasError('required') && suspenseForm.get('suspenseStore').touched">
+                Please select this field
+              </mat-error>
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-lg-2">Sender Store <span class="star">*</span></div>
+            <div class="col-lg-7">
+              <select
+                class="form-select select-box"
+                style="width: 100%"
+                name="senderstore"
+                (change)="onStoreChange($event.target.value)"
+                [(ngModel)]="payload.senderStoreId"
+                formControlName="senderStore"
+              >
+                <option selected disabled>Select One</option>
+                <option
+                  [value]="store.storeMasterId"
+                  *ngFor="let store of storeData"
+                >
+                  {{ store.storeName }}
+                </option>
+              </select>
+              <mat-error  *ngIf="suspenseForm.get('senderStore').hasError('required') && suspenseForm.get('senderStore').touched">
+                Please select this field
+              </mat-error>
+            </div>
+          </div>
+        </div>
+           <div class="row">
+            <div class="col-md-11">
+             <div class="form" [formGroup]="estimateCharges">
+                  <mat-form-field style="width: 100% !important; font-size: 1.5rem !important">
+                    <span matPrefix class="search-icon2"><mat-icon>search</mat-icon></span>
+                    <input
+                        matInput
+                        placeholder="Search Material"
+                        [matAutocomplete]="unitAuto"
+                        [formControl]="materialSearchControl"
+                    />
+                    <mat-autocomplete #unitAuto="matAutocomplete" [displayWith]="displayMaterial">
+                        <mat-option *ngFor="let dataItem of filteredMaterialUnits" [value]="dataItem">
+                          {{dataItem.mlCode}} -{{ dataItem.mlName }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+                
+              </div>  
+            </div>
+            <div class="col-md-1">
+             
+                <button type="button" class="btn btn-primary btn-md mt-4" (click)="addDataItem()">
+              Add
+            </button>
+           </div>
+           
+
+            <div style="overflow: auto; width: 100%; margin-top: 1rem; padding: 10px">
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">S. No.</th>
+              <th scope="col">Material Code</th>
+              <th scope="col">Material Name</th>
+              <th scope="col">Unit</th>
+              <th scope="col">Rate</th>
+              <th scope="col">Requested Quantity</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dataItem of data; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ dataItem.materialCode }}</td>
+              <td class="horizontal-scroll">{{ dataItem.materialName }}</td>
+              <td>{{ dataItem.unit }}</td>
+              <td>{{ dataItem.rate }}</td>
+              <td>
+                <input
+                  class="form-control-p no-spinner"
+                  type="text"
+                  name="requestedQuantity"
+                  [(ngModel)]="dataItem.requestedQuantity"
+                  placeholder=""
+                  formControlName="qunatity"
+                  required
+                />
+                <mat-error  *ngIf="suspenseForm.get('qunatity').hasError('required') && suspenseForm.get('qunatity').touched">
+                  Please enter 'Qunantity'
+                </mat-error>
+              </td>
+              <td>
+                <button
+                  style="border: none; background-color: transparent"
+                  (click)="deleteDataItem(i)"
+                >
+                  <img src="assets/delete-icon.png" alt="" />
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="btn-box m-4">
+          <button
+            (click)="openConfirmationDialog()"
+            type="button"
+            class="btn btn-primary btn-md"
+          >
+            Generate Request
+          </button>
+        </div>
+      </div>
+      </div>
+      </div>
+      </div>
+    </form>
+  </section>
+  </div>

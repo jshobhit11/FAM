@@ -1,0 +1,189 @@
+h1 {
+  color: #484848;
+  font-weight: 600;
+  margin: unset !important;
+}
+
+section {
+  margin: 0.5rem;
+}
+
+.single-row-grid {
+  grid-template-columns: 1fr;
+}
+
+.two-row-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid {
+  display: grid;
+  row-gap: 0.8rem;
+
+  .inner-div {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: baseline;
+    margin-bottom: 1rem;
+
+    label {
+      margin: unset;
+      // font-size: 1.1rem;
+      line-height: 1.2;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #6e6d6d;
+      font-weight: 500;
+    }
+
+    span {
+      border-bottom: 1px solid black;
+    }
+  }
+}
+
+// .two-row-flex {
+//   display: flex;
+//   flex-wrap: wrap;
+//   gap: 1rem;
+// }
+
+// .left-div {
+//   width: 50% !important;
+// }
+
+// .inner-div {
+//   display: flex;
+//   gap: 1rem;
+//   margin-top: 0.5rem;
+
+//   h3 {
+//     width: 50%;
+//     margin: unset;
+//     font-size: 1.1rem;
+//     font-weight: 600;
+//   }
+
+//   p {
+//     width: 40%;
+//     font-size: 1rem;
+//     font-weight: 500;
+//     padding: 0.5rem;
+//     border-radius: 10px;
+//   }
+
+//   span {
+//     width: 40%;
+//     border-bottom: 1px solid black;
+//   }
+// }
+
+// .report-list-content {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 2rem;
+// }
+
+.inspected-checkbox {
+  display: flex;
+  gap: 1rem;
+
+  div {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  label {
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+}
+
+.print-btn {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background-color: #4472c4;
+}
+
+@media only screen and (max-width: 1000px) {
+  section {
+    margin: 1rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+
+    .inner-div {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+
+      label,
+      input,
+      p,
+      select {
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .single-row-grid {
+    .inner-div {
+      gap: 3rem;
+    }
+  }
+
+  .report-list-content {
+    gap: 0.5rem;
+    .inner-div {
+      flex-direction: column;
+      gap: 2rem;
+
+      h3,
+      span {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media print {
+  button {
+    display: none;
+  }
+}
+
+.btn-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.btn {
+  padding: 0.4rem 1rem;
+  background-color: #4472c4;
+  color: white;
+  min-height: 2.5rem;
+  min-width: 5rem;
+
+  &:hover {
+    background-color: #7f9cce;
+  }
+}
+
+.clor {
+  background-color: white;
+  color: #4472c4;
+  border: 2px solid #4472c4;
+
+  &:hover {
+    background-color: #d8d7d7;
+    color: #4472c4;
+  }
+}

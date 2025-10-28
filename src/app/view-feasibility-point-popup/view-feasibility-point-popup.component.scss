@@ -1,0 +1,71 @@
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .dialog-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:5px;
+    // background-color: #f0f0f0; 
+    margin: -10px -15px 10px;
+  }
+  
+  .close-button {
+    background-color: transparent;
+    border: 1px solid black;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .close-icon {
+    font-size: 20px;
+  }
+  .dialog-title h3 {
+    margin: 0px;
+  }
+  .content {
+    flex-grow: 1;
+    overflow-y: auto;
+    border: 0px solid #ccc;
+    border-left: 1px solid #ccc; 
+    border-right: 1px solid #ccc; 
+    padding: 15px;
+    border-top: 1px solid;
+  }
+  
+  .detail-box {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px; 
+  }
+  
+  .label {
+    flex: 1;
+    text-align: left;
+    margin-right: 10px; 
+    font-weight: bold;
+  }
+  
+  .value {
+    flex: 1;
+    text-align: right;
+  }
+  .download-icon mat-icon {
+    color: blue; /* Set the color to blue */
+}
+
+
+  
+  
+  

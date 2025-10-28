@@ -1,0 +1,141 @@
+h1 {
+    color: #484848;
+    margin: unset !important;
+  }
+  
+  h4 {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
+  section {
+    margin: 0.5rem;
+     }
+  
+  .two-row-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 4rem;
+  
+    .inner-div {
+      display: grid;
+      gap: 0.5rem;
+      grid-template-columns: repeat(2, 1fr);
+      align-items: baseline;
+  
+      label {
+        margin: unset;
+      }
+  
+      p {
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 0.5rem;
+        border-radius: 10px;
+        line-height: 1.5;
+      }
+    }
+  }
+  
+  .single-row-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  
+  .sm {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 151.02%;
+    color: #5f5f5f;
+  }
+  
+  .radio-action {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  
+  .radio-button {
+    display: flex;
+    justify-content: flex-end !important;
+    padding: 0.5rem 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .btn-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+  }
+  
+  .btn {
+    padding: 0.4rem 1rem;
+    background-color: #4472c4;
+    color: white;
+    min-height: 2.5rem;
+    min-width: 5rem;
+  
+    &:hover {
+      background-color: #7f9cce;
+    }
+  }
+  
+  .clor {
+    background-color: white;
+    color: #4472c4;
+    border: 2px solid #4472c4;
+  
+    &:hover {
+      background-color: #d8d7d7;
+      color: #4472c4;
+    }
+  }
+  
+  .data-sheet {
+    display: flex;
+    flex-direction: column;
+  
+    p {
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+  }
+  
+  @media only screen and (max-width: 1000px) {
+    section {
+      margin: 1rem;
+    }
+  
+    .two-row-grid {
+      grid-template-columns: 1fr;
+  
+      .inner-div {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+  
+        label,
+        input,
+        p,
+        select {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  
+    .txt-area {
+      flex-direction: column;
+  
+      textarea {
+        width: 100% !important;
+      }
+    }
+  }
+  .inner-div-t{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: baseline;
+    column-gap: 2rem;
+    margin-bottom: -1px;
+  }

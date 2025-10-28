@@ -1,0 +1,132 @@
+<div class="page-1">
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/work-management/dashboard">Works</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Budget Abstract Report</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section>
+  <form class="form" [formGroup]="formGroup">
+    <div class="container-fluid page">
+      <div class="page__content shadow p-3 position-relative dis-flex-colu">
+        <h2 class="title-2">Budget Abstract Report</h2>
+        <div style="width: 100%; margin-top: 1rem">
+          <div class="p-3 mb-5">
+            <div class="row g-4 align-items-center">
+              <div class="col-sm-2">
+                <label class="form-label" for="Divisionoffice">Division Office <span style="color: red"> *</span></label>
+              </div>
+              <div class="col-sm-4">
+                <select
+                  class="form-select"
+                  name="division"
+                  style="width: 100%"
+                  id="divisionSelect"
+                  formControlName="divisionOffice"
+                >
+                  <option
+                    *ngFor="let division of divisionOptions"
+                    [value]="division.officeMasterId"
+                  >
+                    {{ division.divisionCode }} - {{ division.divisionName }}
+                  </option>
+                </select>
+                <mat-error *ngIf="formGroup.get('divisionOffice').invalid && formGroup.get('divisionOffice').touched">
+                  Please select this field
+                </mat-error>
+              </div>
+              <div class="col-sm-2">
+                <label class="form-label" for="financial-year">Financial Year <span style="color: red"> *</span></label>
+              </div>
+              <div class="col-sm-4">
+                <select
+                  id="financial-year"
+                  class="form-select"
+                  name="financial-year"
+                  formControlName="financialYear"
+                  required
+                >
+                  <option value="2023-24">2023-24</option>
+                  <option value="2024-25">2024-25</option>
+                  <option value="2025-26">2025-26</option>
+                </select>
+                <mat-error *ngIf="formGroup.get('financialYear').invalid && formGroup.get('financialYear').touched">
+                  Please select this field
+                </mat-error>
+              </div>
+            </div>
+
+            <div class="offset-sm-5">
+              <div class="row mt-2 mb-2 align-items-center col-sm-4">
+                <fieldset class="scheduler-border">
+                  <legend class="scheduler-border">Output Format<span class="star"> *</span></legend>
+                  <div class="mt-2">
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="inlineRadioOptions"
+                        id="inlineRadio1"
+                        value="pdf"
+                        (change)="onRadioChange($event.target.value)"
+                        checked
+                      />
+                      <label class="form-check-label" for="inlineRadio1"
+                        >PDF </label
+                      >
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="inlineRadioOptions"
+                        id="inlineRadio2"
+                        value="xlsx"
+                        (change)="onRadioChange($event.target.value)"
+                      />
+                      <label class="form-check-label" for="inlineRadio2"
+                        >XLS </label
+                      >
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+            <div class="row">
+              <div class="offset-sm-5 mt-2 mb-2">
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-md"
+                  *ngIf="pdfType == 'pdf'"
+                  (click)="generateBudgetAbstractReport()"
+                >
+                  Generate PDF
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-md"
+                  *ngIf="pdfType == 'xlsx'"
+                  (click)="downloadExcelFile()"
+                >
+                  Generate XLSX
+                </button>
+              </div>
+              <!-- <div class="offset-sm-5">
+                <span *ngIf="error" style="color: red">{{ error }}</span>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>
+</div>

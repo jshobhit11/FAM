@@ -1,0 +1,170 @@
+<div class="page-1">
+    <section class="mt-2">
+      <ul>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a routerLink="/configuration">Configuration</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a style="color: lightslategray">Budget Head</a>
+            </li>
+          </ol>
+        </nav>
+      </ul>
+    </section>
+    <section>
+      <div class="col-lg-6 mt-4" style="width: 100% !important; ">
+        <div class="page__content shadow p-3 position-relative dis-flex-colu">
+          <h2 class="title-2">Create New Divisional Budget Head Form</h2>
+        
+        <div class="grid two-row-grid mt-4">
+          <div class="left-div">
+            <div class="inner-div">
+              <label style="font-family: Arial, sans-serif;">Division <span class="mandatory-indicator">*</span></label>
+    
+              <select
+                class="form-select"
+                style="width: 100%"
+                id="divisionSelect"
+                [(ngModel)]="divisionValue"
+                (change)="updateDivisionalBudgetHead()"
+                required
+              >
+                <option
+                  *ngFor="let division of divisionOptions"
+                  [value]="division.divisionCode"
+                >
+                  {{ division.divisionCode }} - {{ division.divisionName }}
+                </option>
+              </select>
+            </div>
+            <div class="inner-div">
+              <label>Acc. Head No<span class="mandatory-indicator">*</span></label>
+              <select
+                class="form-select"
+                style="width: 100%"
+                id="accHeadSelect"
+                [(ngModel)]="accHeadValue"
+                (change)="updateSelectedData($event)"
+                required
+              >
+                <option disabled selected>--select--</option>
+                <ng-container *ngFor="let option of accountHeadoptions">
+                  <option [value]="option">{{ option }}</option>
+                </ng-container>
+              </select>
+            </div>
+            <div class="inner-div" style="font-weight: 400">
+              <label
+                >Budget Work Type<span class="mandatory-indicator">*</span></label
+              >
+              <select
+                class="form-select"
+                style="width: 100%"
+                id="budgetworktypeselected"
+                [(ngModel)]="budgetWorkType"
+                (ngModelChange)="onBudgetWorkTypeChange($event)"
+                required
+              >
+                <option disabled selected>--select--</option>
+                <option value="CAPITAL">CAPITAL</option>
+                <option value="REVENUE">REVENUE</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <div class="inner-div">
+              <label
+                >Budget Financial Year<span class="mandatory-indicator"
+                  >*</span
+                ></label
+              >
+              <select
+                class="form-select"
+                style="width: 100%"
+                id="budgetYearSelect"
+                [(ngModel)]="financialYear"
+                (change)="updateDivisionalBudgetHead()"
+                required
+              >
+                <option disabled selected>--select--</option>
+                <option>2023-24</option>
+                <option>2024-25</option>
+              </select>
+            </div>
+            <div class="inner-div">
+              <label>Acc. Head Description</label>
+              <p #accountHeadDescription>
+                {{ selectedData?.accountHeadDescription }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="grid two-row-grid mt-4">
+          <div class="left-div">
+            <div class="inner-div">
+              <label>Divisional Budget Head</label>
+              <p *ngIf="!divisionalBudgetHeadMatched">
+                {{ divisionValue }} - {{ financialYear }} - {{ accHeadValue }}
+              </p>
+            </div>
+          </div>
+          <div class="grid two-row-grid">
+            <div>
+              <button
+                type="button"
+                class="btn btn-primary btn-md"
+                (click)="addData()"
+                [disabled]="disableAddNewButton"
+              >
+                Add New
+              </button>
+            </div>
+          </div>
+        </div>
+    
+        <div style="overflow: auto; width: 100%">
+          <table class="table table-bordered text-center mt-4">
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th scope="col">Divisional Budget Head</th>
+                <th scope="col">Acc. Head No &amp;Description</th>
+                <th scope="col">Budget Financial Year</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody *ngIf="addedData.length > 0">
+              <tr *ngFor="let data of addedData; let i = index">
+                <td>{{ data.divisionalBudgetHead }}</td>
+                <td>{{ data.accHeadValue }} - {{ data.accountHeadDescription }}</td>
+                <td>{{ data.financialYear }}</td>
+    
+                <td>
+                  <button
+                    style="border: none; background-color: transparent"
+                    (click)="deleteData(i)"
+                  >
+                    <img src="assets/delete-icon.png" alt="" />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="btn-box mt-4">
+            <button
+              type="button"
+              class="btn btn-primary btn-md"
+              (click)="openConfirmationDialog()"
+              [disabled]="addedData.length === 0"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+    </div>

@@ -1,0 +1,203 @@
+<div class="page-1">
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/store-management/dashboard">Store</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Stock Log Report</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section>
+  <form class="form" [formGroup]="stockReportForm">
+    <div class="mt-2 heading">
+      <div class="page__content shadow p-3 position-relative dis-flex-colu">
+        <h2 class="title-2">Stock Log Report </h2>
+
+       <div style="width: 100%; margin-top: 1rem">
+        <div class="p-3 mb-2 ">
+          <div class="row g-4 align-items-center">
+            <div class="col-sm-2">
+              <label for="Storecode" >Store Code<span class="star"> *</span> </label>
+            </div>
+            <div class="col-sm-4">
+              <mat-form-field
+                style="width: 100% !important; font-size: 1rem !important"
+              >
+                <input
+                  matInput
+                  placeholder="Search Store"
+                  [matAutocomplete]="storeAuto"
+                  formControlName="storeCode"
+                  required
+                />
+                <mat-autocomplete
+                  #storeAuto="matAutocomplete"
+                  (optionSelected)="onStoreSelected($event.option.value)"
+                >
+                  <mat-option
+                    *ngFor="let store of filteredStore | async"
+                    [value]="store"
+                  >
+                    {{ store }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error>Please select this field</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-2">
+              <label for="Material Code">Material Code <span class="star"> *</span></label>
+            </div>
+            <div class="col-sm-4">
+              <mat-form-field
+                style="width: 100% !important; font-size: 1rem !important"
+              >
+              <span matPrefix class="search-icon2"><mat-icon>search</mat-icon></span>
+                <input
+                  matInput
+                  placeholder="Search Material"
+                  [matAutocomplete]="matAuto"
+                  formControlName="materialCode"
+                />
+                <mat-autocomplete
+                  #matAuto="matAutocomplete"
+                  (optionSelected)="onMaterialSelected($event.option.value)"
+                >
+                  <mat-option
+                    *ngFor="let material of filteredMaterial | async"
+                    [value]="material"
+                  >
+                    {{ material }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error>Please select this field</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mt-2 g-4 align-items-center">
+            <div class="col-sm-2">
+              <label for="fromDate" >From Date<span class="star"> *</span></label>
+            </div>
+            <div class="col-sm-4">
+              <input
+                type="date"
+                class="form-control"
+                id="from-date"
+                formControlName="fromDate"
+                required
+                [max]="getFormattedCurrentDate()"
+              />
+              <mat-error *ngIf="stockReportForm.get('fromDate').hasError('required') && stockReportForm.get('fromDate').touched">
+                Please select this field
+            </mat-error>
+            </div>
+
+            <div class="col-sm-2">
+              <label for="To Date" >To Date <span class="star"> *</span></label>
+            </div>
+            <div class="col-sm-4">
+              <input
+                type="date"
+                class="form-control"
+                id="to-date"
+                formControlName="toDate"
+                required
+                [max]="getFormattedCurrentDate()"
+                appDateRangeValidator [fromDateControlName]="'fromDate'"
+              />
+            <mat-error *ngIf="stockReportForm.get('toDate').hasError('required') && stockReportForm.get('toDate').touched">Please select this field.</mat-error>
+            <mat-error *ngIf="stockReportForm.get('toDate').hasError('dateRangeError')">To Date cannot be before From Date.</mat-error>
+            </div>
+
+          </div>
+
+          <div class="row mt-2 g-4 align-items-center">
+            <div class="col-sm-2">
+              <label for="Transaction Type"  >Transaction Type <span class="star"> *</span> </label>
+            </div>
+            <div class="col-sm-4">
+              <select
+                id="transaction-type"
+                class="form-select min-margin"
+                formControlName="transactionType"
+                required
+              >
+                <option value="">select</option>
+                <option value="all">All</option>
+                <option value="uploaded">Uploaded</option>
+                <option value="drawn">Drawn</option>
+                <option value="return">Return</option>
+                <option value="transfer">Transfer</option>
+              </select>
+              <mat-error *ngIf="stockReportForm.get('transactionType').hasError('required') && stockReportForm.get('transactionType').touched">
+                Please select this field
+            </mat-error>
+            </div>
+          </div>
+
+          <div class="offset-sm-5">
+            <div class="row mt-2 mb-2 align-items-center col-sm-4">
+              <fieldset class="scheduler-border">
+                <legend class="scheduler-border">
+                  Output Format
+                  <span class="star"> *</span>
+                </legend>
+                <div class="mt-2">
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="outputFormat"
+                      id="inlineRadio1"
+                      formControlName="outputFormat"
+                      value="pdf"
+                    />
+                    <label class="form-check-label" for="inlineRadio1"
+                      >PDF</label
+                    >
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="outputFormat"
+                      id="inlineRadio2"
+                      formControlName="outputFormat"
+                      value="xls"
+                    />
+                    <label class="form-check-label" for="inlineRadio2"
+                      >XLS</label
+                    >
+                  </div>
+                  <mat-error *ngIf="stockReportForm.get('outputFormat').hasError('required') && stockReportForm.get('outputFormat').touched">
+                    Please select this field
+                </mat-error>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+          <div class="row">
+            <div class="offset-sm-5 mt-2 mb-2">
+              <button
+                type="submit"
+                class="btn btn-primary btn-md"
+                style="background-color: #4472c4;"
+                (click)="generateStockReport()"
+              >
+                Generate
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </form>
+</section>
+</div>

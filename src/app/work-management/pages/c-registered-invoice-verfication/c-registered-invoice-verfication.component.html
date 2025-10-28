@@ -1,0 +1,68 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/dashboard">Works</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Invoice Pricing</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <!-- <div class="container-fluid page">
+  <div class="page__content shadow p-3 position-relative dis-flex-colu">
+    <h2 class="title-2">Invoice Verification</h2>
+
+    <div style="display: flex; flex-wrap: wrap; overflow: auto">
+      <table
+        class="table table-bordered text-center"
+        style="margin-top: 2rem; width: 100%; flex-wrap: wrap"
+      >
+        <thead>
+          <tr>
+            <th scope="col">Sr. No.</th>
+            <th scope="col">Invoice No.</th>
+            <th scope="col">Invoice Date</th>
+          </tr>
+        </thead>
+        <tbody style="cursor: pointer">
+          <tr *ngFor="let data of invoiceData; index as i">
+            <td>
+              {{ i + 1 }}
+            </td>
+            <td>
+              <a
+                *ngIf="data.invoiceNo !== 'null'"
+                (click)="navigateToInvoiceDetails(data)"
+                class="work-order-link"
+              >
+                {{ data.invoiceNo }}
+              </a>
+              <a style="text-decoration: none" *ngIf="data.invoiceNo == 'null'"
+                >-</a
+              >
+            </td>
+            <td>
+              <a>{{ data.transactionDate | date : "dd/MM/yyyy" }}</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> -->
+  <app-filter-table
+    [headingName]="labelName"
+    [isOffice]="true"
+    [cols]="cols"
+    [rows]="invoiceData"
+    [data]="invoiceData"
+    [filterFields]="filterFields"
+    [loading]="false"
+  >
+  </app-filter-table>
+</div>

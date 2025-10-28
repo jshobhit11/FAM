@@ -1,0 +1,100 @@
+<section>
+  <form  [formGroup]="materialAdditionalForm">
+  <h1 mat-dialog-title>Update Material Additional Charges Mapping</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Execution Method Name</mat-label>
+        <mat-select (selectionChange)="selectedExecutionMethod($event.value)" [(value)]="selectedExeMethodId"
+        formControlName="woExecutionMethodId" required>
+          <mat-option *ngFor="let main of materialIDName" [value]="main.executionMethodIds">
+            {{main.executionMethodName}}</mat-option>
+        </mat-select>
+        <mat-error>Please select in this field.</mat-error> 
+      </mat-form-field>
+       
+      <mat-form-field class="example-full-width">
+        <mat-label>Charge Type</mat-label>
+        <mat-select [(value)]="getData.chargeType" formControlName="chargeType" required>
+          <mat-option *ngFor="let main of chargeTypes" [value]="main">
+            {{main}}</mat-option>
+        </mat-select>
+        <mat-error>Please select in this field.</mat-error> 
+      </mat-form-field>
+    </div>
+
+   <div class="modal-input-control">
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Additional Charge Name</mat-label>
+        <mat-select formControlName="additionalChargesMasterId" required>
+          <mat-option *ngFor="let charge of additionalData" [value]="charge.additionalChargesMasterId">
+            {{ charge.additionalChargesName }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Please select in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Charge Type Value</mat-label>
+        <input class="no-spinner" matInput placeholder="Ex. Each"
+          type="number" pattern="[0-9]*" formControlName="chargeTypeValue" appAlphaNumeric [maxLength]="10" required>
+          <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Sequence</mat-label>
+        <input class="no-spinner" matInput placeholder="Ex. Each" 
+          type="number" pattern="[0-9]*" formControlName="chargesSequenceOrder" appAlphaNumeric [maxLength]="" required/>
+          <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Value Calculated by Material</mat-label>
+        <mat-select formControlName="valueCalculatedByMaterial" required>
+          <mat-option *ngFor="let main of uniquevalueCalculatedByMaterial" [value]="main" [maxLength]="">
+            {{ main == "1" ? 'Yes': 'No' }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Please select in this field.</mat-error>  
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Value Calculated by labour</mat-label>
+        <mat-select formControlName="valueCalculatedByLabour" required>
+          <mat-option *ngFor="let main of uniquevalueCalculatedByLabour" [value]="main" [maxLength]="">
+            {{ main == "1" ? 'Yes': 'No' }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Please select in this field.</mat-error> 
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Display by Default</mat-label>
+        <mat-select formControlName="displayByDefault" required>
+          <mat-option *ngFor="let main of uniquedisplayByDefault" [value]="main">
+            {{ main == "1" ? 'Yes': 'No' }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Please select in this field.</mat-error> 
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Value Calculated by Total Labour</mat-label>
+        <mat-select
+          name="valueCalculatedByTotalLabour" formControlName="valueCalculatedByTotalLabour" required>
+          <mat-option *ngFor="let main of uniquevalueCalculatedByTotalLabour" [value]="main">
+            {{ main == "1" ? 'Yes': 'No' }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Please select in this field.</mat-error> 
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onUpdate()">Update</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+  </form>
+</section>

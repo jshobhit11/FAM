@@ -1,0 +1,83 @@
+<div class="container-fluid page-3">
+  <ul>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/configuration">Configuration</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a style="color: lightslategray">RC Rate Master</a>
+      </li>
+    </ol>
+  </nav>
+</ul>
+  <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+    <h2 class="title-2"> SR/RC Rate Master</h2>
+  <div class="top-row mt-4">
+    <div class="input-control">
+      <mat-form-field appearance="fill">
+        <mat-label>Rate Type</mat-label>
+        <mat-select [(ngModel)]="selectedRateType" (ngModelChange)="filterDataByRateType(selectedRateType)">
+          <mat-option value="SR">SR Rate</mat-option>
+          <mat-option value="RC">RC Rate</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="example-full-width" *ngIf="selectedRateType !== 'SR'">
+        <mat-label>Rc Vendor Name</mat-label>
+        <input matInput type="text" [(ngModel)]="filterValue" (keyup)="applyFilter()" />
+      </mat-form-field>
+    </div>
+    <div class="button-control">
+      <button mat-button class="c-btn" (click)="onAddRcRate()">Add RC Rate</button>
+    </div>
+  </div>
+  <table mat-table [dataSource]="dataSource" class="mt-4">
+    <!-- SL NO Column -->
+    <ng-container matColumnDef="slno">
+      <th mat-header-cell *matHeaderCellDef>SL NO</th>
+      <td mat-cell *matCellDef="let element; index as i">{{ i + 1 }}</td>
+    </ng-container>
+
+    <!--Rate Type Column-->
+    <ng-container matColumnDef="rateType">
+      <th mat-header-cell *matHeaderCellDef>Rate Type</th>
+      <td mat-cell *matCellDef="let element">{{ element.rateType }}</td>
+    </ng-container>
+
+    <!--Code Column-->
+    <ng-container matColumnDef="rcCode">
+      <th mat-header-cell *matHeaderCellDef>RC Code</th>
+      <td mat-cell *matCellDef="let element">{{ element.rcCode }}</td>
+    </ng-container>
+
+    <!--Vendor Name-->
+    <ng-container matColumnDef="rcVendorName">
+      <th mat-header-cell *matHeaderCellDef>Vendor Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.rcVendorName }}</td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element">
+        <button style="border: none; background-color: transparent" (click)="openUpdateRcRateMaster()">
+          <mat-icon color="error">edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <!--Excel Download-->
+    <ng-container matColumnDef="export">
+       <th mat-header-cell *matHeaderCellDef>Download</th>
+       <td mat-cell *matCellDef="let element">
+       <button (click)="exportToExcel(element.rateContractMasterId)"
+           type="button" class="bi bi-filetype-xls button-success ms-2 p-btns text-success custom-excel-icon "
+            pTooltip="XLS" tooltipPosition="bottom">
+       </button>
+    </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+  </mat-paginator>

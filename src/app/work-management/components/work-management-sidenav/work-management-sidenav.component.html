@@ -1,0 +1,487 @@
+<!-- <mat-nav-list class="top">
+  <div class="logo py-3">
+    <a routerLink="/main/dashboard"><img src="assets/escoms.png" style="height: auto;" alt="" /></a>
+  </div>
+</mat-nav-list> -->
+<mat-divider></mat-divider>
+<mat-nav-list>
+  <a
+    mat-list-item
+    routerLinkActive="list-item-active"
+    routerLink="/work-management/dashboard"
+    style="margin-top: 3rem"
+  >
+  <img src="assets/icons/agenda.svg" class="icon_configuration" alt="Works" /> Work
+    Management
+  </a>
+  
+  <!-- <div class="aside_menu_title mt-2">
+    <img src="assets/icons/vector.svg" class="icon_configuration" alt="Asset BOM Mapping" /> 
+   
+  <a
+  routerLinkActive="active"
+  routerLink="/work-management/asset-bom-report"
+>
+  Asset BOM Mapping
+</a> 
+</div> -->
+<div class="aside_menu_title">
+  <img src="assets/icons/receipt.svg" class="icon_configuration" alt="Work Completion/Joint Inventory Report" /> 
+  <a
+        routerLinkActive="active"
+        routerLink="/work-management/work-completion-report"
+        (click)="toggleSideBar()"
+      >
+        Work Completion/Joint Inventory Report
+      </a>
+</div>
+
+
+<!-- <div class="aside_menu_title">
+  <img src="assets/icons/layout-cta-center.svg" class="icon_configuration" alt="Bill Submission" /> 
+  <a
+  routerLinkActive="active"
+  routerLink="/work-management/bill-submission-list"
+>
+  Bill Submission
+</a>
+</div> -->
+
+<!-- <div class="aside_menu_title">
+  <img src="assets/icons/layout-cta-center.svg" class="icon_configuration" alt="Bill Submission" /> 
+  <a
+  routerLinkActive="active"
+  routerLink="/work-management/pc-list"
+>
+  PC Test
+</a>
+</div> -->
+ <!-- <div class="aside_menu_title">
+  <img src="assets/icons/transformer.png" class="icon_configuration" alt="Transformer Upload" /> 
+  <a
+  routerLinkActive="active"
+  routerLink="/work-management/transformer-upload"
+>
+  Transformer/DT Meter Upload
+</a>
+</div> -->
+<!-- 
+<div class="aside_menu_title">
+  <img src="assets/icons/arrow-circle-up.svg" class="icon_configuration" alt="Meter Upload" /> 
+  <a
+  routerLinkActive="active"
+  routerLink="/work-management/meter-upload"
+>
+  Meter Upload
+</a>
+</div>  -->
+
+<div class="aside_menu_title">
+  <img src="assets/icons/bookmark-alt.svg" class="icon_configuration" alt="Cost Register Details" /> 
+  <a
+  routerLinkActive="active"
+  routerLink="/work-management/c-registered-details"
+  (click)="toggleSideBar()"
+>
+  Cost Register Details
+</a>
+</div>
+
+  <ul class="mt-0">
+    <!-- <li>
+      <a
+        routerLinkActive="active"
+        routerLink="/work-management/asset-bom-report"
+      >
+        Asset BOM Mapping
+      </a>
+    </li> -->
+    <!-- <li>
+      <a
+        routerLinkActive="active"
+        routerLink="/work-management/work-completion-report"
+      >
+        Work Completion/Joint Inventory Report
+      </a>
+    </li> -->
+    <!-- <li>
+      <a
+        routerLinkActive="active"
+        routerLink="/work-management/bill-submission-list"
+      >
+        Bill Submission
+      </a>
+    </li> -->
+    <!-- <li>
+      <a
+        routerLinkActive="active"
+        routerLink="/work-management/meter-upload"
+      >
+        Meter Upload
+      </a>
+    </li> -->
+    <!-- <li>
+      <a
+        routerLinkActive="active"
+        routerLink="/work-management/c-registered-details"
+      >
+        Cost Register Details
+      </a>
+    </li> -->
+    <div>
+      <span
+        class="section-container"
+        (click)="toggleMaterialIndentSection()"
+        class="section-title"
+      >
+      <img src="assets/icons/bar-chart-alt.svg" class="icon_configuration" alt="Materials Indent" /> <span class="sub-menu-text">Materials Indent</span>
+        <!-- <span style="font-size: 1.6rem" class="toggle-icon">{{
+          showMaterialIndentSection ? "-" : "+"
+        }}</span> -->
+        <span class="angle-down-and-right">
+          <img  *ngIf="showMaterialIndentSection" src="assets/icons/angle-down.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+          <img  *ngIf="!showMaterialIndentSection" src="assets/icons/angle-right.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+        </span>
+      </span>
+      <ul [@openClose]="showMaterialIndentSection ? 'open' : 'closed'" class="sub-nav-list side-nav-child-list ">
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/material-indent-request-form"
+            (click)="toggleSideBar()"
+          >
+            Material Indent Request
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/material-indent-approval"
+            (click)="toggleSideBar()"
+          >
+            Material Indent Approval
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/materials-return-request"
+            (click)="toggleSideBar()"
+          >
+            Material Return Request
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/materials-return-approval"
+            (click)="toggleSideBar()"
+          >
+            Material Return Approval
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/materials-transfer-request"
+            (click)="toggleSideBar()"
+          >
+            Suspense Material Request
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/materials-transfer-approval"
+            (click)="toggleSideBar()"
+          >
+            Suspense Material Approval
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- <div>
+      <span
+        class="section-container"
+        (click)="toggleCRegisteredSection()"
+        class="section-title"
+        style="font-weight: 600"
+      >
+      <img src="assets/icons/wallet.svg" class="icon_configuration" alt="Materials Indent" /> <span class="sub-menu-text">Pricing</span>
+        <span style="font-size: 1.6rem" class="toggle-icon">{{
+          showCRegistered ? "-" : "+"
+        }}</span> 
+        <span class="angle-down-and-right">
+          <img  *ngIf="showCRegistered" src="assets/icons/angle-down.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+          <img  *ngIf="!showCRegistered" src="assets/icons/angle-right.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+        </span>
+      </span>
+      <ul [@openClose]="showCRegistered ? 'open' : 'closed'" class="sub-nav-list side-nav-child-list">
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/invoice-verification"
+          >
+            Invoice Pricing
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/acknowledgment-verification"
+          >
+            Acknowledgement pricing
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/c-register-bill-submission"
+          >
+            Bill Submission pricing
+          </a>
+        </li>
+      </ul>
+    </div> -->
+
+    <!-- <div>
+      <span
+        class="section-container"
+        (click)="toggleBudgetSection()"
+        class="section-title"
+        style="font-weight: 600"
+      >
+      <img src="assets/icons/bag.svg" class="icon_configuration" alt="Budget" /> <span class="sub-menu-text">Budget</span> 
+        <span style="font-size: 1.6rem" class="toggle-icon">{{
+          showBudgetSection ? "-" : "+"
+        }}</span> 
+        <span class="angle-down-and-right">
+          <img  *ngIf="showBudgetSection" src="assets/icons/angle-down.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+          <img  *ngIf="!showBudgetSection" src="assets/icons/angle-right.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+        </span>
+      </span>
+      <ul [@openClose]="showBudgetSection ? 'open' : 'closed'" class="sub-nav-list side-nav-child-list">
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/budget-head"
+          >
+            Divisional Budget Head
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/budget-form"
+          >
+            Budget Entry
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/budget-approval"
+          >
+            Budget Approval
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+      </ul>
+    </div> -->
+    <!-- <div>
+      <span
+        class="section-container"
+        (click)="tooggleUserSection()"
+        class="section-title"
+        style="font-weight: 600"
+      >
+      <img src="assets/icons/agenda.svg" class="icon_configuration" alt="User Configuration" /> <span class="sub-menu-text">User Configuration</span> 
+        <span class="angle-down-and-right">
+          <img  *ngIf="showUserSection" src="assets/icons/angle-down.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+          <img  *ngIf="!showUserSection" src="assets/icons/angle-right.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+        </span>
+      </span>
+      <ul [@openClose]="showUserSection ? 'open' : 'closed'" class="sub-nav-list side-nav-child-list">
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/work-order-series-master"
+          >
+           Workorder Series Master
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+      </ul>
+    </div> -->
+    <div>
+      <span
+        class="section-container"
+        (click)="toggleReportSection()"
+        class="section-title"
+        style="font-weight: 600"
+      >
+      <img src="assets/icons/receipt.svg" class="icon_configuration" alt="Report" /> <span class="sub-menu-text">Report</span>
+        <!-- <span style="font-size: 1.6rem" class="toggle-icon">{{
+          showReportSection ? "-" : "+"
+        }}</span> -->
+        <span class="angle-down-and-right">
+          <img  *ngIf="showReportSection" src="assets/icons/angle-down.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+          <img  *ngIf="!showReportSection" src="assets/icons/angle-right.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+        </span>
+      </span>
+      <ul [@openClose]="showReportSection ? 'open' : 'closed'" class="sub-nav-list side-nav-child-list">
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/generated-asset-uid-report"
+            (click)="toggleSideBar()"
+          >
+            Generated Assest UID's
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/cost-registered-report"
+            (click)="toggleSideBar()"
+          >
+            Cost Registered Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/budget-abstract-report"
+            (click)="toggleSideBar()"
+          >
+            Budget Abstract Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/budget-transaction-report"
+            (click)="toggleSideBar()"
+          >
+            Budget Transaction Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/pending-registartion-report"
+            (click)="toggleSideBar()"
+          >
+            Pending Registration Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/work-order-report"
+            (click)="toggleSideBar()"
+          >
+            Work Order Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/Corporate-Budget-Report"
+            (click)="toggleSideBar()"
+          >
+          Corporate Budget Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/Disconnection-Report"
+            (click)="toggleSideBar()"
+          >
+          Disconnection Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/bmr-success-report"
+            (click)="toggleSideBar()"
+          >
+            BMR Success Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/bmr-error-report"
+            (click)="toggleSideBar()"
+          >
+            BMR Error Report
+          </a>
+        </li>
+        <!-- <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/pc-test-report"
+          >
+            PC Test Report
+          </a>
+        </li> -->
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/pending-suspence-meter-report"
+            (click)="toggleSideBar()"
+          >
+            Pending Suspence Meter Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a
+            routerLinkActive="active"
+            routerLink="/work-management/pending-completion-report"
+            (click)="toggleSideBar()"
+          >
+            Pending Completion Report
+          </a>
+        </li>
+      </ul>
+    </div>
+  </ul>
+</mat-nav-list>
+
+
+
+
+
+
+
+
+
+
+
+
+

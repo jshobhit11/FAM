@@ -1,0 +1,160 @@
+<form class="form">
+  <div class="col-lg-6 mt-0" style="width: 100% !important; padding: 1rem">
+    <div class="heading">
+      <h2>Add Material</h2>
+    </div>
+    <div class="heading" style="font-weight: 600;">
+      <h3><b>Previous Material Details:</b></h3>
+    </div>
+    <div style="overflow: auto;width: 100%;border: 2px solid #c2c2c2;">
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <!-- <th class="main-heading" rowspan="2" scope="col">S. No.</th> -->
+              <th class="main-heading" rowspan="2" scope="col">Material Name</th>
+              <th class="main-heading" rowspan="2" scope="col">Material Code</th>
+              <th class="main-heading" rowspan="2" scope="col">Unit</th>
+              <th class="main-heading" rowspan="2" scope="col">Rate</th>
+              <th class="main-heading" rowspan="2" scope="col">Estimated Qty</th>
+              <th class="main-heading" rowspan="2" scope="col">Drawn Qty</th>
+              <th class="main-heading" rowspan="2" scope="col">Requested Qty</th>
+            </tr>
+          </thead>      
+          <tbody>
+            <tr>
+                <!-- <td>{{ i + 1 }}</td> -->
+                <td>{{ dataItems.materialName }}</td>
+                <td>{{ dataItems.materialCode }}</td>
+                <td>{{ dataItems.materialUnit }}</td>
+                <td>{{ dataItems.issuedRate }}</td>
+                <td>{{ dataItems.estimatedQuantity }}</td>
+                <td>{{ dataItems.receivedQuantity }}</td>
+                <td>{{ dataItems.requestQuantity }}</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="heading" style="font-weight: 600;">
+        <h3><b>Alternate New Material:</b></h3>
+      </div>
+      <div class="form">
+        <mat-form-field style="width: 100% !important; font-size: 1.5rem !important">
+          <span matPrefix class="search-icon"><mat-icon>search</mat-icon></span>
+          <input matInput 
+                 placeholder="Search Material" 
+                 [(ngModel)]="searchText"
+                 (input)="updateFilteredData()"
+                 [ngModelOptions]="{standalone: true}" 
+                 [(ngModel)]="selectedMaterial.mlName"  
+                 [matAutocomplete]="auto"
+                 tabindex="-1"/>
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayMaterialName">
+            <mat-option *ngFor="let material of filteredAlternateMaterialData" [value]="material">
+              {{ material.mlCode }} - {{ material.mlName }}
+            </mat-option>
+          </mat-autocomplete>              
+        </mat-form-field>
+      </div>
+      </div>
+      <div class="col mt-1 disp-flex" style="margin-left: 56rem">
+        <button             
+        type="button"
+        style="background-color: #4472c4 ;"
+        class="btn btn-primary btn-md" (click)="addMaterial()" [disabled]="recordAdded">
+          Add
+        </button>
+      </div>
+      
+
+    <div class="headings1">
+      <h3><b>Alternate New Material:</b></h3>
+     </div>
+     <div class="table-head">
+      <table class="table table-bordered text-center">
+        <thead style="background-color: #f2f2f2; color: #3e3e3e">
+          <tr>
+            <th class="main-heading" rowspan="2" scope="col">Material Name</th>
+            <th class="main-heading" rowspan="2" scope="col">Material Code</th>
+            <th class="main-heading" rowspan="2" scope="col">Unit</th>
+            <th class="main-heading" rowspan="2" scope="col">Rate</th>
+            <th class="main-heading" rowspan="2" scope="col">Alternate Requested Qty</th>
+            <th class="main-heading bg-issue-qty" colspan="3" scope="colgroup">Issue Quantity</th>
+            <th class="main-heading" rowspan="2" scope="col">Amount</th>
+            <th class="main-heading bg-store-current-qty" colspan="2" scope="colgroup">Store Current Qty</th>
+            <th class="main-heading bg-store-balance-qty" colspan="2" scope="colgroup">Store Balance Qty</th>
+            <th class="main-heading" rowspan="2" scope="col">Part #</th>
+            <th class="main-heading" rowspan="2" scope="col">Delete</th>
+          </tr>
+          <tr style="background-color: #f2f2f2;">
+            <th class="sub-heading bg-issue-qty" scope="col">New&nbsp;</th>
+            <th class="sub-headings bg-issue-qty" scope="col">Used</th>
+            <th class="sub-headings bg-issue-qty" scope="col">Total</th>
+            <th class="sub-heads bg-store-current-qty" scope="col">New</th>
+            <th class="sub-heads bg-store-current-qty" scope="col">Used</th>
+            <th class="sub-heading bg-store-balance-qty" scope="col">New</th>
+            <th class="sub-heading bg-store-balance-qty" scope="col">Used</th>            
+          </tr>
+        </thead>      
+        <tbody>
+          <tr *ngFor="let record of selectedMaterialRecords;let i = index">
+            <!-- <td>{{ i + 1 }}</td> -->
+            <td class="horizontal-scroll">{{ record.mlName }}</td>
+            <td>{{ record.mlCode }}</td>
+            <td>{{ record.mlUnit }}</td>
+            <td>{{ record.mlRate }}</td>
+            <td>{{record.alternateRequestedQty}}</td>
+            <td>
+              <input
+                class="form-control wider-input no-spinner"
+                type="number"
+                name="issuedNewQty"
+                inputmode="numeric"
+                onkeydown="return event.keyCode !== 189"
+                min="0"
+                [(ngModel)]="record.issuedNewQty"
+                (ngModelChange)="calculateTotalIssuedQty(); calculateTotalAmount();updateStoreBalance(record);"
+              />
+            </td>
+            <td>
+              <input
+                class="form-control wider-input no-spinner"
+                type="number"
+                name="issuedUsedQty"
+                inputmode="numeric"
+                onkeydown="return event.keyCode !== 189"
+                min="0"
+                [(ngModel)]="record.issuedUsedQty"
+                (ngModelChange)="calculateTotalIssuedQty(); calculateTotalAmount();updateStoreBalance(record);"
+              />
+            </td>
+            <td>{{ totalIssuedQty }}</td>
+            <td>{{totalAmount}}</td>
+            <td>{{ record.storeNewQunatity }}</td>
+            <td>{{ record.storeUsedQunatity }}</td>
+            <td>{{ record.storeNewBalanceQunatity }}</td>
+            <td>{{ record.storeUsedBalanceQunatity}}</td>
+            <td>{{ record.part}}</td>
+            <td>
+              <button class="d-btn"  (click)="deleteDataItem(i)"><img src="assets/delete-icon.png" alt="" /></button>
+            </td> 
+          </tr>
+        </tbody>
+      </table>
+    </div>  
+    <div>
+    <div class="btn-box m-4">
+      <button
+        type="button"
+        class="btn btn-primary btn-md"
+        (click)="saveAlternateMaterials()"
+        [disabled]="!selectedMaterialRecords.length || totalIssuedQty <= 0"
+      >
+        Add
+      </button>
+      <button type="button" class="btn btn-primary btn-md" (click)="closeDialog()" >
+        Close
+      </button>
+      
+    </div>
+</div>
+</form>

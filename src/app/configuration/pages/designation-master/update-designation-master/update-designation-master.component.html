@@ -1,0 +1,54 @@
+<section>
+  <form class="form" [formGroup]="designationTypeForm">
+    <h1 mat-dialog-title>Update Designation Master</h1>
+    <div class="content-fields mt-4" mat-dialog-content>
+      <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Designation Name</mat-label>
+        <input matInput placeholder="Ex. Each"
+        formControlName="designationName" appAlphaNumeric [maxLength]="50" required/>
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+ 
+      <mat-form-field class="example-full-width">
+        <mat-label>Designation Code</mat-label>
+        <input matInput placeholder="Ex. Each"
+        formControlName="designationCode" appAlphaNumeric [maxLength]="20" required/>
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+    </div>
+    <div class="two-row-fields">
+      <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Reporting Designation Name</mat-label>
+        <mat-select formControlName="reportingDesigId" required>
+          <mat-option *ngFor="let main of reportingDesigName" [value]="main.reportingId">
+            {{main.desgName}}</mat-option>
+        </mat-select>
+        <mat-error>Please select in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+            <mat-label>Office Type Name</mat-label>
+            <mat-select (selectionChange)="selectedOfficeTypeMaster($event.value)"
+            formControlName="officeType" required>
+            <mat-option value="DIV STORE">DIVISION STORE</mat-option>
+            <mat-option value="CIRCLE">CIRCLE</mat-option>
+            <mat-option value="SUBDIV">SUB DIVISION</mat-option>
+            <mat-option value="ZONE">ZONE</mat-option>
+            <mat-option value="SECTION">SECTION</mat-option>
+            <mat-option value="CORPORATE">CORPORATE</mat-option>
+            <mat-option value="HEAD OFFICE">HEAD OFFICE</mat-option>
+            <mat-option value="DIV">DIVISION</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="onUpdateDesignationMaster()">Update</button>
+      <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+  </form>
+  </section>
+ 
+ 

@@ -1,0 +1,57 @@
+<section>
+    <form [formGroup]="financialForm">
+    <h1 mat-dialog-title>Update Financial Year Master</h1>
+    <div class="content-fields mt-4" mat-dialog-content>
+       <div class="modal-input-control">
+        <mat-form-field class="example-full-width">
+            <mat-label>Select Financial Year</mat-label>
+            <mat-select formControlName="selectedFinancialYear" required (selectionChange)="onFinancialYearSelected($event.value)">
+              <mat-option *ngFor="let year of yearOptions" [value]="year">{{ year }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="financialForm.controls.selectedFinancialYear.hasError('required')">Please select a financial year.</mat-error>
+          </mat-form-field>
+          </div>
+        <div class="modal-input-control">
+            <mat-form-field appearance="fill" class="date-picker-field">
+                <!-- <mat-datepicker-toggle matSuffix [for]="financialYearStartDate"></mat-datepicker-toggle> -->
+                <mat-label>Financial Year Start Date</mat-label>
+                <input matInput ="financialYearStartDate" [(ngModel)]="getData.financialYearStartDate"
+                formControlName="financialYearStartDate" required readonly>
+                <mat-hint>MM-DD-YYYY</mat-hint>
+                <mat-datepicker #financialYearStartDate></mat-datepicker>
+                <mat-error>Please select in this field.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="date-picker-field">
+                <!-- <mat-datepicker-toggle matSuffix [for]="financialYearEndDate"></mat-datepicker-toggle> -->
+                <mat-label>Financial Year End Date</mat-label>
+                <input matInput ="financialYearEndDate" [(ngModel)]="getData.financialYearEndDate"
+                formControlName="financialYearEndDate" required readonly>
+                <mat-hint>MM-DD-YYYY</mat-hint>
+                <mat-datepicker #financialYearEndDate></mat-datepicker>
+                <mat-error>Please select in this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Financial Year</mat-label>
+                <input matInput formControlName="financialYear" required/>
+                <mat-error>Please enter a valid financial year in the format 'YYYY-YY'.</mat-error>
+            </mat-form-field>
+            
+            <mat-form-field class="example-full-width">
+                <mat-label>Display Flag</mat-label>
+                <mat-select [(ngModel)]="getData.displayFlag" formControlName="displayFlag">
+                    <mat-option *ngFor="let main of disFlag" [value]="main">
+                        {{ main === 1 ? 'Yes' : 'No' }}
+                    </mat-option>
+                </mat-select>
+                <mat-error>Please select in this field.</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+        <button class="c-btn" mat-button (click)="onFinancialYearUpdate()">Update</button>
+        <button class="btn clor" mat-button mat-dialog-close [disabled]="notificationRef">Close</button>
+    </div>
+</form>
+</section>

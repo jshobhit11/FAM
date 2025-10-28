@@ -1,0 +1,222 @@
+<!-- <mat-nav-list class="top">
+  <div class="logo py-3">
+    <a routerLink="/main/dashboard"><img src="assets/escoms.png" style="height: auto;" alt="" /></a>
+  </div>
+</mat-nav-list> -->
+<mat-divider></mat-divider>
+<mat-nav-list>
+  <a
+    mat-list-item
+    routerLinkActive="list-item-active"
+    routerLink="/store-management/dashboard"
+    style="margin-top: 3rem"
+  >
+  <img src="assets/icons/envelope.svg" class="icon_configuration" alt="Store" /> Store Management
+  </a>
+
+
+
+  <div class="aside_menu_title mt-2">
+    <img src="assets/icons/check-box.svg" class="icon_configuration" alt="Store Officer Approval" /> 
+    <a
+    routerLinkActive="active"
+    routerLink="/store-management/store-manager-approval"
+  >
+    Store Officer Approval
+  </a>
+  </div>
+
+  <div class="aside_menu_title">
+    <img src="assets/icons/arrow-circle-up.svg" class="icon_configuration" alt="Upload Inventory" /> 
+    <a
+    routerLinkActive="active"
+    routerLink="/store-management/upload-invoice"
+  >
+    Upload Inventory
+  </a>
+  </div>
+
+  <div class="aside_menu_title">
+    <img src="assets/icons/notepad.svg" class="icon_configuration" alt="Material Invoice" /> 
+    <a
+        routerLinkActive="active"
+        routerLink="/store-management/dispatch-material-invoice"
+      >
+        Material Invoice
+      </a>
+  </div>
+
+  <div class="aside_menu_title">
+    <img src="assets/icons/clipboard.svg" class="icon_configuration" alt=" Material Acknowledgement" /> 
+    <a routerLinkActive="active" routerLink="/store-management/material-ackowledgement">
+      Material Acknowledgement
+    </a>
+  </div>
+
+  <div class="aside_menu_title">
+    <img src="assets/icons/receipt.svg" class="icon_configuration" alt="Gate Pass Acknowledgement" /> 
+    <a routerLinkActive="active" routerLink="/store-management/gate-pass-acknowledgement">
+      Gate Pass Acknowledgement
+    </a>
+  </div>
+
+  <ul class="mt-0">
+    <!-- <li>
+      <a
+        routerLinkActive="active"
+        routerLink="/store-management/store-manager-approval"
+      >
+        Store Officer Approval
+      </a>
+    </li> -->
+    <!-- <mat-divider></mat-divider>
+    <li>
+      <a
+        routerLinkActive="active"
+        routerLink="/store-management/upload-invoice"
+      >
+        Upload Inventory
+      </a>
+    </li>
+    <mat-divider></mat-divider> -->
+    <!-- <li>
+      <a
+        routerLinkActive="active"
+        routerLink="/store-management/upload-invoice-approval"
+      >
+        Upload Material Approval
+      </a>
+    </li> -->
+    <!-- <mat-divider></mat-divider> -->
+    <!-- <li>
+      <a
+        routerLinkActive="active"
+        routerLink="/store-management/dispatch-material-invoice"
+      >
+        Material Invoice
+      </a>
+    </li> -->
+    <!-- <mat-divider></mat-divider>
+    <li>
+      <a routerLinkActive="active" routerLink="/store-management/gate-pass">
+        Gate Pass
+      </a>
+    </li> -->
+    <!-- <mat-divider></mat-divider>
+    <li>
+      <a routerLinkActive="active" routerLink="/store-management/material-ackowledgement">
+        Material Acknowledgement
+      </a>
+    </li>
+    <mat-divider></mat-divider> -->
+    <!-- <li>
+      <a routerLinkActive="active" routerLink="/store-management/gate-pass-acknowledgement">
+        Gate Pass Acknowledgement
+      </a>
+    </li> -->
+
+    <!-- <mat-divider></mat-divider>
+    <li>
+      <a routerLinkActive="active" routerLink="/store-management/store-transfer-request">
+        Store Material Transfer Request
+      </a>
+    </li>
+
+    <mat-divider></mat-divider>
+    <li>
+      <a routerLinkActive="active" routerLink="/store-management/store-transfer-approval">
+        Store Material Transfer Approval
+      </a>
+    </li> -->
+
+    <div>
+      <span class="section-container" (click)="toggleStoreTransferSection()" class="section-title">
+        <img src="assets/icons/files.svg" class="icon_configuration" alt="Store Material Transfer" /> Store Material Transfer
+        <!-- <span style="font-size: 1.6rem;" class="toggle-icon">{{ showStoreTransferSection ? '-' : '+' }}</span> -->
+        <span class="angle-down-and-right">
+          <img  *ngIf="showStoreTransferSection" src="assets/icons/angle-down.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+          <img  *ngIf="!showStoreTransferSection" src="assets/icons/angle-right.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+        </span> 
+      </span>
+      <ul [@openClose]="showStoreTransferSection ? 'open' : 'closed'" class="side-nav-child-list">
+        <li>
+          <a routerLinkActive="active" routerLink="/store-management/store-transfer-request">
+           Store Material Transfer Request
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a routerLinkActive="active" routerLink="/store-management/store-transfer-approval">
+           Store Material Transfer Approval
+          </a>
+        </li>
+        <li>
+          <mat-divider></mat-divider>
+          <a routerLinkActive="active" routerLink="/store-management/store-inventory-adjustment">
+           Store Material Inventory Adjustment
+          </a>
+        </li>
+        <!-- <mat-divider></mat-divider>
+        <li>
+          <a routerLinkActive="active" routerLink="/store-management/receiver-transfer-approval">
+           Receiver Division Store Transfer approval
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a routerLinkActive="active" routerLink="/store-management/sender-transfer-approval">
+           Sender Division Store Transfer approval
+          </a>
+        </li> -->
+      </ul>
+    </div>
+
+    <div>
+      <span class="section-container" (click)="toggleReportSection()" class="section-title">
+        <img src="assets/icons/receipt.svg" class="icon_configuration" alt="Report" /> <span class="sub-menu-text">Report</span>
+        <!-- <span style="font-size: 1.6rem;" class="toggle-icon">{{ showReportSection ? '-' : '+' }}</span> -->
+        <span class="angle-down-and-right">
+          <img  *ngIf="showReportSection" src="assets/icons/angle-down.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+          <img  *ngIf="!showReportSection" src="assets/icons/angle-right.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+        </span>
+      </span>
+      <ul [@openClose]="showReportSection ? 'open' : 'closed'" class="sub-nav-list side-nav-child-list">
+        <li>
+          <a routerLinkActive="active" routerLink="/store-management/Exceptional-report">
+           Upload Inventory Exceptional Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a routerLinkActive="active" routerLink="/store-management/stock-log-report">
+           Stock Log Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a routerLinkActive="active" routerLink="/store-management/stock-inventory-abstract-report">
+           Stock Inventory Abstract Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a routerLinkActive="active" routerLink="/store-management/store-adjustment-report">
+             Store Adjustment Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a routerLinkActive="active" routerLink="/store-management/store-issue-suspense-report">
+             Store Issue Suspense Report
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <li>
+          <a routerLinkActive="active" routerLink="/store-management/store-serial-material-report">
+             Store Serial Material Report
+          </a>
+        </li>
+      </ul>
+    </div>
+  </ul>
+</mat-nav-list>

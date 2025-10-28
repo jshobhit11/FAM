@@ -1,0 +1,141 @@
+<div class="container-fluid page-3">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/configuration">Configuration</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Account Head Master</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+  <div
+    class="page__content p-3 p20 shadow dis-fl dis-fl2 position-relative dis-flex-colu"
+  >
+    <h2 class="title-2">Account Head Master</h2>
+    <div style="display: flex; flex-wrap: wrap; overflow: auto">
+      <div class="top-row first-top-row">
+        <div class="input-control">
+          <mat-form-field appearance="fill">
+            <mat-label>Account Main Head</mat-label>
+            <mat-select (selectionChange)="onAccountHead($event.value)">
+              <mat-option *ngFor="let main of accountHead" [value]="main">
+                {{ main }} - {{ getAccountMainHeadDescription(main) }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Account Sub Main Head</mat-label>
+            <mat-select (selectionChange)="onAccountSubMainCode($event.value)">
+              <mat-option
+                *ngFor="let main of accountSubMainCode"
+                [value]="main"
+              >
+                {{ main }} - {{ getAccountSubmainHeadDescription(main) }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Search Account Head Name</mat-label>
+            <input
+              (keyup)="applyFilter($event.target.value)"
+              matInput
+              placeholder="Ex. Pole single phase"
+            />
+          </mat-form-field>
+        </div>
+        <div class="button-control">
+          <button
+            mat-button
+            class="c-btn"
+            (click)="openAddAccountHeadMasterItemDialog()"
+          >
+            Add Account Head
+          </button>
+        </div>
+      </div>
+      <table mat-table [dataSource]="dataSource" class="est-config-table mt-4">
+        <!-- SLNO Column -->
+        <ng-container matColumnDef="slno">
+          <th mat-header-cell *matHeaderCellDef>SL NO</th>
+          <td mat-cell *matCellDef="let element">
+            {{ dataSource.data.indexOf(element) + 1 }}
+          </td>
+        </ng-container>
+
+        <!-- Account Head Code Column -->
+        <ng-container matColumnDef="accountHeadCode">
+          <th mat-header-cell *matHeaderCellDef>Account Head Code</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.accountHeadCode }}
+          </td>
+        </ng-container>
+
+        <!--Account Head Name  Column -->
+        <ng-container matColumnDef="accountHeadName">
+          <th mat-header-cell *matHeaderCellDef>Account Head Name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.accountHeadDescription }}
+          </td>
+        </ng-container>
+
+        <!-- Account Main Head Code Column -->
+        <ng-container matColumnDef="accountMainHeadCode">
+          <th mat-header-cell *matHeaderCellDef>Account Main Head Code</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.accountMainHeadCode }}
+          </td>
+        </ng-container>
+
+        <!-- Account Main Head Name column -->
+        <ng-container matColumnDef="accountMainHeadName">
+          <th mat-header-cell *matHeaderCellDef>Account Main Head Name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.accountMainHeadDescription }}
+          </td>
+        </ng-container>
+
+        <!-- Account Sub Main Head Code Column -->
+        <ng-container matColumnDef="accountSubMainHeadCode">
+          <th mat-header-cell *matHeaderCellDef>Account Sub Main Head Code</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.accountSubmainHeadCode }}
+          </td>
+        </ng-container>
+
+        <!--Account Sub Main Head Name Column -->
+        <ng-container matColumnDef="accountSubMainHeadName">
+          <th mat-header-cell *matHeaderCellDef>Account Sub Main Head Name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.accountSubmainHeadDescription }}
+          </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              style="border: none; background-color: transparent"
+              (click)="
+                openUpdateAccountHeadMasterItemDialog(
+                  element.accountHeadMasterId,
+                  element
+                )
+              "
+            >
+              <mat-icon color="error">edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>

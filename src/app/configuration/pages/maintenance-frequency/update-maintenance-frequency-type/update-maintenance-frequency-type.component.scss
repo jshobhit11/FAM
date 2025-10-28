@@ -1,0 +1,98 @@
+section {
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  h1 {
+    color: #484848;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  
+  .content-fields {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .two-row-fields {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+  }
+  
+  .btn-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  
+  
+  .clor {
+    background-color: white;
+    color: #4472c4;
+    border: 2px solid #4472c4;
+  
+    &:hover {
+      background-color: #d8d7d7;
+      color: #4472c4;
+    }
+  }
+  
+  @media only screen and (max-width: 1000px) {
+    section {
+      padding: unset;
+    }
+  
+    .content-fields {
+      flex-direction: column;
+    }
+  
+    .two-row-fields {
+      flex-direction: column;
+    }
+  }
+
+.table-container {
+    max-height: 200px; 
+    overflow: auto; 
+}
+
+.custom-table {
+    width: 100%; 
+    border-collapse: collapse; 
+}
+
+.custom-table th,
+.custom-table td {
+    padding: 8px; 
+    border: 1px solid #ddd; 
+}
+
+.custom-table th {
+    background-color: #f0f0f0;
+    color: #333; 
+    font-weight: bold;
+}
+
+.delete-button {
+    color: red;
+}
+.checklist-scroll {
+    max-width: 300px; 
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.custom-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 50%; 
+}
+
+.custom-input-container .example-full-width {
+  width: 70%; 
+}
+
+.custom-input-container button {
+  min-width: 50px; 
+}

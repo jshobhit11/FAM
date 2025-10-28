@@ -1,0 +1,189 @@
+<section>
+    <form class="form">
+      <div class="col-lg-6 mt-4" style="width: 100% !important; padding: 1rem">
+        <div class="heading" style="background-color: #f0f0f0">
+          <h1>Material Suspense Invoice</h1>
+        </div>
+  
+        <div>
+          <div class="three-row-grid mt-4">
+            <div class="left-div">
+              <div class="input-container">
+                <label class="label-style">Request Number</label>
+                <p>{{ data?.wmMaterialsIndentDTO?.materialsIndentNo }}</p>
+              </div>
+              <div class="input-container">
+                <label class="label-style">Request By</label>
+                <p>{{requestBy}}</p>
+              </div>
+              <div class="input-container">
+                <label class="label-style">Driver Name <span class="star">*</span></label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      [(ngModel)]="driverName"
+                      name="driver"
+                      placeholder="Driver Name."
+                      appValidation
+                      required
+                      [maxLength]="50"
+                    />
+              </div> 
+            </div>
+            <div>
+              <div class="input-container">
+                <label class="label-style">Date</label>
+                <p>{{ data?.wmMaterialsIndentDTO?.materialsIndentDate | date : "yyyy/MM/dd" }}</p>
+              </div>
+              <div class="input-container">
+                <label class="label-style">From Office</label>
+                <p>{{ fromOffice }}</p>
+              </div>
+              <div class="input-container">
+              <label class="label-style">Driver Mobile No <span class="star">*</span></label>
+                <input
+                class="form-control"
+                type="tel"
+                [(ngModel)]="driverPhoneNo"
+                name="driverphoneno"
+                placeholder="Driver Phone No."
+                appMobileValidation
+                required
+              />
+              </div>  
+            </div>
+            <div>
+              <!-- <div class="inner-div">
+                <label>Work Order On:</label>
+                <p><date-pipe-third date="{{ data?.wmMaterialsIndentDTO?.materialsIndentDate }}"></date-pipe-third></p>
+              </div> -->
+              <div class="input-container">
+                <label class="label-style">Store Code</label>
+                <p>{{ data?.wmMaterialsIndentDTO?.storeCode }}</p>
+              </div>
+              <div class="inner-div">&nbsp;</div>
+              <div class="inner-div"></div>
+              <div class="input-container">
+                <label class="label-style">Vehicle Registration No<span class="star">*</span></label>
+                <input
+                class="form-control"
+                type="text"
+                [(ngModel)]="vehicleNo"
+                name="vehicleNo"
+                placeholder="Vehicle No."
+                appVechileNumber
+                required
+              />
+              </div>    
+            </div>
+          </div>
+        </div>
+        
+        <div
+          style="
+            overflow: auto;
+            width: 100%;
+            border: 2px solid #c2c2c2;
+            margin-top: 1rem;
+          "
+        >
+          <table class="table table-bordered text-center">
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th class="main-heading" rowspan="2" scope="col">S.No</th>
+                <th class="main-heading" rowspan="2" scope="col">Material Code</th>
+                <th class="main-heading" rowspan="2" scope="col">Material Name</th>
+                <th class="main-heading" rowspan="2" scope="col">Unit</th>
+                <th class="main-heading" rowspan="2" scope="col">Rate</th>
+                <th class="main-heading" rowspan="2" scope="col">Requested Qty</th>
+                <th class="main-heading bg-issue-qty" colspan="3" scope="colgroup">Issued Qty</th>
+                <th class="main-heading" rowspan="2" scope="col">Amount</th>
+                <th class="main-heading bg-store-current-qty" colspan="2" scope="colgroup">Store Current Qty</th>
+                <th class="main-heading bg-store-balance-qty" colspan="2" scope="colgroup">Store Balance Qty</th>
+                <th class="main-heading" rowspan="2" scope="col">Serial No</th>   
+                <!-- <th class="main-heading" rowspan="2" scope="col">Part #</th> -->
+              </tr>
+              <tr style="background-color: #f2f2f2;">
+                <th class="sub-headings bg-issue-qty" scope="col">New</th>
+                <th class="sub-headings bg-issue-qty" scope="col">Used</th>
+                <th class="sub-headings bg-issue-qty" scope="col">Total</th>
+                <th class="sub-heads bg-store-current-qty" scope="col">New</th>
+                <th class="sub-heads bg-store-current-qty" scope="col">Used</th>
+                <th class="sub-heading bg-store-balance-qty" scope="col">New</th>
+                <th class="sub-heading bg-store-balance-qty" scope="col">Used</th>    
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let dataItem of data.wmMaterialIndentTransLog; index as i"
+              >
+                <td>{{ i + 1 }}</td>
+                <td>{{dataItem.materialCode}}</td>
+                <td class="horizontal-scroll">{{ dataItem.materialName }}</td>
+                <td>{{ dataItem.materialUnit }}</td>
+                <td>{{ dataItem.materialRate }}</td>
+                <td>{{ (dataItem.requestQuantity === "null" ? 0 :dataItem.requestQuantity) }}</td>
+                <td>{{ (dataItem.issuedNewQty === "null" ? 0 : dataItem.issuedNewQty)}}</td>
+                <td>{{ (dataItem.issuedUsedQty === "null" ? 0 :dataItem.issuedUsedQty)}}</td>
+                <td>{{ (dataItem.issuedQuantity === "null" ? 0 :dataItem.issuedQuantity)}}</td>
+                <td>{{ (dataItem.issuedAmount === "null" ? 0 : dataItem.issuedAmount)}}</td>
+                <td>{{dataItem.newCurrentQty}}</td>
+                <td>{{dataItem.storeUsedQty}}</td>
+                <td>{{dataItem.storeBalanceQuantity}}</td>
+                <td>{{ dataItem.storeUsedBalanceQty }}</td>
+                <td>
+                  <div
+                    class="searchbar"
+                    *ngIf="dataItem.isUploadSerialMaterial === '1'"
+                  >
+                    <input
+                      class="form-control"
+                      [(ngModel)]="dataItem.serials"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control"
+                      name="serials"
+                    />
+                    <mat-icon
+                      class="search-icon"
+                      (click)="
+                        openMaterialSerialNumbersDialog(
+                          dataItem.materialsMasterId,
+                          dataItem.storeMasterId,
+                          dataItem.issuedQuantity,
+                          dataItem.issuedNewQty,
+                          dataItem.issuedUsedQty,
+                          i,
+                          dataItem.serials
+                        )
+                      "
+                      >search</mat-icon
+                    >
+                  </div>
+                </td>
+                <!-- <td>{{ dataItem.part }}</td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <div class="btn-box mt-4">
+          <button
+            type="button"
+            class="btn btn-primary btn-lg"
+            (click)="onConfirmationPopup()"
+            [disabled]="!isFormValid()"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            class="btn clor btn-primary btn-lg"
+            routerLink="/store-management/dispatch-material-invoice"
+          >
+            Back
+          </button>
+        </div>
+      </div>
+    </form>
+  </section>
+  

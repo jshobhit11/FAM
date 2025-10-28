@@ -1,0 +1,121 @@
+<div class="page-1">
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/work-management/dashboard">Works</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a routerLink="/work-management/materials-transfer-approval"
+            >Suspense Transfer Approval</a
+          >
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Suspense Transfer Approval Form</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section>
+  <form class="form" [formGroup]="suspenseApproval">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2"> Suspense Material Approval </h2>
+      <div class="grid two-row-grid mt-4">
+        <div class="left-div">
+          <div class="inner-div">
+            <label>Suspense Request No:</label>
+            <p> {{ approvalData.materialsIndentNo }}</p>
+          </div>
+         
+          <div class="inner-div">
+            <label>Sender Store</label>
+            <p>{{approvalData.store}} - {{ approvalData.senderOfficeName }}</p>
+          </div>
+        </div>
+        <div>
+          <div class="inner-div">
+            <label>Suspense Request Date:</label>
+            <p> {{ approvalData.materialsIndentDate | date : "dd/MM/yyyy" }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Receiver Store</label>
+            <p>{{ approvalData.receiverStoreCode }}-{{ approvalData.receiverOfficeName }}</p>
+          </div>
+        </div>
+      </div>
+      <div
+        style="
+          overflow: auto;
+          width: 100%;
+          
+          margin-top: 2rem;
+        "
+      >
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">S. No.</th>
+              <th scope="col">Material Code</th>
+              <th scope="col">Material Name</th>
+              <th scope="col">Unit</th>
+              <th scope="col">Rate</th>
+              <th scope="col">Requested Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dataItem of data; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td class="horizontal-scroll">{{ dataItem.materialCode }}</td>
+              <td>{{ dataItem.materialName }}</td>
+              <td>{{ dataItem.materialUnit }}</td>
+              <td>{{ dataItem.materialRate }}</td>
+              <td>{{ dataItem.requestQuantity }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="txt-area mt-4">
+        <label style="width: fit-content">Remarks <span class="star">*</span></label>
+        <div>
+        <textarea
+          class="form-control"
+          cols="100"
+          rows="3"
+          name="approveRemarks"
+          [(ngModel)]="approveRemarks"
+          formControlName="remarks"
+          appAlphaNumeric
+          [maxLength]="300"
+          required
+        ></textarea>
+        <mat-error  *ngIf="suspenseApproval.get('remarks').hasError('required') && suspenseApproval.get('remarks').touched">
+          Please enter remarks
+        </mat-error>
+      </div>
+      </div>
+
+      <div class="btn-box mt-4">
+        <button
+          (click)="openConfirmationDialog()"
+          type="button"
+          class="btn btn-primary btn-md"
+        >
+          Approve
+        </button>
+        <button
+        [disabled]="!approveRemarks"
+        type="button"
+        class="btn btn-danger btn-md"
+        style="background-color: red; border-color: darkred; color: white;"
+        (click)="openRejectpopupDialog()"
+      >
+        Reject
+      </button>
+      </div>
+    </div>
+  </form>
+</section>
+</div>

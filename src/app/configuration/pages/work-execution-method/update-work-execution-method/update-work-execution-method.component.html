@@ -1,0 +1,25 @@
+<section>
+  <form [formGroup]="workExecutionForm">
+  <h1 mat-dialog-title>Update Work Execution Method Master</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Work Execution Method Name</mat-label>
+        <input matInput placeholder="Ex. Conductor"  
+         [maxLength]="50" appAlphaNumeric formControlName="woExecutionMethodName"/>
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Work Execution Method</mat-label>
+        <input matInput placeholder="Ex. 234" 
+        [maxLength]="50" appAlphaNumeric formControlName="woExecutionMethodCode"/>
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onWorkExecution()">Update</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+</form>
+</section>

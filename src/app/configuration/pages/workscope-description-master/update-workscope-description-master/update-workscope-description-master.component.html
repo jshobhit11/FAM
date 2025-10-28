@@ -1,0 +1,45 @@
+<section>
+    <form class="form" [formGroup]="workScopeTypeForm">
+<h1 mat-dialog-title>Update Workscope Description Master</h1>
+<div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+        <mat-form-field class="example-full-width">
+            <mat-label>Workscope Description</mat-label>
+            <input matInput placeholder="Ex. Workscope" 
+            formControlName="workscopeDescription" appAlphaNumeric [maxLength]="75" required/>
+            <mat-error>Please enter in this field.</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Workscope Description Code</mat-label>
+            <input matInput placeholder="Ex. Workscope" 
+            formControlName="workscopeDescCode" appAlphaNumeric [maxLength]="10" required/>
+            <mat-error>Please enter in this field.</mat-error>
+        </mat-form-field>
+    </div>
+</div>
+<div class="modal-input-control">
+    <mat-form-field class="example-full-width">
+        <mat-label>Workscope Type Applicable</mat-label>
+        <mat-select formControlName="workTypeApplicable" required>
+            <mat-option *ngFor="let main of workTypeApplicables" [value]="main" [maxLength]="5">
+                {{main}}</mat-option>
+                <mat-error *ngIf="workScopeTypeForm.get('workTypeApplicable').invalid && workScopeTypeForm.get('workTypeApplicable').touched">
+                    Please select in this field.</mat-error> 
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+        <mat-label>Estimate Type</mat-label>
+        <mat-select formControlName="estimateType" required>
+            <mat-option *ngFor="let main of estimateData" [value]="main.estimateTypeMasterId" [maxLength]="50">
+                {{main.estimateTypeName}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="workScopeTypeForm.get('estimateType').invalid && workScopeTypeForm.get('estimateType').touched">
+            Please select in this field.</mat-error>
+    </mat-form-field>
+</div>
+<div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onWorkscopeUpdate()">Update</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+</div>
+</form>
+</section>

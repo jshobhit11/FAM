@@ -1,0 +1,118 @@
+<section>
+  <form [formGroup]="employeeForm">
+    <h1 mat-dialog-title>Add Employee Master</h1>
+    <div class="modal-input-control">
+      <div class="col-sm-6" id="office">
+        Office Name<br />
+        <div class="card flex justify-content-center">
+          <form [formGroup]="treeForm">
+            <p-treeSelect
+              class="md:w-20rem w-full"
+              containerStyleClass="w-full"
+              formControlName="selectedNodes"
+              (onNodeSelect)="nodeSelect($event.node)"
+              selectionMode="single"
+              (onNodeUnselect)="nodeUnselect()"
+              [(ngModel)]="selected"
+              [options]="nodes"
+              [filter]="true"
+              [filterInputAutoFocus]="true"
+              [scrollHeight]="'200px'"
+            >
+            </p-treeSelect>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Employee Name</mat-label>
+        <input
+          matInput
+          placeholder="Ex. Each"
+          [(ngModel)]="empMasterObj.employeeName"
+          formControlName="employeeName"
+          [maxLength]="100"
+          appAlphaNumeric
+          required
+        />
+        <mat-error>Please select in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Designation</mat-label>
+        <mat-select
+          [(ngModel)]="empMasterObj.designationId"
+          formControlName="designationId"
+        >
+          <mat-option
+            *ngFor="let main of designationData"
+            [value]="main.designationMasterId"
+          >
+            {{ main.designationName }}</mat-option
+          >
+        </mat-select>
+        <mat-error>Please select in this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Employee Code</mat-label>
+        <input
+          matInput
+          placeholder="Ex. Each"
+          [(ngModel)]="empMasterObj.employeeCode"
+          [maxLength]="50"
+          appAlphaNumeric
+          formControlName="employeeCode"
+          required
+        />
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Address</mat-label>
+        <input
+          matInput
+          placeholder="Ex. Each"
+          [(ngModel)]="empMasterObj.employeeAddress"
+          [maxLength]="200"
+          appAlphaNumeric
+          formControlName="employeeAddress"
+          required
+        />
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          placeholder="Ex. Each"
+          [(ngModel)]="empMasterObj.email"
+          [maxLength]="100"
+          formControlName="email"
+          appEmailValidator
+          required
+        />
+        <mat-error>Please select in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>MobileNo</mat-label>
+        <input
+          matInput
+          placeholder="Ex. Each"
+          [(ngModel)]="empMasterObj.mobileNo"
+          [maxLength]="10"
+          formControlName="mobileNo"
+          appMobileValidation
+          required
+        />
+        <mat-error>Please select in this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="onAddEmpMaster()">Add</button>
+      <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+  </form>
+</section>

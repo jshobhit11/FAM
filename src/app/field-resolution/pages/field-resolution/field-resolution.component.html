@@ -1,0 +1,18 @@
+<mat-drawer-container>
+  <mat-drawer mode="side" [opened]="sideBarOpen">
+    <div style="display: flex; justify-content: flex-end; padding: 10px;">
+      <button mat-icon-button (click)="sideBarToggler()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <app-menubar></app-menubar>
+    <app-field-resolution-side-nav (toggleSidebarForMe)="sideBarToggler()"></app-field-resolution-side-nav>
+  </mat-drawer>
+  <mat-drawer-content>
+    <app-header (toggleSidebarForMe)="sideBarToggler()"></app-header>
+    <!-- <app-menubar></app-menubar> -->
+    <app-field-complaints-resoultion *ngIf="showComplaintsResolution"></app-field-complaints-resoultion>
+    <router-outlet></router-outlet>
+    <app-footer></app-footer> 
+  </mat-drawer-content>
+</mat-drawer-container>

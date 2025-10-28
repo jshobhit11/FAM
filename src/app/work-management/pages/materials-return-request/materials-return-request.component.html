@@ -1,0 +1,211 @@
+<div class="page-1">
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/work-management/dashboard">Works</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Material Return Indent</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section>
+  <form class="form" [formGroup]="returnIndentForm">
+      <div class="page__content shadow p-3 position-relative dis-flex-colu">
+        <h2 class="title-2">Material Return Indent  </h2>
+
+      <div style=" margin-top: 1rem; padding: 0.5rem">
+        <div class="row  mb-3">
+          <div class="col-md-6">
+            <div class="inner-div inline-label">
+              <div class="label-container">
+                <label>Work Order No <span class="star">*</span></label>
+              </div>
+              <div class="d-flex align-items-center justify-content-center">
+              <div class="inline-items w-100 ml-0">
+                <input
+                  class="form-control search-input"
+                  [(ngModel)]="wmData.workorderNo"
+                  name="workOrderNo"
+                  (change)="onWorkOrderChange()"
+                  [disabled]="isInputDisabled"
+                  readonly
+                  formControlName="workOrderNo"
+                  required
+                />
+                <mat-icon
+                  class="search-icon"
+                  (click)="openMaterialSerialNumbersDialog()"
+                >
+                  search
+                </mat-icon>
+              </div>
+              </div>
+            </div>
+            <mat-error  style="margin-left: 120px;" *ngIf="returnIndentForm.get('workOrderNo').hasError('required') && returnIndentForm.get('workOrderNo').touched">
+              Please select this field
+            </mat-error>
+          </div>
+          <div class="col-md-3 mt-2">
+            <div class="inner-div inline-label">
+              <label>Work Order On:</label>
+              <span class="inline-items">
+                <date-pipe-second
+                  class="date-pipe"
+                  date="{{ wmData.workorderDate }}"
+                ></date-pipe-second>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-0.5 mb-3">
+          <div class="label-container">
+            <label class="d-block text-lg-end label-style">Store<span class="star">*</span></label>
+          </div>
+
+          <div class="col-xl-9 select-column">
+            <select
+            class="form-select w-100 select-style"
+            [(ngModel)]="selectedStoreName"
+            name="stored"
+            (change)="onStoreChange()"
+            [disabled]="isDropdownDisabled"
+            formControlName="store"
+          >
+            
+            <ng-container *ngFor="let store of assignCrewData">
+              <option [value]="store.storeMasterId">{{ store.storeName }}</option>
+            </ng-container>
+          </select>
+          <mat-error  *ngIf="returnIndentForm.get('store').hasError('required') && returnIndentForm.get('store').touched">
+            Please select this field
+          </mat-error>
+          </div>
+        </div>
+
+        <div class="txt-area inner-div">
+          <div class="label-container">
+            <label>Description</label>
+          </div>
+          <p class="col-xl-9">
+            <textarea
+              class="form-control w-100"
+              rows="3"
+              [(ngModel)]="wmData.workDescription"
+              name="description"
+              formControlName="description"
+              required
+            ></textarea>
+            <mat-error  *ngIf="returnIndentForm.get('description').hasError('required') && returnIndentForm.get('description').touched">
+              Please select this field
+            </mat-error>
+          </p>
+        </div>
+      </div>
+
+      <div
+        style="
+          overflow: auto;
+          width: 100%;
+          margin-top: 1rem;
+        "
+      >
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    [(ngModel)]="isSelectAll"
+                    [ngModelOptions]="{standalone: true}"
+                    type="checkbox"
+                    name="flexCheckDefault"
+                    id="flexCheckDefault"
+                    (change)="checkUncheckAll()"
+                  />
+                </div>
+              </th>
+              <th scope="col">S. No.</th>
+              <th scope="col">Material</th>
+              <th scope="col">Material Code</th>
+              <th scope="col">Material Unit</th>
+              <th scope="col">Estimated Qty</th>
+              <ng-container *ngIf="workscopeDescCode !== 'RG' && workscopeDescCode !== 'RL'">
+                <th scope="col">Drawn Qty</th>
+              </ng-container>
+                <th scope="col">Returned Qty</th>
+              <th scope="col">
+                {{ workscopeDescCode === 'RG' || workscopeDescCode === 'RL' ? 'Return Request Qty' : 'Return Request Qty' }}
+              </th>
+              <th scope="col">Part #</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dataItem of estimationRegisteredData; index as i">
+              <td>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [(ngModel)]="dataItem.isSelected"
+                    [ngModelOptions]="{ standalone: true }"
+                    name="isSelected"
+                    (change)="selectedKey(i)"
+                    id="isSelected"
+                    id="isSelected-{{i}}"
+                  />
+                </div>
+              </td>
+              <td>{{ i + 1 }}</td>
+              <td class="horizontal-scroll">{{ dataItem.materialName }}</td>
+              <td>{{ dataItem.materialCode}}</td>
+              <td>{{ dataItem.materialUnit }}</td>
+              <td>{{ dataItem.quantity }}</td>
+              <ng-container *ngIf="workscopeDescCode !== 'RG' && workscopeDescCode !== 'RL'">
+                <td>{{ dataItem.receivedQuantity }}</td>
+              </ng-container>
+              <td>{{ dataItem.returnedQuantity | number:'1.2-3' }}</td>
+              <td *ngIf="dataItem.isSelected">
+                <input
+                  class="form-control-p no-spinner"
+                  type="number"
+                  name="requestQuantity"
+                  formControlName="qunatity"
+                  (keyup)="returnQuantity($event.target.value, i, dataItem.quantity)"
+                  required
+                />
+                <mat-error *ngIf="returnIndentForm.get('qunatity').hasError('required') && returnIndentForm.get('qunatity').touched">
+                  Please enter 'Quantity'
+                </mat-error>
+              </td>
+              
+              <td *ngIf="!dataItem.isSelected"></td>
+              <td>{{ dataItem.workPart }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="btn-box mt-4">
+        <button
+          type="button"
+          class="btn btn-primary btn-md"
+          (click)="openConfirmationpopupDialog()"
+        
+        >
+          Generate Request
+        </button>
+      </div>
+    </div>
+  </form>
+</section>
+</div>
+
+
+<!-- <span *ngIf="workscopeDescCode === 'RG' || workscopeDescCode === 'RL'">{{ dataItem.quantity }}</span>
+*ngIf="workscopeDescCode !== 'RG' && workscopeDescCode !== 'RL'" -->

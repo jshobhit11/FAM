@@ -1,0 +1,25 @@
+<section>
+  <form [formGroup]="assetCategoryForm">
+  <h1 mat-dialog-title>Update Asset Category Master</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Asset Category Name</mat-label>
+        <input matInput placeholder="Ex. Conductor" 
+        [maxLength]="100" appAlphaNumeric formControlName="assetCategoryName"  required/>
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Asset Category Code</mat-label>
+        <input matInput placeholder="Ex. 234"
+        [maxLength]="50" appAlphaNumeric formControlName="assetCategoryCode"  required/>
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onAssetCategoryUpdate()">Update</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+</form>
+</section>

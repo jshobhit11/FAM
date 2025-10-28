@@ -1,0 +1,876 @@
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/estimates">Estmates </a>
+        </li>
+        <li class="breadcrumb-item">
+          <!-- <a routerLink="/estimates/customer-service-estimation-creation"
+            >Estimation Creation
+          </a> -->
+          <a style="color: lightslategray">
+            Other Service Estimation Creation
+          </a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section>
+  <div class="container-fluid page">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2"> Estimation</h2>
+  
+  <mat-horizontal-stepper [linear]="isLinear" #stepper>
+    <mat-step label="Consumer Details">
+      <div class="col-lg-6 mt-4 dis-fl cd-container" *ngIf="data">
+        <div class="heading">
+          <h1>Consumer Details</h1>
+        </div>
+
+        <div class="cd-content">
+          <h3>Account ID</h3>
+          <p>{{ data.accountId !== "null" ? data.accountId : "-" }}</p>
+        </div>
+        <div class="cd-content">
+          <h3>Name & Address</h3>
+          <p>
+            {{ data.applicantName !== "null" ? data.applicantName : "-" }},
+            {{ data.address !== "null" ? data.address : "-" }}
+          </p>
+        </div>
+        <div class="cd-content">
+          <h3>Land Mark</h3>
+          <p>{{ data.landmark !== "null" ? data.landmar : "-" }}</p>
+        </div>
+        <div class="cd-content">
+          <h3>Email ID</h3>
+          <p>{{ data.email !== "null" ? data.email : "-" }}</p>
+        </div>
+        <div class="cd-content">
+          <h3>Contact No.</h3>
+          <p>{{ data.mobileNumber !== "null" ? data.mobileNumber : "-" }}</p>
+        </div>
+        <div class="cd-content">
+          <h3>Applicant Type</h3>
+          <p>
+            {{ data.applicantType !== "null" ? data.applicantType : "-" }}
+          </p>
+        </div>
+        <div class="cd-content">
+          <h3>Application Type</h3>
+          <p>
+            {{ data.connectionType !== "null" ? data.connectionType : "-" }}
+          </p>
+        </div>
+        <div class="cd-content">
+          <h3>Tariff</h3>
+          <p>{{ data.tariff !== "null" ? data.tariff : "-" }}</p>
+        </div>
+        <div class="cd-content">
+          <h3>Type of Connection</h3>
+          <p>
+            {{ data.connectionType !== "null" ? data.connectionType : "-" }}
+          </p>
+        </div>
+        <div class="cd-content">
+          <h3>Applied Load (KW)</h3>
+          <p>{{ data.loadKw !== "null" ? data.loadKw : "-" }}</p>
+        </div>
+        <div class="cd-content">
+          <h3>Applied Load (HP)</h3>
+          <p>{{ data.loadHp !== "null" ? data.loadHp : "-" }}</p>
+        </div>
+        <div class="cd-content">
+          <h3>Total Applied Load in {{ data?.loadUnit }}</h3>
+          <p>
+            {{
+              data.totalContractedLoad !== "null"
+                ? data.totalContractedLoad
+                : "-"
+            }}
+          </p>
+        </div>
+        <div class="cd-content">
+          <h3>Phase</h3>
+          <p>{{ data.phase !== "null" ? data.phase : "-" }}</p>
+        </div>
+        <div class="cd-content">
+          <h3>Total Build up Area (sq.mts.)</h3>
+          <p>
+            {{ data.buildupAreaSize !== "null" ? data.buildupAreaSize : "-" }}
+          </p>
+        </div>
+        <div class="cd-content" *ngIf="data.connectionType === 'MC' || data.connectionType === 'MC-MSB'">
+          <h3>Group Number</h3>
+          <p>-</p>
+        </div>
+        <div class="cd-content" *ngIf="data.connectionType === 'MC' || data.connectionType === 'MC-MSB'">
+          <h3>Group Name</h3>
+          <p>-</p>
+        </div>
+        <div class="cd-content" *ngIf="data.connectionType === 'MC' || data.connectionType === 'MC-MSB'">
+          <h3>No of Application</h3>
+          <p>-</p>
+        </div>
+
+        <div class="btn-box mt-4" style="justify-content: space-between">
+          <div style="display: flex; gap: 1rem">
+            <button type="button" class="btn btn-md clor" (click)="navigateToViewDocument()">View Document</button>
+            <button
+              type="button"
+              class="btn btn-md clor"
+              (click)="viewInspection()"
+            >
+              View Site Inspection
+            </button>
+          </div>
+          <button matStepperNext type="button" class="btn btn-primary btn-lg">
+            Next
+          </button>
+        </div>
+      </div>
+    </mat-step>
+
+    <mat-step
+      [stepControl]="estimateCharges"
+      label="Estimation Charges Details"
+    >
+      <div class="col-lg-6 mt-4 dis-fl premisesInspe cd-container">
+        <div>
+          <form class="form" [formGroup]="estimateCharges">
+            <h1>Estimation Charges Details</h1>
+
+            <div class="col mt-3 disp-flex">
+              <label class="form-label"
+                ><b>Estimation Work Description</b></label
+              >
+              <textarea
+                name=""
+                id=""
+                cols="20"
+                rows="5"
+                maxlength="3000"
+                formControlName="estimationWorkDescription"
+                class="form-control"
+                placeholder="Input"
+              ></textarea>
+            </div>
+
+            <div class="col mt-3 disp-flex">
+              <label class="form-label"><b>Work Execution Method</b></label>
+              <select
+                class="form-select"
+                formControlName="workExecutionMethod"
+                (change)="onChangeWorkExecution($event.target.value)"
+              >
+                <option value="">select</option>
+                <option
+                  *ngFor="let workExecutionItem of workExecution"
+                  [value]="workExecutionItem.woExecutionMethodId"
+                >
+                  {{ workExecutionItem.woExecutionMethodName }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col mt-3 disp-flex">
+              <label class="form-label"><b>Estimate Type</b></label>
+              <select class="form-select" formControlName="estimateType">
+                <option value="">select</option>
+                <option
+                  *ngFor="let estimateTypeItem of estimateType"
+                  [value]="estimateTypeItem.estimateTypeMasterId"
+                >
+                  {{ estimateTypeItem.estimateTypeName }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col mt-3 disp-flex">
+              <label class="form-label"><b>Rate Type</b></label>
+              <select
+                class="form-select"
+                formControlName="rateType"
+                (change)="onChangeRateType($event.target.value)"
+              >
+                <option value="">select</option>
+                <option value="SR">SR Rates</option>
+                <option value="RC">RC Rates</option>
+              </select>
+            </div>
+
+            <div class="col mt-3 disp-flex" *ngIf="showVendor">
+              <label class="form-label"><b>RC Code</b></label>
+              <select
+                class="form-select"
+                formControlName="vendor"
+                (change)="onChangeVendor()"
+              >
+                <option value="">select</option>
+                <option
+                  *ngFor="let vendorItem of vendorData"
+                  [value]="vendorItem.rateContractMasterId"
+                >
+                {{ vendorItem.rcCode }} - {{ vendorItem.rcVendorName }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col mt-4 disp-flex" style="justify-content: center">
+              <button
+                *ngIf="estimationTypeGEorRG"
+                class="btn btn-md"
+                (click)="openTemplatesDialog()"
+                [disabled]="!isWorkExecutionSelected"
+              >
+                Select Templates
+              </button>
+            </div>
+
+            <!-- /////////////////////////////////////////////////////////// -->
+
+            <h1 class="mt-4">Scope of Work Description</h1>
+
+            <div class="scopeOfWork">
+              <div class="col mt-3 disp-flex" style="flex-direction: column">
+                <label class="form-label"><b>Type of Work</b></label>
+                <select
+                  class="form-select"
+                  formControlName="typeOfWork"
+                  (change)="onChangeTypeOfWork()"
+                >
+                  <option value="">select</option>
+                  <option value="LT">LT</option>
+                  <option value="HT">HT</option>
+                </select>
+              </div>
+
+              <div class="col mt-3 disp-flex" style="flex-direction: column">
+                <label class="form-label"><b>Work Part</b></label>
+                <select
+                  class="form-select"
+                  formControlName="workPart"
+                  (change)="onChangeWorkPart()"
+                >
+                  <option value="">select</option>
+                  <option value="Part A">Part A</option>
+                  <option value="Part B">Part B</option>
+                  <option value="Part C">Part C</option>
+                  <option value="Part D">Part D</option>
+                  <option value="Part E">Part E</option>
+                  <option value="Part F">Part F</option>
+                </select>
+              </div>
+
+              <div class="col mt-3 disp-flex" style="flex-direction: column">
+                <label class="form-label"><b>Work Description</b></label>
+                <select
+                  class="form-select"
+                  formControlName="workDescription"
+                  (change)="onChangeWorkDescription()"
+                >
+                  <option value="">select</option>
+                  <option
+                    *ngFor="let workscopeDescItem of workscopeDesc"
+                    [value]="workscopeDescItem.workscopeDescMasterId"
+                  >
+                    {{ workscopeDescItem.workscopeDescription }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col mt-4 disp-flex">
+                <button
+                  class="btn btn-md"
+                  [disabled]="alreadyExistScopeOfWork"
+                  (click)="addExecutionWorkTable()"
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+
+            <!-- ///////////////////////////////////////////////// -->
+            <h1 class="mt-4">Item details</h1>
+            <div
+              class="radio-btns"
+              style="display: flex; justify-content: space-between"
+            >
+              <div style="display: flex; gap: 0.5rem">
+                <label>Search By</label>
+                <input
+                  class="ms-2"
+                  type="radio"
+                  formControlName="materialOrLabour"
+                  id="materialOrLabour"
+                  name="materialOrLabour"
+                  value="MATERIAL"
+                  (change)="onChangeMaterials()"
+                />
+                <label for="MATERIAL">Material</label>
+                <input
+                  class="ms-2"
+                  type="radio"
+                  formControlName="materialOrLabour"
+                  id="materialOrLabour"
+                  name="materialOrLabour"
+                  value="LABOR"
+                  (change)="onChangeMaterials()"
+                />
+                <label for="LABOUR">Labour</label>
+              </div>
+            </div>
+            <div
+              class="top-row mt-4"
+              *ngIf="
+                estimateCharges.get('materialOrLabour').value === 'MATERIAL'
+              "
+            >
+              <mat-form-field
+                style="width: 100% !important; font-size: 1.5rem !important"
+              >
+              <span matPrefix class="search-icon"><mat-icon>search</mat-icon></span>
+                <input
+                  matInput
+                  placeholder="Search Material"
+                  [matAutocomplete]="unitAuto"
+                  formControlName="materialUnitControl"
+                />
+                <mat-autocomplete
+                  #unitAuto="matAutocomplete"
+                  (optionSelected)="onMaterialUnitSelected($event.option.value)"
+                >
+                  <mat-option
+                    *ngFor="let unit of filteredMaterialUnits | async"
+                    [value]="unit"
+                  >
+                    {{ unit }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div
+              class="top-row mt-4"
+              *ngIf="estimateCharges.get('materialOrLabour').value === 'LABOR'"
+            >
+              <mat-form-field
+                style="width: 100% !important; font-size: 1.5rem !important"
+              >
+                <input
+                  matInput
+                  placeholder="Search Labour"
+                  [matAutocomplete]="unitAuto"
+                  formControlName="labourUnitControl"
+                />
+                <mat-autocomplete
+                  #unitAuto="matAutocomplete"
+                  (optionSelected)="onMaterialUnitSelected($event.option.value)"
+                >
+                  <mat-option
+                    *ngFor="let unit of filteredMaterialUnits | async"
+                    [value]="unit"
+                  >
+                    {{ unit }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+
+            <!-- <div class="col mt-3 disp-flex" style="flex-direction: column">
+              <label class="form-label"><b>Matarial Type</b></label>
+              <select class="form-select" formControlName="materialType" (change)="onChangeMaterialType()">
+                <option value="">select</option>
+                <option *ngFor="let materialTypeItem of materialType" [value]="materialTypeItem.materialTypeMasterId">
+                  {{ materialTypeItem.materialTypeName }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col mt-3 disp-flex" style="flex-direction: column">
+              <label class="form-label"><b>Matarial List</b></label>
+              <select class="form-select" style="width: 100%" formControlName="materialList">
+                <option value="">select</option>
+                <option *ngFor="let materialListItem of materialList"
+                  [value]="materialListItem.materialsLabourMasterId">
+                  {{ materialListItem.mlCode }} - {{ materialListItem.mlName }}
+                </option>
+              </select>
+            </div> -->
+
+            <div
+              class="col mt-3 disp-flex"
+              style="flex-direction: column"
+              *ngIf="
+                estimateCharges.get('materialOrLabour').value === 'MATERIAL'
+              "
+            >
+              <label class="form-label"><b>Labour List</b></label>
+              <mat-select
+                class="form-select"
+                style="width: 100%"
+                formControlName="labourList"
+                multiple
+              >
+                <mat-option
+                  *ngFor="let items of labourList"
+                  [value]="items.materialsLabourMasterId"
+                  >{{ items.mlCode }} - {{ items.mlName }}</mat-option
+                >
+              </mat-select>
+            </div>
+
+            <div class="col mt-4 disp-flex" style="justify-content: flex-end">
+              <button class="btn btn-md" (click)="addItemTable()">Add</button>
+            </div>
+
+            <!-- /////////////////////////////////////////////////////////// -->
+            <h1 class="mt-4">Under Execution Work</h1>
+            <div
+              style="border: 2px solid #e1e1e1; padding: 1rem"
+              *ngFor="let executionWork of executionWorkTable; index as i"
+            >
+              <div
+                class="radio-btns"
+                style="display: flex; justify-content: space-between"
+              >
+                <div style="display: flex; gap: 0.5rem">
+                  <input
+                    type="radio"
+                    formControlName="undExWork"
+                    id="{{ i }}"
+                    name="undExWork"
+                    value="{{ i }}"
+                  />
+                  <label for="{{ i }}"
+                    >{{ executionWork.workType }}- {{ executionWork.workPart }}-
+                    {{ executionWork.workscopeDescription }}</label
+                  >
+                </div>
+                {{ selectedValue }}
+                <button
+                  style="border: none"
+                  (click)="removeExecutionWorkTable(i)"
+                >
+                  <img src="assets/delete-icon.png" alt="" />
+                </button>
+              </div>
+
+              <div style="display: flex; flex-wrap: wrap; overflow: auto">
+                <table
+                  class="table text-center"
+                  style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+                >
+                  <thead style="background-color: #dfdfdf">
+                    <tr>
+                      <th scope="col">Rate Type</th>
+                      <th scope="col">Item Name</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Unit</th>
+                      <th scope="col">Rate</th>
+                      <th scope="col">Materials Amount</th>
+                      <th scope="col">Labour Rate</th>
+                      <th scope="col">Labour Amount</th>
+                      <th scope="col">View</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let tableItem of executionWork.materialItems;
+                        index as id
+                      "
+                    >
+                      <td>{{ tableItem.rateType }}</td>
+                      <td>
+                        {{ tableItem.itemCode }} - {{ tableItem.itemName }}
+                      </td>
+                      <!-- {{ tableItem.itemCode }} <span *ngIf="tableItem.itemCode">-</span>  -->
+                      <td style="max-width: 4rem">
+                        <input
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="tableItem.quantity"
+                          [ngModelOptions]="{ standalone: true }"
+                          (input)="
+                            onQuantityChange(
+                              $event.target.value,
+                              i,
+                              id,
+                              tableItem.materialRate,
+                              tableItem.labourRate
+                            )
+                          "
+                          (keydown)="validateDecimalInput($event)"
+
+                        />
+                      </td>
+                      <td>{{ tableItem.itemUnit }}</td>
+                      <td>{{ tableItem.materialRate }}</td>
+                      <td>{{ tableItem.materialsAmount }}</td>
+                      <td>{{ tableItem.labourRate }}</td>
+                      <td>{{ tableItem.laboursAmount }}</td>
+                      <td>
+                        <button
+                          style="border: none; background-color: transparent"
+                          (click)="openviewDialog(tableItem.laborData)"
+                        >
+                          <img src="assets/view.svg" alt="" />
+                        </button>
+                      </td>
+                      <button (click)="deleteItem(i, id)">
+                        <img src="assets/delete-icon.png" alt="" />
+                      </button>
+                    </tr>
+                    <tr>
+                      <h1>Total Rs.</h1>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>{{ executionWork.materialCost }}</td>
+                      <td></td>
+                      <td>{{ executionWork.labourCost }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- /////////////////////////////////////////////////////////// -->
+
+            <h1 class="mt-4">Typical Cost Data Sheet for Execution Work</h1>
+          </form>
+        </div>
+
+        <div>
+          <form [formGroup]="addChargeForm">
+            <div>
+              <label class="form-label"><b>Additional Charges</b></label>
+            </div>
+            <div
+              style="
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+              "
+            >
+              <select
+                class="form-select"
+                formControlName="additionalCharges"
+                (change)="onChangeAdditionalCharges()"
+              >
+                <option value="">select</option>
+                <option
+                  *ngFor="let additionalChargesItem of additionalCharges"
+                  [value]="additionalChargesItem.estimationAdditionalChargesId"
+                >
+                  {{ additionalChargesItem.additionalChargeName }}
+                </option>
+              </select>
+              <!-- <button class="btn btn-lg">Add</button> -->
+            </div>
+
+            <!-- Typical cost data grid -->
+            <div style="display: flex; justify-content: end">
+              <table style="width: 100%; table-layout: fixed;">
+                <colgroup>
+                  <col style="width: 35%;">
+                  <col style="width: 5%;">
+                  <col style="width: 35%;">
+                  <col style="width: 20%;">
+                  <col style="width: 5%;">
+                </colgroup>
+                <tr>
+                  <td>
+                    <button
+                      class="btn btn-lg"
+                      (click)="addAdditionalCharges()"
+                      [disabled]="alreadyExistAdditionalCharge"
+                    >
+                      Add
+                    </button>
+                  </td>
+                  <td>Material Cost</td>
+                  <td>
+                    <input
+                      type="number"
+                      [value]="estimationMaterialCost"
+                      [(ngModel)]="estimationMaterialCost"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control"
+                      style="width: 80%"
+                      id=""
+                      placeholder="0.00"
+                      disabled
+                    />
+                  </td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td>Labour Cost</td>
+                  <td>
+                    <input
+                      type="number"
+                      [value]="estimationLabourCost"
+                      [(ngModel)]="estimationLabourCost"
+                      [ngModelOptions]="{ standalone: true }"
+                      class="form-control"
+                      style="width: 80%"
+                      id=""
+                      placeholder="0.00"
+                      disabled
+                    />
+                  </td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td>Basic Rate</td>
+                  <td>
+                    <input
+                      type="number"
+                      class="form-control"
+                      [value]="basicRate"
+                      style="width: 80%"
+                      placeholder="0.00"
+                      disabled
+                    />
+                  </td>
+                  <td></td>
+                </tr>
+                <tr *ngFor="let addCharge of addChargesBeforeTotalLabour; index as i">
+                  <td *ngIf="addCharge.additionalChargeName === 'GST'" colspan="1"></td>
+                  <td *ngIf="addCharge.additionalChargeName === 'GST'">
+                    {{ addCharge.chargeTypeValue }} %
+                  </td>
+                  <td>
+                    <ng-container *ngIf="addCharge.additionalChargeName !== 'GST'">
+                      <mat-select class="form-select" style="width:190px" [(ngModel)]="addCharge.chargesCategory" [ngModelOptions]="{standalone: true}" (selectionChange)="onChange(addCharge, $event.value)">
+                        <mat-option disabled>Select additional charges</mat-option>
+                        <mat-option *ngFor="let addCharge of areaSpecificLoadingCharges" [value]="addCharge.chargesCategory">
+                          {{ addCharge.chargesCategory }} {{ addCharge.symbol }}
+                        </mat-option>
+                      </mat-select>
+                    </ng-container>
+                    <ng-container *ngIf="addCharge.additionalChargeName === 'GST'">
+                      {{ addCharge.additionalChargeName }}
+                    </ng-container>
+                  </td>
+                  <td *ngIf="addCharge.chargeType === 'PERCENTAGE' && addCharge.additionalChargeName === 'Area Specific Loading on Basic Rates'">
+                    {{ addCharge.showPercentage ? addCharge.chargeTypeValue + '%' : '' }}
+                  </td>
+                  <td *ngIf="addCharge.additionalChargeName !== 'GST'">
+                    {{ addCharge.additionalChargeName }}
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      class="form-control"
+                      style="width: 80%"
+                      id=""
+                      [value]="addCharge.showAmountInput ? addCharge.amount : '0.00'"
+                      [ngModelOptions]="{standalone: true}"
+                      (input)="
+                        onAdditionalChargeAmount(
+                          $event,
+                          addCharge.estimationAdditionalChargesId
+                        )
+                      "
+                      placeholder="0.00"
+                    />
+                  </td>
+                  <td>
+                    <button style="border: none" (click)="removeAdditionalChargesBeforeTotalLabour(addCharge.estimationAdditionalChargesId)">
+                      <img src="assets/delete-icon.png" alt="" />
+                    </button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td>Cost Of Estimate</td>
+                  <td>
+                    <input
+                      type="number"
+                      class="form-control"
+                      disabled
+                      [value]="totalEstimateCost"
+                      style="width: 80%"
+                      id=""
+                      placeholder="0.00"
+                    />
+                  </td>
+                </tr>
+
+                <tr
+                  *ngFor="
+                    let addCharge of addChargesAfterTotalLabour;
+                    index as i
+                  "
+                >
+                  <td *ngIf="addCharge.chargeType !== 'PERCENTAGE'"></td>
+                  <td *ngIf="addCharge.chargeType === 'PERCENTAGE'">
+                    {{ addCharge.chargeTypeValue }}
+                    <!-- <input type="number" class="form-control" style="width: 80%" id="" [value]="addCharge.chargeTypeValue" (input)="onAdditionalChargeTypeValue($event, addCharge.estimationAdditionalChargesId, addCharge.additionalChargeName, addCharge.valueCalculatedByLabour, addCharge.valueCalculatedByMaterial)" placeholder="0.00"> -->
+                    %
+                  </td>
+                  <td>{{ addCharge.additionalChargeName }}</td>
+                  <td>
+                    <input
+                      type="number"
+                      class="form-control"
+                      style="width: 80%"
+                      id=""
+                      [value]="addCharge.amount"
+                      (input)="
+                        onAdditionalChargeAmount(
+                          $event,
+                          addCharge.estimationAdditionalChargesId
+                        )
+                      "
+                      placeholder="0.00"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      style="border: none"
+                      (click)="
+                        removeAdditionalChargesAfterTotalLabour(
+                          addCharge.estimationAdditionalChargesId
+                        )
+                      "
+                    >
+                      <img src="assets/delete-icon.png" alt="" />
+                    </button>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td><b> Total Cost of Estimate. </b></td>
+                  <td>
+                    <input
+                      type="number"
+                      class="form-control"
+                      style="width: 80%"
+                      [value]="totalEstimationCostInRs"
+                      placeholder="0.00"
+                      disabled
+                    />
+                  </td>
+                  <td></td>
+                </tr>
+              </table>
+            </div>
+          </form>
+        </div>
+
+        <!-- /////////////////////////////////////////////////////////// -->
+        <div>
+          <form [formGroup]="estimatedByForm">
+            <h1 class="mt-4">Estimated By</h1>
+
+            <div class="col mt-3 disp-flex">
+              <label class="form-label"><b>Estimated By</b></label>
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                formControlName="estimatedBy"
+                [ngModel]="placeholder"
+              />
+            </div>
+
+            <div class="col mt-3 disp-flex">
+              <label class="form-label"><b>Estimation Date</b></label>
+              <input
+                class="form-control"
+                type="date"
+                style="width: 259px"
+                formControlName="estimationDate"
+              />
+
+              <!-- <mat-form-field appearance="fill" style="width: 370px">
+                <mat-label>Date</mat-label>
+                <input matInput [matDatepicker]="estimation_date_date_picker" formControlName="estimationDate" />
+                <mat-datepicker-toggle matIconSuffix [for]="estimation_date_date_picker"></mat-datepicker-toggle>
+                <mat-datepicker #estimation_date_date_picker></mat-datepicker>
+              </mat-form-field> -->
+            </div>
+
+            <div class="col mt-3 disp-flex">
+              <label class="form-label"><b>Estimate Remark</b></label>
+              <textarea
+                class="form-control"
+                name=""
+                id=""
+                cols="20"
+                rows="5"
+                maxlength="300"
+                formControlName="estimateRemark"
+                placeholder="text area"
+              ></textarea>
+            </div>
+
+            <div class="col mt-3 disp-flex">
+              <label class="form-label"
+                ><b>Upload For Sketch Line Diagram</b></label
+              >
+              <input class="btn btn-upload" type="file" id="actual-btn" />
+            </div>
+          </form>
+        </div>
+
+        <div class="btn-box mt-4">
+          <button
+            matStepperPrevioustype="button"
+            class="btn btn-secondary btn-md clor"
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            *ngIf="estimationTypeGEorRG"
+            class="btn btn-primary btn-md"
+            [disabled]="!estimatedByForm.valid"
+            (click)="openConfirmationpopupDialog()"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            *ngIf="estimationTypeGEorRG"
+            class="btn btn-primary btn-md"
+            (click)="openTemplatePopupDialog()"
+          >
+            Save as Template
+          </button>
+          <button
+            *ngIf="estimationTypeGEorRG"
+            type="button"
+            class="btn btn-primary btn-md"
+            [disabled]="!estimatedByForm.valid"
+            (click)="openGenerateEstimationDialog()"
+          >
+            Generate Estimation
+          </button>
+          <button
+            *ngIf="!estimationTypeGEorRG"
+            type="button"
+            class="btn btn-primary btn-md"
+            [disabled]="!estimatedByForm.valid"
+            (click)="openReGenerateEstimationDialog()"
+          >
+            Re-Generate Estimation
+          </button>
+        </div>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>
+</div>

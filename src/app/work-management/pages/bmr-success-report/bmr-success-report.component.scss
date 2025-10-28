@@ -1,0 +1,151 @@
+.page__content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .input-container {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem;
+    margin-left: 1.5rem;
+    label {
+      margin-right: 0.5rem;
+    }
+  
+    input {
+      width: 50%;
+    }
+  }
+  
+  .output-format-container {
+   
+  
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .output-format-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 600px;
+        height: 60px;
+        
+      
+        legend {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-weight: bold;
+          font-size: 0.2rem; 
+          width: fit-content;
+          margin: 0 auto;
+          padding: 0 1rem; 
+        }
+      
+        .radio-buttons {
+          display: flex;
+          gap: 0.5rem;
+          margin-top: 1rem;
+          padding: 0 1rem;
+        }
+      }
+      
+}
+
+  
+  .submit-button-container {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+  .submit-button {
+    padding: 0.5rem 1rem;
+    background-color: #0092d9;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .radio-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .radio-buttons label {
+    display: flex;
+    align-items: center;
+  }
+  
+  .container h2 {
+    border-radius: 2px;
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    color: #3e3e3e;
+  }
+  .inner-div {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    gap: 0rem;
+    margin-left: 20px;
+    label {
+      margin: 0;
+      // font-size: 1.1rem;
+      width: 150px;
+    }
+  
+    .form-control {
+      padding: 0.5rem;
+      border: 1px solid #939393;
+      background-color: #f5f5f5;
+      border-radius: 6px;
+      flex: 1;
+      margin-bottom: 0;
+      width: 20px;
+      margin-right: 500px;
+    }
+    @media (max-width: 960px) {
+      padding: 0.5rem;
+      border: 1px solid #939393;
+      background-color: #f5f5f5;
+      border-radius: 6px;
+      flex: 1;
+      margin-bottom: 0;
+      width: 150px;
+    }
+    .fieldset{
+        border: 2px solid #EEEEEE;
+    }
+    element.style {
+      margin: -0.5rem 0 0 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #3e3e3e;
+  }
+  h1 {
+    color: #484848;
+    font-weight: 600;
+    margin: unset !important;
+  }
+  
+  }
+
+  mat-error {
+    position: absolute;
+    bottom: 11rem;
+    left: 14rem;
+    font-size: 12px;
+    color: red; 
+  }
+ 
+  
+
+
+
+
+    
+

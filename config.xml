@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="org.kdiscoms.infinite" version="1.0.0" 
+    xmlns="http://www.w3.org/ns/widgets"
+    xmlns:android="http://schemas.android.com/apk/res/android"  
+    xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>KDISCOMS-FAM</name>
+    <description>Field Activity Management App For Karnataka DISCOMs</description>
+    <author email="kameswarar@infinite.com" href="https://cordova.apache.org">
+        Infinite Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-navigation href="*" />
+    <allow-navigation href="http://localhost:8080/*"/>
+    <allow-navigation href="http://localhost/*"/>
+    <allow-intent href="tel:*" />
+    <allow-intent href="com.infinite.gis:*" />
+    <preference name="Scheme" value="http" />
+    <preference name="usesCleartextTraffic" value="true" />
+    <platform name="android">
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:usesCleartextTraffic="true" />
+        </edit-config>
+
+        <preference name="AndroidInAppBrowserBackButton" value="false" />
+        <preference name="OverrideUserAgent" value="Mozilla/5.0 Cordova" />
+
+        <!-- Background color for splash screen -->
+        <preference name="AndroidWindowSplashScreenBackgroundColor" value="#FFDDFF"/>
+
+
+        <!-- Controls the duration (in ms) before hiding the splash screen -->
+        <preference name="AndroidWindowSplashScreenDuration" value="1"/>
+
+        <!-- Enable/disable auto-hiding the splash screen -->
+        <preference name="AndroidWindowSplashScreenImmersiveMode" value="true"/>
+    </platform>
+
+</widget>

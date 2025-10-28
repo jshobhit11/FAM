@@ -1,0 +1,353 @@
+<!-- Start Dashboard-->
+<div class="container-fluid page">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Dashboard /</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <div class="page__content">
+    <!-- Start Estimate Process Dashboard-->
+    <h3 *ngIf="estimateProcess.length">
+      <img [src]="imagePath2" class="db_imgh2" /> {{estimateHeading}} (NC,TC,LE,LR & Layout) Process 
+    </h3>
+    <div class="row g-6" *ngIf="estimateProcess.length">
+      <div class="col-xl-3 col-sm-6 col-12 mb-3" *ngFor="let estimateItem of estimateProcess; index as i">
+        <div class="card shadow border-0 option-main-bg-2">
+          <div class="card-body">
+            <div class="row">
+              <div class="col pr-0">
+                <span class="h6 font-semibold text-muted text-sm d-block mb-2 font-control">
+                  {{ estimateItem.labelName }}
+                </span>
+                <span class="h3 font-bold mb-0 self_task">
+                  <a class="h3 font-bold mb-0 self_task" 
+                  [routerLink]="['/main', 'home', estimateItem.statusCode, estimateItem.processTypeName]">
+                    {{ estimateItem.serviceCount }}
+                  </a>
+                </span>
+              </div>
+              <div class="col-auto pl-0">
+                <div class="icon icon-shape text-white text-lg rounded-circle"
+                [ngClass]="{'bg-tertiary option-icon-bg-1': i == 0, 
+                'bg-primary option-icon-bg-2': i == 1, 
+                'bg-info option-icon-bg-3': i == 2, 
+                'bg-warning option-icon-bg-4': i == 3,
+                'bg-info option-icon-bg-5' : i == 4,
+                'bg-info option-icon-bg-6':  i == 5,
+                'bg-info option-icon-bg-7': i == 6,
+                'bg-info option-icon-bg-8': i == 7 }">
+                  <img [src]="estimatesImagesPath[i]" class="db_img" />
+                </div>
+              </div>
+            </div>
+            <hr/>
+            <div class="mb-0 text-sm">
+              <span class="badge badge-pill bg-soft-success text-success me-2">
+                <mat-icon class="icon_color1">low_priority</mat-icon>
+              </span>
+              <span class="text-nowrap text-xs text-muted">Low Level</span>
+              <span class="text-nowrap text-xs text-muted lowlevel_task">
+                <a class="lowlevel_task" [routerLink]="[ '/main', 'sub-list', estimateItem.statusCode, estimateItem.processTypeName ]">
+                  {{ estimateItem.subLevelCount }}
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Estimate Process Dashboard-->
+
+    <!-- Start Service Request Estimate Process Dashboard-->
+    <h3 *ngIf="cscProcess.length">
+      <img [src]="imagePath2" class="db_imgh2"/>{{cscHeading}} (Name Change,Tarrif Change,SMR) Process 
+    </h3>
+    <div class="row g-6" *ngIf="cscProcess.length">
+      <div class="col-xl-3 col-sm-6 col-12 mb-3" *ngFor="let cscItem of cscProcess; index as i">
+        <div class="card shadow border-0 option-main-bg-1">
+          <div class="card-body">
+            <div class="row">
+              <div class="col pr-0">
+                <span class="h6 font-semibold text-muted bg-soft-success text-sm d-block font-control">
+                  {{ cscItem.labelName }}
+                </span>
+                <span class="h3 font-bold mb-0 self_task">
+                  <a class="h3 font-bold mb-0 self_task" 
+                  [routerLink]="[ '/main', 'home', cscItem.statusCode, cscItem.processTypeName ]">
+                    {{ cscItem.serviceCount }}
+                  </a>
+                </span>
+              </div>
+              <div class="col-auto pl-0">
+                <div class="icon icon-shape text-white text-lg rounded-circle"
+                [ngClass]="{'bg-tertiary option-icon-bg-1': i == 0, 
+                'bg-primary option-icon-bg-2': i == 1, 
+                'bg-info option-icon-bg-3': i == 2 }">
+                  <img [src]="estimatesImagesPath[i]" class="db_img" />
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="mb-0 text-sm">
+              <span class="badge badge-pill bg-soft-success text-success me-2">
+                <mat-icon class="icon_color1">low_priority</mat-icon>
+              </span>
+              <span class="text-nowrap text-xs text-muted">Low Level</span>
+              <span class="text-nowrap text-xs text-muted lowlevel_task">
+                <a class="lowlevel_task" [routerLink]="['/main', 'sub-list', cscItem.statusCode, cscItem.processTypeName]">
+                  {{ cscItem.subLevelCount }}
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Service Request Estimate Process Dashboard-->
+
+<!-- Start Dismantlement Estimate Process Dashboard-->
+<h3 *ngIf="dndProcess.length">
+  <img [src]="imagePath2" class="db_imgh2" />{{dndHeading}} Process
+</h3>
+<div class="row g-6" *ngIf="dndProcess.length">
+  <div class="col-xl-3 col-sm-6 col-12 mb-3" *ngFor="let dndItem of dndProcess; index as i">
+    <div class="card shadow border-0 option-main-bg-1">
+      <div class="card-body">
+        <div class="row">
+          <div class="col pr-0">
+            <span class="h6 font-semibold text-muted bg-soft-success text-sm d-block mb-2 font-control">
+              {{ dndItem.labelName }}
+            </span>
+            <span class="h3 font-bold mb-0 self_task">
+              <a class="h3 font-bold mb-0 self_task" [routerLink]="['/main', 'home', dndItem.statusCode, dndItem.processTypeName]">
+                {{ dndItem.serviceCount }}
+              </a>
+            </span>
+          </div>
+          <div class="col-auto pl-0">
+            <div class="icon icon-shape text-white text-lg rounded-circle"
+            [ngClass]="{'bg-tertiary option-icon-bg-1': i == 0, 
+            'bg-primary option-icon-bg-2': i == 1, 
+            'bg-info option-icon-bg-3': i == 2 }">
+              <img [src]="estimatesImagesPath[i]" class="db_img" />
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="mb-0 text-sm">
+          <span class="badge badge-pill bg-soft-success text-success me-2">
+            <mat-icon class="icon_color1">low_priority</mat-icon>
+          </span>
+          <span class="text-nowrap text-xs text-muted">Low Level</span>
+          <span class="text-nowrap text-xs text-muted lowlevel_task">
+            <a class="lowlevel_task" [routerLink]="['/main', 'sub-list', dndItem.statusCode, dndItem.processTypeName]">
+              {{ dndItem.subLevelCount }}
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Dismantlement Estimate Process Dashboard-->
+    
+    <!-- Start WO Process Dashboard-->
+    <h3 *ngIf="workOrderProcess.length">
+      <img [src]="imagePath3" class="db_imgh2" /> {{workorderHeading}} Process
+    </h3>
+    <div class="row g-6" *ngIf="workOrderProcess.length">
+      <div class="col-xl-3 col-sm-6 col-12 mb-3" *ngFor="let woProcessItem of workOrderProcess; index as i">
+        <div class="card shadow border-0 option-main-bg-1">
+          <div class="card-body">
+            <div class="row">
+              <div class="col pr-0">
+                <span class="h6 font-semibold text-muted bg-soft-success text-sm d-block mb-2 font-control">
+                  {{ woProcessItem.labelName }}
+                </span>
+                <span class="h3 font-bold mb-0 self_task">
+                  <span class="h3 font-bold mb-0 self_task">
+                    <a class="h3 font-bold mb-0 self_task" (click)="navigation(woProcessItem, 'list')">
+                      {{woProcessItem.serviceCount }}
+                    </a>
+                  </span>
+                </span>
+              </div>
+              <div class="col-auto pl-0">
+                <div class="icon icon-shape text-white text-lg rounded-circle"
+                [ngClass]="{ 'bg-tertiary option-icon-bg-1': i == 0, 
+                  'bg-primary option-icon-bg-2': i == 1, 
+                  'bg-info option-icon-bg-3': i == 2, 
+                  'bg-warning option-icon-bg-4': i == 3,
+                  'bg-info option-icon-bg-5' : i == 4,
+                  'bg-info option-icon-bg-6':  i == 5,
+                  'bg-tertiary option-icon-bg-7': i == 6,
+                  'bg-primary option-icon-bg-8': i == 7,
+                  'bg-info option-icon-bg-9': i == 8,
+                  'bg-primary option-icon-bg-10': i == 9,
+                  'bg-primary option-icon-bg-11': i == 10,
+                  'bg-primary option-icon-bg-12': i == 11,
+                  'bg-info option-icon-bg-13': i == 12 }">
+                  <img [src]="workImagesPath[i]" class="db_img"/>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="mb-0 text-sm">
+              <span class="badge badge-pill bg-soft-success text-success me-2">
+                <mat-icon class="icon_color1">low_priority</mat-icon>
+              </span>
+              <span class="text-nowrap text-xs text-muted">Low Level</span>
+              <span class="text-nowrap text-xs text-muted lowlevel_task">
+                <a class="lowlevel_task" (click)="navigation(woProcessItem, 'sublist')">
+                  {{ woProcessItem.subLevelCount }}
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End WO Process Dashboard-->
+
+    <h3 *ngIf="imwProcess.length">
+      <img [src]="imagePath2" class="db_imgh2"/>{{imwHeading}} Process
+    </h3>
+    <div class="row g-6" *ngIf="imwProcess.length">
+      <div class="col-xl-3 col-sm-6 col-12 mb-3" *ngFor="let imwItem of imwProcess; index as i">
+        <div class="card shadow border-0 option-main-bg-1">
+          <div class="card-body">
+            <div class="row">
+              <div class="col pr-0">
+                <span class="h6 font-semibold text-muted bg-soft-success text-sm d-block mb-2 font-control">
+                  {{ imwItem.labelName }}
+                </span>
+                <span class="h3 font-bold mb-0 self_task">
+                  <a class="h3 font-bold mb-0 self_task" 
+                  [routerLink]="[ '/main', 'home', imwItem.statusCode, imwItem.processTypeName ]">
+                    {{ imwItem.serviceCount }}
+                  </a>
+                </span>
+              </div>
+              <div class="col-auto pl-0">
+                <div class="icon icon-shape text-white text-lg rounded-circle"
+                [ngClass]="{'bg-tertiary option-icon-bg-1': i == 0, 
+                'bg-primary option-icon-bg-2': i == 1}">
+                  <img [src]="estimatesImagesPath[i]" class="db_img" />
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="mb-0 text-sm">
+              <span class="badge badge-pill bg-soft-success text-success me-2">
+                <mat-icon class="icon_color1">low_priority</mat-icon>
+              </span>
+              <span class="text-nowrap text-xs text-muted">Low Level</span>
+              <span class="text-nowrap text-xs text-muted lowlevel_task">
+                <a class="lowlevel_task" [routerLink]="['/main', 'sub-list', imwItem.statusCode, imwItem.processTypeName]">
+                  {{ imwItem.subLevelCount }}
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <h3  *ngIf="erwProcess.length">
+      <img [src]="imagePath2" class="db_imgh2"/>{{erwHeading}} Process
+    </h3>
+    <div class="row g-6" *ngIf="erwProcess.length">
+      <div class="col-xl-3 col-sm-6 col-12 mb-3" *ngFor="let imwItem of erwProcess; index as i">
+        <div class="card shadow border-0 option-main-bg-1">
+          <div class="card-body">
+            <div class="row">
+              <div class="col pr-0">
+                <span class="h6 font-semibold text-muted bg-soft-success text-sm d-block mb-2 font-control">
+                  {{ imwItem.labelName }}
+                </span>
+                <span class="h3 font-bold mb-0 self_task">
+                  <a class="h3 font-bold mb-0 self_task" 
+                  [routerLink]="[ '/main', 'home', imwItem.statusCode, imwItem.processTypeName ]">
+                    {{ imwItem.serviceCount }}
+                  </a>
+                </span>
+              </div>
+              <div class="col-auto pl-0">
+                <div class="icon icon-shape text-white text-lg rounded-circle"
+                [ngClass]="{'bg-tertiary option-icon-bg-1': i == 0}">
+                  <img [src]="estimatesImagesPath[i]" class="db_img" />
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="mb-0 text-sm">
+              <span class="badge badge-pill bg-soft-success text-success me-2">
+                <mat-icon class="icon_color1">low_priority</mat-icon>
+              </span>
+              <span class="text-nowrap text-xs text-muted">Low Level</span>
+              <span class="text-nowrap text-xs text-muted lowlevel_task">
+                <a class="lowlevel_task" [routerLink]="['/main', 'sub-list', imwItem.statusCode, imwItem.processTypeName]">
+                  {{ imwItem.subLevelCount }}
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <h3 *ngIf="bmrProcess.length">
+      <img [src]="imagePath2" class="db_imgh2"/>{{bmrHeading}} Process
+    </h3>
+    <div class="row g-6 bmr-process" *ngIf="bmrProcess.length">
+      <div class="col-xl-3 col-sm-6 col-12 mb-3" *ngFor="let imwItem of bmrProcess; index as i">
+        <div class="card shadow border-0 option-main-bg-1">
+          <div class="card-body">
+            <div class="row">
+              <div class="col pr-0">
+                <span class="h6 font-semibold text-muted bg-soft-success text-sm d-block mb-2 font-control">
+                  {{ imwItem.labelName }}
+                </span>
+                <span class="h3 font-bold mb-0 self_task">
+                  <a class="h3 font-bold mb-0 self_task" 
+                  [routerLink]="[ '/main', 'home', imwItem.statusCode, imwItem.processTypeName ]">
+                    {{ imwItem.serviceCount }}
+                  </a>
+                </span>
+              </div>
+              <div class="col-auto pl-0">
+                <div class="icon icon-shape text-white text-lg rounded-circle"
+                [ngClass]="{'bg-tertiary option-icon-bg-1': i == 0}">
+                  <img [src]="estimatesImagesPath[i]" class="db_img" />
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="mb-0 text-sm">
+              <span class="badge badge-pill bg-soft-success text-success me-2">
+                <mat-icon class="icon_color1">low_priority</mat-icon>
+              </span>
+              <span class="text-nowrap text-xs text-muted">Low Level</span>
+              <span class="text-nowrap text-xs text-muted lowlevel_task">
+                <a class="lowlevel_task" [routerLink]="['/main', 'sub-list', imwItem.statusCode, imwItem.processTypeName]">
+                  {{ imwItem.subLevelCount }}
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </div>
+</div>
+<!-- End Dashboard-->

@@ -1,0 +1,51 @@
+<div class="heading">
+  <h1 mat-dialog-title>Select Templates</h1>
+  <button
+    mat-button
+    mat-dialog-close
+    style="background-color: transparent; border: none; font-size: 20px; padding: 0;"
+  >
+    <img src="assets/cross-icon.png" alt="" />
+  </button>
+</div>
+<div class="content mt-4" mat-dialog-content>
+  <div class="searchBox">
+    <mat-form-field appearance="fill" class="searchInput">
+      <mat-label>Type here to search a template</mat-label>
+      <input matInput [(ngModel)]="searchValue" (input)="applyFilter()" />
+    </mat-form-field>
+  </div>
+  <div class="mt-4" style="display: flex; flex-wrap: wrap; overflow: auto">
+    <table
+      class="table text-center"
+      style="width: 100%; flex-wrap: wrap; border: 1px solid #757575"
+    >
+      <thead style="background-color: #f3f7fa">
+        <tr>
+          <th scope="col">Template No</th>
+          <th scope="col">Template Name</th>
+          <th scope="col">Work Execution</th>
+          <th scope="col">Dop Category</th>
+          <th scope="col">Estimation Source</th>
+          <th scope="col">Rate Type</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody style="cursor: pointer">
+        <tr *ngFor="let dataItem of data">
+          <td>{{ dataItem.templateNo }}</td>
+          <td>{{ dataItem.estimationTemplateName }}</td>
+          <td>{{ dataItem.workExecution }}</td>
+          <td>{{ dataItem.workCategoryName }}</td>
+          <td>{{ dataItem.estimationSource === "CDT" ? "User" : "Generic" }}</td>
+          <td>{{ dataItem.rateType }}</td>
+          <td>
+            <button class="btn clor" (click)="onSave(dataItem.templateNo)">
+              Apply
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,166 @@
+h1 {
+  color: #484848;
+  font-weight: 600;
+  margin: unset !important;
+}
+
+section {
+  margin: 0.5rem;
+
+}
+
+.inline-label {
+  display: flex;
+  align-items: center;
+  margin-right: 400px;
+}
+
+.inline-items {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.label-column {
+  margin-top: 0.5rem;
+}
+
+.label-style {
+  margin-top: 0.5rem;
+  // margin-right: 40px;
+  font-size: 0.9rem;
+}
+
+.select-column {
+  margin-top: 0.5rem;
+}
+
+.select-style {
+  padding: 0.5rem;
+  border: 1px solid #939393;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+}
+.txt-area {
+  display: flex;
+  // gap: 1rem;
+  font-size: 0.9rem;
+
+  textarea {
+    padding: 0.5rem;
+    border: 1px solid #939393;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    width: 80%;
+  }
+}
+
+.form-control {
+  padding: 0.5rem;
+  border: 1px solid #939393;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+}
+
+.btn-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.4rem 1rem;
+  background-color: #4472c4;
+  color: white;
+  min-height: 1.5rem;
+  min-width: 3rem;
+
+  &:hover {
+    background-color: #7f9cce;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  section {
+    margin: 1rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+
+    .inner-div {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+
+      label,
+      input,
+      p,
+      select {
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .txt-area {
+    flex-direction: column;
+    
+    textarea {
+      width: 100% !important;
+      
+    }
+  }
+}
+
+.inner-div.inline-label {
+  display: flex;
+  align-items: center;
+  margin-right: 10px; 
+  
+
+  label {
+    margin: 0;
+    font-size: 0.9rem;
+    white-space: nowrap; 
+  }
+
+  .inline-items {
+    position: relative;
+    flex: 1;
+    display: flex-start;
+    align-items: center;
+    .search-icon {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+  }
+}
+.form-control-p {
+  padding: 0.3rem; 
+  border: 1px solid #939393;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  font-size: 0.8rem; 
+  height: 2rem;
+  width: 30% !important; 
+}
+
+.date-pipe {
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+}
+
+.label-container {
+  width: 120px;
+}
+
+.label-container,
+.label-container label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}

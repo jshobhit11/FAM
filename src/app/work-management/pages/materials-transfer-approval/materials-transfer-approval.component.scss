@@ -1,0 +1,64 @@
+h1 {
+    color: #484848;
+    margin-top: 1rem;
+    padding-left: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  
+  table {
+    width: 100%;
+    overflow: auto;
+    min-width: 30rem;
+  
+    th {
+      color: #4472c4;
+    }
+  
+    th,
+    td {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+  }
+  
+  .heading {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  
+  .btn {
+    padding: 0.4rem 1rem;
+    background-color: #4472c4;
+    color: white;
+    min-height: 2.5rem;
+    min-width: 5rem;
+  
+    &:hover {
+      background-color: #7f9cce;
+    }
+  }
+  
+  ::ng-deep .mat-form-field {
+    width: 50% !important;
+    font-size: 0.9rem !important;
+  }
+  
+  @media only screen and (max-width: 1000px) {
+    section {
+      margin: unset;
+    }
+  
+    ::ng-deep .mat-form-field {
+      width: 100% !important;
+    }
+  }
+  

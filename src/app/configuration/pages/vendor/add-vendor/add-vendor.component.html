@@ -1,0 +1,203 @@
+<section >
+    <form [formGroup]="vendorForm">
+    <h1 mat-dialog-title>Add Vendor</h1>
+        <div class="modal-input-control">
+            <div class="col-sm-6">
+                Office Name<br>
+                <div class="card flex justify-content-center">
+                    <form [formGroup]="treeForm">
+                        <p-treeSelect class="md:w-20rem w-full"
+                        containerStyleClass="w-full"
+                        formControlName="selectedNodes"
+                        (onNodeSelect)="nodeSelect($event.node)"
+                        selectionMode="single"
+                        (onNodeUnselect)="nodeUnselect()"
+                        [(ngModel)]="selected"
+                        [options]="nodes"
+                        [filter]="true"
+                        [scrollHeight]="'250px'"
+                    > </p-treeSelect>
+                    </form>
+                    <mat-error *ngIf="treeForm.get('selectedNodes').hasError('required')">
+                        Please select Office Name.
+                      </mat-error>
+                  </div>
+              </div>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Registration No</mat-label>
+                <input matInput placeholder="Reg No" [(ngModel)]="vendorObj.vendorRegistrationNo" 
+                formControlName="vendorRegistrationNo" [maxLength]="20" appAlphaNumeric/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Organization Name</mat-label>
+                <input matInput placeholder="Org name" [(ngModel)]="vendorObj.vendorOrganizationName" 
+                formControlName="vendorOrganizationName" [maxLength]="100" appAlphaNumeric />
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field appearance="fill" class="date-picker-field">
+                <mat-datepicker-toggle matSuffix [for]="vendorRegistrationDate"></mat-datepicker-toggle>
+                <mat-label>Vendor Registration Date</mat-label>
+                <input matInput [matDatepicker]="vendorRegistrationDate" 
+                [(ngModel)]="vendorObj.vendorRegistrationDate"
+                formControlName="vendorRegistrationDate" appDateRangeValidator readonly>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker #vendorRegistrationDate></mat-datepicker>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="custom-datepicker-field">
+                <mat-datepicker-toggle matSuffix [for]="vendorRegistrationValidUpto"></mat-datepicker-toggle>
+                <mat-label>Vendor Registration Valid Upto</mat-label>
+                <input matInput [matDatepicker]="vendorRegistrationValidUpto"
+                    [(ngModel)]="vendorObj.vendorRegistrationValidUpto"
+                    formControlName="vendorRegistrationValidUpto" readonly>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker #vendorRegistrationValidUpto></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Code</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.vendorCode" 
+                formControlName="vendorCode"[maxLength]="20" appAlphaNumeric required />
+                <mat-error>Please fill in this field.</mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <mat-label>vendor Type</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.vendorType" 
+                formControlName="vendorType" [maxLength]="20" appAlphaNumeric required/>
+                <mat-error>Please fill in this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor License Number</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.vendorLicenseNumber" 
+                formControlName="vendorLicenseNumber" [maxLength]="50" appAlphaNumeric/>
+                <mat-error>Please fill in this field.</mat-error>
+            </mat-form-field>
+ 
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Contact Details</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.vendorContactDetails" 
+                formControlName="vendorContactDetails" [maxLength]="10" appMobileValidation/>
+                <mat-error>Please fill in this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Website</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.vendorWebsite" 
+                formControlName="vendorWebsite" appWebsiteUrlValidator [maxLength]="100"/>
+                <mat-error>Please fill in this field.</mat-error>
+            </mat-form-field>
+ 
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Address</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.vendorAddress" 
+                formControlName="vendorAddress" [maxLength]="200" appAlphaNumeric/>
+                <mat-error>Please fill in this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Email ID</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.vendorEmailId" 
+                formControlName="vendorEmailId" appEmailValidator [maxLength]="50"/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+ 
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Person Name</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.contactPersonName" 
+                formControlName="contactPersonName" appAlphaNumeric [maxLength]="100"/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Person Phone No</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.contactPhoneNo" 
+                formControlName="contactPhoneNo" appMobileValidation [maxLength]="10"/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+ 
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Person Email ID</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.contactPersonEmailId" 
+                formControlName="contactPersonEmailId" appEmailValidator [maxLength]="50"/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Vendor Person Address</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.contactPersonAddress"
+                formControlName="contactPersonAddress" appAlphaNumeric [maxLength]="200" />
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+ 
+            <mat-form-field class="example-full-width">
+                <mat-label>No of Work Allocated</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.noofworksAllocated"
+                formControlName="noofworksAllocated" appNumbers [maxLength]="5" />
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Emd Receipt No</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.emdReceiptNo"
+                formControlName="emdReceiptNo" appAlphaNumeric [maxLength]="20" />
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+ 
+            <mat-form-field appearance="fill" class="custom-datepicker-field">
+                <mat-datepicker-toggle matSuffix [for]="emdReceiptDate"></mat-datepicker-toggle>
+                <mat-label>Emd Receipt Date</mat-label>
+                <input matInput [matDatepicker]="emdReceiptDate"
+                    [(ngModel)]="vendorObj.emdReceiptDate"
+                    formControlName="emdReceiptDate" readonly>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker #emdReceiptDate></mat-datepicker>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Emd Amount</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.emdAmount"
+                formControlName="emdAmount" appIndianCurrency [maxLength]="10" />
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+ 
+            <mat-form-field class="example-full-width">
+                <mat-label>Emd Eligibility %</mat-label>
+                <input matInput placeholder="Ex. Each" [(ngModel)]="vendorObj.emdEligibilityPercentage" 
+                formControlName="emdEligibilityPercentage" appPercentageValidator [maxLength]="4"/>
+                <mat-error>Please select this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+              <mat-form-field class="fill">
+                <mat-label>Discom</mat-label>
+                <mat-select [(ngModel)]="vendorObj.discom" formControlName="discom" required>
+                  <mat-option *ngFor="let main of DiscomData" [value]="main.discomCode">
+                    {{ main.discomName }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="vendorForm.get('discom').invalid && vendorForm.get('discom').touched">
+                  Please select in this field.</mat-error> 
+              </mat-form-field>
+
+            </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+        <button class="c-btn" mat-button (click)="addVendor()">Add</button>
+        <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+
+</form>
+</section>

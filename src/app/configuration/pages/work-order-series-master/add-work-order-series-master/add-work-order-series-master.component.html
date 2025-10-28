@@ -1,0 +1,115 @@
+<section [formGroup]="workOrderSeriesForm">
+  <h1 mat-dialog-title>Add Work Order Series Master</h1>
+  <div class="content-fields mt-4">
+    <div class="modal-input-control">
+      <!-- <div class="col-sm-6" id="office">
+        Office Name<br>
+        <div class="card flex justify-content-center">
+          <form [formGroup]="treeForm">
+            <p-treeSelect
+              class="md:w-20rem w-full"
+              formControlName="selectedNodes"
+              (onNodeSelect)="nodeSelect($event.node)"
+              selectionMode="single"
+              (onNodeUnselect)="nodeUnselect()"
+              [(ngModel)]="selected"
+              [options]="nodes"
+              [filter]="true" 
+              [filterInputAutoFocus]="true"
+              [scrollHeight]="'180px'"
+            ></p-treeSelect>
+          </form>
+          <mat-error *ngIf="treeForm.get('selectedNodes').hasError('required')">
+            Please select Office Name.
+          </mat-error>
+        </div>
+      </div> -->
+      <mat-form-field appearance="fill">
+        <mat-label>Office</mat-label>
+        <mat-select [(ngModel)]="workOrdSeriesObj.officeId" formControlName="parentOfficeId" required>
+          <mat-option *ngFor="let main of parent" [value]="main.officeMasterId">
+            {{ main.officeCode }}-{{main.officeName}}
+          </mat-option>
+        </mat-select>
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Financial Year</mat-label>
+        <mat-select [(ngModel)]="workOrdSeriesObj.financialYear" formControlName="financialYear" required>
+          <mat-option *ngFor="let main of financialData" [value]="main.financialYear">
+            {{ main.financialYear }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field appearance="fill">
+        <mat-label>Alphabet Sequence</mat-label>
+        <mat-select [(ngModel)]="workOrdSeriesObj.alphabetSequence" formControlName="alphabetSequence" required>
+          <!-- Loop through alphabets -->
+          <mat-option *ngFor="let alphabet of alphabets" [value]="alphabet">
+            {{ alphabet }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Account Head Name</mat-label>
+        <input type="text" placeholder="Search Account Head" matInput [formControl]="filterControl" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayAccountHeadOption.bind(this)" (optionSelected)="onAccountHeadOptionSelected($event.option.value)">
+          <mat-option *ngFor="let option of filteredAccountHeadOptions | async" [value]="option">
+            {{ option.displayText }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="workOrderSeriesForm.get('accountHeadMasterId').hasError('required')">
+          Please select this field.
+        </mat-error>
+      </mat-form-field>
+       </div>
+       
+    <div class="modal-input-control">
+      <mat-form-field class="fill">
+        <mat-label>start Number</mat-label>
+        <input
+          matInput
+          placeholder="Ex. Each"
+          [(ngModel)]="workOrdSeriesObj.startNumber"
+          formControlName="startNumber"
+          appNumbers
+          [maxLength]="15"  
+          required
+        />
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>End Number</mat-label>
+        <input
+          matInput
+          placeholder="Ex. Each"
+          [(ngModel)]="workOrdSeriesObj.endNumber"
+          formControlName="endNumber"
+          appNumbers
+          [maxLength]="15"
+          required
+        />
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="modal-input-control" *ngIf="lineTypeStatus">
+      <mat-form-field appearance="fill">
+        <mat-label>Line Type</mat-label>
+        <mat-select formControlName="lineType" [(ngModel)]="workOrdSeriesObj.lineType" required>
+          <mat-option value="serviceMain">Service Main</mat-option>
+          <mat-option value="lineExtension">Line Extension</mat-option>
+        </mat-select>
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="onAddWorkOrdSeriesMaster()">Add</button>
+      <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+  </div>
+</section>

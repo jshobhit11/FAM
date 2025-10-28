@@ -1,0 +1,49 @@
+<div class="page-1">
+    <section>
+       <form class="form" [formGroup]="meterChangeDetailsReport">
+          <div class="page__content shadow p-3 position-relative dis-flex-colu">
+            <h2 class="title-2">Meter Change Details</h2>
+            <div  style="overflow: auto;  width: 100%;  border: 2px solid #c2c2c2; margin-top: 1rem;" >
+            <table class="table table-bordered text-center">
+              <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                <tr>
+                  <th rowspan="2"scope="col">S.No</th>
+                  <th rowspan="2"scope="col">Work Order No</th>
+                  <th rowspan="2"scope="col">Account ID</th>
+                  <th rowspan="2"scope="col">SP ID</th>
+                  <th rowspan="2"scope="col">Meter Replacement Date</th>
+                  <th class="main-heading bg-old-qty" colspan="3" scope="colgroup">Old Meter Data</th>
+                  <th  class="main-heading bg-new-qty" colspan="3" scope="colgroup">New Meter Data</th>
+                </tr>
+                <tr style="background-color: #f2f2f2;">
+                    <th class="sub-heading bg-old-qty" scope="col">Meter ID</th>
+                    <th class="sub-heading bg-old-qty" scope="col">Meter status</th>
+                    <th class="sub-heading bg-old-qty"scope="col">KWH Reading</th>
+                    <th class="sub-heading bg-new-qty"scope="col">Meter ID</th>
+                    <th class="sub-heading bg-new-qty"scope="col">Intial Reading (KWH)</th>
+                    <th class="sub-heading bg-new-qty" scope="col">Multiplication Factor</th>           
+                  </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of fileContent; let i = index">
+                  <!-- <td *ngFor="let column of row.slice(0, 11)">{{ column }}</td> -->
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ row.workorderNo }} </td>
+                  <td>{{ row.accountId }}</td>
+                  <td>{{ row.spId }}</td>
+                  <td>{{ row.meterReplacementDate }}</td>
+                  <td>{{ row.oldBadgeNumber }}</td>
+                  <td>{{ row.oldMeterStatus }}</td>
+                  <td>{{ row.finalKwhReading }}</td>
+                  <td>{{ row.newBadgeNumber }}</td>
+                  <td>{{ row.kwhInitialReading }}</td>
+                  <td>{{ row.mf }}</td>
+                </tr>
+              </tbody>
+              
+            </table>
+          </div>
+         </div>
+        </form>
+      </section>
+    </div>

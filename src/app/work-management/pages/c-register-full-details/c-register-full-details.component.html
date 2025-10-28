@@ -1,0 +1,421 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/dashboard">Works</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/c-registered-details"
+              >C Registered Details</a
+            >
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">C Registered Full Details</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+<section>
+  <div class="page__content shadow p-3 position-relative dis-flex-colu">
+  <h2 class="heading">C Register Full Details</h2>
+
+  <div class="work-order p-3">
+    <h2>Estimation Details</h2>
+    <table class="my-scrollable-table">
+      <tr>
+        <th scope="col">Sr No.</th>
+        <th scope="col">Estimation No.</th>
+        <th scope="col">Estimation Date</th>
+        <th scope="col">Estimation Amount</th>
+        <th scope="col">Dop Category</th>
+        <th scope="col">Execution Method</th>
+        <th scope="col">View</th>
+      </tr>
+      <tr *ngFor="let est of details?.estimationRegisteredDTO; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ est.estimationNo }}</td>
+        <td>{{ est.estimationDate | date : "dd/MM/yyyy" }}</td>
+        <td>{{ est.estimationTotalCost }}</td>
+        <td>{{ est.workCategory }}</td>
+        <td>{{ est.woExecutionMethodName }}</td>
+        <td>
+          <a
+            type="button"
+            href="javascript:void(0);"
+            style="color: #4472c4; text-decoration: none;"
+            (click)="generateEstimationReport()"
+            title="Download"
+          >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4472c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download" style="vertical-align: middle;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="work-order p-3">
+    <h2>Work Order Details</h2>
+    <table class="my-scrollable-table">
+      <tr>
+        <th scope="col">Sr No.</th>
+        <th scope="col">Work Order No.</th>
+        <th scope="col">Work Order Date</th>
+        <th scope="col">Execution Method</th>
+        <th>View</th>
+      </tr>
+      <tr
+        *ngFor="
+          let work of details?.wmWorkorderRegisteredResponseDTO;
+          index as i
+        "
+      >
+        <td>{{ i + 1 }}</td>
+        <td>{{ work.workorderNo }}</td>
+        <td>{{ work.workorderDate | date : "dd/MM/yyyy" }}</td>
+        <td>{{ work.workExecutionMethod }}</td>
+        <td>
+          <a
+            type="button"
+            href="javascript:void(0);"
+            style="color: #f7f8f9; text-decoration: none;"
+            title="Download"
+            (click)="generateWorkOrderReport(work.wmWorkorderRegisteredId)"
+          >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4472c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download" style="vertical-align: middle;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details?.wmWorkorderRegisteredResponseDTO[0]?.workExecutionMethod !==
+      'Self Execution'
+    "
+  >
+    <h2>Work Awarded Details</h2>
+    <table class="my-scrollable-table">
+      <tr>
+        <th scope="col">Sr No.</th>
+        <th scope="col">Work Award No.</th>
+        <th scope="col">Work Award Date</th>
+        <th scope="col">Work Award Amount</th>
+        <th>View</th>
+      </tr>
+      <tr *ngFor="let workAward of details?.wmWorkAwardedLogList; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ workAward?.workAwardedNo }}</td>
+        <td>{{ workAward?.workAwardedDate | date : "dd/MM/yyyy" }}</td>
+        <td>{{ workAward?.workAwardedAmount }}</td>
+        <td>
+          <a
+            type="button"
+            href="javascript:void(0);"
+            style="color: #f7f8f9; text-decoration: none;"
+            title="Download"
+            (click)="generateWorkAwardReport(workAward.wmWorkorderRegisteredId)"
+          >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#4472c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download" style="vertical-align: middle;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div
+    class="work-order p-3"
+    *ngIf="
+      details?.wmWorkorderRegisteredResponseDTO[0]?.workExecutionMethod !==
+      'Self Execution'
+    "
+  >
+    <h2>Bill Submission Details</h2>
+    <table class="my-scrollable-table">
+      <tr>
+        <th scope="col">Sr No.</th>
+        <th scope="col">Bill No</th>
+        <th scope="col">Bill Amount</th>
+        <th scope="col">Bill Date</th>
+        <th scope="col">RC Contractor / Vendor</th>
+      </tr>
+      <tr *ngFor="let bill of details?.billSubmissionLogList; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ bill?.billInvoiceNo }}</td>
+        <td>{{ bill?.billAmount }}</td>
+        <td>{{ bill?.billSubmissionDate | date : "dd/MM/yyyy" }}</td>
+        <td>
+          <span *ngIf="bill.workExecutionMethod == 'Labour Contract'">{{
+            bill?.vendorName == "null" ? "-" : bill?.vendorName
+          }}</span>
+          <span *ngIf="bill.workExecutionMethod != 'Labour Contract'">{{
+            bill?.rc == "null" ? "-" : bill?.rc
+          }}</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="work-order p-3">
+    <h2>Asset Details</h2>
+    <table class="my-scrollable-table">
+      <tr>
+        <th scope="col">Sr No.</th>
+        <th scope="col">Asset ID</th>
+        <th scope="col">Asset Type</th>
+        <th scope="col">Material Code</th>
+        <th scope="col">Quantity</th>
+      </tr>
+      <tr *ngFor="let asset of details?.amAssetRegisterLogList; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ asset?.assetId }}</td>
+        <td>{{ asset?.assetType }}</td>
+        <td>{{ asset?.mlCode }}</td>
+        <td>{{ asset?.quantity }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <div
+    style="
+      overflow: auto;
+      width: 100%;
+      border: 2px solid #c2c2c2;
+      margin-top: 1rem;
+    "
+    *ngIf="
+      details?.wmWorkorderRegisteredResponseDTO[0]?.workExecutionMethod !==
+        'Total Turnkey' &&
+      details?.wmWorkorderRegisteredResponseDTO[0]?.workExecutionMethod !==
+        'Self Execution'
+    "
+  >
+    <h2>Material Invoice Details</h2>
+    <table class="table table-bordered text-center">
+      <thead style="background-color: #f2f2f2; color: #3e3e3e">
+        <tr>
+          <th class="main-heading" rowspan="2" scope="col">S.No</th>
+          <th class="main-heading" rowspan="2" scope="col">Material Code</th>
+          <th class="main-heading" rowspan="2" scope="col">Estimated Qty</th>
+          <th class="main-heading" rowspan="2" scope="col">Drawn Total Qty</th>
+          <th class="main-heading" colspan="3" scope="colgroup">
+            Drawn New Qty
+          </th>
+          <th class="main-heading" colspan="3" scope="colgroup">
+            Drawn Used Qty
+          </th>
+          <th class="main-heading" rowspan="2" scope="col">Part</th>
+          <th class="main-heading" rowspan="2" scope="col">Invoice No</th>
+          <th class="main-heading" rowspan="2" scope="col">Invoice Date</th>
+          <th class="main-heading" rowspan="2" scope="col">Store Code</th>
+        </tr>
+        <tr style="background-color: #f2f2f2">
+          <th class="sub-headings bg-issue-qty" scope="col">Qty</th>
+          <th class="sub-headings bg-issue-qty" scope="col">Rate</th>
+          <th class="sub-headings bg-issue-qty" scope="col">Amount</th>
+          <th class="sub-headings bg-issue-qty" scope="col">Qty</th>
+          <th class="sub-headings bg-issue-qty" scope="col">Rate</th>
+          <th class="sub-headings bg-issue-qty" scope="col">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dataItem of details.materialsDetailsList; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ dataItem?.mlCode }}</td>
+          <td>
+            {{
+              (dataItem?.estimatedQuantity === "null"
+                ? 0
+                : dataItem?.estimatedQuantity
+              ) | number : "1.2-2"
+            }}
+          </td>
+          <td>
+            {{
+              (dataItem?.issuedQuantity === "null"
+                ? 0
+                : dataItem?.issuedQuantity
+              ) | number : "1.2-2"
+            }}
+          </td>
+          <td>{{ dataItem?.issuedNewQty }}</td>
+          <td>{{ dataItem?.issuedRate }}</td>
+          <td>{{ dataItem?.issuedAmount }}</td>
+          <td>{{ dataItem?.issuedUsedQty }}</td>
+          <td>{{ dataItem?.usedIssuedRate }}</td>
+          <td>{{ dataItem?.usedIssuedAmount }}</td>
+
+          <td>{{ dataItem?.part }}</td>
+
+          <td>{{ dataItem?.invoiceNo }}</td>
+          <td>{{ dataItem?.invoiceDate | date : "dd/MM/yyyy" }}</td>
+          <td>{{ dataItem?.storeCode }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div
+    style="
+      overflow: auto;
+      width: 100%;
+      border: 2px solid #c2c2c2;
+      margin-top: 1rem;
+    "
+  >
+    <h2>Material Acknowledgement Details</h2>
+    <table class="table table-bordered text-center">
+      <thead style="background-color: #f2f2f2; color: #3e3e3e">
+        <tr>
+          <th class="main-heading" rowspan="2" scope="col">S.No</th>
+          <th class="main-heading" rowspan="2" scope="col">Material Code</th>
+          <th class="main-heading" rowspan="2" scope="col">Estimated Qty</th>
+          <th class="main-heading" rowspan="2" scope="col">Return Total Qty</th>
+          <th class="main-heading" colspan="3" scope="colgroup">
+            Return New Qty
+          </th>
+          <th class="main-heading" colspan="3" scope="colgroup">
+            Return Used Qty
+          </th>
+          <th class="main-heading" rowspan="2" scope="col">Part</th>
+          <th class="main-heading" rowspan="2" scope="col">
+            Acknowledgement No
+          </th>
+          <th class="main-heading" rowspan="2" scope="col">
+            Acknowledgement Date
+          </th>
+          <th class="main-heading" rowspan="2" scope="col">Store Code</th>
+        </tr>
+        <tr style="background-color: #f2f2f2">
+          <th class="sub-headings bg-issue-qty" scope="col">Qty</th>
+          <th class="sub-headings bg-issue-qty" scope="col">Rate</th>
+          <th class="sub-headings bg-issue-qty" scope="col">Amount</th>
+          <th class="sub-headings bg-issue-qty" scope="col">Qty</th>
+          <th class="sub-headings bg-issue-qty" scope="col">Rate</th>
+          <th class="sub-headings bg-issue-qty" scope="col">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let dataItem of details.materialAcknowledgementDetailsList;
+            index as i
+          "
+        >
+          <td>{{ i + 1 }}</td>
+          <td>{{ dataItem?.mlCode }}</td>
+          <td>
+            {{
+              (dataItem?.estimatedQuantity === "null"
+                ? 0
+                : dataItem?.estimatedQuantity
+              ) | number : "1.2-2"
+            }}
+          </td>
+          <td>
+            {{
+              (dataItem?.issuedQuantity === "null"
+                ? 0
+                : dataItem?.issuedQuantity
+              ) | number : "1.2-2"
+            }}
+          </td>
+          <td>{{ dataItem?.issuedNewQty }}</td>
+          <td>{{ dataItem?.issuedRate }}</td>
+          <td>{{ dataItem?.issuedAmount }}</td>
+          <td>{{ dataItem?.issuedUsedQty }}</td>
+          <td>{{ dataItem?.usedIssuedRate }}</td>
+          <td>{{ dataItem?.usedIssuedAmount }}</td>
+
+          <td>{{ dataItem?.part }}</td>
+
+          <td>{{ dataItem?.invoiceNo }}</td>
+          <td>{{ dataItem?.invoiceDate | date : "dd/MM/yyyy" }}</td>
+          <td>{{ dataItem?.storeCode }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Work Order Budget Details -->
+  <div class="work-order p-3">
+    <h2>Work Order Budget Details</h2>
+    <!-- <b>{{ details?.wmWorkorderRegisteredResponseList[0]?.estimationTotalCost }}</b> -->
+    <!-- <div class="mt-2 d-flex justify-content-start">
+      <div><b>Work Order Approved Amount</b></div>
+      <div class="ms-4"><b> : </b></div>
+      <div class="ms-4">
+        <b>0</b>
+      </div>
+    </div> -->
+
+    <!-- Invoice Details -->
+    <div class="mt-2"><b>Expenditure Details</b></div>
+    <table class="table est-config-table" style="margin-top: 1rem; width: 100%; flex-wrap: wrap">
+      <thead style="background-color: #dfdfdf">
+      <tr>
+        <th scope="col">Invoice No.</th>
+        <th scope="col">Expenditure Amount</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dataItem of expenditureInvoice; index as i">
+          <td>{{ dataItem.invoiceNo }}</td>
+          <td>{{ dataItem.expenditureAmount }}</td>
+        </tr>
+        <tr>
+          <td>Total Invoice Amount ( A )</td>
+          <td>{{ totalInvoiceAmt }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Acknowledgement Details -->
+    <div class="mt-2"><b>Acknowledgement Details</b></div>
+    <table class="table est-config-table" style="margin-top: 1rem; width: 100%; flex-wrap: wrap">
+      <thead style="background-color: #dfdfdf">
+      <tr>
+        <th scope="col">Acknowledgement No.</th>
+        <th scope="col">Expenditure Amount</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dataItem of expenditureAck; index as i">
+          <td>{{ dataItem.invoiceNo }}</td>
+          <td>{{ dataItem.expenditureAmount }}</td>
+        </tr>
+        <tr>
+          <td>Total Acknowledgement Amount ( B )</td>
+          <td>{{ totalAckAmt }}</td>
+        </tr>
+        <tr>
+          <td>Bill Submission ( C )</td>
+          <td>{{ billSubmissionAmt }}</td>
+        </tr>
+        <tr>
+          <td>Total Expenditure (A + C - B)</td>
+          <td>{{ (totalInvoiceAmt + billSubmissionAmt) - totalAckAmt  }}</td>
+        </tr>
+      </tbody>
+    </table>
+   </div>
+ 
+</div>
+</section>
+</div>

@@ -1,0 +1,28 @@
+<section>
+  <form [formGroup]="meterTypeForm">
+  <h1 mat-dialog-title>Update Meter Type</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Meter Type</mat-label>
+        <input matInput placeholder="update meter type"
+          required formControlName="meterType" appAlphaNumericWithHyphen [maxLength]="50"/>
+          <mat-error>Please enter this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Select or enter material code" aria-label="Material Code" matInput [matAutocomplete]="auto" formControlName="materialCode" 
+        (input)="onInputChange($event.target.value)" required>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of materialData" [value]="option.mlCode">{{ option.mlCode }}</mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="meterTypeForm.get('materialCode').invalid && meterTypeForm.get('materialCode').touched">
+          Please select in this field.</mat-error>
+      </mat-form-field>
+      </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onUpdate()">Update</button>
+    <button class="c-btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+  </form>
+</section>

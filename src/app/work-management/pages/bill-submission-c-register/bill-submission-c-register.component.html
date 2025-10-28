@@ -1,0 +1,66 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/dashboard">Works</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Bill Submission Pricing</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <!-- <div class="container-fluid page">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Bill Submission Verification</h2>
+
+      <div style="display: flex; flex-wrap: wrap; overflow: auto">
+        <table
+          class="table table-bordered text-center"
+          style="margin-top: 2rem; width: 100%; flex-wrap: wrap"
+        >
+          <thead>
+            <tr>
+              <th scope="col">Sr. No.</th>
+              <th scope="col">Bill No.</th>
+              <th scope="col">Bill Amount</th>
+              <th scope="col">Bill Submission Date</th>
+              <th scope="col">Work Order No</th>
+            </tr>
+          </thead>
+          <tbody style="cursor: pointer">
+            <tr *ngFor="let d of data; index as i">
+              <td>
+                {{ i + 1 }}
+              </td>
+              <td>
+                <a
+                  routerLink="/work-management/c-register-bill-submission-details/{{
+                    d.billSubmissionLogId
+                  }}"
+                  >{{ d?.billInvoiceNo }}</a
+                >
+              </td>
+              <td>{{ d?.billAmount }}</td>
+              <td>{{ d?.billSubmissionDate | date : "dd/MM/yyyy" }}</td>
+              <td>{{ d?.workorderNo }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div> -->
+  <app-filter-table
+    [headingName]="labelName"
+    [isOffice]="true"
+    [cols]="cols"
+    [rows]="data"
+    [data]="data"
+    [filterFields]="filterFields"
+    [loading]="false"
+  >
+  </app-filter-table>
+</div>

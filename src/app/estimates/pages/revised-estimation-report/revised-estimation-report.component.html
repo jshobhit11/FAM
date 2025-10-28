@@ -1,0 +1,477 @@
+<section *ngIf="data && data.serviceRegistration">
+  <button
+    class="btn btn-sm mt-2"
+    style="background-color: #4472c4; color: white; float: right"
+    (click)="generateReviseEstimateReport()"
+  >
+    Revise Estimate 
+  </button>
+  <button
+  class="btn btn-sm mt-2 me-4"
+  style="background-color: #4472c4; color: white; float: right"
+  (click)="generateOriginalEstimateReport()"
+>
+  Original Estimate
+</button>
+  <form class="form" id="printForm">
+    <div class="col-lg-6 mt-4" style="width: 100% !important; padding: 1rem">
+      <div>
+        <h2>Revised Estimation Approval Report</h2>
+      </div>
+
+      <div class="two-row-grid mt-4" *ngIf="data.serviceRegistration.accountId != 'null'">
+        <div class="left-div">
+          <div class="inner-div">
+            <label>Account ID</label>
+            <p>{{ data.serviceRegistration.accountId }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Name & Address</label>
+            <p>
+              {{ data.serviceRegistration.applicantName }} ,
+              {{ data.serviceRegistration.address }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <label>Application Category</label>
+            <p>{{ data.serviceRegistration.applicantType }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Email ID</label>
+            <p>
+              {{
+                data.serviceRegistration.email !== "null"
+                  ? data.serviceRegistration.email
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <label>Contact No.</label>
+            <p>
+              {{
+                data.serviceRegistration.mobile !== "null"
+                  ? data.serviceRegistration.mobile
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <label>Applicant Type</label>
+            <p>{{ data.serviceRegistration.applicantType }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Application Type</label>
+            <p>{{ data.serviceRegistration.connectionType }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Tariff Classification & Nature of Services</label>
+            <p>{{ data.serviceRegistration.tariff }}</p>
+          </div>
+        </div>
+        <div>
+          <div class="inner-div">
+            <label>Service Category</label>
+            <p>Others</p>
+          </div>
+          <div class="inner-div">
+            <label>Applied Load (KW)</label>
+            <p>{{ data.serviceRegistration.loadKw }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Applied Load (HP)</label>
+            <p>{{ data.serviceRegistration.loadHp }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Total Load / Phase</label>
+            <p>
+              {{ data.serviceRegistration.totalContractedLoad }}
+              {{ data.serviceRegistration.loadUnit }} /
+              {{ data.serviceRegistration.phase }} Phase
+            </p>
+          </div>
+          <div class="inner-div">
+            <label>Location Type</label>
+            <p>{{ data.serviceRegistration.officeName }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Adjacent Account ID</label>
+            <p>{{ data.serviceRegistration.serviceRegistrationId }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Buildup Area :</label>
+            <p>
+              {{ data.serviceRegistration.buildupAreaSize }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div>
+        <h2>Revised Estimation Report</h2>
+      </div>
+    <div class="two-row-grid single-row-grid mt-3" style="padding: 1rem">
+      <div class="left-div" *ngFor="let item of data.estimationRegisteredDTO">
+        <div class="inner-div">
+          <label>Dop Category</label>
+          <p>{{ workCategoryName }}
+          </p>
+        </div>
+        <div class="inner-div">
+          <label>Work Execution Method</label>
+          <p>{{ getWorkExecutionName(item.workExecutionMethod) }}</p>
+        </div>
+        <div class="inner-div">
+          <label>Estimation No</label>
+          <p>{{ item.estimationNo }}</p>
+        </div>
+        <div class="inner-div">
+          <label>Estimation Date</label>
+          <p>{{ item.estimationDate }}</p>
+        </div>
+        <div class="inner-div">
+          <label>Purpose of Estimate</label>
+          <p>{{ item.estimationWorkDesc }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LT-Part A -Extension of LT line  -->
+
+    <div>
+      <h3>Regular</h3>
+      <div class="heading mt-2" *ngFor="let e of regularArray">
+        <div style="background-color: #f0f0f0">
+          <h1>
+            {{ e.estimate.workType }}- {{ e.estimate.workPart }}-
+            {{ e.estimate.workscopeDescription }}
+          </h1>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; overflow: auto">
+          <table
+            class="table text-center"
+            style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+          >
+            <thead>
+              <tr>
+                <th scope="col">Rate Type</th>
+                <th scope="col">Description of Material</th>
+                <th scope="col">Original Qty</th>
+                <th scope="col">Drawn Qty</th>
+                <th scope="col">Revised Qty</th>
+                <th scope="col">Unit</th>
+                <th scope="col">Rate</th>
+                <th scope="col">Materials Amount</th>
+                <th scope="col">Labour Rate</th>
+                <th scope="col">Labour Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of e.data">
+                <td>{{ item.rateType }}</td>
+                <td style="text-align: left">
+                  {{ item.materialCode }} - {{ item.materialName }}
+                </td>
+                <td>{{ item.orginalQty === 'null' ? '0.00' : item.orginalQty }}</td>
+                <td>{{ item.drawnQuantity === 'null' ? '0.00' : item.drawnQuantity }}</td>
+                <td>{{ item.quantity === 'null' ? '0.00' : item.quantity }}</td>
+                <td>{{ item.materialUnit }}</td>
+                <td>{{ item.materialRate }}</td>
+                <td>{{ item.materailAmount }}</td>
+                <td>{{ item.labourRate }}</td>
+                <td>{{ item.labourAmount }}</td>
+              </tr>
+            </tbody>
+            <tr>
+              <td>
+                <h1>Total</h1>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ e.estimate.materialCost }}</td>
+              <td></td>
+              <td>{{ e.estimate.labourCost }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="creditArray.length">
+      <h3>Credit</h3>
+      <div class="heading mt-2" *ngFor="let e of creditArray; index as i">
+        <div class="row">
+          <div class="col" style="background-color: #f0f0f0">
+            <h1>
+              {{ e.estimate.workType }}- {{ e.estimate.workPart }}-
+              {{ e.estimate.workscopeDescription }}
+            </h1>
+          </div>
+          <p *ngIf="!e.estimate.isSelectAccountHead">Code : {{ getAccountHeadDetails(e.estimate.accountHeadMasterId)?.accountHeadCode }}</p>
+          <p *ngIf="!e.estimate.isSelectAccountHead">Description : {{ getAccountHeadDetails(e.estimate.accountHeadMasterId)?.accountHeadDescription }}</p>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; overflow: auto">
+          <table
+            class="table text-center"
+            style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+          >
+            <thead>
+              <tr>
+                <th scope="col">Rate Type</th>
+                <th scope="col">Description of Material</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Unit</th>
+                <th scope="col">Rate</th>
+                <th scope="col">Materials Amount</th>
+                <th scope="col">Labour Rate</th>
+                <th scope="col">Labour Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of e.data">
+                <td>{{ item.rateType }}</td>
+                <td style="text-align: left">
+                  {{ item.materialCode }} - {{ item.materialName }}
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.materialUnit }}</td>
+                <td>{{ item.materialRate }}</td>
+                <td>{{ item.materailAmount }}</td>
+                <td>{{ item.labourRate }}</td>
+                <td>{{ item.labourAmount }}</td>
+              </tr>
+            </tbody>
+            <tr>
+              <td>
+                <h1>Total</h1>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ e.estimate.materialCost }}</td>
+              <td></td>
+              <td>{{ e.estimate.labourCost }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Typical Cost Data Sheet -->
+
+    <div>
+      <div class="heading" style="background-color: #f0f0f0">
+        <h3>Typical Cost Data Sheet</h3>
+      </div>
+
+      <div class="two-row-grid mt-3" style="grid-template-columns: 1fr;justify-items: flex-end;border: 2px solid #f0f0f0;padding: 1rem;">
+        <div class="data-sheet">
+          <div class="inner-div-t">
+            <label style="font-size: medium;">Material Cost (A)</label>
+            <p style="font-size: medium;">
+              {{ data.estimationRegisteredDTO[0]?.estimationMaterialCost }}
+            </p>
+          </div>
+          <div class="inner-div-t">
+            <label style="font-size: medium;">Labour Cost (B)</label>
+            <p style="font-size: medium;">
+              {{ data.estimationRegisteredDTO[0]?.estimationLabourCost }}
+            </p>
+          </div>
+          <div class="inner-div-t" *ngFor="let item of addChargesBeforeTotalLabour">
+            <label>
+                <ng-container *ngIf="item.chargeType == 'PERCENTAGE'">
+                    {{ item.chargeTypeValue }}% {{ item.additionalChargeName }}
+                </ng-container>
+                <ng-container *ngIf="item.chargeType == 'FLAT'">
+                    {{ item.additionalChargeName }}
+                </ng-container>
+                <span *ngIf="item.additionalChargeName === 'Area Specific Loading on Basic Rates'">(D)</span>
+                <span *ngIf="item.additionalChargeName === 'GST'">(E)</span>
+            </label>
+            <p>{{ item.amount }}</p>
+        </div>     
+
+          <div class="inner-div-t">
+            <label style="font-size: medium;">Cost Of Estimate (F) = (C + D + E)</label>
+            <p style="font-size: medium;">{{ data.estimationRegisteredDTO[0]?.totalLabourCharges }}</p>
+          </div>
+          <div class="inner-div-t" *ngFor="let item of addChargesAfterTotalLabour">
+            <label *ngIf="item.chargeType == 'PERCENTAGE'">{{ item.chargeTypeValue }}%
+              {{ item.additionalChargeName }}</label>
+            <label *ngIf="item.chargeType == 'FLAT'">{{
+              item.additionalChargeName
+              }}</label>
+            <p>{{ item.amount }}</p>
+          </div>
+          <div class="inner-div-t">
+            <label style="font-size: medium">Revised Total Cost Estimate</label>
+            <p style="font-size: medium">
+              {{ data?.estimationRegisteredDTO[0]?.estimationTotalCost }}
+            </p>
+          </div>
+          <div class="inner-div-t">
+            <label style="font-size: medium">Original Total Cost of Estimate</label>
+            <p style="font-size: medium">
+              {{ data?.estimationRegisteredDTO[0]?.originalEstimationTotalCost }}
+            </p>
+          </div>
+          <div class="inner-div-t">
+            <label style="font-size: medium">Estimation Difference Amount</label>
+            <p style="font-size: medium">
+              {{ data?.estimationRegisteredDTO[0]?.estimationDiffernceAmount }}
+            </p>
+          </div>
+          <div class="inner-div-t">
+            <label>(Percentage Difference Over the Original Estimated Cost)</label>
+            <p style="font-weight: bold; color: gray;">
+              ({{ 
+                (((data?.estimationRegisteredDTO[0]?.estimationTotalCost -
+                  data?.estimationRegisteredDTO[0]?.originalEstimationTotalCost) /
+                  data?.estimationRegisteredDTO[0]?.originalEstimationTotalCost) *
+                  100) 
+                  | number:'1.2-2'
+              }}%)
+            </p>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+
+    <!-- Budget Details -->
+    <div
+      *ngIf="data.accountHeadMasterId"
+      class="heading"
+      style="
+        background-color: #f0f0f0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0 2rem;
+      "
+    >
+      <h1>Budget Details</h1>
+    </div>
+    <p
+      *ngIf="
+        grandTotal >
+        divisionalBudgetData?.totalBudgetAmount -
+          divisionalBudgetData?.workOrderIssueAmount
+      "
+      style="color: red; padding: 0.2rem"
+    >
+      Total Amount is greater than Balance Amount
+    </p>
+    <div
+      class="col-lg-6 mt-4"
+      style="width: 100% !important; padding: 0.5rem"
+      *ngIf="data.accountHeadMasterId"
+    >
+      <div class="grid two-row-grid mt-4">
+        <div class="left-div">
+          <div class="inner-div">
+            <label>Divisional Acc. Head No.*</label>
+            <p>-</p>
+          </div>
+          <div class="inner-div">
+            <label>Divisional Acc. Head Description</label>
+            <p>
+              {{ data?.estimationRegisteredDTO[0]?.accountHeadDescription }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <label>Division Budget Head</label>
+            <p>
+              {{ data?.estimationRegisteredDTO[0]?.divisionalBudgetHead }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <label>Budget Type</label>
+            <p>
+              {{ data?.estimationRegisteredDTO[0]?.budgetWorkType }}
+            </p>
+          </div>
+        </div>
+        <div>
+          <div class="inner-div">
+            <label>Total Budget Amount</label>
+            <p>
+              {{ data?.estimationRegisteredDTO[0]?.totalBudgetAmount }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <label>Work Order issue Amount</label>
+            <p>
+              {{ data?.estimationRegisteredDTO[0]?.workOrderIssueAmount }}
+            </p>
+          </div>
+          <div class="inner-div">
+            <label>Balance Amount</label>
+            <p>
+              {{ balanceAmount }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Labour Details -->
+
+    <div
+      class="heading"
+      style="
+        background-color: #f0f0f0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0 2rem;
+      "
+    >
+      <h1>Labour Details</h1>
+    </div>
+
+    <div
+      style="
+        display: flex;
+        flex-wrap: wrap;
+        overflow: auto;
+        border: 2px solid#E1E1E1;
+      "
+    >
+      <!-- [ngStyle]="{ display: toggleTable ? 'none' : '' }" -->
+      <table
+        class="table text-center"
+        style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+      >
+        <thead>
+          <tr>
+            <th scope="col">Description of Material</th>
+            <th scope="col">Description of Labours</th>
+            <!-- <th scope="col">Quanitiy</th> -->
+            <th scope="col">Unit</th>
+            <th scope="col">Labour Rate</th>
+            <!-- <th scope="col">labour Amount</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let labourDetail of labourDetails">
+            <td>{{ labourDetail.materialName }}</td>
+            <td>{{ labourDetail.labourName }}</td>
+            <!-- <td>{{ labourDetail.quantity }}</td> -->
+            <td>{{ labourDetail.labourUnit }}</td>
+            <td>{{ labourDetail.labourRate }}</td>
+            <!-- <td>{{ labourDetail.quantity * labourDetail.labourRate }}</td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div></div>
+
+    <br /><br />
+  </form>
+</section>

@@ -1,0 +1,10 @@
+<h2>Enter Template Details</h2>
+<div class="btn-box mt-3">
+  <label>Estimation Name</label>
+  <textarea cols="20" rows="3" style="width: 100%" [(ngModel)]="estimationName" [ngModelOptions]="{standalone: true}" class="form-control"></textarea>
+  <label></label>
+  <!-- <label>Template Number</label>
+  <input type="number" class="form-control" [(ngModel)]="templateNumber" [ngModelOptions]="{standalone: true}" style="width: 80%" id="" > -->
+  <button class="btn" [disabled]="!estimationName" (click)="saveData()">Yes</button>
+  <button class="btn clor" mat-button mat-dialog-close="no">No</button>
+</div>

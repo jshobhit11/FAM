@@ -1,0 +1,225 @@
+@import "../../app/dashboard-forms/dashboard-forms.component.scss";
+
+.typicalCostForm {
+  div {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+
+    input {
+      width: unset !important;
+    }
+
+    label {
+      width: 30% !important;
+    }
+
+    button {
+      border: unset;
+      background-color: unset;
+    }
+  }
+  //
+  .col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .input-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .error-message {
+    display: block;
+    margin-top: 5px;
+    color: red; 
+  }
+  //
+  .percentDiv {
+    .percentInput {
+      width: 6rem !important;
+    }
+    .percentInputLabel {
+      width: 20% !important;
+    }
+  }
+}
+
+.table {
+  button {
+    border: unset;
+    background-color: unset;
+  }
+
+  input {
+    width: 100% !important;
+  }
+}
+
+.scopeOfWork {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+
+  div {
+    select,
+    label {
+      width: 100% !important;
+    }
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .typicalCostForm {
+    .disp-flex {
+      flex-direction: row !important;
+      gap: 0.5rem;
+    }
+
+    div {
+      label {
+        width: unset !important;
+      }
+    }
+
+    .percentDiv {
+      .percentInputLabel {
+        width: 40% !important;
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .table {
+    input {
+      width: 6rem !important;
+    }
+  }
+
+  .scopeOfWork {
+    flex-direction: column;
+    align-items: unset;
+  }
+}
+
+.tr-text {
+  // font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 30px;
+  color: #3e3e3e;
+  padding: 0.8rem 0;
+}
+
+// for adding scroll in mat select options and for multi select selected options
+
+::ng-deep .mat-option-text {
+  text-overflow: unset !important;
+  overflow: auto !important;
+}
+
+::ng-deep .mat-select-value {
+  text-overflow: unset !important;
+  overflow: auto !important;
+}
+
+td {
+  max-width: 200px;
+  // white-space: nowrap;
+  // overflow: auto;
+}
+.custom-scroll ::ng-deep .form-select {
+  max-height: 200px; 
+  overflow-y: auto; 
+  width: fit-content;
+}
+.right-aligned{
+  margin-top: 10px;
+}
+
+.horizontal-scroll {
+  white-space: nowrap;
+  overflow-x: auto;
+  width: auto !important;
+  min-width: 200px; 
+}
+.single-line {
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.char-count {
+  font-size: 0.9rem; 
+  color: red; 
+}
+
+.square-dropdown {
+  width: 100% !important;
+}
+
+.confirmation-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  z-index: 1000;
+}
+
+.confirmation-content {
+  text-align: center;
+}
+
+.confirmation-content p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center; // Center-aligns the buttons
+}
+
+.btn {
+  background-color: #4472c4;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+
+  &:hover {
+    background-color: #7f9cce;
+  }
+}
+
+.btn-secondary {
+  background-color: #7f9cce;
+
+  &:hover {
+    background-color: #aaa;
+  }
+}
+
+.radio-group mat-radio-button {
+  margin-right: 1rem; 
+}
+.is-invalid {
+  border: 1px solid red !important;
+}
+
+.text-danger {
+  font-size: 13px;
+  text-align: right;
+}

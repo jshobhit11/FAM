@@ -1,0 +1,90 @@
+<div class="container-fluid page-3">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/configuration">Configuration</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Connection Nature Master</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+    <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+      <h2 class="title-2">Connection Nature Master</h2>
+    <div style="display: flex; flex-wrap: wrap; overflow: auto">
+      <div class="top-row">
+        <div style="display: flex; align-items: center; width: 100%">
+          <div class="input-control">
+            <mat-form-field appearance="fill">
+              <mat-label>Category Name</mat-label>
+              <mat-select (selectionChange)="onConnectionNatureType($event.value)">
+                <mat-option *ngFor="let main of categoryMasterData" [value]="main.categoryMasterId">
+                  {{ main.categoryCode }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <mat-label>Search By Connection Nature Name</mat-label>
+              <input (keyup)="applyFilter($event.target.value)" matInput placeholder="Ex. Conductor" />
+            </mat-form-field>
+          </div>
+          <div class="button-control">
+            <button mat-button class="c-btn" (click)="openAddConnectionNatureMasterItemDialog()"
+              style="margin: 0px 80px 0px 0px">
+              Add Connection Nature
+            </button>
+          </div>
+        </div>
+      </div>
+      <table mat-table [dataSource]="dataSource" class="mt-4">
+        <!-- SLNO Column -->
+        <ng-container matColumnDef="slno">
+          <th mat-header-cell *matHeaderCellDef>SL NO</th>
+          <td mat-cell *matCellDef="let element">
+            {{ dataSource.data.indexOf(element) + 1 }}
+          </td>
+        </ng-container>
+  
+        <!-- Connection Nature Name Column -->
+        <ng-container matColumnDef="connectionNatureName">
+          <th mat-header-cell *matHeaderCellDef>Connection Nature Name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.connectionNatureName }}
+          </td>
+        </ng-container>
+  
+        <!-- Connection Nature code Column -->
+        <ng-container matColumnDef="connectionNatureCode">
+          <th mat-header-cell *matHeaderCellDef>Connection Nature Code</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.connectionNatureCode !== null && element.connectionNatureCode !== 'null' ? element.connectionNatureCode : '-' }}
+          </td>
+        </ng-container>
+  
+        <!-- Category Name Column-->
+        <ng-container matColumnDef="categoryMasterId">
+          <th mat-header-cell *matHeaderCellDef>Category Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.categoryCode }}</td>
+        </ng-container>
+  
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let element">
+            <button style="border: none; background-color: transparent" (click)="
+                openUpdateConnectionNatureMasterItemDialog(
+                  element.connectionNatureId)">
+              <mat-icon color="error">edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<section>
+  <form [formGroup]="storeMasterForm">
+  <h1 mat-dialog-title>Add Store Master</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="fill">
+        <mat-label>Store Name</mat-label>
+        <input matInput placeholder="Ex. Each" 
+        [maxLength]="100" appAlphaNumeric formControlName="storeName" required />
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Store Address</mat-label>
+        <input matInput placeholder="Ex. Each"
+        [maxLength]="200" appAlphaNumeric formControlName="storeAddress" required />
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="modal-input-control">
+      <mat-form-field appearance="fill">
+        <mat-label> Store Type</mat-label>
+        <mat-select formControlName="storeType" >
+          <mat-option value="VIRTUAL"> VIRTUAL </mat-option>
+          <mat-option value="REGULAR"> REGULAR </mat-option>
+          <mat-option value="VENDOR"> VENDOR</mat-option>
+        </mat-select>
+        <mat-error *ngIf="storeMasterForm.get('storeType').invalid && storeMasterForm.get('storeType').touched">
+          Please select in this field</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label> Store Code</mat-label>
+      <input matInput placeholder="Ex. Each" formControlName="storeCode" required [maxLength]="4" appAlphaNumeric/>
+      <mat-error>Please enter in this field.</mat-error>
+    </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onAddStoreMaster()" [disabled]="notificationRef">Add</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+</form>
+</section>

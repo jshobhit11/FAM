@@ -1,0 +1,158 @@
+<div class="page-1">
+<section>
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/main">Dashboard</a></li>
+        <li class="breadcrumb-item">
+          <a routerLink (click)="navigate('MATERIAL INSPECTION', '14')"
+            >Material Inspection</a
+          >
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Create Material Inspection</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section>
+  <form class="form" [formGroup]="materialInspectionForm">
+    <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+        <h2>Material Inspection</h2>
+    
+      <br />
+      <div
+        class="two-row-grid"
+        style="justify-content: space-evenly"
+        *ngIf="data"
+      >
+        <div class="left-div" style="width: unset !important">
+          <div class="inner-div">
+            <label>Work Order No :</label>
+            {{ data?.wmWorkorderRegistered?.workorderNo }}
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Estimation No :</label>
+            {{ data?.wmWorkorderRegistered?.estimationNo }}
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Work Description :</label>
+            {{ data?.wmWorkorderRegistered?.workDescription }}
+          </div>
+          <br />
+          <br />
+          <div class="inner-div">
+            <label>Material Inspection Date <span class="star">*</span></label>
+            <div class="date-field">
+              <div style="position: relative">
+                <input
+                  matInput
+                  [matDatepicker]="date_picker"
+                  class="form-control"
+                  name="dateOfPermitWork"
+                  [(ngModel)]="payload.Date"
+                  formControlName="Date"
+                  appDate
+                  [readonly]="true"
+                />
+                <mat-datepicker-toggle
+                  style="position: absolute; top: 0; right: 0"
+                  matIconSuffix
+                  [for]="date_picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #date_picker></mat-datepicker>
+                <mat-error *ngIf="materialInspectionForm.get('Date').hasError('required') && materialInspectionForm.get('Date').touched">
+                  Please select this field
+                </mat-error>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="right-div">
+          <div class="inner-div">
+            <label>Work Order Date :</label>
+            {{
+              data?.wmWorkorderRegistered?.workorderDate | date : "dd/MM/yyyy"
+            }}
+          </div>
+          <br />
+          <div class="inner-div">
+            <label>Execution Method :</label>
+            {{ data?.wmWorkorderRegistered?.workExecutionMethod }}
+          </div>
+          <br />
+
+          <div class="inner-div">
+            <label>Upload Document <span class="star">*</span></label>
+            <input 
+              class="btn btn-upload"
+              style="background-color: rgb(231, 229, 229); color: black;" 
+              type="file" 
+              id="actual-btn" 
+              accept=".xls, .xlsx, .doc, .docx, .csv, .pdf"
+              formControlName="file" 
+              />
+          </div>
+          <mat-error style="margin-left: 240px;" *ngIf="materialInspectionForm.get('file').hasError('required') && materialInspectionForm.get('file').touched">
+            Please select this field
+          </mat-error>
+          <mat-error style="margin-left: 240px;" *ngIf="fileSizeError">
+            File size must be up to 5MB.
+          </mat-error>
+          <div class="inner-div">
+            <label>Inspected By</label>
+            <div class="inspected-checkbox" style="margin-top: 23px">
+              <div *ngFor="let item of checkdatav; let i = index">
+                <div>
+                  <input
+                    type="checkbox"
+                    name="city"
+                    [value]="item.value"
+                    (change)="changeFn($event)"
+                    [checked]="item.ischecked"
+                  />
+                  <label>{{ item.name }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+      <div class="txt-area">
+        <label style="width: fit-content">Remarks <span class="star">*</span></label>
+        <textarea
+          class="form-control"
+          rows="3"
+          name="remarks"
+          [(ngModel)]="payload.Remarks"
+          formControlName="Remarks"
+          appAlphaNumeric
+          [maxLength]="300"
+        >
+        </textarea>
+      </div>
+      <mat-error style="margin-left: 190px !important;" *ngIf="materialInspectionForm.get('Remarks').hasError('required') && materialInspectionForm.get('Remarks').touched">
+        Please fill in this field
+      </mat-error>
+      <!-- button box -->
+      <div class="btn-box mt-4 pb-4">
+        <button
+          [disabled]="isLoading" 
+          type="button"
+          class="btn btn-primary btn-md"
+          (click)="openConfirmationpopupDialog()"
+        >
+          Submit
+        </button>
+      </div>
+
+      <form class="form"></form>
+    </div>
+  </form>
+</section>
+</div>

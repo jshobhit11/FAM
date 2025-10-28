@@ -1,0 +1,35 @@
+<section [formGroup]="MaintenanceFrequencyForm">
+    <h1 mat-dialog-title>Add Frequency Type</h1>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Frequency</mat-label>
+        <mat-select required formControlName="frequency" (ngModelChange)="updateToMonthOptions()">
+          <mat-option *ngFor="let option of frequencyOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Frequency Type</mat-label>
+        <mat-select required formControlName="frequencyType">
+          <mat-option *ngFor="let option of frequencyTypeOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>From Month</mat-label>
+        <mat-select required formControlName="fromMonth" (ngModelChange)="updateToMonthOptions()">
+          <mat-option *ngFor="let option of fromMonthOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>To Month</mat-label>
+        <mat-select required formControlName="toMonth">
+          <mat-option *ngFor="let option of toMonthOptions" [value]="option">{{ option }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div> 
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="onAddMaintenanceFrequencyType()">Add</button>
+      <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+  </section>

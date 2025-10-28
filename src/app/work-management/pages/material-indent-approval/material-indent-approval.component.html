@@ -1,0 +1,24 @@
+<div class="page-1">
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/work-management/dashboard">Works</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Material Indent Approval</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section>
+
+  <app-filter-table headingName="Material Indent Approval" 
+  [isOffice]="false" titleName="materialIndentApproval" dataKey="materialsIndentNo" 
+  [cols]="cols" [rows]="data" [data]="data" [filterFields]="filterFields" [loading]="true">
+  </app-filter-table>
+
+</section>
+</div>

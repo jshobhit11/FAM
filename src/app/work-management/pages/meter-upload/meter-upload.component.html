@@ -1,0 +1,467 @@
+<div class="page-1">
+  <section>
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/main">Dashboard</a></li>
+          <li class="breadcrumb-item">
+            <a routerLink (click)="navigate('METER UPLOAD', '15')"
+              >Meter Upload</a
+            >
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Meter Upload</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <!-- Conditionally show ng-template or ng-container -->
+  <!-- <ng-container
+    *ngIf="
+      meterData?.meterUploadResponseDTO?.length > 0 &&
+        (meterData?.meterUploadResponseDTO[0]?.connectionTypeCode === 'JVS' ||
+          meterData?.meterUploadResponseDTO[0]?.connectionTypeCode ===
+            'MC-JVS') &&
+        meterData?.meterUploadResponseDTO[0]?.workExecutionMethod ===
+          'Department';
+      else showUploadMeter
+    "
+  >
+    <section>
+      <form class="form">
+        <div class="container-fluid page">
+          <div class="page__content shadow p-3 position-relative dis-flex-colu">
+            <h2 class="title-2">Meter Upload</h2>
+
+            <div class="work-info d-flex flex-wrap">
+              <div class="col-xl-6 d-flex align-items-center px-2">
+                <div class="label-container">
+                  <label>Work Order Number:</label>
+                </div>
+                <div class="work-info-value">
+                  {{ meterData?.meterUploadResponseDTO[0]?.workorderNo }}
+                </div>
+              </div>
+              <div class="col-xl-6 d-flex align-items-center px-2">
+                <div class="label-container">
+                  <label>Work Execution Method:</label>
+                </div>
+                <div class="work-info-value">
+                  {{
+                    meterData?.meterUploadResponseDTO[0]?.workExecutionMethod
+                  }}
+                </div>
+              </div>
+            </div>
+            <div class="work-info d-flex flex-wrap">
+              <div class="col-xl-6 d-flex align-items-center px-2">
+                <div class="label-container">
+                  <label>Work Description:</label>
+                </div>
+                <div class="work-info-value">
+                  {{ meterData?.meterUploadResponseDTO[0]?.workDescription }}
+                </div>
+              </div>
+              <div
+                class="col-xl-6 d-flex align-items-center px-2"
+              *ngIf="connectionCode=='MC-JVS'">
+                <div class="label-container">
+                  <label>Number of Connections:</label>
+                </div>
+                <div class="work-info-value">
+                  {{ meterData?.meterUploadResponseDTO[0]?.noOfConnections }}
+                </div>
+              </div>
+            </div>
+            <div class="container mt-4"></div>
+            <div class="row" *ngIf="selectedOption == 'meterUpload'">
+              <div class="col-md-11">
+                <div class="form" [formGroup]="estimateCharges">
+                  <mat-form-field
+                    style="width: 100% !important; font-size: 1.5rem !important"
+                  >
+                    <span matPrefix class="search-icon2"
+                      ><mat-icon>search</mat-icon></span
+                    >
+                    <input
+                      matInput
+                      placeholder="Search Meter"
+                      [matAutocomplete]="unitAuto"
+                      [formControl]="materialSearchControl"
+                    />
+                    <mat-autocomplete
+                      #unitAuto="matAutocomplete"
+                      [displayWith]="displayMaterial"
+                    >
+                      <mat-option
+                        *ngFor="let dataItem of filteredMaterialUnits"
+                        [value]="dataItem"
+                      >
+                        {{ dataItem.serialNo }}-{{ dataItem.manufacture }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-1">
+                <button
+                  type="button"
+                  class="btn btn-primary btn-md mt-4"
+                  (click)="addDataItem()"
+                >
+                  Add
+                </button>
+              </div>
+
+              <div
+                style="
+                  overflow: auto;
+                  width: 100%;
+                  margin-top: 1rem;
+                  padding: 10px;
+                "
+              >
+                <table class="table table-bordered text-center">
+                  <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                    <tr>
+                      <th scope="col">S. No.</th>
+                      <th scope="col">Badge Number</th>
+                      <th scope="col">Serial Number</th>
+                      <th scope="col">Manufacture</th>
+                      <th scope="col">Material Code</th>
+                      <th scope="col">Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let dataItem of data; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ dataItem.badgeNumber }}</td>
+                      <td>{{ dataItem.serialNo }}</td>
+                      <td>{{ dataItem.manufacture }}</td>
+                      <td>{{ dataItem.materialCode }}</td>
+                      <td>
+                        <button
+                          style="border: none; background-color: transparent"
+                          (click)="deleteDataItem(i)"
+                        >
+                          <img src="assets/delete-icon.png" alt="" />
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="btn-box m-4">
+                  <button
+                    (click)="openConfirmationDialog('m')"
+                    type="button"
+                    class="btn btn-primary btn-md"
+                    [disabled]="mIsButtonDisabled"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+  </ng-container> -->
+
+  <!-- Upload Meter Form (shown when the condition is not met) -->
+  <!-- #showUploadMeter -->
+
+    <section *ngIf="meterData?.meterUploadResponseDTO?.length > 0">
+      <form class="form" [formGroup]="meterUploadForm">
+        <div class="page__content shadow p-3 position-relative dis-flex-colu">
+          <h2 class="title-2">Meter Upload </h2>
+          <div *ngIf="isErrorShown()" class="alert alert-danger">
+            {{ errorMessages[0] }}
+          </div>          
+          <div *ngIf="!isErrorShown()">
+            <!-- Labels for Work Order Information -->
+            <div class="work-info d-flex flex-wrap">
+              <div class="col-xl-6 d-flex align-items-center px-2">
+                <div class="label-container">
+                  <label>Work Order Number:</label>
+                </div>
+                <div class="work-info-value">
+                  {{ meterData?.meterUploadResponseDTO[0]?.workorderNo }}
+                </div>
+              </div>
+              <div class="col-xl-6 d-flex align-items-center px-2">
+                <div class="label-container">
+                  <label>Work Execution Method:</label>
+                </div>
+                <div class="work-info-value">
+                  {{
+                    meterData?.meterUploadResponseDTO[0]?.workExecutionMethod
+                  }}
+                </div>
+              </div>
+              <div class="col-xl-6 d-flex align-items-center px-2">
+                <div class="label-container">
+                  <label>Application Type Name:</label>
+                </div>
+                <div class="work-info-value">
+                  {{ meterData?.meterUploadResponseDTO[0]?.applicationTypeName }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Labels for Work Description and Number of Connections -->
+            <div class="work-info d-flex flex-wrap">
+              <div class="col-xl-6 d-flex align-items-center px-2">
+                <div class="label-container">
+                  <label>Work Description:</label>
+                </div>
+                <div class="work-info-value">
+                  {{ meterData?.meterUploadResponseDTO[0]?.workDescription }}
+                </div>
+              </div>
+              <div class="col-xl-6 d-flex align-items-center px-2">
+                <div class="label-container">
+                  <label>Meter Upload:</label>
+                </div>
+                <div class="input-container small-input">
+                  <mat-form-field appearance="outline" class="narrow-dropdown short-dropdown square-dropdown">
+                    <mat-label>Choose Type</mat-label>
+                    <mat-select [(ngModel)]="selectedOption" [ngModelOptions]="{standalone: true}">
+                      <mat-option value="meterUpload">Meter Upload</mat-option>
+                      <mat-option value="virtualStore">Virtual Store</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>              
+              <!-- Conditional Display for Number of Connections -->
+              <div
+                *ngIf="
+                  meterData?.meterUploadResponseDTO[0]?.applicationTypeCode ===
+                  'MC'
+                "
+                class="col-xl-6 d-flex align-items-center px-2"
+              >
+                <div class="label-container">
+                  <label>Number of Connections:</label>
+                </div>
+                <div class="work-info-value">
+                  {{ meterData?.meterUploadResponseDTO[0]?.noOfConnections }}
+                </div>
+              </div>
+            </div>
+
+            <div class="store-head" *ngIf="selectedOption == 'meterUpload'">
+              <div class="col-xl-10 d-flex align-items-center">
+                <div class="col-xl-6 d-flex align-items-center px-2">
+                  <div class="label-container">
+                    <label>File <span class="star">*</span></label>
+                  </div>
+                  <div class="input-container">
+                    <input
+                      class="btn-upload"
+                      type="file"
+                      id="actual-btn"
+                      style="color: black"
+                      (change)="onFileChange($event)"
+                      formControlName="file"
+                      accept=".xlsx"
+                      required
+                    />
+                    <mat-error
+                      *ngIf="
+                        meterUploadForm.get('file').hasError('required') &&
+                        meterUploadForm.get('file').touched
+                      "
+                    >
+                      Please select this field
+                    </mat-error>
+                    <mat-error *ngIf="fileSizeError">
+                      File size must be up to 5MB.
+                    </mat-error>
+                  </div>
+                </div>
+                <div class="col-xl-6 d-flex align-items-center px-2">
+                  <div class="label-container">
+                    <label>Upload File Type <span class="star">*</span></label>
+                  </div>
+                  <div class="input-container">
+                    <select
+                      class="form-control"
+                      name="store"
+                      [(ngModel)]="saveData.docType"
+                      formControlName="uploadfiletype"
+                      required
+                    >
+                      <option disabled>-- select --</option>
+                      <option value="mtr">Meter Sample Doc</option>
+                    </select>
+                    <mat-error
+                      *ngIf="
+                        meterUploadForm
+                          .get('uploadfiletype')
+                          .hasError('required') &&
+                        meterUploadForm.get('uploadfiletype').touched
+                      "
+                    >
+                      Please select this field
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-10 mb-4">
+                <p class="d-flex justify-content-end">
+                  <a
+                    href="assets/Meter_Upload.xlsx"
+                    target="_blank"
+                    download="Meter_Upload.xlsx"
+                    class="download-link"
+                    style="white-space: nowrap"
+                  >
+                    (Download Meters Sample Doc)
+                  </a>
+                </p>
+              </div>
+              <div class="txt-area col-xl-10 px-2">
+                <div class="label-container mt-2 label-column">
+                  <label>Remarks <span class="star">*</span></label>
+                </div>
+                <div class="w-100">
+                  <textarea
+                    class="form-control-p custom-textarea"
+                    cols="100"
+                    rows="3"
+                    name="remarks"
+                    [(ngModel)]="saveData.Remarks"
+                    formControlName="remarks"
+                    required
+                    appAlphaNumeric
+                    [maxLength]="300"
+                  >
+                  </textarea>
+                  <mat-error
+                    *ngIf="
+                      meterUploadForm.get('remarks').hasError('required') &&
+                      meterUploadForm.get('remarks').touched
+                    "
+                  >
+                    Please select this field
+                  </mat-error>
+                </div>
+              </div>
+              <div class="btn-box mt-4 pb-4">
+                <button
+                  [disabled]="isLoading"
+                  type="button"
+                  class="btn btn-primary btn-md"
+                  (click)="openConfirmationpopupDialog()"
+                >
+                  {{ uploadButtonText }}
+                </button>
+                <button
+                  type="button"
+                  class="btn clor btn-primary btn-md"
+                  (click)="navigateBack()"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+            <div *ngIf="uploadButtonText" [ngClass]="{'text-success': uploadButtonText === 'Upload Success', 'text-danger': uploadButtonText === 'Upload Failure'}" class="mt-3">
+              <p *ngIf="uploadButtonText === 'Upload Success'">Upload was successful! Your file has been processed successfully, Please check the Downloads.</p>
+              <p *ngIf="uploadButtonText === 'Upload Failure'">There was an issue with the upload. Please check your download folder for Excel data corrections.</p>
+            </div>
+            <div class="row" *ngIf="selectedOption == 'virtualStore'">
+              <div class="col-md-11">
+                <div class="form" [formGroup]="estimateCharges">
+                  <mat-form-field
+                    style="width: 100% !important; font-size: 1.5rem !important"
+                  >
+                    <span matPrefix class="search-icon2"
+                      ><mat-icon>search</mat-icon></span
+                    >
+                    <input
+                      matInput
+                      placeholder="Search Meter"
+                      [matAutocomplete]="unitAuto"
+                      [formControl]="materialSearchControl"
+                    />
+                    <mat-autocomplete
+                      #unitAuto="matAutocomplete"
+                      [displayWith]="displayMaterial"
+                    >
+                      <mat-option
+                        *ngFor="let dataItem of filteredMaterialUnits"
+                        [value]="dataItem"
+                      >
+                        {{ dataItem.serialNo }}-{{ dataItem.manufacture }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-1">
+                <button
+                  type="button"
+                  class="btn btn-primary btn-md mt-4"
+                  (click)="addDataItem()"
+                >
+                  Add
+                </button>
+              </div>
+
+              <div
+                style="
+                  overflow: auto;
+                  width: 100%;
+                  margin-top: 1rem;
+                  padding: 10px;
+                "
+              >
+                <table class="table table-bordered text-center">
+                  <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                    <tr>
+                      <th scope="col">S. No.</th>
+                      <th scope="col">Badge Number</th>
+                      <th scope="col">Serial Number</th>
+                      <th scope="col">Manufacture</th>
+                      <th scope="col">Material Code</th>
+                      <th scope="col">Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let dataItem of data; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ dataItem.badgeNumber }}</td>
+                      <td>{{ dataItem.serialNo }}</td>
+                      <td>{{ dataItem.manufacture }}</td>
+                      <td>{{ dataItem.materialCode }}</td>
+                      <td>
+                        <button
+                          style="border: none; background-color: transparent"
+                          (click)="deleteDataItem(i)"
+                        >
+                          <img src="assets/delete-icon.png" alt="" />
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="btn-box m-4">
+                  <button
+                    (click)="openConfirmationDialog('v')"
+                    type="button"
+                    class="btn btn-primary btn-md"
+                    [disabled]="vIsButtonDisabled"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+
+</div>

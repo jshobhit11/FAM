@@ -1,0 +1,60 @@
+<section [formGroup]="maintenanceTypeForm">
+    <h1 mat-dialog-title>Add Frequency Type</h1>
+    <div class="modal-input-control">
+    <mat-form-field class="example-full-width">
+      <mat-label>Frequency</mat-label>
+      <mat-select [(ngModel)]="maintenanceFreObj.frequency" formControlName="frequency" required>
+        <mat-option value="QUARTERLY">Quarterly</mat-option>
+        <mat-option value="HALFERLY">Halferly</mat-option>
+        <mat-option value="YEARLY">Yearly</mat-option>
+      </mat-select>
+      <mat-error *ngIf="maintenanceTypeForm.get('frequency').invalid && maintenanceTypeForm.get('frequency').touched">
+        Please select in this field.</mat-error>
+        </mat-form-field>
+         <mat-form-field class="example-full-width">
+            <mat-label>Frequency Type</mat-label>
+            <mat-select  [(ngModel)]="maintenanceFreObj.frequencyType" formControlName="frequencyType" required>
+                <mat-option value="Q1">Q1</mat-option>
+                <mat-option value="Q2">Q2</mat-option>
+                <mat-option value="Q3">Q3</mat-option>
+                <mat-option value="Q4">Q4</mat-option>
+                <mat-option value="H1">H1</mat-option>
+                <mat-option value="H2">H2</mat-option>
+                <mat-option value="YR">YR</mat-option>
+                 </mat-select>
+                 <mat-error *ngIf="maintenanceTypeForm.get('frequencyType').invalid && maintenanceTypeForm.get('frequencyType').touched">
+                    Please select in this field.</mat-error>
+            </mat-form-field>
+            </div>
+            <div class="modal-input-control">
+         <mat-form-field class="example-full-width">
+        <mat-label>Frequency Start Month</mat-label>
+      <mat-select  [(ngModel)]="maintenanceFreObj.frequencyStartMonth" formControlName="frequencyStartMonth" required>
+        <mat-option value="JAN">Jan</mat-option>
+        <mat-option value="APR">Apr</mat-option>
+        <mat-option value="JUL">Jul</mat-option>
+        <mat-option value="OCT">Oct</mat-option>
+       </mat-select>
+       <mat-error *ngIf="maintenanceTypeForm.get('frequencyStartMonth').invalid && maintenanceTypeForm.get('frequencyStartMonth').touched">
+        Please select in this field.</mat-error>
+  </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Frequency End Month</mat-label>
+      <mat-select  [(ngModel)]="maintenanceFreObj.frequencyEndMonth" formControlName="frequencyEndMonth" required>
+        <mat-option value="MAR">Mar</mat-option>
+        <mat-option value="JUN">Jun</mat-option>
+        <mat-option value="SEP">Sep</mat-option>
+        <mat-option value="DEC">Dec</mat-option>
+     </mat-select>
+     <mat-error *ngIf="maintenanceTypeForm.get('frequencyEndMonth').invalid && maintenanceTypeForm.get('frequencyEndMonth').touched">
+        Please select in this field.</mat-error>
+    </mat-form-field>
+  </div>
+   
+    <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onMainFrequencyAdd()" >Add</button>
+  <button class="btn clor" mat-button mat-dialog-close>Close</button>
+ </div>
+ </section>
+

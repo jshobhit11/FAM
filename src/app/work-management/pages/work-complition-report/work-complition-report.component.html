@@ -1,0 +1,613 @@
+<div *ngIf="isExtensionPending(); else content">
+  <div class="page__content shadow p-3 position-relative dis-flex-colu">
+    <h2 class="title-2">Work Completion Report</h2>
+    <p class="alert alert-danger mt-3"style="color: black;">Line extension is pending in the GIS.</p>
+  </div>
+</div>
+<ng-template #content>
+<section>
+  <form class="form">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2
+      class="title-2 "
+      *ngIf="
+          workExecutionMethodId == 1 ||
+          workExecutionMethodId == 3 ||
+          workExecutionMethodId == 4 ||
+          workExecutionMethodId == 6
+          "
+      >
+        Work Completion Report 
+      </h2>
+      <h2
+      class="title-2"
+      *ngIf="workExecutionMethodId == 2 || workExecutionMethodId == 5"
+      >
+        Joint Inventory Report
+      </h2>
+      
+      <div class="two-row-grid mt-4">
+        <p class="text-danger" *ngIf="isNewConWorkorderClosed"><strong>Note:</strong> First you need to complete the work completion of new connection work order</p>
+        <div
+          class="row left-div"
+          *ngIf="
+            data && data.workorderRegistered && data.workorderRegistered.length
+          "
+        >
+          <div class="inner-div">
+            <label>Work Order No</label>
+            <p>{{ data?.workorderRegistered[0]?.workorderNo }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Work Description</label>
+            <p>
+              {{ data?.workorderRegistered[0]?.workDescription }}
+            </p>
+          </div>
+          <div class="col-lg-6 inner-div">
+            <label>Section Name</label>
+            <p>{{ data?.workorderRegistered[0]?.sectionName }}</p>
+          </div>
+          <div class="col-lg-6 inner-div">
+            <label>Sub Division Name</label>
+            <p>{{ data?.workorderRegistered[0]?.subDivisionName }}</p>
+          </div>
+          <div class="col-lg-6 inner-div">
+            <label>Section Officer Name</label>
+            <p>-</p>
+          </div>
+          <div class="col-lg-6 inner-div">
+            <label>Work Completion Date</label>
+            <p>
+              {{
+                data?.workorderRegistered[0]?.workorderDate | date : "medium"
+              }}
+            </p>
+          </div>
+          <div class="col-lg-6 inner-div">
+            <label>Work Awarded To</label>
+            <p>
+              {{
+                data?.workorderRegistered[0]?.workAwardedTo == "null"
+                  ? "-"
+                  : data?.workorderRegistered[0]?.workAwardedTo
+              }}
+            </p>
+          </div>
+          <!-- <div class="col-lg-6 inner-div">
+            <label>Manual WO No</label>
+            <p>-</p>
+          </div> -->
+          <div class="col-lg-6 inner-div">
+            <label>Execution Type</label>
+            <p>{{ workExecutionMethod }}</p>
+          </div>
+          <div class="col-lg-6 inner-div">
+            <label>RC No</label>
+            <p>-</p>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="txt-area">
+          <label style="width: fit-content">Work Description</label>
+          <textarea class="form-control" cols="10" rows="5"></textarea>
+        </div> -->
+
+      <!-- table    -->
+      <div class="indicators-line mt-1" style="margin-left: 30px;">
+        <div class="indicators-line-content">
+          <div class="color-div indicator-color-one"></div>
+          <span>Alternate Material</span>
+        </div>
+      </div>
+      <div style="overflow: auto; width: 100%; margin-top: 1rem">
+        <table class="table table-bordered text-center l-padding0 " >
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">S.No.</th>
+              <th scope="col">Code</th>
+              <th scope="col">Rate Type</th>
+              <th scope="col">Description</th>
+              <th scope="col">UOM</th>
+              <th scope="col">Estimated Qty</th>
+              <th
+                scope="col"
+                *ngIf="
+                  workExecutionMethod !==
+                    'Total Turnkey' &&
+                  workExecutionMethod !==
+                    'Self Execution'
+                "
+              >
+                Drawn Qty
+              </th>
+              <th
+                scope="col"
+                *ngIf="
+                  workExecutionMethod !==
+                    'Total Turnkey' &&
+                  workExecutionMethod !==
+                    'Self Execution'
+                "
+              >
+                Return Qty
+              </th>
+              <th scope="col">Actual Qty</th>
+              <th scope="col">Part #</th>
+              <th
+                scope="col"
+                *ngIf="
+                  workExecutionMethod ==
+                  'Labour Contract'
+                "
+              >
+                Stock Available
+              </th>
+              <th
+                scope="col"
+                *ngIf="
+                  workExecutionMethod ==
+                  'Labour Contract'
+                "
+              >
+                Qty Provided By Vendor
+              </th>
+              <th
+                scope="col"
+                *ngIf="
+                  workExecutionMethod ==
+                  'Labour Contract'
+                "
+              >
+                Remarks
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let material of data.workorderEstimationLog; index as i"
+            >
+              <td>{{ i + 1 }}</td>
+              <td>{{ material?.code }}</td>
+              <td>{{ material?.rateType }}</td>
+              <td>{{ material?.materialName }}</td>
+              <td>{{ material?.materialUnit }}</td>
+              <td>{{ material?.estimatedQuantity }}</td>
+              <td
+                *ngIf="
+                  workExecutionMethod !==
+                    'Total Turnkey' &&
+                  workExecutionMethod !==
+                    'Self Execution'
+                "
+              >
+              {{ material?.drawnQuantity === 'null' ? 0 : material?.drawnQuantity }}
+              </td>
+              <td
+                *ngIf="
+                  workExecutionMethod !==
+                    'Total Turnkey' &&
+                  workExecutionMethod !==
+                    'Self Execution'
+                "
+              >
+              {{ material?.returnedQuantity === 'null' ? 0 : material?.returnedQuantity }}
+              </td>
+              <td>{{ material?.actualQuantity }}</td>
+              <td>{{ material?.workPart }}</td>
+
+              <td
+                *ngIf="
+                  workExecutionMethod ==
+                  'Labour Contract'
+                "
+              >
+                <span *ngIf="material?.noStockFlag != 'null'">{{
+                  material?.noStockFlag == "1" ? "No" : "Yes"
+                }}</span>
+              </td>
+              <td
+                *ngIf="
+                  workExecutionMethod ==
+                  'Labour Contract'
+                "
+              >
+                <span>{{
+                  material?.qtyByVendor == "null" ? "0" : material?.qtyByVendor
+                }}</span>
+              </td>
+              <td
+                *ngIf="
+                  workExecutionMethod ==
+                  'Labour Contract'
+                "
+              >
+                <span>{{
+                  material?.remarks == "null" ? "-" : material?.remarks
+                }}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- note -->
+      <!-- <div style="padding: 1rem">
+        <div
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            padding: 1rem;
+          "
+        >
+          <label>NOTE :</label>
+          <div style="margin-top: 0.5rem">
+            <p>
+              The column “Qty as measured” to be filed in writting on the copy
+              based on actual measurement done.
+            </p>
+            <p>
+              Once the hard copy of this signed completion report is submitted
+              to Division , the SO shall record the same in WAMS by selecting
+              event type “CR Submitted” in Activity log.
+            </p>
+            <p>
+              Please refer Annexure for complete details on items drawn/refurned
+              from/to store.
+            </p>
+            <p>
+              The acceptance of completion report shall be recorded in WAMS by
+              selecting “CR ACCEPETED” in Activity log by Accounts officer
+            </p>
+            <p>If all details are found to be in order.</p>
+            <p>Additional certificate if required, maybe added in writting.</p>
+          </div>
+          <label style="margin-top: 1rem">CERTIFICATE:</label>
+          <div style="margin-top: 0.5rem">
+            <p>
+              Certified that the above work is carried out in the interest of
+              BESCOM.
+            </p>
+            <p>
+              Certified that the above work is carried out by the LEC is
+              satisfactority.
+            </p>
+          </div>
+          <div
+            style="
+              display: flex;
+              flex-direction: row;
+              justify-content: space-evenly;
+              padding: 2rem;
+            "
+          >
+            <label>Assistant Engineer (Ele)</label>
+            <label>Assistant Exe. Engineer </label>
+          </div>
+        </div>
+      </div> -->
+
+      <div style="display: flex; flex-direction: column;">
+        <h2>ANNEXURE</h2>
+        <br />
+        <label>DETAILS OF ALL MATERIALS DRAWN/RETURNED FROM/TO STORES :</label>
+      </div>
+
+      <div *ngIf="data && data.materialsAndStoreMaster && data.materialsAndStoreMaster.length">
+        <div class="table-container">
+          <table class="table table-bordered text-center">
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th scope="col">S. No.</th>
+                <th scope="col">Material Code</th>
+                <th scope="col">Description</th>
+                <th scope="col">UOM</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Invoice No</th>
+                <th scope="col">Invoice Date</th>
+                <th scope="col">Store</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let d of data.materialsAndStoreMaster; index as i">
+                <td [class.green-text]="d.noStockFlag==='null'">{{ i + 1 }}</td>
+                <td [class.green-text]="d.noStockFlag==='null'">{{ d?.mlCode }}</td>
+                <td [class.green-text]="d.noStockFlag==='null'">{{ d?.mlName }}</td>
+                <td [class.green-text]="d.noStockFlag==='null'">{{ d?.mlUnit }}</td>
+                <td [class.green-text]="d.noStockFlag==='null'">{{ d?.issuedQuantity }}</td>
+                <td [class.green-text]="d.noStockFlag==='null'">{{ d?.storeInvoice == "null" ? "-" : d?.storeInvoice }}</td>
+                <td [class.green-text]="d.noStockFlag==='null'">{{ d?.issueDate | date : "medium" }}</td>
+                <td [class.green-text]="d.noStockFlag==='null'">{{ d?.storeCode }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="p-4" *ngIf="data && data.workorderInvoiceDataList && data.workorderInvoiceDataList.length">
+        <table class="table table-bordered text-center mt-4">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">Sr. No.</th>
+              <th scope="col">Work Order No.</th>
+              <th scope="col">Acknowledgement No</th>
+              <th scope="col">Is Material Returned</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let d of data.workorderInvoiceDataList; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>
+                <a
+                  style="
+                    font-weight: 600;
+                    color: #154882;
+                    cursor: pointer;
+                    text-decoration: underline;
+                  "
+                  (click)="
+                    openWorkExecutionMaterialDialog(
+                      d?.workorderRegisteredId,
+                      d?.workorderNo
+                    )
+                  "
+                >
+                  {{ d?.workorderNo }}</a
+                >
+              </td>
+              <td>{{ d?.storeInvoice == "null" ? "-" : d?.storeInvoice }}</td>
+              <td>{{ d?.invoiceFlag }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="container">
+        <div class="form-group row" *ngIf="userRole == 'AE'">
+          <label class="col-sm-3 col-form-label"
+            >Remarks from AE Officer <span class="star">*</span>
+          </label>
+          <div class="col-sm-9">
+            <textarea
+              class="form-control"
+              cols="10"
+              rows="5"
+              name="remarkae"
+              [(ngModel)]="remarks"
+              (ngModelChange)="checkRemarks()"
+              appAlphaNumeric
+              [maxLength]="300"
+              id="aeremarks"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row mt-4" *ngIf="userRole === 'AEE'">
+          <label class="col-sm-3 col-form-label"
+            >Remarks from AE Officer <span class="star">*</span>
+          </label>
+          <div class="col-sm-9">
+            <textarea
+              class="form-control"
+              cols="10"
+              rows="5"
+              name="remarkaee"
+              [(ngModel)]="aeRemarks"
+              (ngModelChange)="checkRemarks()"
+              id="aeremarks"
+              appAlphaNumeric
+              [maxLength]="300"
+              readonly
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row mt-4" *ngIf="userRole === 'AEE'">
+          <label class="col-sm-3 col-form-label"
+            >Remarks from Approving Authority(AEE) <span class="star">*</span>
+          </label>
+          <div class="col-sm-9">
+            <textarea
+              class="form-control"
+              cols="10"
+              rows="5"
+              name="remarksaeee"
+              [(ngModel)]="remarks"
+              (ngModelChange)="checkRemarks()"
+              appAlphaNumeric
+              [maxLength]="300"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row mt-4" *ngIf="userRole == 'AO'">
+          <label class="col-sm-3 col-form-label"
+            >Remarks from AE Officer <span class="star">*</span>
+          </label>
+          <div class="col-sm-9">
+            <textarea
+              class="form-control"
+              cols="10"
+              rows="2"
+              name="aeRemarkseea"
+              [(ngModel)]="aeRemarks"
+              (ngModelChange)="checkRemarks()"
+              appAlphaNumeric
+              [maxLength]="300"
+              disabled
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row mt-4" *ngIf="userRole == 'AO'">
+          <label class="col-sm-3 col-form-label"
+            >Remarks from Approving Authority(AEE) <span class="star">*</span>
+          </label>
+          <div class="col-sm-9">
+            <textarea
+              class="form-control"
+              cols="10"
+              rows="2"
+              name="aeeRemarks"
+              [(ngModel)]="aeeRemarks"
+              (ngModelChange)="checkRemarks()"
+              appAlphaNumeric
+              [maxLength]="300"
+              disabled
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row mt-4" *ngIf="userRole == 'AO'">
+          <label class="col-sm-3 col-form-label"
+            >Remarks from Accounting Officier(AO) <span class="star">*</span>
+          </label>
+          <div class="col-sm-9">
+            <textarea
+              class="form-control"
+              cols="10"
+              rows="5"
+              name="remarko"
+              [(ngModel)]="remarks"
+              (ngModelChange)="checkRemarks()"
+              appAlphaNumeric
+              [maxLength]="300"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row mt-4" *ngIf="userRole == 'EE'">
+          <label class="col-sm-3 col-form-label"
+            >Remarks from Approving Authority(AE) <span class="star">*</span>
+          </label>
+          <div class="col-sm-9">
+            <textarea
+              class="form-control"
+              cols="10"
+              rows="2"
+              name="aeRemarksw"
+              [(ngModel)]="aeRemarks"
+              (ngModelChange)="checkRemarks()"
+              appAlphaNumeric
+              [maxLength]="300"
+              disabled
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row mt-4" *ngIf="userRole == 'EE'">
+          <label class="col-sm-3 col-form-label"
+            >Remarks from Approving Authority(AEE) <span class="star">*</span>
+          </label>
+          <div class="col-sm-9">
+            <textarea
+              class="form-control"
+              cols="10"
+              rows="2"
+              name="aeeRemarksa"
+              [(ngModel)]="aeeRemarks"
+              (ngModelChange)="checkRemarks()"
+              appAlphaNumeric
+              [maxLength]="300"
+              disabled
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row mt-4" *ngIf="userRole == 'EE'">
+          <label class="col-sm-3 col-form-label"
+            >Remarks from Approving Authority(AO) <span class="star">*</span>
+          </label>
+          <div class="col-sm-9">
+            <textarea
+              class="form-control"
+              cols="10"
+              rows="2"
+              name="aoRemarkss"
+              [(ngModel)]="aoRemarks"
+              (ngModelChange)="checkRemarks()"
+              appAlphaNumeric
+              [maxLength]="300"
+              disabled
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row mt-4" *ngIf="userRole == 'EE'">
+          <label class="col-sm-3 col-form-label"
+            >Remarks from Approving Authority(EE) <span class="star">*</span>
+          </label>
+          <div class="col-sm-9">
+            <textarea
+              class="form-control"
+              cols="10"
+              rows="5"
+              name="remarkee"
+              [(ngModel)]="remarks"
+              (ngModelChange)="checkRemarks()"
+              appAlphaNumeric
+              [maxLength]="300"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-box mt-4 pb-4" *ngIf="userRole == 'EE'">
+        <button
+          type="button"
+          class="btn btn-primary btn-md"
+          (click)="
+            openConfirmationpopupDialog('Do you want to close work completion?')
+          "
+          *ngIf="
+            workExecutionMethodId == 1 ||
+            workExecutionMethodId == 3 ||
+            workExecutionMethodId == 4 ||
+            workExecutionMethodId == 6
+          "
+          [disabled]="isNewConWorkorderClosed"
+        >
+         Accepted And Closed
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          (click)="
+            openConfirmationpopupDialog('Do you want to close joint inventory?')
+          "
+          *ngIf="workExecutionMethodId == 2 || workExecutionMethodId == 5"
+          [displabed]="isNewConWorkorderClosed"
+          >
+          Accepted And Closed
+        </button>
+        <button type="button" class="btn btn-primary btn-md">Back</button>
+      </div>
+      <!-- <div class="btn-box mt-2 pb-2" *ngIf="userRole !== 'EE'">
+        <button
+          type="button"
+          class="btn btn-primary btn-md"
+          [disabled]="!remarksEntered"
+          (click)="openConfirmationpopupDialog('Are you sure you want to submit?')"
+        >
+          Submit
+        </button>
+        <button type="button" class="btn btn-primary btn-md">Back</button>
+      </div> -->
+      <div class="btn-box mt-2 pb-2" *ngIf="userRole !== 'EE'">
+        <button
+          type="button"
+          class="btn btn-primary btn-md"
+          [disabled]="!remarksEntered"
+          (click)="openConfirmationpopupDialog(getConfirmationMessage())"
+        >
+          {{ getSubmitButtonText() }}
+        </button>
+        <button type="button" class="btn btn-primary btn-md">Back</button>
+      </div>
+      
+    </div>
+  </form>
+</section>
+</ng-template>

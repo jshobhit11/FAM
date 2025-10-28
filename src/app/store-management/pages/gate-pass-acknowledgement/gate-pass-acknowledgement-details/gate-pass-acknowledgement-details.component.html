@@ -1,0 +1,74 @@
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/store-management/dashboard">Store</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a routerLink="/store-management/gate-pass-acknowledgement"
+            >Gate Pass Acknowledgement</a
+          >
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Gate Pass Acknowledgement Details</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+
+<section>
+  <form class="form" [formGroup]="uploadForm">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Gate Pass Acknowledgement  </h2>
+
+      <div>
+        <div class="three-row-grid mt-4">
+          <div class="left-div">
+            <div class="inner-div">
+              <label>Request Number</label>
+              <p>{{ data?.wmMaterialIndent?.materialsIndentNo }}</p>
+            </div>
+          </div>
+          <div>
+            <div class="inner-div">
+              <label>Request By</label>
+              <p>{{requestBy}}</p>
+            </div>
+          </div>
+          <div>
+            <div class="inner-div">
+              <label>Request Date</label>
+              <p>
+                {{materialsIndentDate | date : "yyyy/MM/dd" }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col mt-3 upload-div" [class.error]="uploadForm.get('pdfFile').invalid && uploadForm.get('pdfFile').touched">
+        <label class="form-label">Upload PDF <span class="star">*</span></label>
+        <input class="btn btn-upload" type="file" #pdfFileInput (change)="onFileChange($event)" accept=".pdf" formControlName="pdfFile" required  appFileSizeValidator="5" />
+        
+        <mat-error *ngIf="uploadForm.get('pdfFile').hasError('required') && uploadForm.get('pdfFile').touched && !fileSizeError">
+          Please select a PDF file.
+        </mat-error>
+        
+        <mat-error *ngIf="fileSizeError && uploadForm.get('pdfFile').touched">
+          File size must be up to 5MB.
+        </mat-error>
+      </div>
+      
+      <div class="btn-box mt-4">
+        <button
+          type="button"
+          class="btn btn-primary btn-md"
+          (click)="openConfirmationpopupDialog()"
+        >
+          Gate Pass Acknowledgement
+        </button>
+      </div>
+    </div>
+  </form>
+</section>

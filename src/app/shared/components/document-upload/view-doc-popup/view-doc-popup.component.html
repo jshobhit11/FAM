@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>Upload Document</h1>
+
+<mat-dialog-content>
+  <form [formGroup]="uploadForm">
+
+    
+<div class="col-xl-6 d-flex align-items-center px-2">
+    <div class="label-container">
+      <label>Document Type <span class="star">*</span></label>
+    </div>
+    <div class="input-container">
+      <input type="text" formControlName="uploadfiletype">
+      <mat-error *ngIf="uploadForm.get('uploadfiletype')?.hasError('required') && uploadForm.get('uploadfiletype')?.touched">
+        Please select this field
+      </mat-error>
+    </div>
+  </div>
+
+<div class="col  disp-flex " >
+    <label class="label-container">Upload file <span class="star">*</span></label>
+     <div class="input-container">
+      <input class="btn btn-upload" (change)="onFileSelected($event)" style="width: 62%;" type="file"  name="file" appFileSizeValidator
+      class="form-control" id="" formControlName="file"   placeholder="" />
+ <!-- <mat-error class="error-message" >File size exceeds 1 MB. Please upload a file below 1MB.</mat-error> -->
+ <mat-error *ngIf="uploadForm.get('file')?.hasError('required') && uploadForm.get('file')?.touched">
+    Please select a file
+  </mat-error>
+  <mat-error *ngIf="uploadForm.get('file')?.hasError('fileSizeExceeded')">
+    File size exceeds 1 MB. Please upload a file below 1MB.
+  </mat-error>
+</div>
+</div>
+    <div class="btn-box mt-4 pb-4 align-items-center">
+      <button type="button" class="btn btn-primary btn-md" (click)="onUpload()">
+        Upload
+      </button>
+      <button type="button" class="btn btn-primary btn-md" (click)="onClose()">
+        Close
+      </button>
+    </div>
+
+  </form>
+</mat-dialog-content>

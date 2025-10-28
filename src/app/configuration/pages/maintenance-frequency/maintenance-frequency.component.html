@@ -1,0 +1,83 @@
+<div class="container-fluid page-3">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/configuration">Configuration</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Maintenance Frequency</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+
+    <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+        <h2 class="title-2">Maintenance Frequency </h2>
+    
+        <div style="display: flex; flex-wrap: wrap; overflow: auto">
+          <div class="top-row first-top-row">
+            <div class="input-control">
+              <mat-form-field class="example-full-width">
+                <mat-label>Search Frequency Type</mat-label>
+                <input (keyup)="applyFilter($event.target.value)" matInput placeholder="Ex. Each" />
+              </mat-form-field>
+            </div>
+            <div class="button-control">
+              <button mat-button class="c-btn" (click)="openAddMaintenanceFrequency()" >
+                Add Frequency Type
+              </button>
+            </div>
+            </div>
+
+            <table  [dataSource]="dataSource" mat-table  class="mt-4">
+                <!-- SLNO Column -->
+                <ng-container matColumnDef="slno">
+                  <th mat-header-cell *matHeaderCellDef>SL NO</th>
+                  <td mat-cell *matCellDef="let element; index as i">
+                    {{i+1}} </td>
+                </ng-container>
+               
+                <!--Frequency-->
+                <ng-container matColumnDef="frequency">
+                  <th mat-header-cell *matHeaderCellDef>Frequency</th>
+                  <td mat-cell *matCellDef="let element">{{ element.frequency }}</td>
+                </ng-container>
+          
+                <!--Frequency Type-->
+                <ng-container matColumnDef="frequencyType">
+                  <th mat-header-cell *matHeaderCellDef> Frequency Type</th>
+                  <td mat-cell *matCellDef="let element">{{ element.frequencyType }}</td>
+                </ng-container>
+                
+                <!--From Month-->
+                 <ng-container matColumnDef="frequencyStartMonth">
+                  <th mat-header-cell *matHeaderCellDef>From Month</th>
+                  <td mat-cell *matCellDef="let element">{{ element.frequencyStartMonth }}</td>
+                </ng-container>
+                 
+                <!--To Month-->
+                 <ng-container matColumnDef="frequencyEndMonth">
+                  <th mat-header-cell *matHeaderCellDef>To Month</th>
+                  <td mat-cell *matCellDef="let element">{{ element.frequencyEndMonth }}</td>
+                </ng-container>
+                  
+                <!-- Action Column -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>Action</th>
+                    <td mat-cell *matCellDef="let element">
+                      <button style="border: none; background-color: transparent"
+                      (click)="openUpdateMaintenanceFrequency(element.mmMaintenanceFrequencyMasterId)">
+                        <mat-icon color="error">edit</mat-icon>
+                      </button>
+                    </td>
+                    </ng-container>
+          
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+              </div>
+          
+              <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+              </mat-paginator>
+            </div>

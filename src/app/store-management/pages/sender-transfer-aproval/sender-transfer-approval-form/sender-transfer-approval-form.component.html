@@ -1,0 +1,130 @@
+<div class="page-1">
+    <section class="mt-2">
+      <ul>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a routerLink="/store-management" style="white-space: nowrap;">Store</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a routerLink="/store-management/sender-transfer-approval" style="white-space: nowrap;">Sender Division Transfer Approval</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a style="color: lightslategray; white-space: nowrap;">Sender Division Store Transfer Approval Form</a>
+            </li>
+          </ol>
+        </nav>
+      </ul>
+    </section>
+    <section>
+      <form class="form">
+        <div class="page__content shadow p-3 position-relative dis-flex-colu">
+          <h2 class="title-2">Sender Division Store Transfer Approval</h2>
+    
+          <div style="padding: 0.5rem">
+            <div style="display: flex; justify-content: space-between">
+              <div class="col-xl-6" style="width: 45%">
+                <div class="col-xl-6 input-control block-div">
+                  <div>
+                    <span for="store" style="white-space: nowrap;">
+                     Receiver Store:
+                      <span style="margin-right: 10px;">{{ approvalData?.receiverStoreCode }}-{{approvalData?.receiverStoreName}}</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-xl-6 input-control block-div">
+                  <div>
+                    <span for="store" style="white-space: nowrap;">
+                      Receiver Division:
+                      <span style="margin-right: 10px;">{{ approvalData?.receiverOfficeName }}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="col-xl-6"
+                style="
+                  width: 45%;
+                  display: flex;
+                  align-items: flex-start;
+                  justify-content: flex-end;
+                  flex-direction: column;
+                "
+              >
+                <div class="col-xl-6 input-control block-div">
+                  <div>
+                    <span for="store" style="white-space: nowrap;">
+                      Sender Store: &nbsp;&nbsp;
+                      <span style="margin-right: 10px;">{{approvalData?.storeCode}}-{{ approvalData?.store }}</span>
+                    </span>
+                  </div>
+                </div>
+    
+                <div class="col-xl-6 input-control block-div">
+                  <div>
+                    <span for="store" style="white-space: nowrap;">
+                      Sender Division:
+                      <span style="margin-right: 10px;">{{ approvalData?.senderOfficeName }}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              overflow: auto;
+              width: 100%;
+              
+              margin-top: 1rem;
+            "
+          >
+            <table class="table table-bordered text-center">
+              <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                <tr>
+                  <th scope="col">S. No.</th>
+                  <th scope="col">Material Code</th>
+                  <th scope="col">Material Name</th>
+                  <th scope="col">Unit</th>
+                  <th scope="col">Rate</th>
+                  <th scope="col">Requested Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let dataItem of data; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ dataItem.materialCode }}</td>
+                  <td class="horizontal-scroll">{{ dataItem.materialName }}</td>
+                  <td>{{ dataItem.materialUnit }}</td>
+                  <td>{{ dataItem.materialRate }}</td>
+                  <td>{{ dataItem.requestQuantity }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    
+          <div class="txt-area mt-4">
+            <label style="width: fit-content; white-space: nowrap;">Remarks</label>
+            <textarea
+              class="form-control"
+              cols="10"
+              rows="5"
+              name="approveRemarks"
+              [(ngModel)]="approveRemarks"
+            ></textarea>
+          </div>
+    
+          <div class="btn-box mt-4">
+            <button
+              [disabled]="!approveRemarks"
+              type="button"
+              (click)="openApprovalpopupDialog()"
+              class="btn btn-primary btn-lg"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
+    </div>

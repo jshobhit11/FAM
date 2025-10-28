@@ -1,0 +1,27 @@
+<section>
+  <form [formGroup]="areaSpecificForm">
+    <h1 mat-dialog-title>Update Area Specific Loader Master</h1>
+    <div class="content-fields mt-4" mat-dialog-content>
+      <div class="modal-input-control">
+        <mat-form-field class="example-full-width">
+          <mat-label>Category Name</mat-label>
+          <input matInput placeholder="Ex. Conductor" formControlName="chargesCategory" [maxLength]="100" required/>
+          <mat-error *ngIf="areaSpecificForm.get('chargesCategory').hasError('required') && areaSpecificForm.get('chargesCategory').touched">
+            Please enter in this field.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Loader Charges Percentage</mat-label>
+          <input matInput placeholder="Ex. 23 or 23.45"
+            formControlName="chargesPercentage"  required/>
+          <mat-error *ngIf = "areaSpecificForm.get('chargesPercentage').invalid && areaSpecificForm.get('chargesPercentage').touched">
+            Please enter a valid number with up to 2 digits before and after the decimal point, or a whole number with up to 2 digits.</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="onAreaSpecificLoaderUpdate()">Update</button>
+      <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+  </form>
+</section>

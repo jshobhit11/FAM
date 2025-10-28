@@ -1,0 +1,67 @@
+section {
+  overflow: auto;
+  width: 100%;
+}
+
+.menu-bar {
+  min-width: fit-content;
+  margin-bottom: unset;
+  color: white;
+  background: #4472c4;
+  padding-left: 1rem;
+  font-size: 1rem;
+  gap: 2rem;
+  align-items: center;
+  display: flex;
+  justify-content: space-evenly;
+  list-style: none;
+
+  li a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 0.813rem;
+    width: max-content;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 5px;
+    display: flex;
+  }
+  li a:hover {
+    background-color: #001a47;
+    color: #fff;
+  }
+}
+
+.active {
+  background-color: #001a47;
+  color: #fff;
+}
+
+@media only screen and (max-width: 1000px) {
+  .menu-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+///// Scrollbar SCSS /////
+
+::-webkit-scrollbar {
+  width: 0.8rem !important;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #adb5bd !important;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  width: 10% !important;
+  background: #193668 !important;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #21488b !important;
+}

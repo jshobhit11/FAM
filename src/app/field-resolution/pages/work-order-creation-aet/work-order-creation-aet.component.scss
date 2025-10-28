@@ -1,0 +1,156 @@
+.form-container {
+    width: 50%; 
+}
+
+.input-group {
+    display: flex;
+    align-items: center;  
+    gap: 4px; 
+}
+
+mat-label {
+    margin-right: 8px; 
+}
+
+mat-form-field {
+    flex-grow: 1;  
+}
+
+button {
+    white-space: nowrap;
+    margin-left: 8px;  
+}
+
+.after-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; 
+
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+  
+    }
+  
+    .input-group mat-label {
+      flex: 1; 
+    }
+  
+    .input-group mat-form-field,
+    .input-group mat-radio-group {
+      flex: 2; 
+    }
+    .full-width {
+      width: 100%;
+    }
+  }
+  .details-section {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.details-left,
+.details-middle,
+.details-right {
+    width: 32%;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    flex: 1;
+    text-align: left;
+    white-space: nowrap;
+    line-height: 1.5; 
+}
+
+.input-group p {
+    flex: 2;
+    text-align: left;
+    margin-right: 1px;
+    line-height: 1.5; 
+    margin-top: 5px;
+}
+  mat-radio-group mat-radio-button {
+    margin-right: 6px;
+  }
+  
+  .after-approval {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  
+    .input-fields {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+  
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      width: 48%; 
+  
+      mat-label {
+        flex: 1;
+      }
+  
+      mat-form-field,
+      mat-radio-group {
+        flex: 2;
+      }
+    }
+  
+    .after-approval-left {
+      justify-content: flex-start; 
+    }
+  
+    .after-approval-right {
+      justify-content: flex-end; 
+    }
+  
+    .full-width {
+      width: 100%;
+    }
+  
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+  
+    .btn-box {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      
+    }
+  }
+  .form-group {
+    display: flex;
+    align-items: center;  
+    gap:60px; 
+    margin-right:10rem;
+  }
+  .btn-minimize{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    color: #4472c4;
+    padding: 5px 10px;
+    margin-left: -15px;
+ } 

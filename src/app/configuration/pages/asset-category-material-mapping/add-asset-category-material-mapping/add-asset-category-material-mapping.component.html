@@ -1,0 +1,49 @@
+<section>
+  <form [formGroup]="assetCatMatForm">
+    <h1 mat-dialog-title>Add Asset Category Material Mapping</h1>
+    <div class="content-fields mt-4" mat-dialog-content style="flex-direction: column;">
+      <div class="modal-input-control">
+        <mat-form-field appearance="fill">
+          <mat-label>Asset Category Name</mat-label>
+          <mat-select formControlName="amAssetCategoryMasterId" required>
+            <mat-option *ngFor="let main of assetCategoryData" [value]="main.amAssetCategoryMasterId">
+              {{main.assetCategoryName}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="assetCatMatForm.get('amAssetCategoryMasterId').hasError('required')">
+            Please select in this field.</mat-error>
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="fill">
+          <mat-label>Material Name</mat-label>
+          <mat-select formControlName="materialsLabourMasterId" required>
+            <mat-option *ngFor="let main of materialsLabourData" [value]="main.srMaterialsMasterId">
+              {{ main.mlCode }} - {{main.mlName}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="assetCatMatForm.get('materialsLabourMasterId').hasError('required')">
+            Please select in this field.</mat-error>
+        </mat-form-field> -->
+        <mat-form-field appearance="fill">
+          <mat-label>Material Name</mat-label>
+          <input type="text" placeholder="Search Material" matInput formControlName="materialsLabourMasterId"
+            [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayMaterialOption.bind(this)">
+            <mat-option *ngFor="let main of filteredMaterials | async" [value]="main">
+              {{ main.mlCode }} - {{ main.mlName }}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="assetCatMatForm.get('materialsLabourMasterId').hasError('required')">
+            Please select a Material.
+          </mat-error>
+        </mat-form-field>
+        
+      </div>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="onAddAssetCatMaterialType()">Add</button>
+      <button class="btn clor" mat-button mat-dialog-close [disabled]="notificationRef">Close</button>
+    </div>
+  </form>
+</section>
+

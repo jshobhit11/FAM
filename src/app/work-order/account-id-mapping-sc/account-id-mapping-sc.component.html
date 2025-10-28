@@ -1,0 +1,161 @@
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/main">Dashboard</a></li>
+        <li class="breadcrumb-item">
+          <a routerLink (click)="navigate('ACCOUNT ID AND METERS MAPPING', '17')">Account Id And Meter Mapping</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Create Account Id And Meter Mapping</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+
+<section>
+  <form class="form">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu" *ngIf="data?.length > 0">
+      <h2 class="title-2">Account Meter Mapping</h2>
+
+      <div>
+        <div class="two-column-grid">
+          <div class="left-column">
+            <div class="inner-div">
+              <label>Work Order No :</label>
+              <p>{{ data[0]?.workorderNo }}</p>
+            </div>
+            <div class="inner-div">
+              <label>Registered On :</label>
+              <p>{{ data[0]?.registeredOn | date: 'dd/MM/yyyy' }}</p>
+            </div>
+          </div>
+          <div class="right-column">
+            <div class="inner-div">
+              <label>Work Description :</label>
+              <p>{{ data[0]?.workDescription }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="overflow: auto; width: 100%; border: 2px solid #c2c2c2; margin-top: 1rem;">
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col" style="width: 30%;">Account Id</th>
+              <th scope="col" style="width: 30%;">Badge Number</th>
+              <th scope="col" style="width: 22%;">Serial No</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of accountMappingData">
+              <td>{{ item.accountId || 'Account Id is not available' }}</td>
+              <td>{{ item.badgeNumber || 'Badge Number is not available' }}</td>
+              <td>{{ item.serialNo }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="text-center" style="margin-top: 1rem;" *ngIf="validateMeterData.length == 0">
+        <button class="btn btn-primary" (click)="meterReplicatorAndMeterValidatorInCcb()" [disabled]="isRequestInProgress">
+          Meter Validator
+        </button>
+      </div>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3 text-center">
+        {{ errorMessage }}
+      </div>
+      <div style="overflow: auto; width: 100%; border: 2px solid #c2c2c2; margin-top: 1rem;" *ngIf="validateMeterData.length > 0">
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col" style="width: 10%;">Sequence no</th>
+              <th scope="col" style="width: 30%;">Register Id</th>
+              <th scope="col" style="width: 30%;">Unit of Measure</th>
+              <th scope="col" style="width: 15%;">Time of Use</th>
+              <th scope="col" style="width: 15%;">Reading</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of validateMeterData">
+              <td>{{ item.registerReadSeqNo }}</td>
+              <td>{{ item.registerId }}</td>
+              <td>{{ item.registerUom }}</td>
+              <td>{{ item.registerTou }}</td>
+              <td>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  [ngClass]="{ 'error-highlight': item.error && item.touched }"
+                  [(ngModel)]="item.registerReading"
+                  [ngModelOptions]="{ standalone: true }"
+                  (keydown)="allowOnlyNumbers($event)"
+                  (input)="restrictInput($event, item)"
+                  (blur)="validatePFValue(item)"
+                  required
+                  #readingRef="ngModel"
+                  (ngModelChange)="validateInputs()"
+                >
+                <div *ngIf="item.error && item.touched" class="text-danger">
+                  Reading is required.
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="form-group mt-3" *ngIf="validateMeterData.length > 0">
+        <label for="readingDate" class="left-label">Reading Date:</label>
+        <div class="date-picker-container">
+          <input
+            type="date"
+            style="width: 15rem;"
+            class="form-control"
+            name="selectedDate"
+            [(ngModel)]="selectedDate"
+            [min]="minDate"
+            [max]="maxDate"
+            (ngModelChange)="validateDate($event)"
+            required
+          />
+          <div *ngIf="dateError">
+            <small class="text-danger">{{ dateError }}</small>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="submitError" class="alert alert-danger mt-3 text-center">
+        {{ submitError }}
+      </div>
+      <div class="btn-box mt-4 pb-4" *ngIf="validateMeterData.length > 0">
+        <ng-container *ngIf="data[0]?.isFaReceived == '1'|| data[0]?.applicationTypeCode=='UMT_MT'; else errorTemplate">
+          <div class="d-flex justify-content-center">
+            <button 
+              type="button" 
+              class="btn btn-primary btn-sm mr-2" 
+              (click)="submitForm()"
+              [disabled]="isButtonDisabled">
+              Submit
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-secondary btn-sm" 
+              (click)="closeForm()">
+              Close
+            </button>
+          </div>
+        </ng-container>
+      </div>
+      <ng-template #errorTemplate>
+          <p *ngIf="isFaReceived==0" class="alert alert-danger mt-3">
+            Kindly create energization field activity in CCB.
+          </p>
+          <p *ngIf="isFaReceived==2" class="alert alert-danger mt-3">
+            Kindly complete the PC-TEST process.
+          </p>
+      </ng-template>
+    </div>
+  </form>
+</section>

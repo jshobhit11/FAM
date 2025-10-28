@@ -1,0 +1,3607 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/main/dashboard">Dashboard </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink (click)="navigate()">Site Inspection </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Site Inspection Form</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+
+  <section class="mt-2 mb-4">
+    <div
+      class="page__content shadow p-3 position-relative dis-flex-colu mb-4 background-w"
+    >
+      <h2 class="title-2">Site Inspection</h2>
+      <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onStepChange($event)">
+        
+        <mat-step [stepControl]="consumerDetails" label="Consumer Details">
+          <!-- Consumer Details form  -->
+          <form class="form" [formGroup]="consumerDetails">
+            <div
+              class="col-lg-6 mt-4 dis-fl cd-container"
+              *ngIf="data?.serviceRegistration"
+            >
+              <h2 class="title-2">Consumer Details</h2>
+              <div class="cd-content mt-2">
+                <label>Account ID</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.accountId !== "null"
+                      ? data?.serviceRegistration?.accountId
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Name & Address</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.applicantName !== "null"
+                      ? data?.serviceRegistration?.applicantName
+                      : "-"
+                  }},
+                  {{
+                    data?.serviceRegistration?.address !== "null"
+                      ? data?.serviceRegistration?.address
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Land Mark</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.landmark !== "null"
+                      ? data?.serviceRegistration?.landmark
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Email ID</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.email !== "null"
+                      ? data?.serviceRegistration?.email
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Contact No.</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.mobileNumber !== "null"
+                      ? data?.serviceRegistration?.mobileNumber
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Applicant Type</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.applicantType !== "null"
+                      ? data?.serviceRegistration?.applicantType
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Application Type</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.applicationType !== "null"
+                      ? data?.serviceRegistration?.applicationType
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Tariff</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.tariff !== "null"
+                      ? data?.serviceRegistration?.tariff
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Type of Connection</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.connectionType !== "null"
+                      ? data?.serviceRegistration?.connectionType
+                      : "-"
+                  }}
+                </p>
+              </div>
+
+              <div
+                class="cd-content"
+                *ngIf="
+                  (data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+                    data?.serviceRegistration?.applicationTypeCode === 'LR') &&
+                  !data?.serviceRegistration?.tariff?.includes('HT')
+                "
+              >
+                <label>Existing Load (KW & HP)</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.existingLoadKw !== "null"
+                      ? data?.serviceRegistration?.existingLoadKw + " KW"
+                      : "-"
+                  }}
+                  &nbsp;
+                  {{
+                    data?.serviceRegistration?.existingLoadHp !== "null"
+                      ? data?.serviceRegistration?.existingLoadHp + " HP"
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div
+                class="cd-content"
+                *ngIf="
+                  data?.applicationTypeCode === 'LE' ||
+                  data?.applicationTypeCode === 'LR'
+                "
+              >
+                <label
+                  >Total Existing Load ({{ data?.existingLoadUnit }})</label
+                >
+                <p>
+                  {{
+                    data?.serviceRegistration?.existingTotalLoad !== "null"
+                      ? data?.serviceRegistration?.existingTotalLoad
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div
+                class="cd-content"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LE' &&
+                  !data?.serviceRegistration?.tariff?.includes('HT')
+                "
+              >
+                <label>Additional Load of Connection (KW & HP)</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.newLoadKw !== "null"
+                      ? data?.serviceRegistration?.newLoadKw + " KW"
+                      : "-"
+                  }}
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  {{
+                    data?.serviceRegistration?.newLoadHp !== "null"
+                      ? data?.serviceRegistration?.newLoadHp + " HP"
+                      : "-"
+                  }}
+                  <!-- {{ data.connectionType !== "null" ? data.connectionType : "-" }} -->
+                </p>
+              </div>
+              <div
+                class="cd-content"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LR' &&
+                  !data?.serviceRegistration?.tariff?.includes('HT')
+                "
+              >
+                <label>Reduced Load (KW & HP)</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.newLoadKw !== "null"
+                      ? data?.serviceRegistration?.newLoadKw + " KW"
+                      : "-"
+                  }}
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  {{
+                    data?.serviceRegistration?.newLoadHp !== "null"
+                      ? data?.serviceRegistration?.newLoadHp + " HP"
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div
+                class="cd-content"
+                *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LR'"
+              >
+                <label>Total Reduced Load ({{ data?.newLoadUnit }})</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.newTotalLoad !== "null"
+                      ? data?.serviceRegistration?.newTotalLoad
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div
+                class="cd-content"
+                *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LE'"
+              >
+                <label
+                  >Total Additional Load of Connection ({{
+                    data?.newLoadUnit
+                  }})</label
+                >
+                <p>
+                  {{
+                    data?.serviceRegistration?.newTotalLoad !== "null"
+                      ? data?.serviceRegistration?.newTotalLoad
+                      : "-"
+                  }}
+                </p>
+              </div>
+
+              <div
+                class="cd-content"
+                *ngIf="
+                  (data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+                    data?.serviceRegistration?.applicationTypeCode === 'LR') &&
+                  !data?.serviceRegistration?.tariff?.includes('HT')
+                "
+              >
+                <label>Requested Load of Connection (KW & HP)</label>
+                <!-- <p>
+                  {{ data.loadKw !== "null" ? data.loadKw + " KW" : "-" }}
+                  &nbsp;&nbsp;&nbsp;{{
+                  data.loadHp !== "null" ? data.loadHp + " HP" : "-"
+                  }}
+                </p> -->
+                <p>
+                  {{
+                    data?.serviceRegistration?.loadKw !== "null"
+                      ? data?.serviceRegistration?.loadKw + " KW"
+                      : "-"
+                  }}
+                  &nbsp;{{
+                    data?.serviceRegistration?.loadHp !== "null"
+                      ? data?.serviceRegistration?.loadHp + " HP"
+                      : "-"
+                  }}
+                </p>
+              </div>
+
+              <div
+                class="cd-content"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+                  data?.serviceRegistration?.applicationTypeCode === 'LR'
+                "
+              >
+                <label
+                  >Total Requested Load of Connection ({{
+                    data?.serviceRegistration?.loadUnit
+                  }}
+                  )</label
+                >
+                <!-- <p>
+                  {{ data.loadKw !== "null" ? data.loadKw : "-" }}
+                </p> -->
+                <p>
+                  {{ data?.serviceRegistration?.totalContractedLoad }}
+                  {{ data?.serviceRegistration?.loadUnit }}
+                </p>
+              </div>
+
+              <div
+                class="cd-content"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode !== 'LE' &&
+                  data?.serviceRegistration?.applicationTypeCode !== 'LR' &&
+                  !data?.serviceRegistration?.tariff?.includes('HT')
+                "
+              >
+                <label>Applied Load (KW & HP)</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.loadKw !== "null"
+                      ? data?.serviceRegistration?.loadKw + " KW"
+                      : "-"
+                  }}
+                  &nbsp;{{
+                    data?.serviceRegistration?.loadHp !== "null"
+                      ? data?.serviceRegistration?.loadHp + " HP"
+                      : "-"
+                  }}
+                </p>
+              </div>
+
+              <div
+                class="cd-content"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode !== 'LE' &&
+                  data?.serviceRegistration?.applicationTypeCode !== 'LR'
+                "
+              >
+                <label
+                  >Total Applied Load in
+                  {{ data?.serviceRegistration?.loadUnit }}</label
+                >
+                <p>
+                  {{ data?.serviceRegistration?.totalContractedLoad }}
+                  {{ data?.serviceRegistration?.loadUnit }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Phase</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.phase !== "null"
+                      ? data?.serviceRegistration?.phase
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <!-- <div class="cd-content">
+            <h3>Plot Size (sq.ft)</h3>
+            <p>{{ data.plotSize !== "null" ? data.plotSize : "-" }}</p>
+          </div> -->
+              <div
+                class="cd-content"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+                  data?.serviceRegistration?.applicationTypeCode === 'LR'
+                "
+              >
+                <label>Existing Build up Area (sq.mts.)</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.existingBuildupArea !== "null"
+                      ? data?.serviceRegistration?.existingBuildupArea
+                      : "-"
+                  }}
+                </p>
+              </div>
+
+              <div
+                class="cd-content"
+                *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LE'"
+              >
+                <label>Build up Area Added (sq.mts.)</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.newBuildupArea !== "null"
+                      ? data?.serviceRegistration?.newBuildupArea
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div
+                class="cd-content"
+                *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LR'"
+              >
+                <label>Build up Area Reduced (sq.mts.)</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.newBuildupArea !== "null"
+                      ? data?.serviceRegistration?.newBuildupArea
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Total Build up Area (sq.mts.)</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.buildupAreaSize !== "null"
+                      ? data?.serviceRegistration?.buildupAreaSize
+                      : "-"
+                  }}
+                </p>
+              </div>
+              <div
+                class="cd-content"
+                *ngIf="data?.serviceRegistration?.applicationTypeCode === 'MC'"
+              >
+                <label>No of Connections</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.noOfConnections !== "null"
+                      ? data?.serviceRegistration?.noOfConnections
+                      : "-"
+                  }}
+                </p>
+              </div>
+
+              <div
+                class="cd-content"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode !== 'LE' ||
+                  data?.serviceRegistration?.applicationTypeCode !== 'LR'
+                "
+              >
+                <label>Adjacent Consumer Number</label>
+                <p>
+                  {{
+                    data?.serviceRegistration?.adjacentAccountNo !== "null"
+                      ? data?.serviceRegistration?.adjacentAccountNo
+                      : "-"
+                  }}
+                </p>
+              </div>
+
+              <div class="btn-box mt-4">
+                <!-- <button type="button" class="btn btn-lg clor">
+              Site Inspection Schedule
+            </button> -->
+                <!-- <button type="button" class="btn btn-md clor">Email & SMS</button> -->
+                <!-- <button type="button" class="btn btn-md clor" (click)="navigateToViewDocument()">View Document</button> -->
+                <button type="button" class="btn btn-md clor">
+                  <a
+                    routerLink="/print-inspection-form/{{ accountId }}"
+                    style="text-decoration: none; color: unset"
+                    >Print Application Form</a
+                  >
+                </button>
+                <button
+                  matStepperNext
+                  type="button"
+                  class="btn btn-primary btn-md"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step
+          [stepControl]="premisesInspectionForm"
+          label="Premises Inspection "
+        >
+          <!-- Premises Inspection  form  -->
+          <form class="form" [formGroup]="premisesInspectionForm">
+            <div class="col-lg-6 dis-fl mt-4 premisesInspe">
+              <h2>Premises Inspection Details</h2>
+
+              <div
+                class="col mt-4 disp-flex"
+                *ngIf="
+                  this.data?.serviceRegistration?.applicationTypeCode ==
+                  'LAYOUT'
+                "
+              >
+                <label class="form-label"
+                  >Please enter the DCW Layout Work Case ID
+                  <span class="star">*</span></label
+                >
+                <input
+                  type="text"
+                  class="dcw-form"
+                  placeholder="Enter Layout Case ID"
+                  formControlName="layoutCaseId"
+                  #caseInput
+                  [disabled]="layoutValidationSuccess"
+                />
+                <button
+                  class="btn-layout"
+                  *ngIf="!layoutValidationSuccess && !layoutValidationFailure"
+                  (click)="validateLayoutCaseId(caseInput)"
+                >
+                  Validate
+                </button>
+
+                <button
+                  class="btn-reset"
+                  *ngIf="layoutValidationSuccess"
+                  (click)="resetLayoutValidation(caseInput)"
+                >
+                  Reset
+                </button>
+
+                <div class="mt-2">
+                  <img
+                    *ngIf="layoutValidationSuccess"
+                    src="assets/check.png"
+                    alt="Success"
+                    class="validation-icon"
+                  />
+                  <img
+                    *ngIf="layoutValidationFailure"
+                    src="assets/remove.png"
+                    alt="Error"
+                    class="validation-icon"
+                  />
+                </div>
+              </div>
+
+              <mat-error class="custom-error" *ngIf="layoutValidationFailure">
+                Invalid Case ID
+              </mat-error>
+
+              <div class="col mt-0 disp-flex" *ngIf="layoutValidationSuccess">
+                <label class="form-label"></label>
+                <mat-hint class="custom-success"
+                  >Validated Successfully!</mat-hint
+                >
+                <!-- <label><strong>Case ID:</strong> {{ validatedCaseId }}</label> -->
+                <!-- <label><strong>Account ID:</strong> {{ validatedAccountId }}</label> -->
+              </div>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"
+                  >Main Category <span class="star">*</span></label
+                >
+                <select
+                  class="form-select-d"
+                  name="mainCategory"
+                  formControlName="mainCategory"
+                  (change)="onChangeMainCategory()"
+                >
+                  <option value="" disabled>Select Main Category</option>
+                  <option
+                    *ngFor="let mainCategoryItem of mainCategoryData"
+                    [value]="mainCategoryItem.categoryMasterId"
+                  >
+                    {{ mainCategoryItem.categoryCode }}
+                    {{ mainCategoryItem.categoryName }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"
+                  >Sub Category <span class="star">*</span></label
+                >
+                <select
+                  class="form-select-d"
+                  name="subCategory"
+                  formControlName="subCategory"
+                  (change)="onChangeSubCategory()"
+                >
+                  <option value="" disabled>Select Sub Category</option>
+                  <option
+                    *ngFor="let subCategoryItem of subCategoryData"
+                    [value]="subCategoryItem.categoryMasterId"
+                  >
+                    {{ subCategoryItem.categoryCode }}
+                    {{ subCategoryItem.categoryName }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col mt-3 disp-flex" *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LE'">
+                <label class="form-label"> Is Existing Installation Service Before 2005? </label>
+                <div style="display: flex; gap: 1rem">
+                <div class="radio-btns">
+                <input type="radio" id="yes_of_is_existing_installation_service_before_20025" name="isInstallBefore2005" formControlName="isInstallBefore2005" value="1"/>
+                <label for="yes_of_is_existing_installation_service_before_20025">Yes</label>
+                </div>
+                
+                    <div class="radio-btns">
+                    <input type="radio" id="no_of_is_existing_installation_service_before_20025" name="isInstallBefore2005" formControlName="isInstallBefore2005" value="0"/>
+                    <label for="no_of_is_existing_installation_service_before_20025">No</label>
+                    </div>
+                    </div>
+                </div>
+
+              <div class="col mt-3 disp-flex">
+                <label for="" class="form-label"
+                  >Government Scheme Applicable
+                  <span class="star">*</span></label
+                >
+
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_government_scheme_applicable"
+                      name="isGovernmentSchemeApplicable"
+                      formControlName="isGovernmentSchemeApplicable"
+                      value="1"
+                      (change)="
+                        checkSchemeNameandBenifciary(
+                          $event.target.value,
+                          'Government Scheme Applicable'
+                        )
+                      "
+                    />
+                    <label for="yes_of_is_government_scheme_applicable"
+                      >Yes</label
+                    >
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_government_scheme_applicable"
+                      name="isGovernmentSchemeApplicable"
+                      formControlName="isGovernmentSchemeApplicable"
+                      value="0"
+                      (change)="
+                        checkSchemeNameandBenifciary(
+                          $event.target.value,
+                          'Government Scheme Applicable'
+                        )
+                      "
+                    />
+                    <label for="no_of_is_government_scheme_applicable"
+                      >No</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-2 disp-flex" *ngIf="isScemeAndBenificiary">
+                <label class="form-label">Scheme Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="schemeName"
+                  formControlName="schemeName"
+                  id=""
+                  placeholder="Scheme Name"
+                />
+              </div>
+
+              <div class="col mt-1 disp-flex" *ngIf="isScemeAndBenificiary">
+                <label class="form-label">Beneficiary Issuer Department</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="beneficiaryIssuerDepartment"
+                  formControlName="beneficiaryIssuerDepartment"
+                  id=""
+                  placeholder="Beneficiary Issuer department"
+                />
+              </div>
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"
+                  >Nature of Business <span class="star">*</span></label
+                >
+                <select
+                  class="form-select dis-flex-colu"
+                  formControlName="natureOfBusiness"
+                >
+                  <option value="" disabled>Select Nature of Business</option>
+                  <option
+                    *ngFor="let natureBusinessItem of natureOfBusinessData"
+                    [value]="natureBusinessItem.connectionNatureId"
+                  >
+                    {{ natureBusinessItem.connectionNatureName }}
+                  </option>
+                </select>
+              </div>
+              <mat-error
+                class="custom-error"
+                *ngIf="
+                  premisesInspectionForm
+                    .get('natureOfBusiness')
+                    .hasError('required') &&
+                  premisesInspectionForm.get('natureOfBusiness').touched
+                "
+              >
+                Please fill in this field.
+              </mat-error>
+
+              <div class="col mt-3 disp-flex">
+                <label for="" class="form-label"
+                  >Is the name and site address correct?
+                </label>
+
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_name_and_site_address_correct"
+                      name="isNameAndSiteAddressCorrect"
+                      formControlName="isNameAndSiteAddressCorrect"
+                      value="1"
+                    />
+                    <label for="yes_of_is_name_and_site_address_correct"
+                      >Yes</label
+                    >
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_name_and_site_address_correct"
+                      name="isNameAndSiteAddressCorrect"
+                      formControlName="isNameAndSiteAddressCorrect"
+                      value="0"
+                    />
+                    <label for="no_of_is_name_and_site_address_correct"
+                      >No</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-2 disp-flex">
+                <label class="form-label">
+                  Whether the site is in accordance, only for the usage for
+                  which Service Conection applied.
+                </label>
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_site_is_in_accordance"
+                      name="isSiteIsInAccordance"
+                      formControlName="isSiteIsInAccordance"
+                      value="1"
+                    />
+                    <label for="yes_of_is_site_is_in_accordance">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_site_is_in_accordance"
+                      name="isSiteIsInAccordance"
+                      formControlName="isSiteIsInAccordance"
+                      value="0"
+                    />
+                    <label for="no_of_is_site_is_in_accordance">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-1 disp-flex">
+                <label class="form-label">
+                  Local Body Name (e.g., BBMP Ward, Municipal Corporation,
+                  Town/Village Panchayat, CMC, TMC)
+                  <span class="star">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control-l bbmp-word-text-box"
+                  id=""
+                  name="bbmpWardNo"
+                  formControlName="bbmpWardNo"
+                  placeholder="Enter name of local governing body"
+                />
+              </div>
+              <mat-error
+                class="custom-error"
+                *ngIf="
+                  premisesInspectionForm
+                    .get('bbmpWardNo')
+                    .hasError('required') &&
+                  premisesInspectionForm.get('bbmpWardNo').touched
+                "
+              >
+                Please fill in this field.
+              </mat-error>
+
+              <!-- <div class="col mt-3 disp-flex">
+                <label class="form-label">Parliament constituency <span class="star">*</span></label>
+                <select class="form-select" name="parliamentConstituency" formControlName="parliamentConstituency"
+                (selectionChange)="onParliamentChange($event)">
+                  <option value="" disabled>Select Parliament constituency</option>
+                  <option *ngFor="
+                  let parliamentConstituencyItem of parliamentConstituency
+                " [value]="parliamentConstituencyItem.constituencyId">
+                    {{ parliamentConstituencyItem.constituencyName }}
+                  </option>
+                </select>
+              </div>
+
+              <mat-error class="flex-column offset-6 px-2" *ngIf="premisesInspectionForm.get('parliamentConstituency').hasError('required') && premisesInspectionForm.get('parliamentConstituency').touched">
+                Please fill in this field.
+              </mat-error>
+
+              
+              <div class="col mt-3 disp-flex">
+                <label class="form-label">Assembly constituency <span class="star">*</span></label>
+                <select class="form-select" name="assemblyConstituency" formControlName="assemblyConstituency">
+                  <option value="" disabled>Select Assembly constituency</option>
+                  <option *ngFor="let assemblyConstituencyItem of assemblyConstituency"
+                    [value]="assemblyConstituencyItem.constituencyId">
+                    {{ assemblyConstituencyItem.constituencyName }}
+                  </option>
+                </select>
+              </div>
+
+              <mat-error class="flex-column offset-6 px-2" *ngIf="premisesInspectionForm.get('assemblyConstituency').hasError('required') && premisesInspectionForm.get('assemblyConstituency').touched">
+                Please fill in this field.
+              </mat-error> -->
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"
+                  >Parliament constituency <span class="star">*</span></label
+                >
+                <select
+                  class="form-select"
+                  name="parliamentConstituency"
+                  formControlName="parliamentConstituency"
+                  (change)="onParlimentChange($event.target.value)"
+                >
+                  <option value="" disabled>
+                    Select Parliament constituency
+                  </option>
+                  <option
+                    *ngFor="
+                      let parliamentConstituencyItem of parliamentConstituency ||
+                        []
+                    "
+                    [value]="parliamentConstituencyItem.constituencyId"
+                  >
+                    {{ parliamentConstituencyItem.constituencyName }}
+                  </option>
+                </select>
+              </div>
+              <mat-error
+                class="custom-error"
+                *ngIf="
+                  premisesInspectionForm
+                    .get('parliamentConstituency')
+                    .hasError('required') &&
+                  premisesInspectionForm.get('parliamentConstituency').touched
+                "
+              >
+                Please fill in this field.
+              </mat-error>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"
+                  >Assembly constituency <span class="star">*</span></label
+                >
+                <select
+                  class="form-select"
+                  name="assemblyConstituency"
+                  formControlName="assemblyConstituency"
+                >
+                  <option value="" disabled>
+                    Select Assembly constituency
+                  </option>
+                  <option
+                    *ngFor="
+                      let assemblyConstituencyItem of assemblyConstituency || []
+                    "
+                    [value]="assemblyConstituencyItem.constituencyId"
+                  >
+                    {{ assemblyConstituencyItem.constituencyName }}
+                  </option>
+                </select>
+              </div>
+              <mat-error
+                class="custom-error"
+                *ngIf="
+                  premisesInspectionForm
+                    .get('assemblyConstituency')
+                    .hasError('required') &&
+                  premisesInspectionForm.get('assemblyConstituency').touched
+                "
+              >
+                Please fill in this field.
+              </mat-error>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"
+                  >Internal wiring is completed in the building</label
+                >
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_internal_wiring_completed"
+                      name="isInternalWiringCompleted"
+                      formControlName="isInternalWiringCompleted"
+                      value="1"
+                    />
+                    <label for="yes_of_is_internal_wiring_completed">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_internal_wiring_completed"
+                      name="isInternalWiringCompleted"
+                      formControlName="isInternalWiringCompleted"
+                      value="0"
+                    />
+                    <label for="no_of_is_internal_wiring_completed">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-2 disp-flex">
+                <label class="form-label">
+                  Is Bore-well existing in the premises at the time of field
+                  inspection.
+                </label>
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_bore-well_existing"
+                      name="isBorewellExisting"
+                      formControlName="isBorewellExisting"
+                      value="1"
+                    />
+                    <label for="yes_of_is_bore-well_existing">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_bore-well_existing"
+                      name="isBorewellExisting"
+                      formControlName="isBorewellExisting"
+                      value="0"
+                    />
+                    <label for="no_of_is_bore-well_existing">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-3 disp-flex" *ngIf="isMeterChangeRequired">
+                <label class="form-label">Is Meter Change Required?</label>
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_meter_change_req"
+                      name="isMeterChangeReq"
+                      formControlName="isMeterChangeReq"
+                      value="1"
+                      (change)="checkIsMeterProcuredForNetworkExtension()"
+                    />
+                    <label for="yes_of_is_meter_change_req">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_meter_change_req"
+                      name="isMeterChangeReq"
+                      formControlName="isMeterChangeReq"
+                      value="0"
+                      (change)="checkIsMeterProcuredForNetworkExtension()"
+                    />
+                    <label for="no_of_is_meter_change_req">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="col mt-3 disp-flex"
+                *ngIf="isMeterChangeRequired && showCtChangeRequired"
+              >
+                <label class="form-label">Is CT Change Required?</label>
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_ct_change_req"
+                      name="isCtChangeReq"
+                      formControlName="isCtChangeReq"
+                      value="1"
+                      (change)="checkCtChangeRequired()"
+                    />
+                    <label for="yes_of_is_ct_change_req">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_ct_change_req"
+                      name="isCtChangeReq"
+                      formControlName="isCtChangeReq"
+                      value="0"
+                      (change)="checkCtChangeRequired()"
+                    />
+                    <label for="no_of_is_ct_change_req">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-1 disp-flex" *ngIf="showOldAndNewMf">
+                <label class="form-label"
+                  >Old MF <span class="star">*</span></label
+                >
+                <input
+                  type="number"
+                  id="oldMf"
+                  class="form-control"
+                  formControlName="oldMf"
+                  min="0"
+                />
+              </div>
+              <mat-error
+                class="custom-error"
+                *ngIf="
+                  premisesInspectionForm.get('oldMf')?.hasError('required') &&
+                  premisesInspectionForm.get('oldMf')?.touched
+                "
+                >Old MF is required.
+              </mat-error>
+              <mat-error
+                *ngIf="
+                  premisesInspectionForm.get('oldMf')?.hasError('pattern') &&
+                  premisesInspectionForm.get('oldMf')?.touched
+                "
+              >
+                Old MF must match the required format (up to 6 digits or 6.3
+                decimal).
+              </mat-error>
+              <div class="col mt-3 disp-flex" *ngIf="showOldAndNewMf">
+                <label class="form-label"
+                  >New MF <span class="star">*</span></label
+                >
+                <input
+                  type="number"
+                  id="newMf"
+                  class="form-control"
+                  formControlName="newMf"
+                  min="0"
+                />
+              </div>
+              <mat-error
+                class="custom-error"
+                *ngIf="
+                  premisesInspectionForm.get('newMf')?.hasError('required') &&
+                  premisesInspectionForm.get('newMf')?.touched
+                "
+              >
+                New MF is required.
+              </mat-error>
+              <mat-error
+                *ngIf="
+                  premisesInspectionForm.get('newMf')?.hasError('pattern') &&
+                  premisesInspectionForm.get('newMf')?.touched
+                "
+              >
+                New MF must match the required format (up to 6 digits or 6.3
+                decimal).
+              </mat-error>
+
+              <div class="col mt-2 disp-flex" *ngIf="showisAmrMeter">
+                <label class="form-label"> Is AMR Meter. </label>
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_amr-meter_existing"
+                      name="isAmrMeter"
+                      formControlName="isAmrMeter"
+                      value="1"
+                    />
+                    <label for="yes_of_is_amr-meter_existing">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_amr-meter_existing"
+                      name="isAmrMeter"
+                      formControlName="isAmrMeter"
+                      value="0"
+                    />
+                    <label for="no_of_is_amr-meter_existing">No</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col mt-4 disp-flex">
+  <app-premises-doc-upload></app-premises-doc-upload>
+</div>
+
+              <!-- <div class="col mt-4 disp-flex dis-old-acc">
+            <label class="form-label"
+              ><b
+                >Disconnected/ Old Account No. for the same premises, if any</b
+              ></label
+            >
+            <div>
+              <input
+                type="text"
+                class="form-control"
+                id=""
+                name="disconnectedAccountNo"
+                formControlName="disconnectedAccountNo"
+                placeholder=""
+                style="width: unset !important"
+              />
+              <button class="btn" (click)="getArrears()">Get Arrears</button>
+            </div>
+          </div>
+
+          <div class="col mt-3 disp-flex">
+            <label class="form-label"><b>Arrears, if any</b></label>
+            <input
+              type="text"
+              class="form-control"
+              name="areas"
+              formControlName="areas"
+              id=""
+              placeholder=""
+            />
+          </div> -->
+
+              <div
+                class="btn-box mt-4"
+                style="justify-content: flex-end !important"
+              >
+                <button
+                  matStepperPrevious
+                  type="button"
+                  class="btn btn-secondary btn-md clor"
+                >
+                  Back
+                </button>
+                <button
+                  matStepperNext
+                  type="button"
+                  (click)="validateForms('premisesInspection')"
+                  class="btn btn-primary btn-md"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+            <!-- Add this at the end -->
+
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="loadInspectionForm" label="Load Inspection">
+          <form class="form" [formGroup]="loadInspectionForm">
+            <div class="col-lg-6 dis-fl mt-4 loadInspection">
+              <h2>Load & Buildup Area Inspection Details</h2>
+
+              <div
+                class="disp-flex"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+                  data?.serviceRegistration?.applicationTypeCode === 'LR'
+                "
+              >
+                <label class="form-label text-line">
+                  Existing No. of Floors <span class="star">*</span>
+                </label>
+                <input
+                  name="totalNoOfFloors"
+                  class="form-control"
+                  formControlName="existingNoFloor"
+                  placeholder=""
+                  appNumbers
+                  maxlength="3"
+                />
+                <mat-error
+                  class="custom-error"
+                  style="margin-top: -14px"
+                  *ngIf="
+                    loadInspectionForm.get('existingNoFloor').invalid &&
+                    loadInspectionForm.get('existingNoFloor').touched
+                  "
+                >
+                  Please fill in this field.
+                </mat-error>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LE'"
+              >
+                <label class="form-label text-line">
+                  No. of Floors Added <span class="star">*</span></label
+                >
+                <input
+                  name="totalNoOfFloors"
+                  class="form-control"
+                  id=""
+                  formControlName="noOfFloorAdded"
+                  (input)="onNoOfFloorChange('LE')"
+                  placeholder=""
+                  min="0"
+                  appNumbers
+                  maxlength="3"
+                />
+                <mat-error
+                  class="custom-error"
+                  style="margin-top: -14px"
+                  *ngIf="
+                    loadInspectionForm
+                      .get('noOfFloorAdded')
+                      .hasError('required') &&
+                    loadInspectionForm.get('noOfFloorAdded').touched
+                  "
+                >
+                  Please fill in this field.
+                </mat-error>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LR'"
+              >
+                <label class="form-label text-line"
+                  >No. of Floors Added <span class="star">*</span></label
+                >
+                <input
+                  name="newNo"
+                  class="form-control"
+                  id=""
+                  formControlName="noOfFloorReduced"
+                  (input)="onNoOfFloorChange('LR')"
+                  placeholder=""
+                  appNumbers
+                  maxlength="3"
+                />
+                <mat-error
+                  class="custom-error"
+                  style="margin-top: -14px"
+                  *ngIf="
+                    loadInspectionForm
+                      .get('noOfFloorReduced')
+                      .hasError('required') &&
+                    loadInspectionForm.get('noOfFloorReduced').touched
+                  "
+                >
+                  Please fill in this field.
+                </mat-error>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode !== 'LAYOUT'
+                "
+              >
+                <label class="form-label text-line"
+                  >Total No. of Floors <span class="star">*</span></label
+                >
+                <input
+                  name="totalNoOfFloors"
+                  formControlName="totalNoOfFloors"
+                  class="form-control"
+                  appNumbers
+                  required
+                  maxlength="3"
+                />
+                <mat-error
+                  class="custom-error"
+                  style="margin-top: -14px"
+                  *ngIf="
+                    loadInspectionForm
+                      .get('totalNoOfFloors')
+                      .hasError('required') &&
+                    loadInspectionForm.get('totalNoOfFloors').touched
+                  "
+                >
+                  Please fill in this field.
+                </mat-error>
+              </div>
+
+              <div
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode == 'LAYOUT'
+                "
+              >
+                <!-- General Labels -->
+                <div class="disp-flex">
+                  <label class="form-label text-line"
+                    >Type of Layout <span class="star">*</span></label
+                  >
+                  <input
+                    type="text"
+                    formControlName="typeOfLayout"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="disp-flex">
+                  <label class="form-label text-line"
+                    >Total Project Area in Acres
+                    <span class="star">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="totalProjectAreaAcres"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="disp-flex">
+                  <label class="form-label text-line"
+                    >Total Project Area in Guntas
+                    <span class="star">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="totalProjectAreaGuntas"
+                    class="form-control"
+                  />
+                </div>
+
+                <!-- <div class="disp-flex">
+                  <label class="form-label text-line"
+                    >Jurisdiction Name <span class="star">*</span></label
+                  >
+                  <input
+                    type="text"
+                    formControlName="jurisdictionName"
+                    class="form-control"
+                  />
+                </div> -->
+
+                <!-- <div class="disp-flex">
+                  <label class="form-label text-line"
+                    >Location of Premise <span class="star">*</span></label
+                  >
+                  <input
+                    type="text"
+                    formControlName="locationOfPremise"
+                    class="form-control"
+                  />
+                </div> -->
+
+                <!-- Site Dimensions Section -->
+                <div
+                  class="header-container"
+                  *ngIf="data?.ccbServiceRequestSpecDetailsDTOList?.length"
+                >
+                  <h3><strong>Site Dimensions</strong></h3>
+                </div>
+
+                <div formArrayName="siteDetails">
+                  <div
+                    *ngFor="let site of siteDetails.controls; let i = index"
+                    [formGroupName]="i"
+                    class="site-box"
+                  >
+                    <div class="disp-flex">
+                      <label class="form-label text-line">
+                        {{ site.value.specDesc }}
+                        <span class="text-danger">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        formControlName="specValue"
+                        class="form-control"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Additional Requested Load Fields -->
+
+                <div class="disp-flex">
+                  <label class="form-label text-line"
+                    >Requested load for Water Supply (in HP)
+                    <span class="star">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="requestedLoadWaterHP"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="disp-flex">
+                  <label class="form-label text-line"
+                    >Requested load for Water Supply (in kW)
+                    <span class="star">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="requestedLoadWaterKW"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="disp-flex">
+                  <label class="form-label text-line"
+                    >Requested load for Street lights (in kW)
+                    <span class="star">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="requestedLoadStreetLights"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="disp-flex">
+                  <label class="form-label text-line"
+                    >Requested load for Sewage Treatment Plant (in KW)
+                    <span class="star">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="requestedLoadSTPKW"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="disp-flex">
+                  <label class="form-label text-line"
+                    >Requested load for Sewage Treatment Plant (in HP)
+                    <span class="star">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="requestedLoadSTPHP"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="disp-flex">
+                  <label class="form-label text-line"
+                    >Other Loads - MISC in KW <span class="star">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="otherMiscLoadsKW"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="disp-flex">
+                  <label class="form-label text-line"
+                    >Total requested load for the layout (converted in KW)
+                    <span class="star">*</span></label
+                  >
+                  <input
+                    type="number"
+                    formControlName="totalRequestedLoadKW"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+                  data?.serviceRegistration?.applicationTypeCode === 'LR'
+                "
+              >
+                <label class="form-label text-line"
+                  >Existing Built up Area of building( sq.mtr)<span class="star"
+                    >*</span
+                  >
+                </label>
+                <input
+                  name="totalBuildUpAreaOfBuilding"
+                  class="form-control"
+                  formControlName="existingBuildupArea"
+                  id=""
+                  placeholder=""
+                  appNumbers
+                  maxlength="10"
+                />
+                <mat-error
+                  class="custom-error"
+                  style="margin-top: -10px"
+                  *ngIf="
+                    loadInspectionForm
+                      .get('existingBuildupArea')
+                      .hasError('required') &&
+                    loadInspectionForm.get('existingBuildupArea').touched
+                  "
+                >
+                  Please fill in this field.
+                </mat-error>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LE'"
+              >
+                <label class="form-label text-line"
+                  >Built up Area of building(in sq.mtr) Added
+                  <span class="star">*</span></label
+                >
+                <input
+                  name="totalBuildUpAreaOfBuilding"
+                  appNumbers
+                  class="form-control"
+                  id=""
+                  formControlName="newBuildupArea"
+                  (input)="onBuildUpAreaChange('LE')"
+                  placeholder=""
+                  maxlength="10"
+                />
+                <mat-error
+                  class="custom-error"
+                  style="margin-top: -10px"
+                  *ngIf="
+                    loadInspectionForm
+                      .get('newBuildupArea')
+                      .hasError('required') &&
+                    loadInspectionForm.get('newBuildupArea').touched
+                  "
+                >
+                  Please fill in this field.
+                </mat-error>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode == 'NC' ||
+                  data?.serviceRegistration?.applicationTypeCode == 'MC' ||
+                  data?.serviceRegistration?.applicationTypeCode == 'TC'
+                "
+              >
+                <label class="form-label text-line"
+                  >Existing Built up Area of building( sq.mtr)
+                  <span class="star">*</span></label
+                >
+                <input
+                  appNumbers
+                  name="totalBuildUpAreaOfBuilding"
+                  class="form-control"
+                  formControlName="existingBuildupArea"
+                  id=""
+                  placeholder=""
+                  maxlength="10"
+                />
+                <mat-error
+                  class="custom-error"
+                  *ngIf="
+                    loadInspectionForm
+                      .get('existingBuildupArea')
+                      .hasError('required') &&
+                    loadInspectionForm.get('existingBuildupArea').touched
+                  "
+                >
+                  Please fill in this field.
+                </mat-error>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode == 'NC' ||
+                  data?.serviceRegistration?.applicationTypeCode == 'MC' ||
+                  data?.serviceRegistration?.applicationTypeCode == 'TC'
+                "
+              >
+                <label class="form-label text-line"
+                  >Added or New Built up Area(in sq.mtr)
+                  <span class="star">*</span></label
+                >
+                <input
+                  appNumbers
+                  name="totalBuildUpAreaOfBuilding"
+                  class="form-control"
+                  id=""
+                  formControlName="newBuildupArea"
+                  placeholder=""
+                  maxlength="10"
+                  (input)="onBuildUpAreaChange(data?.serviceRegistration?.applicationTypeCode)"
+                />
+                <mat-error
+                  class="custom-error"
+                  *ngIf="
+                    loadInspectionForm
+                      .get('newBuildupArea')
+                      .hasError('required') &&
+                    loadInspectionForm.get('newBuildupArea').touched
+                  "
+                >
+                  Please fill in this field.
+                </mat-error>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LR'"
+              >
+                <label class="form-label text-line"
+                  >Total Build Up Area of building (sq.mts) Added
+                  <span class="star">*</span></label
+                >
+                <input
+                  appNumbers
+                  name="totalBuildUpAreaOfBuilding"
+                  formControlName="existingBuildupArea"
+                  class="form-control"
+                  formControlName="newBuildupArea"
+                  (input)="onBuildUpAreaChange('LR')"
+                  id=""
+                  placeholder=""
+                  maxlength="10"
+                />
+                <mat-error
+                  class="custom-error"
+                  *ngIf="
+                    loadInspectionForm
+                      .get('newBuildupArea')
+                      .hasError('required') &&
+                    loadInspectionForm.get('newBuildupArea').touched
+                  "
+                >
+                  Please fill in this field.
+                </mat-error>
+              </div>
+              <div class="col disp-flex d-flex flex-column">
+                <div
+                  class="disp-flex"
+                  *ngIf="
+                    data?.serviceRegistration?.applicationTypeCode !== 'LAYOUT'
+                  "
+                >
+                  <label class="form-label text-line"
+                    >Total Build Up Area of building (sq.mts)
+                    <span class="star">*</span></label
+                  >
+                  <input
+                    appNumbers
+                    name="totalBuildUpAreaOfBuilding"
+                    formControlName="totalBuildUpAreaOfBuilding"
+                    class="form-control"
+                    id=""
+                    placeholder=""
+                    (ngModelChange)="displayExecutionBlock()"
+                    required
+                    maxlength="10"
+                    [readonly]="!isSessionMigrated"
+                  />
+                </div>
+
+                <mat-error
+                  class="custom-error"
+                  *ngIf="
+                    loadInspectionForm
+                      .get('totalBuildUpAreaOfBuilding')
+                      .hasError('required') &&
+                    loadInspectionForm.get('totalBuildUpAreaOfBuilding').touched
+                  "
+                >
+                  Total Build Up Area is required
+                </mat-error>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode !== 'LAYOUT'
+                "
+              >
+                <label class="form-label text-line"
+                  >Height of building (in meters)
+                  <span class="star">*</span></label
+                >
+                <input
+                  name="heightOfBuilding"
+                  appNumbers
+                  formControlName="heightOfBuilding"
+                  class="form-control"
+                  id=""
+                  maxlength="10"
+                  placeholder=""
+                />
+                <mat-error
+                  class="custom-error"
+                  style="margin-top: -14px"
+                  *ngIf="
+                    loadInspectionForm
+                      .get('heightOfBuilding')
+                      .hasError('required') &&
+                    loadInspectionForm.get('heightOfBuilding').touched
+                  "
+                >
+                  Please fill in this field.
+                </mat-error>
+              </div>
+
+              <div
+                class="disp-flex kw-hp-column"
+                *ngIf="
+                  (data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+                    data?.serviceRegistration?.applicationTypeCode === 'LR') &&
+                  !data?.serviceRegistration?.tariff?.includes('HT')
+                "
+              >
+                <label class="form-label text-line"
+                  >Existing Load of Connection (in KW & HP)
+                </label>
+                <div class="col-md-4" style="width: 22%">
+                  <input
+                    name="requestedLoadKW"
+                    appNumbers
+                    class="form-control col-md-2"
+                    formControlName="existingLoadKw"
+                    id=""
+                    placeholder=""
+                    maxlength="10"
+                    [readonly]="!isSessionMigrated"
+                  />KW &nbsp;
+
+                  <input
+                    name="requestedLoadHP"
+                    appNumbers
+                    class="form-control col-md-2"
+                    formControlName="existingLoadHp"
+                    id=""
+                    placeholder=""
+                    maxlength="10"
+                    [readonly]="!isSessionMigrated"
+                  />HP
+                </div>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+                  data?.serviceRegistration?.applicationTypeCode === 'LR'
+                "
+              >
+                <label class="form-label text-line"
+                  >Total Existing Load of Connection ({{
+                    data?.serviceRegistration?.existingLoadUnit
+                  }})
+                </label>
+                <input
+                  appNumbers
+                  name="totalConnectedLoad"
+                  class="form-control"
+                  formControlName="existingTotalLoad"
+                  id=""
+                  placeholder=""
+                  maxlength="10"
+                  [readonly]="!isSessionMigrated"
+                />
+              </div>
+
+              <div
+                class="disp-flex kw-hp-column"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LE' &&
+                  !data?.serviceRegistration?.tariff?.includes('HT')
+                "
+              >
+                <label class="form-label text-line"
+                  >Additional Load of Connection (KW & HP)
+                </label>
+                <div class="col-md-4" style="width: 22%">
+                  <input
+                    appNumbers
+                    name="requestedLoadKW"
+                    class="form-control col-md-2"
+                    id=""
+                    formControlName="newLoadKw"
+                    maxlength="10"
+                    placeholder=""
+                  />KW
+
+                  <input
+                    type="number"
+                    appNumbers
+                    name="requestedLoadHP"
+                    class="form-control col-md-2"
+                    formControlName="newLoadHp"
+                    id=""
+                    maxlength="10"
+                    placeholder=""
+                  />HP
+                </div>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LE'"
+              >
+                <label class="form-label text-line"
+                  >Total Additional Load of Connection ({{
+                    data?.serviceRegistration?.newLoadUnit
+                  }})
+                </label>
+                <input
+                  appNumbers
+                  name="totalConnectedLoad"
+                  class="form-control"
+                  formControlName="newTotalLoad"
+                  id=""
+                  placeholder=""
+                  maxlength="10"
+                  [readonly]="!isSessionMigrated"
+                />
+              </div>
+
+              <div
+                class="disp-flex kw-hp-column"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LE' &&
+                  !data?.serviceRegistration?.tariff?.includes('HT')
+                "
+              >
+                <label class="form-label text-line"
+                  >Requested Load of Connection (KW & HP)
+                </label>
+                <div class="col-md-4" style="width: 22%">
+                  <input
+                    appNumbers
+                    name="requestedLoadKW"
+                    class="form-control col-md-2"
+                    id=""
+                    formControlName="requestedLoadKW"
+                    maxlength="10"
+                    placeholder=""
+                  />KW
+
+                  <input
+                    type="number"
+                    appNumbers
+                    name="requestedLoadHP"
+                    class="form-control col-md-2"
+                    formControlName="requestedLoadHP"
+                    id=""
+                    maxlength="10"
+                    placeholder=""
+                  />HP
+                </div>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LE'"
+              >
+                <label class="form-label text-line"
+                  >Total Requested Load of Connection ({{
+                    data?.serviceRegistration?.loadUnit
+                  }})
+                </label>
+                <input
+                  appNumbers
+                  name="totalConnectedLoad"
+                  class="form-control"
+                  formControlName="totalConnectedLoad"
+                  id=""
+                  placeholder=""
+                  maxlength="10"
+                  [readonly]="!isSessionMigrated"
+                />
+              </div>
+
+              <div
+                class="disp-flex kw-hp-column"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LR' &&
+                  !data?.serviceRegistration?.tariff?.includes('HT')
+                "
+              >
+                <label class="form-label text-line"
+                  >Reduction in Load Requested (KW & HP)
+                </label>
+                <div class="col-md-4" style="width: 22%">
+                  <input
+                    appNumbers
+                    name="requestedLoadKW"
+                    class="form-control col-md-2"
+                    formControlName="newLoadKw"
+                    id=""
+                    maxlength="10"
+                    placeholder=""
+                  />KW
+
+                  <input
+                    appNumbers
+                    name="requestedLoadHP"
+                    class="form-control col-md-2"
+                    formControlName="newLoadHp"
+                    id=""
+                    maxlength="10"
+                    placeholder=""
+                  />HP
+                </div>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LR'"
+              >
+                <label class="form-label text-line"
+                  >Total Reduction in Requested Load ({{
+                    data?.serviceRegistration?.newLoadUnit === "null" ||
+                    data?.serviceRegistration?.newLoadUnit === null ||
+                    data?.serviceRegistration?.newLoadUnit === ""
+                      ? data?.serviceRegistration?.type === "LT"
+                        ? "KW"
+                        : "KVA"
+                      : data?.serviceRegistration?.newLoadUnit
+                  }})
+                  <!-- ({{data?.newLoadUnit}}) -->
+                </label>
+                <input
+                  appNumbers
+                  name="totalConnectedLoad"
+                  class="form-control"
+                  id=""
+                  formControlName="newTotalLoad"
+                  placeholder=""
+                  maxlength="10"
+                  [readonly]="!isSessionMigrated"
+                />
+              </div>
+
+              <div
+                class="disp-flex kw-hp-column"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LR' &&
+                  !data?.serviceRegistration?.tariff?.includes('HT')
+                "
+              >
+                <label class="form-label text-line"
+                  >Requested Load of Connection (KW & HP)
+                </label>
+                <div class="col-md-4" style="width: 22%">
+                  <input
+                    appNumbers
+                    name="requestedLoadKW"
+                    class="form-control col-md-2"
+                    formControlName="requestedLoadKW"
+                    id=""
+                    maxlength="10"
+                    placeholder=""
+                  />KW
+
+                  <input
+                    appNumbers
+                    name="requestedLoadHP"
+                    class="form-control col-md-2"
+                    formControlName="requestedLoadHP"
+                    id=""
+                    maxlength="10"
+                    placeholder=""
+                  />HP
+                </div>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="data?.serviceRegistration?.applicationTypeCode === 'LR'"
+              >
+                <label class="form-label text-line"
+                  >Total Requested Load of Connection ({{
+                    data?.serviceRegistration?.loadUnit
+                  }})
+                </label>
+                <input
+                  appNumbers
+                  name="totalConnectedLoad"
+                  class="form-control"
+                  id=""
+                  formControlName="totalConnectedLoad"
+                  placeholder=""
+                  maxlength="10"
+                  [readonly]="!isSessionMigrated"
+                />
+              </div>
+
+              <!-- 26-11-2024 FOR LE AND LR case  Start-->
+              <div
+                class="disp-flex"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+                  data?.serviceRegistration?.applicationTypeCode === 'LR'
+                "
+              >
+                <label class="form-label text-line">
+                  Existing Load of the Premises Excluding Proposed Connection
+                  ({{ data?.serviceRegistration?.loadUnit }})
+                </label>
+                <input
+                  appNumbers
+                  name="existingLoadOfPremises"
+                  class="form-control"
+                  formControlName="existingLoadOfPremises"
+                  id=""
+                  placeholder=""
+                  maxlength="10"
+                />
+                <mat-error
+                  class="custom-error"
+                  style="margin-top: -14px"
+                  *ngIf="
+                    loadInspectionForm
+                      .get('existingLoadOfPremises')
+                      .hasError('required') &&
+                    loadInspectionForm.get('existingLoadOfPremises').touched
+                  "
+                >
+                  Please fill in this field.
+                </mat-error>
+              </div>
+
+              <div
+                class="disp-flex"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+                  data?.serviceRegistration?.applicationTypeCode === 'LR'
+                "
+              >
+                <label class="form-label text-line">
+                  Total Load Considered for DOP ({{
+                    data?.serviceRegistration?.loadUnit
+                  }})
+                </label>
+                <input
+                  appNumbers
+                  name="totalLoadConForDOP"
+                  class="form-control"
+                  formControlName="totalLoadConForDOP"
+                  id=""
+                  placeholder=""
+                  maxlength="10"
+                  [readonly]="!isSessionMigrated"
+                />
+              </div>
+
+              <!-- 26-11-2024 FOR LE AND LR case  End -->
+
+              <div
+                class="disp-flex"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode == 'NC' ||
+                  data?.serviceRegistration?.applicationTypeCode == 'TC' ||
+                  data?.serviceRegistration?.applicationTypeCode == 'MC'
+                "
+              >
+                <label class="form-label text-line"
+                  >Existing Load of the Premises Excluding Proposed Connection
+                  ({{ data?.serviceRegistration?.existingLoadUnit }})
+                </label>
+                <input
+                  min="0"
+                  appNumbers
+                  name="totalConnectedLoad"
+                  class="form-control"
+                  formControlName="existingTotalLoad"
+                  id=""
+                  placeholder=""
+                  maxlength="10"
+                  (ngModelChange)="onLoadChange()"
+                />
+
+                <div class="disp-flex kw-hp-column">
+                  <label class="form-label text-line"
+                    >Requested Load of Connection ({{
+                      data?.serviceRegistration?.loadUnit
+                    }})</label
+                  >
+                  <div class="col-md-4" style="width: 22%">
+                    <ng-container
+                      *ngIf="
+                        data?.serviceRegistration?.tariff?.includes('HT');
+                        else multipleInputs
+                      "
+                    >
+                      <input
+                        name="requestedLoadKVA"
+                        appNumbers
+                        formControlName="requestedLoadKVA"
+                        class="form-control col-md-2"
+                        id=""
+                        placeholder=""
+                        maxlength="10"
+                        (ngModelChange)="onLoadChange()"
+                      />KVA
+                    </ng-container>
+
+                    <!-- Template for multiple input fields -->
+                    <ng-template #multipleInputs>
+                      <input
+                        name="requestedLoadKW"
+                        appNumbers
+                        formControlName="requestedLoadKW"
+                        class="form-control col-md-2"
+                        id=""
+                        placeholder=""
+                        maxlength="10"
+                        (ngModelChange)="onLoadChange()"
+                      />KW
+
+                      <input
+                        name="requestedLoadHP"
+                        appNumbers
+                        formControlName="requestedLoadHP"
+                        class="form-control col-md-2"
+                        id=""
+                        placeholder=""
+                        maxlength="10"
+                        (ngModelChange)="onLoadChange()"
+                      />HP
+                    </ng-template>
+                  </div>
+                </div>
+
+                <div class="disp-flex">
+                  <label class="form-label text-line">
+                    Total Applied Load ({{
+                      data?.serviceRegistration?.loadUnit
+                    }})<span class="star">*</span>
+                  </label>
+                  <input
+                    name="totalConnectedLoad"
+                    formControlName="totalConnectedLoad"
+                    class="form-control"
+                    id=""
+                    placeholder=""
+                    appNumbers
+                    maxlength="10"
+                    (ngModelChange)="
+                      data?.serviceRegistration?.applicationTypeCode !== 'MC' &&
+                      data?.serviceRegistration?.applicationTypeCode !== 'NC' &&
+                      data?.serviceRegistration?.applicationTypeCode !== 'TC'
+                        ? displayExecutionBlock()
+                        : null
+                    "
+                  />
+                </div>
+                <mat-error
+                  class="custom-error"
+                  *ngIf="
+                    loadInspectionForm
+                      .get('totalConnectedLoad')
+                      .hasError('required')
+                  "
+                >
+                  Total Applied Load is required
+                </mat-error>
+              </div>
+              <div
+                class="disp-flex"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode == 'NC' ||
+                  data?.serviceRegistration?.applicationTypeCode == 'MC' ||
+                  data?.serviceRegistration?.applicationTypeCode == 'TC'
+                "
+              >
+                <label class="form-label text-line"
+                  >Total Load Considered for DOP ({{ loadUnit }})</label
+                >
+                <input
+                  appNumbers
+                  name="totalLoadOfTheBuilding"
+                  formControlName="totalLoadOfTheBuilding"
+                  class="form-control"
+                  (ngModelChange)="displayExecutionBlock()"
+                  id=""
+                  placeholder=""
+                  maxlength="10"
+                  [readonly]="!isSessionMigrated"
+                />
+              </div>
+              <div class="disp-flex two-inp-fields" *ngIf="hideOption">
+                <label class="form-label text-line"
+                  >Total no of domestic applicants & Load (KW)</label
+                >
+                <div style="font-size: 1rem; font-weight: 400">
+                  <div class="test">
+                    <input
+                      appNumbers
+                      name="totalNoOfDomesticApplicants"
+                      formControlName="totalNoOfDomesticApplicants"
+                      class="form-control margin-bottom"
+                      id=""
+                      placeholder=""
+                    />
+                    <input
+                      appNumbers
+                      name="totalNoOfDomesticLoad"
+                      formControlName="totalNoOfDomesticLoad"
+                      class="form-control margin-bottom"
+                      id=""
+                      maxlength="10"
+                      placeholder=""
+                    />KW
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-3 disp-flex two-inp-fields" *ngIf="hideOption">
+                <label class="form-label text-line"
+                  >Total no of commercial applicants & total Load</label
+                >
+                <div style="font-size: 1rem; font-weight: 400">
+                  <input
+                    appNumbers
+                    name="totalNoOfCommercialApplicants"
+                    formControlName="totalNoOfCommercialApplicants"
+                    class="form-control"
+                    id=""
+                    maxlength="10"
+                    placeholder=""
+                  />
+                  <input
+                    appNumbers
+                    name="totalNoOfCommercialLoad"
+                    formControlName="totalNoOfCommercialLoad"
+                    class="form-control"
+                    id=""
+                    placeholder=""
+                    maxlength="10"
+                  />KW
+                </div>
+              </div>
+
+              <div class="col disp-flex two-inp-fields" *ngIf="hideOption">
+                <label class="form-label text-line"
+                  >Total no of educational applicants and total load</label
+                >
+                <div style="font-size: 1rem; font-weight: 400">
+                  <input
+                    appNumbers
+                    name="totalNoOfEducationalApplicants"
+                    formControlName="totalNoOfEducationalApplicants"
+                    class="form-control"
+                    id=""
+                    maxlength="10"
+                    placeholder=""
+                  />
+                  <input
+                    appNumbers
+                    name="totalNoOfEducationalLoad"
+                    formControlName="totalNoOfEducationalLoad"
+                    class="form-control"
+                    id=""
+                    maxlength="10"
+                    placeholder=""
+                  />KW
+                </div>
+              </div>
+
+              <div class="col disp-flex two-inp-fields" *ngIf="hideOption">
+                <label class="form-label text-line"
+                  >Total no of industrial applicants and total load</label
+                >
+                <div style="font-size: 1rem; font-weight: 400">
+                  <input
+                    appNumbers
+                    name="totalNoOfIndustrialApplicants"
+                    formControlName="totalNoOfIndustrialApplicants"
+                    class="form-control"
+                    id=""
+                    maxlength="10"
+                    placeholder=""
+                  />
+                  <input
+                    appNumbers
+                    name="totalNoOfIndustrialLoad"
+                    formControlName="totalNoOfIndustrialLoad"
+                    class="form-control"
+                    id=""
+                    maxlength="10"
+                    placeholder=""
+                  />KW
+                </div>
+              </div>
+              <div
+                class="col mt-4"
+                style="
+                  padding: 1rem;
+                  width: 100%;
+                  height: 8rem;
+                  border: 2px solid #757575;
+                "
+                *ngIf="isDisplayExecutionBlock"
+              >
+                <p style="font-size: 1rem; font-weight: 500">
+                  Is built-up area of the building between 500 sq. mts. and 800
+                  sq. mts. and requested load between 25kw to 34 kw, and is it
+                  attracting KERC Clause No.: 3.1.3(A) as per Amendment-9 Dated:
+                  27-12-2017?
+                </p>
+                <label class="form-label" style="width: 100%; margin-top: 1rem">
+                  If yes, is the applicant willing to provide space in their
+                  premises for erection of transformer and associated equipment,
+                  and is sufficient space available?
+                </label>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_the_applicant_willing_to_provide_space"
+                      name="isTheApplicantWillingToProvideSpace"
+                      formControlName="isTheApplicantWillingToProvideSpace"
+                      value="1"
+                      (change)="selectedValue = '1'"
+                    />
+                    <label
+                      for="yes_of_is_the_applicant_willing_to_provide_space"
+                      >Yes</label
+                    >
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_the_applicant_willing_to_provide_space"
+                      name="isTheApplicantWillingToProvideSpace"
+                      formControlName="isTheApplicantWillingToProvideSpace"
+                      value="0"
+                      (change)="selectedValue = '0'"
+                    />
+                    <label for="no_of_is_the_applicant_willing_to_provide_space"
+                      >No</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="btn-box mt-4" style="justify-content: flex-end">
+                <button
+                  matStepperPrevious
+                  type="button"
+                  class="btn btn-secondary btn-md clor"
+                >
+                  Back
+                </button>
+                <button
+                  matStepperNext
+                  type="button"
+                  class="btn btn-primary btn-md"
+                  (click)="validateForms('loadInspection')"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step
+          [stepControl]="networkExtensionForm"
+          label="Network Extension"
+          *ngIf="showNetworkExtensionForm"
+        >
+          <!-- *ngIf= "['LR', 'LE'].includes(data.applicationTypeCode) && premisesInspectionForm.get('isMeterChangeReq')?.value !== '0'"> -->
+          <!-- Network Extension form  -->
+          <form class="form" [formGroup]="networkExtensionForm">
+            <div class="col-lg-6 mt-4 dis-fl premisesInspe">
+              <h2>Network Extention Details</h2>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label">
+                  {{
+                    data?.serviceRegistration?.applicationTypeCode === "LE" ||
+                    data?.serviceRegistration?.applicationTypeCode === "LR"
+                      ? "Consumer Number"
+                      : "Adjacent Consumer Number"
+                  }}
+                  <span class="star">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control margin-bottom"
+                  formControlName="adjacentConsumerNumber"
+                  placeholder="{{
+                    data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+                    data?.serviceRegistration?.applicationTypeCode === 'LR'
+                      ? 'Consumer Number'
+                      : 'Adjacent Consumer Number'
+                  }}"
+                  [maxLength]="14"
+                />
+              </div>
+              <mat-error
+                class="custom-error"
+                *ngIf="
+                  networkExtensionForm
+                    .get('adjacentConsumerNumber')
+                    .hasError('required') &&
+                  networkExtensionForm.get('adjacentConsumerNumber').touched
+                "
+              >
+                Please fill in this field.
+              </mat-error>
+              <div class="col mt-3 disp-flex d-flex flex-column">
+                <div class="d-flex">
+                  <label class="form-label"
+                    >Line Extension Required or Not?
+                    <span class="star">*</span></label
+                  >
+                  <select
+                    class="form-select"
+                    name="isNetworkExtensionRequired"
+                    formControlName="isNetworkExtensionRequired"
+                  >
+                    <option
+                      [selected]="
+                        !networkExtensionForm.get('isNetworkExtensionRequired')
+                          .value
+                      "
+                    >
+                      Select
+                    </option>
+                    <option *ngIf="isLayout" value="1">Yes</option>
+                    <option *ngIf="isMcJvs" value="0">No</option>
+                    <option *ngIf="!isLayout && !isMcJvs" value="1">Yes</option>
+                    <option *ngIf="!isLayout && !isMcJvs" value="0">No</option>
+                  </select>
+                </div>
+                <div class="d-flex">
+                  <div class="col-6"></div>
+                  <div class="col-6">
+                    <mat-error
+                      class="flex-column offset-6 px-2"
+                      *ngIf="
+                        networkExtensionForm
+                          .get('isNetworkExtensionRequired')
+                          .hasError('required')
+                      "
+                    >
+                      Line Extension is Required.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"
+                  >Connection Extended From <span class="star">*</span></label
+                >
+                <select
+                  class="form-select"
+                  name="connectionExtendedFrom"
+                  formControlName="connectionExtendedFrom"
+                >
+                  <ng-container
+                    *ngIf="
+                      data?.serviceRegistration?.connectionCode === 'JVS' ||
+                      data?.serviceRegistration?.connectionCode === 'MC-JVS'
+                    "
+                  >
+                    <option selected disabled value="">Please Select</option>
+                    <option value="LTPole">LT POLE</option>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="
+                      data?.serviceRegistration?.connectionCode !== 'JVS' &&
+                      data?.serviceRegistration?.connectionCode !== 'MC-JVS'
+                    "
+                  >
+                    <option selected disabled value="">Please Select</option>
+                    <option value="LTPole">LT POLE</option>
+                    <option value="HTPole">HT POLE</option>
+                    <option value="DistributionTransformer">DTC</option>
+                    <option value="FeederTap">FEEDER</option>
+                    <option value="SUBSTATION">SUBSTATION</option>
+                  </ng-container>
+                </select>
+              </div>
+              <!-- <div class="col-md-4">
+                  <input type="text" class="form-control col-md-2" id="" name="latitude" formControlName="latitude"
+                         placeholder="Latitude" [value]="networkExtensionForm.get('latitude').value | number: '1.3-3'" />
+                  <input type="text" class="form-control col-md-2" id="" name="longitude" formControlName="longitude"
+                         placeholder="Longitude" [value]="networkExtensionForm.get('longitude').value | number: '1.3-3'" />
+                  <button class="btn-tapping" (click)="onTapping()">
+                    Get Tapping Point
+                  </button>
+                </div> -->
+              <div
+                class="col mt-4 disp-flex dis-old-acc"
+                
+              >
+                <label class="form-label"
+                  >Latitude and Longitude of the location
+                  <span class="star">*</span></label
+                >
+                <div class="col-md-4">
+                  <input
+                    type="number"
+                    class="form-control disabled-input col-md-2"
+                    name="latitude"
+                    formControlName="latitude"
+                    placeholder="Latitude"
+                    readonly
+                  />
+                  <input
+                    type="number"
+                    class="form-control disabled-input col-md-2"
+                    name="longitude"
+                    formControlName="longitude"
+                    placeholder="Longitude"
+                    readonly
+                  />
+
+                  <button
+                    class="btn-tapping"
+                    (click)="onTapping()"
+                    *ngIf="shouldShowButtons()"
+                  >
+                    Get Tapping Point
+                  </button>
+                </div>
+              </div>
+              <!-- <p class="star mt-2" *ngIf="shouldShowButtons() && discom == 1">
+                Note: The "Get Tapping" functionality is disabled due to the
+                in-operation of the GIS application. Please continue the process
+                by manually entering the mandatory fields:
+                <strong>Latitude</strong>, <strong>Longitude</strong>, and
+                <strong>Tapping Asset ID</strong>.
+              </p> -->
+              <div
+                class="col disp-flex dis-old-acc"
+                *ngIf="showViewPointButton"
+              >
+                <button class="btn-tapping" (click)="onViewPoint()">
+                  View Tapping Point
+                </button>
+              </div>
+              <!-- Network Extension Type (Common for both) -->
+              <div class="col mt-3 disp-flex" *ngIf="!isNetworkExtensionType">
+                <label class="form-label"
+                  >Network Extension Type <span class="star">*</span></label
+                >
+                <select
+                  class="form-select"
+                  name="networkExtensionType"
+                  formControlName="networkExtensionType"
+                >
+                  <option value="">Select Network Extension Type</option>
+                  <option
+                    *ngFor="
+                      let networkExtensionTypeItem of networkExtensionType
+                    "
+                    [value]="
+                      networkExtensionTypeItem.networkExtensionTypeMasterId
+                    "
+                  >
+                    {{ networkExtensionTypeItem.networkExtensionTypeName }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Conditional Fields -->
+                <!-- Editable Fields for discom == 1 -->
+              <!-- <div *ngIf="discom === 1; else readOnlyFields">
+
+                <div class="col mt-3 disp-flex" *ngIf="discom ==1">
+                  <label class="form-label">
+                    Tapping Asset Id <span class="star">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="tappingAssestId"
+                    formControlName="tappingAssetId"
+                    class="form-control disabled-input bbmp-word-text-box"
+                    id=""
+                    placeholder=""
+                    maxlength="13"
+                    minlength="11"
+                    (blur)="tappingAssetId?.markAsTouched()"
+                  />
+                  <div
+                    *ngIf="tappingAssetId?.hasError('minlength') && tappingAssetId?.touched"
+                    class="text-danger mt-1"
+                  >
+                    Minimum length is 11 characters.
+                  </div>
+                  <div
+                    *ngIf="tappingAssetId?.hasError('maxlength') && tappingAssetId?.touched"
+                    class="text-danger mt-1"
+                  >
+                    Maximum length is 13 characters.
+                  </div>
+                </div>
+                <div class="col mt-3 disp-flex">
+                  <label class="form-label"
+                    >Distribution Transformer Name
+                    <span class="star">*</span></label
+                  >
+                  <input
+                    type="text"
+                    name="distributionTransformerName"
+                    formControlName="nameOfTheTransformer"
+                    class="form-control bbmp-word-text-box"
+                    placeholder=""
+                  />
+                </div>
+                <div class="col mt-3 disp-flex">
+                  <label class="form-label"
+                    >Transformer Capacity <span class="star">*</span></label
+                  >
+                  <input
+                    type="text"
+                    name="transformerCapacity"
+                    formControlName="transformerCapacity"
+                    class="form-control bbmp-word-text-box"
+                    placeholder=""
+                    pattern="[0-9]*"
+                    inputmode="numeric"
+                    (keypress)="validateNumberInput($event)"
+                  />
+                </div>
+                <div class="col mt-3 disp-flex">
+                  <label class="form-label"
+                    >Feeder Name <span class="star">*</span></label
+                  >
+                  <input
+                    type="text"
+                    name="feederName"
+                    formControlName="feederName"
+                    class="form-control bbmp-word-text-box"
+                    placeholder=""
+                  />
+                </div>
+                <div class="col mt-3 disp-flex">
+                  <label class="form-label"
+                    >Station Name <span class="star">*</span></label
+                  >
+                  <input
+                    type="text"
+                    name="stationName"
+                    formControlName="substationName"
+                    class="form-control bbmp-word-text-box"
+                    placeholder=""
+                  />
+                </div>
+              </div> -->
+
+              <!-- Read-Only Fields for Other discoms -->
+              <!-- <ng-template #readOnlyFields> -->
+                <div class="col mt-3 disp-flex">
+                  <label class="form-label"
+                    >Distribution Transformer Name</label
+                  >
+                  <input
+                    type="text"
+                    name="distributionTransformerName"
+                    formControlName="nameOfTheTransformer"
+                    class="form-control bbmp-word-text-box"
+                    placeholder=""
+                    readonly
+                  />
+                </div>
+                <div class="col mt-3 disp-flex">
+                  <label class="form-label">Transformer Capacity</label>
+                  <input
+                    type="text"
+                    name="transformerCapacity"
+                    formControlName="transformerCapacity"
+                    class="form-control bbmp-word-text-box"
+                    placeholder=""
+                    readonly
+                  />
+                </div>
+                <div class="col mt-3 disp-flex">
+                  <label class="form-label">Feeder Name</label>
+                  <input
+                    type="text"
+                    name="feederName"
+                    formControlName="feederName"
+                    class="form-control bbmp-word-text-box"
+                    placeholder=""
+                    readonly
+                  />
+                </div>
+                <div class="col mt-3 disp-flex">
+                  <label class="form-label">Station Name</label>
+                  <input
+                    type="text"
+                    name="stationName"
+                    formControlName="substationName"
+                    class="form-control bbmp-word-text-box"
+                    placeholder=""
+                    readonly
+                  />
+                </div>
+              <!-- </ng-template> -->
+
+              <!-- Common Fields -->
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"
+                  >MR Code <span class="star">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control bbmp-word-text-box"
+                  name="mrCode"
+                  formControlName="mrCode"
+                  placeholder="Please enter MR Code."
+                />
+              </div>
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"
+                  >MR Day <span class="star">*</span></label
+                >
+                <input
+                  type="number"
+                  class="form-control bbmp-word-text-box"
+                  name="mrDay"
+                  formControlName="mrDay"
+                  placeholder="Please enter MR Day."
+                />
+              </div>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"
+                  >Cable precommissioning test required?</label
+                >
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_cable_precomm_test_req"
+                      name="isCablePrecommTestReq"
+                      formControlName="isCablePrecommTestReq"
+                      value="1"
+                    />
+                    <label for="yes_of_is_cable_precomm_test_req">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_cable_precomm_test_req"
+                      name="isCablePrecommTestReq"
+                      formControlName="isCablePrecommTestReq"
+                      value="0"
+                    />
+                    <label for="no_of_is_cable_precomm_test_req">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-2 disp-flex">
+                <label class="form-label"
+                  >RMU precommissioning test required?</label
+                >
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_RMU_precomm_test_req"
+                      name="isRMUPrecommTestReq"
+                      formControlName="isRMUPrecommTestReq"
+                      value="1"
+                    />
+                    <label for="yes_of_is_RMU_precomm_test_req">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_RMU_precomm_test_req"
+                      name="isRMUPrecommTestReq"
+                      formControlName="isRMUPrecommTestReq"
+                      value="0"
+                    />
+                    <label for="no_of_is_RMU_precomm_test_req">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-2 disp-flex">
+                <label class="form-label"
+                  >LBS precommissioning test required?</label
+                >
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_LBS_precomm_test_req"
+                      name="isLBSPrecommTestReq"
+                      formControlName="isLBSPrecommTestReq"
+                      value="1"
+                    />
+                    <label for="yes_of_is_LBS_precomm_test_req">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_LBS_precomm_test_req"
+                      name="isLBSPrecommTestReq"
+                      formControlName="isLBSPrecommTestReq"
+                      value="0"
+                    />
+                    <label for="no_of_is_LBS_precomm_test_req">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-2 disp-flex">
+                <label class="form-label">DT testing charges required?</label>
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_DT_testing_charges_req"
+                      name="isDTTestingChargesReq"
+                      formControlName="isDTTestingChargesReq"
+                      value="1"
+                    />
+                    <label for="yes_of_is_DT_testing_charges_req">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_DT_testing_charges_req"
+                      name="isDTTestingChargesReq"
+                      formControlName="isDTTestingChargesReq"
+                      value="0"
+                    />
+                    <label for="no_of_is_DT_testing_charges_req">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="btn-box mt-4">
+                <button
+                  matStepperPrevious
+                  type="button"
+                  class="btn btn-secondary btn-md clor"
+                >
+                  Back
+                </button>
+                <button
+                  matStepperNext
+                  type="button"
+                  class="btn btn-primary btn-md"
+                  (click)="validateForms('networkExtension')"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step
+          [stepControl]="meterRegisteredDetailsForm"
+          label="Meter Registered"
+          *ngIf="meterRegisteredFormStatus"
+        >
+          <form [formGroup]="meterRegisteredDetailsForm" class="form">
+            <div class="col-lg-6 mt-4 dis-fl premisesInspe">
+              <h2>Meter Registered Details</h2>
+              <div
+                class="cd-content"
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+                  data?.serviceRegistration?.applicationTypeCode === 'LR'
+                "
+              >
+                <h3>Meter Registered Details :-</h3>
+              </div>
+              <div
+                style="
+                  overflow: auto;
+                  width: 100%;
+                  border: 2px solid #c2c2c2;
+                  margin-top: 0.5rem;
+                "
+                *ngIf="
+                  data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+                  data?.serviceRegistration?.applicationTypeCode === 'LR'
+                "
+              >
+                <table class="table table-bordered text-center">
+                  <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                    <tr>
+                      <th scope="col">Sequence no</th>
+                      <th scope="col">Register Id</th>
+                      <th scope="col">Unit of Measure</th>
+                      <th scope="col">Time of Use</th>
+                      <th scope="col">
+                        Reading <span class="star" style="color: red">*</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody formArrayName="meterData">
+                    <ng-container
+                      *ngFor="
+                        let item of meterRegisteredDetailsForm.get('meterData')
+                          .controls;
+                        let i = index
+                      "
+                    >
+                      <tr [formGroupName]="i">
+                        <td>{{ item.get("registerReadSeqNo").value }}</td>
+                        <td>{{ item.get("registerId").value }}</td>
+                        <td>{{ item.get("registerUom").value }}</td>
+                        <td>{{ item.get("registerTou").value }}</td>
+                        <td>
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="registerReading"
+                            (keypress)="
+                              validateInput(
+                                $event,
+                                item.get('registerUom').value
+                              )
+                            "
+                            maxlength="15"
+                          />
+                          <div
+                            *ngIf="
+                              item.get('registerReading').invalid &&
+                              item.get('registerReading').touched
+                            "
+                            style="color: red; margin-top: -10px"
+                          >
+                            Please fill this field.
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+              <div class="btn-box mt-4">
+                <button
+                  matStepperPrevious
+                  type="button"
+                  class="btn btn-secondary btn-md clor"
+                >
+                  Back
+                </button>
+                <button
+                  matStepperNext
+                  type="button"
+                  class="btn btn-primary btn-md"
+                  (click)="validateForms('meterInspection')"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="inspectedByForm" label="Inspected By">
+          <form class="form" [formGroup]="inspectedByForm">
+            <div class="col-lg-6 mt-4 dis-fl premisesInspe">
+              <h2>Deviation and Inspected By Details</h2>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label">Is Solar Heater Mandatory?</label>
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_solar_heater_mandatory"
+                      name="isSolarHeaterMandatory"
+                      formControlName="isSolarHeaterMandatory"
+                      value="1"
+                    />
+                    <label for="yes_of_is_solar_heater_mandatory">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_solar_heater_mandatory"
+                      name="isSolarHeaterMandatory"
+                      formControlName="isSolarHeaterMandatory"
+                      value="0"
+                    />
+                    <label for="no_of_is_solar_heater_mandatory">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-2 disp-flex">
+                <label class="form-label"
+                  >Is Provision for solar water heater made</label
+                >
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_provision_for_solar_water_heater_made"
+                      name="isProvisionForSolarWaterHeaterMade"
+                      formControlName="isProvisionForSolarWaterHeaterMade"
+                      value="1"
+                    />
+                    <label for="yes_of_is_provision_for_solar_water_heater_made"
+                      >Yes</label
+                    >
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_provision_for_solar_water_heater_made"
+                      name="isProvisionForSolarWaterHeaterMade"
+                      formControlName="isProvisionForSolarWaterHeaterMade"
+                      value="0"
+                    />
+                    <label for="no_of_is_provision_for_solar_water_heater_made"
+                      >No</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-2 disp-flex">
+                <label class="form-label">
+                  is any
+                  <span style="color: #4472c4">HT/EHT Line Crossing*</span> (if
+                  crossing mention, is KPTCL clearence certificate required) IE
+                  rules Ref. LT: H=1.2, V=2.5, HT: H=1.2, V=3.7, 66kV : H=2.3,
+                  V=4, 220kV: H=3.7, V=5.4 all unit in meter ]
+                </label>
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_any_HT/EHT_line_crossing"
+                      name="isAnyHTEHTLineCrossing"
+                      formControlName="isAnyHTEHTLineCrossing"
+                      value="1"
+                    />
+                    <label for="yes_of_is_any_HT/EHT_line_crossing">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_any_HT/EHT_line_crossing"
+                      name="isAnyHTEHTLineCrossing"
+                      formControlName="isAnyHTEHTLineCrossing"
+                      value="0"
+                    />
+                    <label for="no_of_is_any_HT/EHT_line_crossing">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-2 disp-flex">
+                <label class="form-label"
+                  >Line clearance certificate provided?</label
+                >
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_line_clear_certi_provided"
+                      name="isLineClearCertiProvided"
+                      formControlName="isLineClearCertiProvided"
+                      value="1"
+                    />
+                    <label for="yes_of_is_line_clear_certi_provided">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_line_clear_certi_provided"
+                      name="isLineClearCertiProvided"
+                      formControlName="isLineClearCertiProvided"
+                      value="0"
+                    />
+                    <label for="no_of_is_line_clear_certi_provided">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-2 disp-flex">
+                <label class="form-label"
+                  >This area belongs to any one of these
+                  <span class="star">*</span></label
+                >
+                <select
+                  class="form-select"
+                  name="areaBelongsTo"
+                  formControlName="areaBelongsTo"
+                >
+                  <option value="" disabled>Select any one</option>
+                  <!-- <option value="0">Partly-Electrified</option> -->
+                  <option value="1">Non-Electrified</option>
+                  <option value="2">Electrified area</option>
+                </select>
+              </div>
+
+              <mat-error
+                class="custom-error"
+                *ngIf="
+                  inspectedByForm.get('areaBelongsTo').hasError('required') &&
+                  inspectedByForm.get('areaBelongsTo').touched
+                "
+              >
+                Please fill in this field.
+              </mat-error>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"
+                  >Does this Premises belongs to any one of these
+                  <span class="star">*</span></label
+                >
+                <select
+                  class="form-select"
+                  name="premisesBelongsTo"
+                  formControlName="premisesBelongsTo"
+                >
+                  <option value="" disabled>Select any one</option>
+                  <option value="3">Revenue Land</option>
+                  <option value="1">Stray Sites</option>
+                  <option value="2">Declared Abandoned Layout</option>
+                  <option value="Declared Un-authorised">
+                    Declared Un-authorised
+                  </option>
+                </select>
+              </div>
+
+              <mat-error
+                class="custom-error"
+                *ngIf="
+                  inspectedByForm
+                    .get('premisesBelongsTo')
+                    .hasError('required') &&
+                  inspectedByForm.get('premisesBelongsTo').touched
+                "
+              >
+                Please fill in this field.
+              </mat-error>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"
+                  >Decommisioning of Assets required?</label
+                >
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_decomm_of_assets_req"
+                      name="isDecommOfAssetsReq"
+                      formControlName="isDecommOfAssetsReq"
+                      value="1"
+                    />
+                    <label for="yes_of_is_decomm_of_assets_req">Yes</label>
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_decomm_of_assets_req"
+                      name="isDecommOfAssetsReq"
+                      formControlName="isDecommOfAssetsReq"
+                      value="0"
+                    />
+                    <label for="no_of_is_decomm_of_assets_req">No</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-2 disp-flex">
+                <label class="form-label"
+                  >Is any Additional Documents collected at spot?</label
+                >
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_any_Addi_docus_collected_at_spot"
+                      name="isAnyAddDocCollectedAtSpot"
+                      formControlName="isAnyAddDocCollectedAtSpot"
+                      value="1"
+                    />
+                    <label for="yes_of_is_any_Addi_docus_collected_at_spot"
+                      >Yes</label
+                    >
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_any_Addi_docus_collected_at_spot"
+                      name="isAnyAddDocCollectedAtSpot"
+                      formControlName="isAnyAddDocCollectedAtSpot"
+                      value="0"
+                    />
+                    <label for="no_of_is_any_Addi_docus_collected_at_spot"
+                      >No</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-2 disp-flex">
+                <label class="form-label"
+                  >Any Documents still to be collected?</label
+                >
+                <div style="display: flex; gap: 1rem">
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="yes_of_is_any_Docs_still_to_be_collected"
+                      name="isAnyDocsStillToBeCollected"
+                      formControlName="isAnyDocsStillToBeCollected"
+                      value="1"
+                    />
+                    <label for="yes_of_is_any_Docs_still_to_be_collected"
+                      >Yes</label
+                    >
+                  </div>
+
+                  <div class="radio-btns">
+                    <input
+                      type="radio"
+                      id="no_of_is_any_Docs_still_to_be_collected"
+                      name="isAnyDocsStillToBeCollected"
+                      formControlName="isAnyDocsStillToBeCollected"
+                      value="0"
+                    />
+                    <label for="no_of_is_any_Docs_still_to_be_collected"
+                      >No</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label">Any Other Details</label>
+                <input
+                  type="text"
+                  name="anyOtherDetail"
+                  formControlName="anyOtherDetail"
+                  class="form-control"
+                  id=""
+                  placeholder="Any Other Details"
+                />
+              </div>
+
+              <h2 class="mt-4">Deviation Details</h2>
+
+              <div class="col mt-2 disp-flex">
+                <label class="form-label">Account ID</label>
+                <input
+                  type="text"
+                  name="deviationAccountId"
+                  formControlName="deviationAccountId"
+                  class="form-control"
+                  id=""
+                  placeholder="Account ID"
+                />
+              </div>
+
+              <div class="col disp-flex">
+                <label class="form-label">Particulars</label>
+                <select
+                  class="form-select"
+                  name="deviationParticulars"
+                  formControlName="deviationParticulars"
+                >
+                  <option value="">Select Particular</option>
+                  <option
+                    *ngFor="let deviationTypeItem of deviationType"
+                    [value]="deviationTypeItem.deviationTypeMasterId"
+                  >
+                    {{ deviationTypeItem.deviationType }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label">Remarks </label>
+                <textarea
+                  class="form-control"
+                  name="deviationRemarks"
+                  formControlName="deviationRemarks"
+                  id=""
+                  cols="20"
+                  rows="2"
+                  placeholder="Remarks"
+                ></textarea>
+              </div>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"></label>
+                <button
+                  type="button"
+                  class="btn btn-primary btn-md"
+                  (click)="displayDeviationDetails()"
+                >
+                  Add
+                </button>
+              </div>
+
+              <div
+                class="mt-4"
+                style="display: flex; flex-wrap: wrap; overflow: auto"
+              >
+                <table
+                  class="table text-center"
+                  style="
+                    width: 100%;
+                    flex-wrap: wrap;
+                    border: 1px solid #757575;
+                  "
+                >
+                  <thead style="background-color: #f0efef">
+                    <tr>
+                      <th scope="col">Account ID</th>
+                      <th scope="col">Particulars</th>
+                      <th scope="col">Remarks</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody style="cursor: pointer">
+                    <tr
+                      *ngFor="
+                        let deviationDetailItem of deviationDetails;
+                        index as i
+                      "
+                    >
+                      <td *ngIf="deviationDetailItem">
+                        {{ deviationDetailItem.accountId }}
+                      </td>
+                      <td *ngIf="deviationDetailItem">
+                        {{ deviationDetailItem.particulars }}
+                      </td>
+                      <td *ngIf="deviationDetailItem">
+                        {{ deviationDetailItem.remarks }}
+                      </td>
+                      <td *ngIf="!deviationDetailItem"></td>
+                      <td *ngIf="!deviationDetailItem"></td>
+                      <td *ngIf="!deviationDetailItem"></td>
+                      <td>
+                        <button
+                          style="border: none; background-color: transparent"
+                          (click)="deleteDeviationDetails(i)"
+                        >
+                          <img src="assets/delete-icon.png" alt="" />
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- <div class="col mt-3 disp-flex">
+            <label class="form-label"><b>Inspection Report Upload</b></label>
+            <input class="btn btn-upload" type="file" id="actual-btn" />
+          </div> -->
+
+              <!-- <div class="col mt-3 disp-flex">
+            <label class="form-label"
+              ><b>Inspection Report Upload Date</b></label
+            >
+            <div class="date-field">
+              <mat-form-field appearance="fill">
+                <mat-label>Date</mat-label>
+                <input
+                  formControlName="inspectionReportUploadDate"
+                  matInput
+                  [matDatepicker]="report_upload_date_picker"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="report_upload_date_picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #report_upload_date_picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div> -->
+
+              <!-- <div class="col mt-3 disp-flex">
+            <label class="form-label">
+              <b>Inspection Report Upload Date</b>
+            </label>
+            <div class="date-field">
+              <input
+              class="form-control"
+              type="date"
+              formControlName="inspectionReportUploadDate"
+            />
+            </div>
+          </div> -->
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label"
+                  >Inspected By <span class="star">*</span></label
+                >
+                <div class="inspected-checkbox">
+                  <div>
+                    <input
+                      type="checkbox"
+                      formControlName="inspectedByAE"
+                      id="AE"
+                      name="AE"
+                      value="AE"
+                      required
+                    />
+                    <label for="AE">AE</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      formControlName="inspectedByAEE"
+                      id="AEE"
+                      name="AEE"
+                      value="AEE"
+                      required
+                    />
+                    <label for="AEE">AEE</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      formControlName="inspectedByEE"
+                      id="EE"
+                      name="EE"
+                      value="EE"
+                      required
+                    />
+                    <label for="EE">EE</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      formControlName="inspectedBySE"
+                      id="SE"
+                      name="SE"
+                      value="SE"
+                      required
+                    />
+                    <label for="SE">SE</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      formControlName="inspectedByCE"
+                      id="CE"
+                      name="CE"
+                      value="CE"
+                      required
+                    />
+                    <label for="CE">CE</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mt-3 disp-flex">
+                <label class="form-label">
+                  Inspection Date <span class="star">*</span>
+                </label>
+                <div class="date-field">
+                  <input
+                    class="form-control"
+                    type="date"
+                    formControlName="inspectionDate"
+                  />
+                </div>
+              </div>
+
+              <!-- <div class="col disp-flex">
+                <label class="form-label">Do you want to reject ?</label>
+
+                <input type="checkbox" (click)="onRejectCheckBox($event)" />
+              </div> -->
+
+              <!-- <div class="col mt-3 disp-flex" *ngIf="isRejection">
+                <label class="form-label">Rejection Reason</label>
+                <textarea
+                  class="form-control"
+                  name="rejectionRemark"
+                  id=""
+                  cols="20"
+                  rows="2"
+                  formControlName="rejectReason"
+                  placeholder="Reason Remarks"
+                  [ngClass]="
+                    loadInspectionControl.rejectReason?.touched
+                      ? loadInspectionControl.rejectReason?.hasError('required')
+                        ? 'is-invalid'
+                        : 'is-valid'
+                      : ''
+                  "
+                ></textarea>
+                <div
+                  *ngIf="submitted && loadInspectionControl.rejectReason.errors"
+                  class="invalid-feedback"
+                >
+                  <div
+                    *ngIf="
+                      submitted &&
+                      loadInspectionControl.rejectReason.errors.required
+                    "
+                  >
+                    Reason is required
+                  </div>
+                </div>
+              </div> -->
+              <!-- <div class="col mt-3 disp-flex">
+            <label class="form-label"><b>Inspection Date</b></label>
+            <div class="date-field">
+              <mat-form-field appearance="fill">
+                <mat-label>Date</mat-label>
+                <input
+                  formControlName="inspectionDate"
+                  matInput
+                  [matDatepicker]="inspection_date_picker"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="inspection_date_picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #inspection_date_picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div> -->
+              <div class="col disp-flex">
+                <label class="form-label"
+                  >Applicant premises/Builiding photo
+                </label>
+                <div class="input-container">
+                  <input
+                    class="btn btn-upload"
+                    style="width: 132%"
+                    type="file"
+                    #pdfFileInput
+                    name="fileupload"
+                    appFileSizeValidator
+                    class="form-control"
+                    id=""
+                    formControlName="pdfFile"
+                    placeholder=""
+                  />
+                  <mat-error class="error-message"
+                    >File size exceeds 1 MB. Please upload a file below
+                    1MB.</mat-error
+                  >
+                </div>
+              </div>
+
+              <div class="col disp-flex">
+                <label class="form-label"
+                  >Competent authority approvals document</label
+                >
+                <div class="input-container">
+                  <input
+                    class="btn btn-upload"
+                    style="width: 132%"
+                    type="file"
+                    #pdfFileInput
+                    name="fileupload"
+                    appFileSizeValidator
+                    class="form-control"
+                    id=""
+                    formControlName="pdfFile"
+                    placeholder=""
+                  />
+                  <mat-error class="error-message"
+                    >File size exceeds 1 MB. Please upload a file below
+                    1MB.</mat-error
+                  >
+                </div>
+              </div>
+
+              <div class="btn-box mt-4">
+                <button
+                  matStepperPrevious
+                  type="button"
+                  class="btn btn-secondary btn-md clor"
+                >
+                  Back
+                </button>
+                <button
+                  [disabled]="isLoading"
+                  *ngIf="!isRejection"
+                  type="button"
+                  class="btn btn-primary btn-md"
+                  (click)="openConfirmationpopupDialog('submit')"
+                >
+                  Submit
+                </button>
+                <!-- <button
+                  *ngIf="isRejection"
+                  type="button"
+                  class="btn btn-primary btn-md"
+                  (click)="openConfirmationpopupDialog('reject')"
+                  [disabled]="inspectedByForm.invalid"
+                >
+                  Reject
+                </button> -->
+              </div>
+            </div>
+          </form>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+  </section>
+</div>

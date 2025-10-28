@@ -1,0 +1,38 @@
+<section>
+  <form [formGroup]="roleTypeForm">
+  <h1 mat-dialog-title>Update Role Resource Mapping  </h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Resource Name</mat-label>
+        <input matInput placeholder="add resource name" 
+        formControlName="resourceName" appAlphaNumericWithHyphen [maxLength]="50" required/>
+        <mat-error>Please enter this field.</mat-error>
+      </mat-form-field> 
+      <mat-form-field class="example-full-width">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="roleId" required>
+          <mat-option *ngFor="let main of designationMasterFilterData" [value]="main.designationMasterId " [maxLength]="50">
+            {{main.designationName}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="roleTypeForm.get('roleId').invalid && roleTypeForm.get('roleId').touched">
+          Please select in this field.</mat-error>
+    </mat-form-field>
+      
+    </div>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Resource Description</mat-label>
+        <textarea matInput placeholder="Add resource discription" 
+        formControlName="resourceDiscription" appAlphaNumeric [maxLength]="250" rows="5" required></textarea>
+        <mat-error>Please enter this field.</mat-error>
+      </mat-form-field> 
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onUpdateRoleResource()">Update</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+</form>
+</section>
+

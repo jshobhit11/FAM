@@ -1,0 +1,45 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.unauthorized-container {
+  display: flex;
+  align-items: center; 
+  border: 1px solid #ccc;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 99%;
+  width: 100%;
+  background-color: #fff;
+  margin: auto;
+  border-radius: 10px;
+}
+
+.unauthorized-text {
+  flex: 1; 
+  padding-right: 20px; 
+}
+
+.unauthorized-heading {
+  text-align: center; 
+}
+
+.unauthorized-text p {
+  text-align: center; 
+}
+
+.unauthorized-image {
+  flex: 1;
+  text-align: center; 
+}
+
+.unauthorized-image img {
+  max-width: 100%;
+  height: auto;
+  max-height: 100%; 
+}

@@ -1,0 +1,130 @@
+<section>
+    <form [formGroup]="delegationTypeForm">
+    <h1 mat-dialog-title>Update Delegation Power Master</h1>
+    <div class="two-row-fields">
+        <div class="content-fields mt-4" mat-dialog-content>
+            <div class="modal-input-control">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Type Of Power</mat-label>
+                    <mat-select (selectionChange)="onTypeOfPowerChange($event)" 
+                    formControlName="typeOfPower" required>
+                    <mat-option *ngFor="let option of typeOfPowerOptions" [value]="option">{{ option }}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="delegationTypeForm.get('typeOfPower').invalid && delegationTypeForm.get('typeOfPower').touched">
+                        Please select in this field.</mat-error>
+                </mat-form-field>
+                <mat-form-field class="example-full-width"
+                    *ngIf="selectedTypeOfPower === 'ESTIMATE' || selectedTypeOfPower === 'REVISEDEST'">
+                    <mat-label>Dop Category</mat-label>
+                    <mat-select formControlName="workCategoryMasterId" required>
+                        <mat-option *ngFor="let main of workCategoryData" [value]="main.workCategoryMasterId">
+                            {{main.workCategoryName}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="delegationTypeForm.get('workCategoryMasterId').invalid && delegationTypeForm.get('workCategoryMasterId').touched">
+                        Please select in this field.</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="two-row-fields">
+            <div class="modal-input-control">
+                <mat-form-field class="example-full-width" *ngIf="selectedTypeOfPower === 'LOAD'">
+                    <mat-label>Category</mat-label>
+                    <mat-select formControlName="categoryCode" required>
+                      <mat-option *ngFor="let category of categoryOptions" [value]="category.value">
+                        {{ category.viewValue }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="delegationTypeForm.get('categoryCode').invalid && delegationTypeForm.get('categoryCode').touched">
+                        Please select in this field.</mat-error>
+                  </mat-form-field>
+                  
+                <mat-form-field class="example-full-width" *ngIf="selectedTypeOfPower === 'LOAD' || selectedTypeOfPower === 'REVISEDEST'">
+                    <mat-label>Unit</mat-label>
+                    <mat-select formControlName="unit" required>
+                        <mat-option *ngFor="let main of mUnitData" [value]="main.materialUnit" [maxLength]="">
+                            {{main.materialUnit}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="delegationTypeForm.get('unit').invalid && delegationTypeForm.get('unit').touched">
+                        Please select in this field.</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="two-row-fields">
+            <div class="modal-input-control">
+                <mat-form-field class="example-full-width" *ngIf="selectedTypeOfPower === 'LOAD'">
+                    <mat-label>Min Load</mat-label>
+                    <input matInput placeholder="Ex. Each" 
+                    formControlName="minLoad" appAlphaNumeric [maxLength]="50" required/>
+                    <mat-error>Please enter in this field.</mat-error>
+                </mat-form-field>
+                <mat-form-field class="example-full-width" *ngIf="selectedTypeOfPower === 'LOAD'">
+                    <mat-label>Max Load</mat-label>
+                    <input matInput placeholder="Ex. Each" 
+                    formControlName="maxLoad" appAlphaNumeric [maxLength]="50" required/>
+                    <mat-error>Please enter in this field.</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="two-row-fields">
+            <div class="modal-input-control">
+                <mat-form-field class="example-full-width" *ngIf="selectedTypeOfPower === 'ESTIMATE'">
+                    <mat-label>Min Amount</mat-label>
+                    <input matInput placeholder="Ex. Each"
+                    formControlName="minAmount" appAlphaNumeric [maxLength]="50" required/>
+                    <mat-error>Please enter in this field.</mat-error>
+                </mat-form-field>
+                <mat-form-field class="example-full-width" *ngIf="selectedTypeOfPower === 'ESTIMATE'">
+                    <mat-label>Max Amount</mat-label>
+                    <input matInput placeholder="Ex. Each"
+                    formControlName="maxAmount" appAlphaNumeric [maxLength]="50" required/>
+                    <mat-error>Please enter in this field.</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="two-row-fields">
+            <div class="modal-input-control">
+                <mat-form-field class="example-full-width" *ngIf=" selectedTypeOfPower === 'REVISEDEST'">
+                    <mat-label>Min %</mat-label>
+                    <input matInput placeholder="Ex. Each"
+                    formControlName="minPerAmount" appAlphaNumeric [maxLength]="50" required/>
+                    <mat-error>Please enter in this field.</mat-error>
+                </mat-form-field>
+                <mat-form-field class="example-full-width" *ngIf=" selectedTypeOfPower === 'REVISEDEST'">
+                    <mat-label>Max %</mat-label>
+                    <input matInput placeholder="Ex. Each"
+                    formControlName="maxPerAmount" appAlphaNumeric [maxLength]="50" required/>
+                    <mat-error>Please enter in this field.</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="two-row-fields">
+            <div class="modal-input-control">
+                <mat-form-field class="example-full-width"
+                    *ngIf="selectedTypeOfPower === 'ESTIMATE' || selectedTypeOfPower === 'REVISEDEST'">
+                    <mat-label>Work Execution Method</mat-label>
+                    <mat-select formControlName="workExecutionMethod" required>
+                        <mat-option *ngFor="let main of workExecutionData" [value]="main.woExecutionMethodId" [maxLength]="">
+                            {{main.woExecutionMethodName}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="delegationTypeForm.get('workExecutionMethod').invalid && delegationTypeForm.get('workExecutionMethod').touched">
+                        Please select in this field.</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width" *ngIf="selectedTypeOfPower === 'LOAD' || selectedTypeOfPower === 'REVISEDEST' || selectedTypeOfPower === 'ESTIMATE'">
+                    <mat-label>Designation Master</mat-label>
+                    <mat-select required formControlName="designationMasterId" required>
+                      <mat-option *ngFor="let main of designationData" [value]="main.designationMasterId">
+                      {{main.designationName}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="delegationTypeForm.get('designationMasterId').invalid && delegationTypeForm.get('designationMasterId').touched">
+                        Please select in this field.</mat-error>
+                  </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+        <button class="c-btn" (click)="onDelegationMaster()" mat-button>Update</button>
+        <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+</form>
+</section>

@@ -1,0 +1,90 @@
+<section>
+  <form [formGroup]="workOrderSeriesForm">
+  <h1 mat-dialog-title>Work Order Series Master</h1>
+    <div class="modal-input-control">
+      <!-- <div class="col-sm-6" id="office">
+        Office Name<br>
+        <div class="card flex justify-content-center">
+            <form [formGroup]="treeForm">
+                <p-treeSelect class="md:w-20rem w-full"
+                containerStyleClass="w-full"
+                formControlName="selectedNodes"
+                (onNodeSelect)="nodeSelect($event.node)"
+                selectionMode="single"
+                (onNodeUnselect)="nodeUnselect()"
+                [(ngModel)]="selectedOfficeNode"
+                [options]="nodes"
+                [filter]="true" 
+                [scrollHeight]="'200px'"
+            > </p-treeSelect>
+            </form>
+          </div>
+      </div> -->
+      <mat-form-field appearance="fill">
+        <mat-label>Office</mat-label>
+        <mat-select formControlName="parentOfficeId" required>
+          <mat-option *ngFor="let main of parent" [value]="main.officeMasterId">
+            {{ main.officeCode }} - {{ main.officeName }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="workOrderSeriesForm.get('parentOfficeId').hasError('required')">
+          Please select this field.
+        </mat-error>
+      </mat-form-field>      
+      <mat-form-field appearance="fill">
+        <mat-label>Financial Year</mat-label>
+        <mat-select formControlName="financialYear" required>
+          <mat-option *ngFor="let main of financialData" [value]="main.financialYear">
+            {{main.financialYear}}</mat-option>
+        </mat-select>
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field appearance="fill">
+        <mat-label>Alphabet Sequence</mat-label>
+        <mat-select [(ngModel)]="getData.alphabetSequence" formControlName="alphabetSequence" required>
+          <mat-option *ngFor="let alphabet of alphabets" [value]="alphabet">
+            {{ alphabet }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Account Head Name</mat-label>
+        <mat-select [(ngModel)]="getData.accountHeadMasterId" formControlName="accountHeadMasterId" required>
+          <mat-option *ngFor="let option of accountHeadoptions" [value]="option.accountHeadMasterId">
+            {{ option.displayText }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>    
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="fill">
+        <mat-label>Start Number</mat-label>
+        <input matInput placeholder="Ex. Each" [(ngModel)]="getData.startNumber" formControlName="startNumber" appNumbers [maxLength]="15" required/>
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>End Number</mat-label>
+        <input matInput placeholder="Ex. Each" [(ngModel)]="getData.endNumber" formControlName="endNumber" appNumbers [maxLength]="15" required/>
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control" *ngIf="lineTypeStatus">
+      <mat-form-field appearance="fill" >
+        <mat-label>Line Type</mat-label>
+        <mat-select  [(ngModel)]="getData.lineType" formControlName="lineType" required>
+          <mat-option  value="serviceMain">Service Main</mat-option>
+          <mat-option  value="lineExtension">Line Extension</mat-option>
+        </mat-select>
+        <mat-error>Please select this field.</mat-error>
+      </mat-form-field>
+    </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onWorkOrdSeriesUpdate()">Update</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+</form>
+</section>

@@ -1,0 +1,592 @@
+<section>
+  <h1
+    style="padding: 1rem 0 0 1rem; font-weight: 600; margin: unset !important"
+  >
+    Estimation Template
+  </h1>
+  <div class="col-lg-6 mt-4 dis-fl premisesInspe cd-container">
+    <div>
+      <form class="form" [formGroup]="estimateCharges">
+        <!-- <h2>Estimation Charges Details</h2> -->
+        <h2></h2>
+        <div class="col mt-3 disp-flex">
+          <label class="form-label">Template Work Description</label>
+          <textarea
+            name=""
+            id=""
+            cols="20"
+            rows="5"
+            formControlName="estimationWorkDescription"
+            class="form-control"
+            placeholder="Input"
+            required
+          ></textarea>
+        </div>
+
+        <div class="col disp-flex">
+          <label class="form-label">Dop Category</label>
+          <select
+            class="form-select"
+            formControlName="workCategory"
+            (change)="onChangeWorkCategory($event.target.value)"
+            required
+          >
+            <option value="">select</option>
+            <option
+              *ngFor="let workCategoryItem of workCategoryData"
+              [value]="workCategoryItem.workCategoryMasterId"
+            >
+              {{ workCategoryItem.workCategoryName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col mt-3 disp-flex">
+          <label class="form-label">Work Execution Method</label>
+          <select
+            class="form-select"
+            formControlName="workExecutionMethod"
+            (change)="onChangeWorkExecution($event.target.value)"
+          >
+            <option value="">select</option>
+            <option
+              *ngFor="let workExecutionItem of workExecution"
+              [value]="workExecutionItem.woExecutionMethodId"
+            >
+              {{ workExecutionItem.woExecutionMethodName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col mt-3 disp-flex">
+          <label class="form-label">Rate Type</label>
+          <select class="form-select" formControlName="rateType">
+            <option value="">select</option>
+            <option value="SR">SR Rates</option>
+            <option value="RC">RC Rates</option>
+          </select>
+        </div>
+
+        <div class="col mt-3 disp-flex" *ngIf="showVendor">
+          <label class="form-label">RC Code</label>
+          <select
+            class="form-select"
+            formControlName="vendor"
+            (change)="onChangeMaterials()"
+          >
+            <option value="">select</option>
+            <option
+              *ngFor="let vendorItem of vendorData"
+              [value]="vendorItem.rateContractMasterId"
+            >
+              {{ vendorItem.rcCode }} - {{ vendorItem.rcVendorName }}
+            </option>
+          </select>
+        </div>
+
+        <h2 class="mt-4">Scope of Work Description</h2>
+        <div class="scopeOfWork">
+          <div class="col mt-3 disp-flex" style="flex-direction: column">
+            <label class="form-label"
+              >Estimate Type <span style="color: red"> *</span></label
+            >
+            <select
+              class="form-select"
+              formControlName="estimateType"
+              (change)="onChangeEstimateType()"
+            >
+              <option value="">select</option>
+              <option
+                *ngFor="let estimateTypeItem of estimateType"
+                [value]="estimateTypeItem.estimateTypeCode"
+              >
+                {{ estimateTypeItem.estimateTypeName }}
+              </option>
+              <!-- <option value="Regular">Regular</option>
+              <option value="Credit">Credit</option> -->
+            </select>
+          </div>
+          <div class="col mt-3 disp-flex" style="flex-direction: column">
+            <label class="form-label">Type of Work</label>
+            <select
+              class="form-select"
+              formControlName="typeOfWork"
+              (change)="onChangeTypeOfWork($event.target.value)"
+            >
+              <option value="">select</option>
+              <option value="LT">LT</option>
+              <option value="HT">HT</option>
+            </select>
+          </div>
+          <div class="col mt-3 disp-flex" style="flex-direction: column">
+            <label class="form-label">Work Part</label>
+            <select
+              class="form-select"
+              formControlName="workPart"
+              (change)="onChangeWorkPart($event.target.value)"
+            >
+              <option value="">select</option>
+              <option
+                *ngFor="let workPartItem of workPart"
+                [value]="workPartItem"
+              >
+                {{ workPartItem }}
+              </option>
+            </select>
+          </div>
+          <div class="col-3 mt-3 disp-flex" style="flex-direction: column">
+            <label class="form-label">Work Description</label>
+            <select
+              class="form-select"
+              style="width: 100%"
+              formControlName="workDescription"
+              (change)="onChangeWorkDescription($event.target.value)"
+            >
+              <option value="">select</option>
+              <option
+                *ngFor="let workscopeDescItem of workscopeDesc"
+                [value]="workscopeDescItem.workscopeDescMasterId"
+              >
+                {{ workscopeDescItem.workscopeDescription }}
+              </option>
+            </select>
+          </div>
+          <div class="col mt-4 disp-flex">
+            <button
+              class="btn btn-md"
+              [disabled]="alreadyExistScopeOfWork"
+              (click)="addExecutionWorkTable()"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
+        <h2 class="mt-4">Item details</h2>
+        <div
+          class="radio-btns"
+          style="display: flex; justify-content: space-between"
+        >
+          <div style="display: flex; gap: 0.5rem">
+            <label>Search By</label>
+            <input
+              class="ms-2"
+              type="radio"
+              formControlName="materialOrLabour"
+              id="materialOrLabour"
+              name="materialOrLabour"
+              value="MATERIAL"
+              (change)="onChangeMaterials()"
+            />
+            <label for="MATERIAL">Material</label>
+            <input
+              class="ms-2"
+              type="radio"
+              formControlName="materialOrLabour"
+              id="materialOrLabour"
+              name="materialOrLabour"
+              value="LABOR"
+              (change)="onChangeMaterials()"
+            />
+            <label for="LABOUR">Labour</label>
+          </div>
+        </div>
+        <div
+          class="top-row mt-4"
+          *ngIf="estimateCharges.get('materialOrLabour').value === 'MATERIAL'"
+        >
+          <mat-form-field
+            style="width: 100% !important; font-size: 1.5rem !important"
+          >
+            <span matPrefix class="search-icon2"
+              ><mat-icon>search</mat-icon></span
+            >
+            <input
+              matInput
+              placeholder="Search Material"
+              [matAutocomplete]="unitAuto"
+              formControlName="materialUnitControl"
+            />
+            <mat-autocomplete
+              #unitAuto="matAutocomplete"
+              (optionSelected)="onMaterialUnitSelected($event.option.value)"
+            >
+              <mat-option
+                *ngFor="let unit of filteredMaterialUnits | async"
+                [value]="unit"
+                >{{ unit }}</mat-option
+              >
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div
+          class="top-row mt-4"
+          *ngIf="estimateCharges.get('materialOrLabour').value === 'LABOR'"
+        >
+          <mat-form-field
+            style="width: 100% !important; font-size: 1.5rem !important"
+          >
+            <span matPrefix class="search-icon2"
+              ><mat-icon>search</mat-icon></span
+            >
+            <input
+              matInput
+              placeholder="Search Labour"
+              [matAutocomplete]="unitAuto"
+              formControlName="labourUnitControl"
+            />
+            <mat-autocomplete
+              #unitAuto="matAutocomplete"
+              (optionSelected)="onMaterialUnitSelected($event.option.value)"
+            >
+              <mat-option
+                *ngFor="let unit of filteredMaterialUnits | async"
+                [value]="unit"
+                >{{ unit }}</mat-option
+              >
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <label
+            class="form-label"
+            *ngIf="
+              estimateCharges.get('materialOrLabour').value === 'MATERIAL' &&
+              convertEstimateCode(estimateCharges.get('undExWork').value) !==
+                'CRD'
+            "
+          >
+            Labour List
+          </label>
+          <div class="col-md-11">
+            <div
+              class="col disp-flex l"
+              style="flex-direction: column"
+              *ngIf="
+                estimateCharges.get('materialOrLabour').value === 'MATERIAL' &&
+                convertEstimateCode(estimateCharges.get('undExWork').value) !==
+                  'CRD'
+              "
+            >
+              <mat-select
+                class="form-select"
+                style="width: 100%"
+                formControlName="labourList"
+                multiple
+              >
+                <mat-option
+                  *ngFor="let items of labourList"
+                  [value]="items.materialsLabourMasterId"
+                  >{{ items.mlCode }} - {{ items.mlName }}</mat-option
+                >
+              </mat-select>
+            </div>
+          </div>
+          <div class="col-md-1">
+            <div class="col disp-flex" style="justify-content: flex-end">
+              <button class="btn btn-md" (click)="addItemTable()">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="
+            regularFilterExecutionWorkTable.length ||
+            creditFilterExecutionWorkTable.length
+          "
+        >
+          <h2 class="mt-4">Under Execution Work</h2>
+          <div *ngIf="regularFilterExecutionWorkTable.length">
+            <h2>Regular Estimate</h2>
+            <div
+              *ngFor="
+                let executionWork of regularFilterExecutionWorkTable;
+                index as i
+              "
+            >
+              <div style="border: 2px solid #e1e1e1; padding: 1rem">
+                <div
+                  class="radio-btns"
+                  style="display: flex; justify-content: space-between"
+                >
+                  <div style="display: flex; gap: 0.5rem">
+                    <input
+                      type="radio"
+                      formControlName="undExWork"
+                      id="regular"
+                      name="undExWork"
+                      value="{{ i }}-{{ executionWork.estimateTypeCode }}"
+                    />
+                    <label for="regular"
+                      >{{ executionWork.workType }}-{{
+                        executionWork.workPart
+                      }}-{{ executionWork.workscopeDescription }}</label
+                    >
+                  </div>
+                  {{ selectedValue }}
+                  <button
+                    style="border: none"
+                    (click)="
+                      removeExecutionWorkTable(
+                        i,
+                        executionWork.estimateTypeCode,
+                        executionWork.workPart
+                      )
+                    "
+                  >
+                    <img src="assets/delete-icon.png" alt="" />
+                  </button>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; overflow: auto">
+                  <table
+                    class="table text-center"
+                    style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+                  >
+                    <thead style="background-color: #dfdfdf">
+                      <tr>
+                        <th scope="col">Rate Type</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Unit</th>
+                        <!-- <th scope="col">Rate</th>
+                        <th scope="col">Materials Amount</th>
+                        <th scope="col">Labour Rate</th>
+                        <th scope="col">Labour Amount</th> -->
+                        <th scope="col">View</th>
+                        <th scope="col">Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let tableItem of executionWork.materialItems;
+                          index as id
+                        "
+                      >
+                        <td>{{ tableItem.rateType }}</td>
+                        <td>
+                          {{ tableItem.itemCode }} - {{ tableItem.itemName }}
+                        </td>
+                        <td style="max-width: 4rem">
+                          <input
+                            type="number"
+                            class="form-control"
+                            [(ngModel)]="tableItem.quantity"
+                            [ngModelOptions]="{ standalone: true }"
+                            (input)="
+                              onQuantityChange(
+                                $event.target.value,
+                                i,
+                                id,
+                                tableItem.materialRate,
+                                tableItem.labourRate,
+                                executionWork.estimateTypeCode
+                              )
+                            "
+                            (keydown)="validateDecimalInput($event)"
+                          />
+                        </td>
+                        <td>{{ tableItem.itemUnit }}</td>
+                        <!-- <td>{{ tableItem.materialRate }}</td>
+                        <td>{{ tableItem.materialsAmount }}</td>
+                        <td>{{ tableItem.labourRate }}</td>
+                        <td>{{ tableItem.laboursAmount }}</td> -->
+                        <td>
+                          <button
+                            style="border: none; background-color: transparent"
+                            (click)="openviewDialog(tableItem.laborData)"
+                          >
+                            <img src="assets/view.svg" alt="" />
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            (click)="
+                              deleteMaterialItem(
+                                i,
+                                id,
+                                executionWork.estimateTypeCode
+                              )
+                            "
+                          >
+                            <img src="assets/delete-icon.png" alt="" />
+                          </button>
+                        </td>
+                      </tr>
+                      <!-- <tr>
+                        <td><strong>Total Rs.</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ executionWork.materialCost }}</td>
+                        <td></td>
+                        <td>{{ executionWork.labourCost }}</td>
+                        <td></td>
+                        <td></td>
+                      </tr> -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="creditFilterExecutionWorkTable.length">
+            <h2>Credit Estimate</h2>
+            <div
+              *ngFor="
+                let executionWork of creditFilterExecutionWorkTable;
+                index as i
+              "
+            >
+              <div style="border: 2px solid #e1e1e1; padding: 1rem">
+                <div
+                  class="radio-btns"
+                  style="display: flex; justify-content: space-between"
+                >
+                  <div style="display: flex; gap: 0.5rem">
+                    <input
+                      type="radio"
+                      formControlName="undExWork"
+                      id="credit"
+                      name="undExWork"
+                      value="{{ i }}-{{ executionWork.estimateTypeCode }}"
+                    />
+                    <label for="credit"
+                      >{{ executionWork.workType }}-{{
+                        executionWork.workPart
+                      }}-{{ executionWork.workscopeDescription }}</label
+                    >
+                  </div>
+                  {{ selectedValue }}
+                  <button
+                    style="border: none"
+                    (click)="
+                      removeExecutionWorkTable(
+                        i,
+                        executionWork.estimateTypeCode,
+                        executionWork.workPart
+                      )
+                    "
+                  >
+                    <img src="assets/delete-icon.png" alt="" />
+                  </button>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; overflow: auto">
+                  <table
+                    class="table text-center"
+                    style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+                  >
+                    <thead style="background-color: #dfdfdf">
+                      <tr>
+                        <th scope="col">Rate Type</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Unit</th>
+                        <th scope="col">Rate</th>
+                        <th scope="col">Materials Amount</th>
+                        <th scope="col">Labour Rate</th>
+                        <th scope="col">Labour Amount</th>
+                        <th scope="col">View</th>
+                        <th scope="col">Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        *ngFor="
+                          let tableItem of executionWork.materialItems;
+                          index as id
+                        "
+                      >
+                        <td>{{ tableItem.rateType }}</td>
+                        <td>
+                          {{ tableItem.itemCode }} - {{ tableItem.itemName }}
+                        </td>
+                        <td style="max-width: 4rem">
+                          <input
+                            type="number"
+                            class="form-control"
+                            [(ngModel)]="tableItem.quantity"
+                            [ngModelOptions]="{ standalone: true }"
+                            (input)="
+                              onQuantityChange(
+                                $event.target.value,
+                                i,
+                                id,
+                                tableItem.materialRate,
+                                tableItem.labourRate,
+                                executionWork.estimateTypeCode
+                              )
+                            "
+                            (keydown)="validateDecimalInput($event)"
+
+                          />
+                        </td>
+                        <td>{{ tableItem.itemUnit }}</td>
+                        <td>{{ tableItem.materialRate }}</td>
+                        <td>{{ tableItem.materialsAmount }}</td>
+                        <td>{{ tableItem.labourRate }}</td>
+                        <td>{{ tableItem.laboursAmount }}</td>
+                        <td>
+                          <button
+                            style="border: none; background-color: transparent"
+                            (click)="openviewDialog(tableItem.laborData)"
+                          >
+                            <img src="assets/view.svg" alt="" />
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            (click)="
+                              deleteMaterialItem(
+                                i,
+                                id,
+                                executionWork.estimateTypeCode
+                              )
+                            "
+                          >
+                            <img src="assets/delete-icon.png" alt="" />
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>Total Rs.</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ executionWork.materialCost }}</td>
+                        <td></td>
+                        <td>{{ executionWork.labourCost }}</td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="btn-box mt-4">
+      <button
+        matStepperPrevioustype="button"
+        class="btn btn-secondary btn-md clor"
+        (click)="back()"
+      >
+        Back
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary btn-md"
+        (click)="saveTemplate()"
+      >
+        Update as Template
+      </button>
+    </div>
+  </div>
+</section>

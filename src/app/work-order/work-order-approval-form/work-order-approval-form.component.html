@@ -1,0 +1,690 @@
+<div class="page-1">
+  <section>
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/main">Dashboard</a></li>
+          <li class="breadcrumb-item">
+            <a routerLink (click)="navigate('WORK ORDER APPROVAL', '9')"
+              >Work Order Approval</a
+            >
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Create Work Order Approval</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <section>
+    <div
+      class="page__content p-3 p20 shadow dis-fl dis-fl2 position-relative dis-flex-colu"
+    >
+      <form class="form" [formGroup]="workOrderFormGroup">
+        <h2 class="title-2">Work Order Approval</h2>
+
+        <div class="two-row-grid mt-4">
+          <div class="left-div">
+            <div class="inner-div">
+              <label>Estimation No*</label>
+
+              <span>{{ data.estimationRegistered?.estimationNo }}</span>
+            </div>
+            <div class="inner-div">
+              <label>Work Type</label>
+              <span>{{ data?.estimationRegistered?.applicationTypeName }}</span>
+            </div>
+
+            <div class="inner-div">
+              <label>Work Award Required</label>
+              <select
+                class="form-control form-select"
+                formControlName="workAwardRequired"
+              >
+                <option disabled>-- select --</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="inner-div">
+              <label>Permit Required</label>
+              <select
+                class="form-control form-select"
+                formControlName="permitRequired"
+                (change)="onChangePermitRequired($event.target.value)"
+              >
+                <option>-- select --</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+
+            <div *ngIf="data.estimationRegistered?.applicationTypeCode !== 'PD'"
+              class="inner-div"
+            >
+              <label>Account Head No & Description</label>
+              <select
+                class="form-select"
+                name="budget"
+                style="width: 100%"
+                formControlName="budgetControl"
+                (change)="getDivisionalBudgetData($event.target.value)"
+              >
+                <option value="">select</option>
+                <option
+                  *ngFor="let data of budgetData"
+                  [value]="data.accountHeadMasterId"
+                >
+                  {{ data?.accountHeadCode }}&nbsp;({{
+                    data?.accountHeadDescription
+                  }})
+                </option>
+              </select>
+            </div>
+
+            <!-- <div
+              class="inner-div"
+              *ngIf="
+                data.estimationRegistered?.woExecutionMethodName !=
+                  'Self Execution' &&
+                data?.estimationRegistered?.workCategory != 'Dismantling Works'
+              "
+            >
+              <label>Account Head No & Description</label>
+              <span
+                >{{ budget?.accountHeadCode }}
+                {{ budget?.accountHeadDescription }}</span
+              >
+            </div> -->
+            <div
+              class="inner-div"
+              *ngIf="
+                data.estimationRegistered?.woExecutionMethodName !=
+                  'Self Execution' &&
+                data?.estimationRegistered?.workCategory != 'Dismantling Works'&& data.estimationRegistered?.workCategory != 'Repairs & Maintenance Works'
+              "
+            >
+              <label>Division Budget Head</label>
+
+              <span>{{ budget?.divisionalBudgetHead }}</span>
+            </div>
+          </div>
+          <div>
+            <div class="inner-div">
+              <label>Execution Method</label>
+
+              <span>{{
+                data?.estimationRegistered?.woExecutionMethodName
+              }}</span>
+            </div>
+            <div class="inner-div">
+              <label>Dop Category</label>
+              <span>{{ data?.estimationRegistered?.workCategory }}</span>
+            </div>
+
+            <div class="inner-div">
+              <label>Shut Down Required</label>
+              <select
+                class="form-control form-select"
+                formControlName="shutdownRequired"
+              >
+                <option disabled>-- select --</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="inner-div">
+              <label>Permit Required Form</label>
+              <input
+                class="form-control"
+                type="text"
+                formControlName="permitRequiredForm"
+              />
+            </div>
+
+            <div
+              class="inner-div"
+              *ngIf="
+                data.estimationRegistered?.woExecutionMethodName !=
+                  'Self Execution' &&
+                data?.estimationRegistered?.workCategory != 'Dismantling Works' && data.estimationRegistered?.workCategory != 'Repairs & Maintenance Works'
+                "
+            >
+              <label>Budgeted Allocated Amount (A)</label>
+
+              <span>{{ budget?.totalBudgetAmount }}</span>
+            </div>
+            <div
+              class="inner-div"
+              *ngIf="
+                data.estimationRegistered?.woExecutionMethodName !=
+                  'Self Execution' &&
+                data?.estimationRegistered?.workCategory != 'Dismantling Works'&& data.estimationRegistered?.workCategory != 'Repairs & Maintenance Works'
+              "
+            >
+              <label>Already Issued Work Order Amount (B)</label>
+
+              <span>{{ budget?.workOrderIssueAmount | number : "1.2-2" }}</span>
+            </div>
+            <div
+              class="inner-div"
+              *ngIf="
+                data.estimationRegistered?.woExecutionMethodName !=
+                  'Self Execution' &&
+                data?.estimationRegistered?.workCategory != 'Dismantling Works'&& data.estimationRegistered?.workCategory != 'Repairs & Maintenance Works'
+              "
+            >
+              <label>Budget Balance (C) = (A - B)</label>
+
+              <span>{{ budget?.balanceBudget | number : "1.2-2" }}</span>
+            </div>
+
+            <div class="inner-div" *ngIf="data.estimationRegistered?.applicationTypeCode !== 'PD'">
+              <label>Current Estimate Cost (D)</label>
+
+              <span>{{ data?.estimationRegistered?.estimationTotalCost }}</span>
+            </div>
+            <div
+              class="inner-div"
+              *ngIf="
+                data.estimationRegistered?.woExecutionMethodName !=
+                  'Self Execution' &&
+                data?.estimationRegistered?.workCategory != 'Dismantling Works' && data.estimationRegistered?.workCategory != 'Repairs & Maintenance Works'
+              "
+            >
+              <label>Balance budget after approval (E) = (C - D)</label>
+
+              <span>{{ budget?.balanceAfterApproval | number : "1.2-2" }}</span>
+            </div>
+            <div
+              class="inner-div"
+              *ngIf="
+                data.estimationRegistered?.woExecutionMethodName !=
+                  'Self Execution' &&
+                data?.estimationRegistered?.workCategory != 'Dismantling Works' && data.estimationRegistered?.workCategory != 'Repairs & Maintenance Works'
+              "
+            >
+              <label>Expense incurred (F)</label>
+
+              <span>{{
+                budget?.totalExpenditureAmount === "null"
+                  ? 0
+                  : budget?.totalExpenditureAmount
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="row mb-2">
+            <div class="col-lg-3">
+              <label class="labelText ml-3">Work Description</label>
+            </div>
+            <div class="col-lg-9">
+              {{ data?.estimationRegistered?.estimationWorkDesc }}
+            </div>
+          </div>
+        </div>
+
+        <div style="padding: 1rem" *ngIf="regularArray.length">
+          <h1>Regular</h1>
+          <div class="heading mt-2" *ngFor="let e of regularArray">
+            <div style="background-color: #f0f0f0">
+              <h1>
+                {{ e.estimate.workType }}- {{ e.estimate.workPart }}-
+                {{ e.estimate.workscopeDescription }}
+              </h1>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; overflow: auto">
+              <table
+                class="table text-center"
+                style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+              >
+                <thead>
+                  <tr>
+                    <th scope="col">Rate Type</th>
+                    <th scope="col">Description of Material</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Unit</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Materials Amount</th>
+                    <th scope="col">Labour Rate</th>
+                    <th scope="col">Labour Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of e.data">
+                    <td>{{ item.rateType }}</td>
+                    <td style="text-align: left">
+                      {{ item.materialCode }} - {{ item.materialName }}
+                    </td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.materialUnit }}</td>
+                    <td>{{ item.materialRate }}</td>
+                    <td>{{ item.materailAmount == null ?'0':item.materailAmount}}</td>
+                    <td>{{ item.labourRate }}</td>
+                    <td>{{ item.labourAmount }}</td>
+                  </tr>
+                </tbody>
+                <tr>
+                  <td>
+                    <h1>Total</h1>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>{{ e.estimate.materialCost }}</td>
+                  <td></td>
+                  <td>{{ e.estimate.labourCost ==='null'?0:e.estimate.labourCost}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="creditArray.length" style="padding: 1rem">
+          <h1>Credit</h1>
+          <div class="heading mt-2" *ngFor="let e of creditArray; index as i">
+            <div class="row">
+              <div class="col mb-2" style="background-color: #f0f0f0">
+                <h1>
+                  {{ e.estimate.workType }}- {{ e.estimate.workPart }}-
+                  {{ e.estimate.workscopeDescription }}
+                </h1>
+              </div>
+              <div>
+                <h1>
+                  Account Head Code & Description:
+                  {{ e.estimate.accountMainHeadCode }} -
+                  {{ e.estimate.accountMainHeadDescription }}
+                </h1>
+              </div>
+              <div class="col" style="background-color: #f0f0f0"></div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; overflow: auto">
+              <table
+                class="table text-center"
+                style="margin-top: 1rem; width: 100%; flex-wrap: wrap"
+              >
+                <thead>
+                  <tr>
+                    <th scope="col">Rate Type</th>
+                    <th scope="col">Description of Material</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Unit</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Materials Amount</th>
+                    <th scope="col">Labour Rate</th>
+                    <th scope="col">Labour Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of e.data">
+                    <td>{{ item.rateType }}</td>
+                    <td style="text-align: left">
+                      {{ item.materialCode }} - {{ item.materialName }}
+                    </td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.materialUnit }}</td>
+                    <td>{{ item.materialRate }}</td>
+                    <td>{{ item.materailAmount =='null'? '0':item.materailAmount }}</td>
+                    <td>{{ item.labourRate ==='null'?'0':item.labourRate}}</td>
+                    <td>{{ item.labourAmount==='null'?'0':item.labourAmount }}</td>
+                  </tr>
+                </tbody>
+                <tr>
+                  <td>
+                    <h1>Total</h1>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>{{ e.estimate.materialCost }}</td>
+                  <td></td>
+                  <td>{{ e.estimate.labourCost==='null'?0 : e.estimate.labourCost}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typical Cost Data Sheet -->
+
+        <div class="page__content p-3 position-relative dis-flex-colu">
+          <h2 class="title-2">Typical Cost Data Sheet</h2>
+          <div
+            class="two-row-grid mt-3"
+            style="
+              grid-template-columns: 1fr;
+              justify-items: flex-end;
+              padding: 1rem;
+            "
+          >
+            <div class="data-sheet">
+              <div class="inner-div-t" *ngIf="data.estimationRegistered?.woExecutionMethodCode==='PT'">
+                <label>Escom Material Cost (a)</label>
+                <p>
+                  {{ data.estimationRegistered?.escomMaterialCost }}
+                </p>
+              </div>
+              <div class="inner-div-t" *ngIf="data.estimationRegistered?.woExecutionMethodCode==='PT'">
+                <label>Agency Material Cost (b)</label>
+                <p>
+                  {{ data.estimationRegistered?.agencyMaterialCost }}
+                </p>
+              </div>
+              <div class="inner-div-t">
+                <label>{{data.estimationRegistered?.woExecutionMethodCode==='PT'?'Total Material cost (A)=(a+b)':'Material Cost (A)'}}</label>
+                <p>
+                  {{ data.estimationRegistered?.estimationMaterialCost }}
+                </p>
+              </div>
+              <div class="inner-div-t">
+                <label>Labour Cost (B)</label>
+                <p>
+                  {{ data.estimationRegistered?.estimationLabourCost }}
+                </p>
+              </div>
+              <div class="inner-div-t">
+                <label>Basic Rate (C)=(A+B)</label>
+                <p>
+                  {{basicRate}}
+                </p>
+              </div>
+              <div *ngIf="addChargesBeforeTotalLabour && addChargesBeforeTotalLabour.length > 0; else defaultCharges">
+                <div class="inner-div-t" *ngFor="let item of addChargesBeforeTotalLabour">
+                  <label>
+                    <ng-container *ngIf="item.chargeType == 'PERCENTAGE'">
+                      {{ item.chargeTypeValue }}% {{ item.additionalChargeName }}
+                    </ng-container>
+                    <ng-container *ngIf="item.chargeType == 'FLAT'">
+                      {{ item.additionalChargeName }}
+                    </ng-container>
+                    <span *ngIf="item.additionalChargeName === 'Area Specific Loading on Basic Rates'">(D)</span>
+                    <span *ngIf="item.additionalChargeName === 'GST'">(E)</span>
+                  </label>
+                  <p>{{ item.amount }}</p>
+                </div>
+              </div>
+              <ng-template #defaultCharges>
+                <div class="inner-div-t">
+                  <label>Area Specific Loading on Basic Rates <span>(D)</span></label>
+                  <p>0</p>
+                </div>
+                <div class="inner-div-t">
+                  <label>GST <span>(E)</span></label>
+                  <p>0</p>
+                </div>
+              </ng-template> 
+              <div class="inner-div-t">
+                <label>Cost Of Estimate (F) = (C + D + E)</label>
+                <p>{{ data.estimationRegistered?.totalLabourCharges ==='null'?0:data.estimationRegistered?.totalLabourCharges}}</p>
+              </div>
+              <div
+                class="inner-div-t"
+                *ngFor="let item of addChargesAfterTotalLabour"
+              >
+                <label *ngIf="item.chargeType == 'PERCENTAGE'"
+                  >{{ item.chargeTypeValue }}%
+                  {{ item.additionalChargeName }}</label
+                >
+                <label *ngIf="item.chargeType == 'FLAT'">{{
+                  item.additionalChargeName
+                }}</label>
+                <p>{{ item.amount }}</p>
+              </div>
+              <div class="inner-div-t">
+                <label><strong>Total Cost Of Estimate (F + Sum of all charges below F)</strong></label>
+                <p><strong>{{ data?.estimationRegistered?.estimationTotalCost }}</strong></p>
+              </div>
+              <div class="inner-div-t">
+                <label>(Amount in Words)</label>
+                <p>{{ data?.estimationRegistered?.estimationTotalCost |numberToWords}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="col-lg-6"
+            style="
+              width: 100% !important;
+              padding: 1rem;
+              display: flex;
+              flex-direction: column;
+            "
+          >
+            <div class="two-row-grid" style="justify-content: space-evenly">
+              <div class="left-div" style="width: unset !important">
+                <div class="inner-div">
+                  <label>Priority</label>
+                  <select
+                    class="form-control form-select"
+                    formControlName="priority"
+                  >
+                    <option>-- select --</option>
+                    <option value="high">High</option>
+                    <option value="meduim">Meduim</option>
+                    <option value="low" selected>Low</option>
+                  </select>
+                </div>
+                <div class="inner-div">
+                  <label>Work order validity(days)</label>
+                  <input
+                    (input)="addDays()"
+                    class="form-control"
+                    type="number"
+                    formControlName="adddays"
+                  />
+                </div>
+              </div>
+              <div>
+                <div class="inner-div">
+                  <label>Raised By</label>
+
+                  <span>{{ raisedBy }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div
+        class="heading"
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          padding: 0 2rem;
+        "
+      >
+        <h1>Approve / Forward</h1>
+      </div>
+
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 2rem;
+          justify-content: center;
+          padding: 0.5rem;
+        "
+        *ngIf="role === 'AEE' || role === 'EE'; else elseAuthority"
+      >
+        <label class="sm">
+          <input
+            [value]="1"
+            [(ngModel)]="sh"
+            name="shhf"
+            type="radio"
+            (change)="radioType('approve', 1)"
+          />
+          Approve
+        </label>
+        <!-- <label class="sm">
+        <input
+          [value]="2"
+          [(ngModel)]="sh"
+          name="shjhg"
+          type="radio"
+          (change)="radioType('forward', 2)"
+        />
+        Forward
+      </label> -->
+      </div>
+
+      <ng-template #elseAuthority>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            padding: 0.5rem;
+          "
+        >
+          <label class="sm">
+            <input
+              [value]="2"
+              [(ngModel)]="sh"
+              name="shjhg"
+              type="radio"
+              (change)="radioType('forward', 2)"
+            />
+            Forward
+          </label>
+        </div>
+      </ng-template>
+
+      <div class="text-center purple" *ngIf="sh == 1">
+        <div class="container text-center">
+          <div class="row">
+            <div
+              class="col"
+              style="display: flex; flex-direction: column; gap: 2rem"
+            >
+              <h4><b>Approve By</b></h4>
+              <h4><b>Approve Date</b></h4>
+              <h4><b>Remarks</b></h4>
+            </div>
+            <div
+              class="col"
+              style="display: flex; flex-direction: column; gap: 2rem"
+            >
+              <input
+                type="text"
+                class="form-control"
+                style="width: 80%"
+                id=""
+                name="approvedBy"
+                [(ngModel)]="approveDataPayload.approvedBy"
+              />
+              <input
+                type="date"
+                class="form-control"
+                style="width: 80%"
+                id=""
+                name="approvedDate"
+                [(ngModel)]="approveDataPayload.approvedDate"
+              />
+              <textarea
+                type="text"
+                class="form-control"
+                style="width: 80%"
+                id=""
+                name="Remarks"
+                [(ngModel)]="approveDataPayload.Remarks"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="radio-button">
+          <button
+          [disabled]="isLoading"
+            class="btn btn-lg radio-button mb-2"
+            style="background-color: #4472c4; color: white"
+            (click)="openConfirmationpopupDialog()"
+          >
+            Approve
+          </button>
+        </div>
+      </div>
+
+      <div class="text-center" *ngIf="sh == 2">
+        <div class="container text-center">
+          <div class="row">
+            <div
+              class="col"
+              style="display: flex; flex-direction: column; gap: 2rem"
+            >
+              <h4>Forwarded By</h4>
+              <h4>Forwarded To</h4>
+              <h4>Forwarded Date</h4>
+              <h4>Remarks</h4>
+            </div>
+            <div
+              class="col"
+              style="display: flex; flex-direction: column; gap: 2rem"
+            >
+              <input
+                type="text"
+                class="form-control"
+                style="width: 80%"
+                id="sdf"
+                [(ngModel)]="forwardDataPayload.forwardBy"
+                name="forwardBy"
+              />
+              <select
+                class="form-select"
+                style="width: 80%"
+                name="forwardTov"
+                [(ngModel)]="forwardDataPayload.forwardTo"
+              >
+                <option value="" disabled>select</option>
+                <option
+                  *ngFor="let optionItem of data.designationMasterDTOList"
+                  [value]="optionItem.designationCode"
+                >
+                  {{ optionItem.designationCode }}
+                </option>
+              </select>
+
+              <input
+                type="date"
+                class="form-control"
+                style="width: 80%"
+                id=""
+                name="forwardDate"
+                [(ngModel)]="forwardDataPayload.forwardDate"
+              />
+              <textarea
+                type="text"
+                class="form-control"
+                style="width: 80%"
+                id=""
+                name="Remarks"
+                [(ngModel)]="forwardDataPayload.Remarks"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="radio-button">
+          <button
+            [disabled]="isLoading" 
+            class="btn btn-primary btn-md mb-2"
+            (click)="onOpenForwardData()"
+          >
+            Forward
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,64 @@
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/estimates/dashboard">Estimates </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">
+            Dismetalment Works Estimation Approval
+          </a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<div class="container-fluid page">
+  <div class="page__content shadow p-3 position-relative dis-flex-colu">
+    <h2 class="title-2"> Estimation Approval </h2>
+
+    <div style="display: flex; flex-wrap: wrap; overflow: auto">
+      <table
+        class="table table-bordered text-center"
+        style="margin-top: 2rem; width: 100%; flex-wrap: wrap"
+      >
+        <thead>
+          <tr>
+            <th scope="col">Account ID</th>
+            <th scope="col">Category / Phase</th>
+            <th scope="col">Applied Load</th>
+            <th scope="col">Consumer Details</th>
+            <th scope="col">Office</th>
+            <th scope="col">Status Pending For</th>
+            <th scope="col">Pending At Designation</th>
+            <th scope="col">Registered Source</th>
+            <th scope="col">Registered On</th>
+          </tr>
+        </thead>
+        <tbody style="cursor: pointer">
+          <tr *ngFor="let dataItem of estimatesList; index as i">
+            <td>
+              <span
+                [routerLink]="[
+                  '/estimates',
+                  'customer-service-estimation-creation',
+                  dataItem.accountId
+                ]"
+                >{{ dataItem.accountId }}</span
+              >
+            </td>
+            <td>{{ dataItem.categoryName }} / {{ dataItem.phase }}</td>
+            <td>{{ dataItem.totalContractedLoad }} {{ dataItem.loadUnit }}</td>
+            <td>{{ dataItem.applicantName }}, <br />{{ dataItem.address }}</td>
+            <td>{{ dataItem.officeName }}</td>
+            <td>{{ dataItem.statusName }}</td>
+            <td>{{ dataItem.pendingAtDesignation }}</td>
+            <td>{{ dataItem.registeredSource }}</td>
+            <td><date-pipe date="{{ dataItem.registeredOn }}"></date-pipe></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

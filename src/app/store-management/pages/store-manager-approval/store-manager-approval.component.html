@@ -1,0 +1,38 @@
+<div class="page-1">
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/store-management/dashboard">Store</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Store Office Approval</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+
+<section>
+  <h2 class="title-2 ms-4">Store Officer Approval </h2>
+  <div class="indicators-line mt-4 ms-4">
+    <div class="indicators-line-content">
+      <div class="color-div indicator-color-one"></div>
+      <span>One Day Delayed</span>
+    </div>
+    <div class="indicators-line-content">
+      <div class="color-div indicator-color-two"></div>
+      <span>Two Day Delayed</span>
+    </div>
+    <div class="indicators-line-content">
+      <div class="color-div indicator-color-three"></div>
+      <span>Three Day Delayed</span>
+    </div>
+  </div>
+  <app-filter-table
+  [isOffice]="false" titleName="storeManagerApproval" dataKey="materialsIndentNo" 
+  [cols]="cols" [rows]="data" [data]="data" [filterFields]="filterFields" [loading]="true">
+  </app-filter-table>
+</section>
+</div>

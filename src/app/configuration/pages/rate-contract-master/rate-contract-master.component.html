@@ -1,0 +1,102 @@
+<div class="container-fluid page-3">
+<ul>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/configuration">Configuration</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a style="color: lightslategray">Rate Contract Master</a>
+      </li>
+    </ol>
+  </nav>
+</ul>
+
+  <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+    <h2 class="title-2">Rate Contract Master</h2>
+
+  <div class="top-row mt-4">
+    <div class="input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Search By Rc Vendor Name</mat-label>
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="filterValue"
+          (keyup)="applyFilter($event)"
+        />
+      </mat-form-field>
+    </div>
+    <div class="button-control">
+      <button
+        mat-button
+        class="c-btn"
+        (click)="openAddRateContractMasterItemDialog()"
+      >
+        Add Rate Contract
+      </button>
+    </div>
+  </div>
+  <table mat-table [dataSource]="dataSource" class="mt-4">
+    <!-- SLNO Column -->
+    <ng-container matColumnDef="slno">
+      <th mat-header-cell *matHeaderCellDef>SL NO</th>
+      <td mat-cell *matCellDef="let element">
+        {{ dataSource.data.indexOf(element) + 1 }}
+      </td>
+    </ng-container>
+
+    <!--Rc code-->
+    <ng-container matColumnDef="rcCode">
+      <th mat-header-cell *matHeaderCellDef>Rc Code</th>
+      <td mat-cell *matCellDef="let element">{{ element.rcCode }}</td>
+    </ng-container>
+
+    <!--Rc vendor Name-->
+    <ng-container matColumnDef="rcVendorName">
+      <th mat-header-cell *matHeaderCellDef>Rc Vendor Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.rcVendorName }}</td>
+    </ng-container>
+
+    <!--Rc workdescription-->
+    <ng-container matColumnDef="rcWorkDescription">
+      <th mat-header-cell *matHeaderCellDef>Rc WorkDescription</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.rcWorkDescription }}
+      </td>
+    </ng-container>
+
+    <!--Rc validity-->
+    <ng-container matColumnDef="rcValidity">
+      <th mat-header-cell *matHeaderCellDef>Rc Validity</th>
+      <td mat-cell *matCellDef="let element">{{ element.rcValidity }}</td>
+    </ng-container>
+
+    <!--Execution method-->
+    <ng-container matColumnDef="executionMethod">
+      <th mat-header-cell *matHeaderCellDef>Execution Method</th>
+      <td mat-cell *matCellDef="let element">{{ element.executionMethod }}</td>
+    </ng-container>
+    <!--Discom name-->
+    <ng-container matColumnDef="discom">
+      <th mat-header-cell *matHeaderCellDef>Discom</th>
+      <td mat-cell *matCellDef="let element">{{ element.discomName }}</td>
+    </ng-container>
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element">
+        <button
+          style="border: none; background-color: transparent"
+          (click)="
+            openUpdateRateContractMasterItemDialog(element.rateContractMasterId)">
+          <mat-icon color="error">edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+  </mat-paginator>
+

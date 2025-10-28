@@ -1,0 +1,34 @@
+<section>
+    <form [formGroup]="additionalChargesForm">
+    <h1 mat-dialog-title>Update Additional Charges Master</h1>
+    <div class="content-fields mt-4" mat-dialog-content>
+      <div class="modal-input-control">
+        <mat-form-field class="fill">
+          <mat-label>Additional Charges Name</mat-label>
+          <input matInput placeholder="update additional charges name"
+            required formControlName="additionalChargesName" appAlphaNumeric [maxLength]="50" required/>
+            <mat-error>Please enter this field.</mat-error>
+        </mat-form-field>
+        <mat-form-field class="fill">
+          <mat-label>Additional Charges Code</mat-label>
+          <input matInput placeholder="update additional charges code"
+          required formControlName="additionalChargesCode"
+          appAlphaNumeric [maxLength]="20" required/>
+            <mat-error>Please enter this field.</mat-error>
+        </mat-form-field>
+      </div>
+        <div class="modal-input-control">
+          <mat-form-field class="fill">
+            <mat-label>Sequence Order</mat-label>
+            <input matInput placeholder="update sequence order"
+              required formControlName="chargesSequenceOrder" Numeric [maxLength]="2" required/>
+              <mat-error>Please enter this field with Numbers only.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="onUpdate()">Update</button>
+      <button class="c-btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+    </form>
+  </section>

@@ -1,0 +1,55 @@
+<section>
+  <form class="form" [formGroup]="materialMasterForm">
+  <h1 mat-dialog-title>Add SR Material</h1>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="mlType" required>
+          <mat-option *ngFor="let main of mlTypes" [value]="main" [maxLength]="50">
+            {{main}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="materialMasterForm.get('mlType').invalid && materialMasterForm.get('mlType').touched">
+          Please select in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Unit</mat-label>
+        <mat-select formControlName="mlUnit" required>
+          <mat-option *ngFor="let main of materialUnitData" [value]="main.materialUnit" [maxLength]="50">
+            {{main.materialUnit}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="materialMasterForm.get('mlUnit').invalid && materialMasterForm.get('mlUnit').touched">
+          Please select in this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Material Type</mat-label>
+        <mat-select formControlName="materialTypeMasterId" required>
+          <mat-option *ngFor="let main of materialData" [value]="main.materialTypeMasterId" [maxLength]="50">
+          {{main.materialTypeName}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="materialMasterForm.get('materialTypeMasterId').invalid && materialMasterForm.get('materialTypeMasterId').touched">
+          Please select in this field.</mat-error>
+    </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Code</mat-label>
+        <input matInput placeholder="Ex. Each" 
+        formControlName="mlCode" appAlphaNumeric [maxLength]="50" required/>
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Description</mat-label>
+        <input matInput placeholder="Ex. Each" 
+        formControlName="mlName" appAlphaNumeric [maxLength]="1500" required/>
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="addMaterialLabour()">Add</button>
+      <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+  </form>
+</section>

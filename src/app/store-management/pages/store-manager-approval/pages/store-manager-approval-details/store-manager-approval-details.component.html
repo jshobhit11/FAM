@@ -1,0 +1,209 @@
+<section [class.overlayed]="snackbarIsOpen" >
+  <form class="form">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Store Officer Approval </h2>
+    <div style="margin-top: 1rem; padding: 0.5rem">
+        <div class="three-row-grid mt-4">
+          <div class="left-div">
+            <div class="inner-div">
+              <label>Request Number</label>
+              <p>{{ data?.wmMaterialIndent?.materialsIndentNo }}</p>
+            </div>
+            <div class="inner-div">
+              <label>Remarks</label>
+              <p>{{ data?.wmMaterialIndent?.approveRemarks }}</p>
+              <!-- <textarea *ngIf="data && data.wmMaterialIndent && data.wmMaterialIndent.approveRemarks" class="form-control" cols="10" rows="5" name="approveRemarks" (input)="changeRemark($event.target.value)" [(ngModel)]="data.wmMaterialIndent.approveRemarks"></textarea> -->
+            </div>
+          </div>
+          <div>
+            <div class="inner-div">
+              <label>Request Date</label>
+              <p>{{ data?.wmMaterialIndent?.materialsIndentDate | date : "yyyy/MM/dd" }}</p>
+            </div>
+             <!-- <div class="inner-div">
+              <label>Department</label>
+              <p></p>
+            </div> -->  
+          </div>
+          <div>
+            <!-- <div class="inner-div">
+              <label>Request Priority Type</label>
+              <p></p>
+            </div> -->
+            <div class="inner-div">
+              <label>Request By</label>
+              <p>{{ data?.indentRaisedBy?.userName }}</p>
+            </div>
+            <div class="inner-div">
+              <label>Designation</label>
+              <p>{{ data?.indentRaisedBy?.userRole }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="indicators-line mt-4">
+        <div class="indicators-line-content">
+          <div class="color-div indicator-color-one"></div>
+          <span>Alternate Material</span>
+        </div>
+      </div>
+      <div style="overflow: auto;width: 100%;border: 2px solid #c2c2c2;margin-top: 1rem;">
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th class="main-heading" rowspan="2" scope="col">S. No.</th>
+              <th class="main-heading" rowspan="2" scope="col">Material Code</th>
+              <th class="main-heading" rowspan="2" scope="col">Material Name</th>
+              <th class="main-heading" rowspan="2" scope="col">Unit</th>
+              <th class="main-heading" rowspan="2" scope="col">Rate</th>
+              <th class="main-heading" rowspan="2" scope="col">Estimated Qty</th>
+              <th class="main-heading" rowspan="2" scope="col">Drawn Qty</th>
+              <th class="main-heading" rowspan="2" scope="col">Requested Qty</th>
+              <th class="main-heading bg-issue-qty" colspan="3" scope="colgroup">Issue Quantity</th>
+              <th class="main-heading" rowspan="2" scope="col">Amount</th>
+              <th class="main-heading bg-store-current-qty" colspan="2" scope="colgroup">Store Current Qty</th>
+              <th class="main-heading bg-store-balance-qty" colspan="2" scope="colgroup">Store Balance Qty</th>
+              <th class="main-heading" rowspan="2" scope="col">Mat Balance Qty</th>
+              <th class="main-heading" rowspan="2" scope="col">Part #</th>
+              <th class="main-heading" rowspan="2" scope="col">Stock Available</th>
+              <th class="main-heading" rowspan="2" scope="col">Alternate Material</th>
+            </tr>
+            <tr style="background-color: #f2f2f2;">
+              <th class="sub-heading bg-issue-qty" scope="col">New&nbsp;</th>
+              <th class="sub-headings bg-issue-qty" scope="col">Used</th>
+              <th class="sub-headings bg-issue-qty" scope="col">Total</th>
+              <th class="sub-heads bg-store-current-qty" scope="col">New</th>
+              <th class="sub-heads bg-store-current-qty" scope="col">Used</th>
+              <th class="sub-heading bg-store-balance-qty" scope="col">New</th>
+              <th class="sub-heading bg-store-balance-qty" scope="col">Used</th>            
+            </tr>
+          </thead>      
+          <tbody>
+            <ng-container *ngFor="let dataItem of matIndentTLog; index as i">
+            <tr>
+              <td>{{ i + 1 }}</td>
+              <td>{{dataItem.materialCode}}</td>
+              <td class="horizontal-scroll">{{ dataItem.materialName }}</td>
+              <td>{{ dataItem.materialUnit }}</td>
+              <td>{{ dataItem.materialRate }}</td>
+              <td>{{ (dataItem.estimatedQuantity === "null" ? 0 : dataItem.estimatedQuantity)}}</td>
+              <td>{{ (dataItem.receivedQuantity === "null" ? 0 : dataItem.receivedQuantity) }}</td>
+              <td>{{ (dataItem.requestQuantity === "null" ? 0 : dataItem.requestQuantity) }}</td>
+              <td>
+                <input
+                  class="form-control wider-input no-spinner"
+                  type="number"
+                  name="issuedNewQty {{ i }}"
+                  [(ngModel)]="dataItem.issuedNewQty"
+                  (input)="handleQuantityChange(i)"
+                  (blur)="resetInputValues(i)"
+                  inputmode="numeric"
+                  onkeydown="return event.keyCode !== 189"
+                  min="0"
+                  step="0.001"
+                  (keydown)="blockExtraDecimalPlaces($event)"
+                  (blur)="limitInputToThreeDecimalPlaces($event)"
+                />
+              </td>
+              <td>
+                <input
+                  class="form-control wider-input no-spinner"
+                  type="number"
+                  name="issuedUsedQty{{ i }}"
+                  [(ngModel)]="dataItem.issuedUsedQty"
+                  (input)="handleQuantityChange(i)"
+                  (blur)="resetInputValues(i)"
+                  inputmode="numeric"
+                  onkeydown="return event.keyCode !== 189"
+                  min="0"
+                  step="0.001"
+                  (keydown)="blockExtraDecimalPlaces($event)"
+                  (blur)="limitInputToThreeDecimalPlaces($event)"
+                />
+              </td>
+              <td>{{ getTotal(i, dataItem) }}</td>
+              <td>{{ calculateAmount(dataItem.total, dataItem.materialRate)| number:'1.0-0' }}</td>
+              <td>{{ (dataItem.storeQuantity === "null" ? 0 :dataItem.storeQuantity) | number:'1.0-0'}}</td>
+              <td>{{ (dataItem.storeUsedQty === "null" ? 0 : dataItem.storeUsedQty) | number:'1.0-0'}}</td>
+              <td>{{ (dataItem.storeBalanceQtyNew === "null" ? 0 : dataItem.storeBalanceQtyNew) | number:'1.0-0'}}</td>
+              <td>{{ (dataItem.storeBalanceQtyUsed === "null" ? 0 : dataItem.storeBalanceQtyUsed) | number:'1.0-0' }}</td>
+              <td>{{ calculateMatBalanceQty(dataItem) }}</td>
+              <td>{{ dataItem.part }}</td>
+              <div class="custom-dropdown">
+                <select [(ngModel)]="dataItem.stockAvailable" name="stockAvailable" class="form-control" (change)="onStockAvailableChange(dataItem)">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>                
+              </div>
+              <!-- <div class="custom-dropdown">
+                <select [(ngModel)]="dataItem.stockAvailable" name="stockAvailable" class="form-control" (change)="onStockAvailableChange(dataItem)">
+                  <ng-container *ngIf="dataItem.storeQuantity === 0 && dataItem.storeUsedQty === 0; else stockYes">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                  </ng-container>
+                  <ng-template #stockYes>
+                    <option value="Yes">Yes</option>
+                  </ng-template>
+                </select>
+              </div> -->
+              
+              <td (click)="openMaterialPopup(dataItem, getTotal(i, dataItem))">
+                <span class="plus-symbol">+</span> 
+              </td>
+            </tr>
+            <!-- <tr *ngIf="alternateMaterialsData.length > 0 && alternateMaterialsAdded[dataItem.wmMaterialsIndentTransLogId]">
+              <td colspan="19">
+                <h2 class="main-heading left-align mt-1">Alternate Material Details:</h2>
+              </td>
+            </tr> -->
+            <tr *ngIf="alternateMaterialsData.length > 0 && alternateMaterialsAdded[dataItem.wmMaterialsIndentTransLogId]">
+               
+              <td></td>
+              <td class="green-text">{{ alternateMaterialsData[i].mlCode}}</td>
+              <td class="horizontal-scroll green-text">{{  alternateMaterialsData[i].mlName }}</td>
+              <td class="green-text">{{ alternateMaterialsData[i].mlUnit }}</td>
+              <td class="green-text">{{ alternateMaterialsData[i].mlRate }}</td>
+              <td class="green-text">{{ alternateMaterialsData[i].estimatedQty}}</td>
+              <td class="green-text">{{ alternateMaterialsData[i].receivedQuantity }}</td>
+              <td class="green-text">{{ alternateMaterialsData[i].requestedQty }}</td>
+              <td class="green-text">{{ alternateMaterialsData[i].issuedNewQty}}</td>
+              <td class="green-text">{{ alternateMaterialsData[i].issuedUsedQty}}</td>
+              <td class="green-text">{{ getTotal(i, dataItem) }}</td>
+              <td class="green-text">{{  alternateMaterialsData[i].amount | number:'1.0-0'}}</td>
+              <td class="green-text">{{  alternateMaterialsData[i].storeNewQunatity | number:'1.0-0'}}</td>
+              <td class="green-text">{{  alternateMaterialsData[i].storeUsedQunatity | number:'1.0-0'}}</td>
+              <td class="green-text">{{  alternateMaterialsData[i].storeNewBalanceQunatity | number:'1.0-0'}}</td>
+              <td class="green-text">{{  alternateMaterialsData[i].storeUsedBalanceQunatity | number:'1.0-0'}}</td>
+              <td class="green-text"></td>
+              <td class="green-text">{{ dataItem.part }}</td>
+              <td class="green-text"></td>
+              <td (click)="deleteAlternateMaterial(i)"> <img src="assets/delete-icon.png" alt="" ></td>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="btn-box mt-4">
+        <p *ngIf="(validationMessage$ | async) as validationMessage" class="alert alert-danger mt-3">{{ validationMessage }}</p>
+        <button 
+        *ngIf="!(validationMessage$ | async)"
+          type="button" 
+          class="btn btn-primary btn-md" 
+          [disabled]="!isAllocateButton" 
+          (click)="onConfiramationPopupOpen()"
+        >
+          Allocate
+        </button>
+        <button
+        *ngIf="!(validationMessage$ | async)"
+          type="button"
+          class="btn btn-primary btn-md"
+          routerLink="/store-management/store-manager-approval"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </form>
+</section>

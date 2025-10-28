@@ -1,0 +1,154 @@
+<div class="page-1">
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/store-management/dashboard">Store</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Store Transfer Request</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section>
+  <form class="form" [formGroup]="materialCharges">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2"> Store Stock Indent Request </h2>
+      <div style="padding: 0.5rem; margin-top: -20px;">
+        <div style="display: flex; justify-content: space-between">
+          <div class="col-xl-" style="width:50%">
+            <div class="col-xl-6 input-control block-div" style="white-space: nowrap;">
+              <label class="label-text">Receiver Store: </label>
+              <span style="margin-left: 22px;">{{ receiverStore?.storeCode }}-{{receiverStore?.storeName}}</span>
+            </div>
+          
+          </div>
+          <div class="col-xl-2" style="width: 50%; display: flex; margin-top: -20px; align-items: flex-start; justify-content: flex-end; flex-direction: column;">
+            <div class="col-xl-4 input-control block-div" style="margin-bottom: 10px;">
+              <div class="label-text" style="white-space: nowrap;">
+                <label for="store">Sender Store <span class="star">*</span></label>
+              </div>
+              <mat-form-field  class="mat-form-field-infix">
+                <input
+                  type="text"
+                  placeholder="Search Sender Store"
+                  matInput
+                  [formControl]="senderStoreControl"
+                  [matAutocomplete]="senderStoreAuto"
+                />
+                <mat-autocomplete #senderStoreAuto="matAutocomplete" [displayWith]="displaySenderStore"(optionSelected)="onSenderStoreChnage($event)">
+                  <mat-option *ngFor="let store of filteredSenderStore | async" [value]="store">
+                    {{ store.storeCode }} - {{ store.storeName }}
+                  </mat-option>
+                </mat-autocomplete>  
+                <mat-error>
+                  Please select this field.
+                </mat-error>          
+              </mat-form-field>
+            </div>                    
+        </div>
+        </div>
+       
+        <div class="row">
+       <div class="col-md-11">
+        <div class="form" [formGroup]="materialCharges">
+          <mat-form-field
+            style="width: 100% !important; font-size: 1.5rem !important"
+          >
+          <span matPrefix class="search-icon2"><mat-icon>search</mat-icon></span>
+            <input
+              matInput
+              placeholder="Search Material"
+              [matAutocomplete]="unitAuto"
+              [formControl]="materialSearchControl"
+            />
+            <mat-autocomplete
+              #unitAuto="matAutocomplete"
+              (optionSelected)="onStoreUnitSelected($event)"
+              [displayWith]="displayMaterial"
+            >
+              <mat-option
+                *ngFor="let dataItem of filteredMaterialUnits"
+                [value]="dataItem"
+              >
+              {{ dataItem.mlCode }} - {{ dataItem.mlName }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error>
+              Please select a material.
+            </mat-error>
+          </mat-form-field>
+        </div>
+       </div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-primary btn-md mt-4" (click)="addDataItem()">
+            Add
+          </button>
+        </div>
+      </div>
+
+       <div
+      style="
+        overflow: auto;
+        width: 100%;
+        margin-top: 1rem;
+      "
+    >
+      <table class="table table-bordered text-center">
+        <thead style="background-color: #f2f2f2; color: #3e3e3e">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Material Code</th>
+            <th scope="col">Material Name</th>
+            <th scope="col">Unit</th>
+            <th scope="col">Rate</th>
+            <th scope="col">Requested Quantity</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dataItem of data; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ dataItem.materialCode }}</td>
+            <td class="horizontal-scroll">{{ dataItem.materialName }}</td>
+            <td>{{ dataItem.unit }}</td>
+            <td>{{ dataItem.rate }}</td>
+            <td>
+              <input
+                class="form-control-p no-spinner"
+                type="text"
+                name="requestedQuantity {{i}}"
+                [(ngModel)]="dataItem.requestedQuantity"
+                [ngModelOptions]="{standalone: true}"
+              />
+            </td>
+            <td>
+              <button
+                style="border: none; background-color: transparent"
+                (click)="deleteDataItem(i)"
+              >
+                <img src="assets/delete-icon.png" alt="" />
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="btn-box m-4">
+      <button
+        (click)="openApprovalpopupDialog()"
+        type="button"
+        class="btn btn-primary btn-md"
+        [disabled]="!selectedSenderStore || !isSubmitEnabled()"
+      >
+       Generate Request
+      </button>
+    </div>
+       </div>
+      </div>
+   </form>
+ </section>
+</div>

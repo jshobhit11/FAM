@@ -1,0 +1,57 @@
+<section>
+  <form class="form" [formGroup]="materialLabourForm">
+    <h1 mat-dialog-title>Update Material and Labour Mapping</h1>
+    <div class="content-fields mt-4" mat-dialog-content>
+      <div class="modal-input-control">
+        <mat-form-field class="example-full-width">
+          <mat-label>Material Type</mat-label>
+          <mat-select [(value)]="getData.materialTypeMasterId" formControlName="materialTypeMasterId" required>
+            <mat-option *ngFor="let main of materialData" [value]="main.materialTypeMasterId">
+              {{main.materialTypeName}}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="materialLabourForm.get('materialTypeMasterId').invalid && materialLabourForm.get('materialTypeMasterId').touched">
+            Please select in this field.</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Material Code and Name</mat-label>
+          <mat-select [(ngModel)]="materialTypeObj.materialMasterId" formControlName="materialMasterId" required>
+            <mat-option *ngFor="let main of materialMasterData" [value]="main.srMaterialsMasterId">
+              {{ main.mlCode }} - {{main.mlName}}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="materialLabourForm.get('materialMasterId').invalid && materialLabourForm.get('materialMasterId').touched">
+            Please select in this field.</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="modal-input-control">
+        <mat-form-field class="example-full-width">
+          <mat-label>Labour Code and Name</mat-label>
+          <mat-select [(ngModel)]="materialTypeObj.labourMasterId" formControlName="labourMasterId" required>
+            <mat-option *ngFor="let main of labourMasterData" [value]="main.srMaterialsMasterId">
+              {{ main.mlCode }} - {{main.mlName}}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="materialLabourForm.get('labourMasterId').invalid && materialLabourForm.get('labourMasterId').touched">
+            Please select in this field.</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Labour By Default</mat-label>
+          <mat-select  formControlName="labourByDefault" required>
+            <mat-option [value]="1">Yes</mat-option>
+            <mat-option [value]="0">No</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="materialLabourForm.get('labourByDefault').invalid && materialLabourForm.get('labourByDefault').touched">
+            Please select in this field.</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" (click)="onMaterialLabourUpdate()" mat-button>Update</button>
+      <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+  </form>
+</section>

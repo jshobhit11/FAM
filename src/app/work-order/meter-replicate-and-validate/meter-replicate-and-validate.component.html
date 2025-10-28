@@ -1,0 +1,159 @@
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/main">Dashboard</a></li>
+        <li class="breadcrumb-item">
+          <a routerLink (click)="navigate('METER REPLICATE AND VALIDATE', '24')"
+            >Meter Replicate & Validate</a
+          >
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Meter Replicate & Validate</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section  *ngIf = "isMtrProcurmentDone === 1">
+  <form class="form">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Meter Replicate & Validate</h2>
+      <!-- <div *ngIf= "errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div> -->
+      <div *ngIf="meterDetailsNotFound" class="alert alert-danger">
+        {{ errorMessage1 }}
+      </div>
+      <div *ngIf="!meterDetailsNotFound">
+        <div class="two-column-grid">
+          <div class="left-column">
+            <div class="inner-div">
+              <label>Work Order No :</label>
+              <p>{{ data?.wmWorkorderRegistered?.workorderNo }}</p>
+            </div>
+          </div>
+          <div class="right-column">
+            <div class="inner-div">
+              <label>Work Description :</label>
+              <p>{{ data?.wmWorkorderRegistered?.workDescription }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        style="
+          overflow: auto;
+          width: 100%;
+          border: 2px solid #c2c2c2;
+          margin-top: 1rem;
+        "
+      >
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">Account Id</th>
+              <th scope="col">Badge Number</th>
+              <th scope="col">Serial No</th>
+              <!-- <th scope="col">Reading Date</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of accountMappingData">
+              <td>{{ item.accountId }}</td>
+              <td>{{ item.badgeNumber }}</td>
+              <td>{{ item.serialNo }}</td>
+              <!-- <td>
+                <input
+                  type="date"
+                  class="form-control"
+                  [(ngModel)]="item.selectedDate"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="btn-box mt-4 pb-4">
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          (click)="ReplicateMeter()"
+          *ngIf="accountMappingData && accountMappingData.length"
+        >
+          Meter Replicate
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          (click)="ValidateMeter()"
+          *ngIf="meterReplicated"
+        >
+          Validate Meter
+        </button>
+      </div>
+      <div
+        style="
+          overflow: auto;
+          width: 100%;
+          border: 2px solid #c2c2c2;
+          margin-top: 1rem;
+        "
+      >
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">Sequence no</th>
+              <th scope="col">Register Id</th>
+              <th scope="col">Unit of Measure</th>
+              <th scope="col">Time of Use</th>
+              <!-- <th scope="col">Read Type</th> -->
+              <!-- <th scope="col">Reading</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of validateMeterData">
+              <tr>
+                <td>{{ item.registerReadSeqNo }}</td>
+                <td>{{ item.registerId }}</td>
+                <td>{{ item.registerUom }}</td>
+                <td>{{ item.registerTou }}</td>
+                <!-- <td>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="item.reading"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </td> -->
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <!-- <div class="btn-box mt-4 pb-4">
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          (click)="saveData()"
+        >
+          Save
+        </button>
+        <button type="button" class="btn clor btn-primary btn-sm">Close</button>
+      </div> -->
+    </div>
+  </form>
+</section>
+
+<section *ngIf = "isMtrProcurmentDone !== 1">
+  <form class="form">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Meter Replicate & Validate</h2>
+        
+  <div class="alert alert-warning">
+    {{ errorMessage }}
+  </div>
+</div>
+</form>
+</section>

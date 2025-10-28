@@ -1,0 +1,214 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/dashboard">Works</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Material Indent Request</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <section>
+    <form class="form">
+      <div class="page__content shadow p-3 position-relative dis-flex-colu">
+        <h2 class="title-2">Material Indent Request</h2>
+        <div style="margin-top: 1rem; padding: 0.5rem">
+          <div class="col-xl-12 d-flex b-3">
+            <div class="col-xl-6">
+              <div class="inner-div inline-label">
+                <div class="label-container mt-2">
+                  <label class="d-block text-lg-end label-style"
+                    >Work Order No:</label
+                  >
+                </div>
+                <div class="m-0 d-flex justify-content-start">
+                  <div class="inline-items m-0">
+                    <input
+                      class="form-control search-input"
+                      [(ngModel)]="wmData.workorderNo"
+                      [ngModelOptions]="{ standalone: true }"
+                      name="workOrderNo"
+                      (change)="onWorkOrderChange()"
+                      [disabled]="isInputDisabled"
+                      placeholder="Click on the search icon."
+                      readonly
+                      required
+                      [class.is-invalid]="workOrderNotSelected"
+                    />
+                    <mat-icon
+                      class="search-icons"
+                      (click)="openMaterialSerialNumbersDialog()"
+                      >search</mat-icon
+                    >
+                  </div>
+                  <mat-error *ngIf="workOrderNotSelected"
+                  >Please click on the search icon.</mat-error>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-12 d-flex b-3">
+            <div class="col-xl-6 d-flex align-items-center">
+              <div class="inner-div inline-label col-xl-3">
+                <div class="label-container">
+                  <label>Work Order On:</label>
+                </div>
+                <div class="inline-items col-xl-9">
+                  <date-pipe-second
+                    class="date-pipe"
+                    date="{{ wmData.workorderDate }}"
+                  >
+                  </date-pipe-second>
+                </div>
+              </div>
+            </div>            
+          </div>
+
+          <!-- <div class="col-xl-12 d-flex justify-content-start mt-0.5 mb-3 mt-3"> -->
+          <div class="txt-area inner-div">
+            <div class="label-container mt-2 label-column">
+              <label class="d-block text-lg-end label-style"
+                >Store<span class="star">*</span></label
+              >
+            </div>
+
+            <div class="col-xl-9">
+              <select
+                class="form-select select-style"
+                [(ngModel)]="selectedStoreName"
+                [ngModelOptions]="{ standalone: true }"
+                name="stored"
+                (change)="onStoreChange()"
+                [disabled]="isDropdownDisabled"
+                #storeSelect
+                required
+                [class.is-invalid]="storeNotSelected"
+              >
+              <option value="" disabled selected>Please select a store</option>
+                <ng-container *ngFor="let store of assignCrewData">
+                  <option [value]="store.storeMasterId">
+                    {{ store.storeName }}
+                  </option>
+                </ng-container>
+              </select>
+              <mat-error *ngIf="storeNotSelected"
+                >Please select a store.</mat-error
+              >
+            </div>
+          </div>
+
+          <div class="txt-area inner-div">
+            <div class="label-container mt-2 label-column">
+              <label class="d-block text-lg-end label-style">Description</label>
+            </div>
+            <div class="col-xl-9">
+              <textarea
+                class="form-control-p"
+                cols="100"
+                rows="3"
+                [(ngModel)]="wmData.workDescription"
+                [ngModelOptions]="{ standalone: true }"
+                name="description"
+                appAlphaNumeric
+                [maxLength]="300"
+                required
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div style="overflow: auto; width: 100%; margin-top: 1rem">
+          <table class="table table-bordered text-center">
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      [(ngModel)]="isSelectAll"
+                      [ngModelOptions]="{ standalone: true }"
+                      type="checkbox"
+                      name="flexCheckDefault"
+                      id="flexCheckDefault"
+                      (change)="checkUncheckAll()"
+                    />
+                  </div>
+                </th>
+                <th scope="col">S. No.</th>
+                <th scope="col">Material</th>
+                <th scope="col">Material Code</th>
+                <th scope="col">Material Unit</th>
+                <th scope="col">Estimated Quantity</th>
+                <th scope="col">Recieved Quantity</th>
+                <th scope="col">Requested Quantity</th>
+                <th scope="col">Part #</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let dataItem of estimationRegisteredData; index as i">
+                <td>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [(ngModel)]="dataItem.isSelected"
+                      [ngModelOptions]="{ standalone: true }"
+                      name="isSelected"
+                      (change)="selectedKey(i)"
+                      id="isSelected-{{ i }}"
+                    />
+                  </div>
+                </td>
+                <td>{{ i + 1 }}</td>
+                <td class="horizontal-scroll">{{ dataItem.materialName }}</td>
+                <td>{{ dataItem.materialCode }}</td>
+                <td>{{ dataItem.materialUnit }}</td>
+                <td>{{ dataItem.quantity }}</td>
+                <td>
+                  {{
+                    dataItem.receivedQuantity === "null" ||
+                    dataItem.receivedQuantity === null
+                      ? 0
+                      : dataItem.receivedQuantity
+                  }}
+                </td>
+                <td *ngIf="dataItem.isSelected">
+                  <input
+                    class="form-control-r no-spinner"
+                    type="text"
+                    name="requestedQuantity {{ i }}"
+                    [(ngModel)]="dataItem.requestedQuantity"
+                    (input)="validateDecimalInput($event)"
+                    (keyup)="
+                      requestedQuantity(
+                        $event.target.value,
+                        i,
+                        dataItem.quantity,
+                        dataItem.receivedQuantity
+                      )
+                    "
+                    aria-label="2022-2023"
+                  />
+                </td>
+                <td *ngIf="!dataItem.isSelected"></td>
+                <td>{{ dataItem.workPart }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="btn-box mt-4">
+          <p *ngIf="(validationMessage$ | async) as validationMessage" class="alert alert-danger mt-3">{{ validationMessage }}</p>
+          <button *ngIf="!(validationMessage$ | async)" type="button" class="btn btn-primary btn-md" (click)="openConfirmationpopupDialog()">Generate Request</button>
+          
+        </div>
+        
+      </div>
+    </form>
+  </section>
+</div>

@@ -1,0 +1,44 @@
+.heading {
+    text-align: center;
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 0; 
+    padding: 0; 
+    
+}
+
+.work-order table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.work-order td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    width: 33.33%;
+}
+
+.work-order th {
+    border: 1px solid #dddddd;
+    padding: 7px;
+    width: 33.33%;
+    
+    
+}
+.table-size{
+ width: 150px;
+ height: 300px;
+ margin-top: 0px;
+ 
+}
+
+.btn-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+.table-size td {
+    vertical-align: top;
+  }

@@ -1,0 +1,740 @@
+<div class="page-1">
+  <section>
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/main">Dashboard</a></li>
+          <li class="breadcrumb-item">
+            <a routerLink (click)="navigate('WORK AWARD APPROVAL', '12')"
+              >Work Award Approval</a
+            >
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Create Work Award Approval</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <section
+    class="page__content p-3 p20 shadow dis-fl dis-fl2 position-relative dis-flex-colu"
+  >
+    <form class="form">
+      <div>
+        <h2 class="title-2">Work Award Approval</h2>
+        <div class="two-row-grid mt-4">
+          <div class="left-div">
+            <div class="inner-div mt-4">
+              <label>Work Order No.</label>
+              {{ data?.wmWorkorderRegistered?.workorderNo }}
+            </div>
+
+            <div class="inner-div mt-4">
+              <label>Execution Method</label>
+              <p>{{ data?.wmWorkorderRegistered?.workExecutionMethod }}</p>
+            </div>
+            <div class="inner-div mt-4">
+              <label>Budget Head</label>
+              <p>{{ budgetHead?.divisionalBudgetHead }}</p>
+            </div>
+          </div>
+          <div>
+            <div class="inner-div mt-4"></div>
+            <div class="inner-div mt-4">
+              <label>Estimation No</label>
+              <p>{{ data?.wmWorkorderRegistered?.estimationNo }}</p>
+            </div>
+
+            <div class="inner-div mt-4">
+              <label>Dop Category</label>
+              <p>
+                {{
+                  data?.wmWorkorderRegistered?.workCategory ||
+                    data?.wmWorkorderRegistered?.workCategoryMasterId
+                }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="work-description mt-4">
+          <div class="description-label">
+            <label>Work Description</label>
+          </div>
+          <div class="description-content">
+            <p>{{ data?.wmWorkorderRegistered?.workDescription }}</p>
+          </div>
+        </div>
+
+        <!-- <div class="heading mt-4" style="background-color: #f0f0f0">
+        <h1>Licence Electrical Contractor Details</h1>
+      </div>
+
+      <div class="two-row-grid mt-4">
+        <div class="left-div">
+          <div class="inner-div mt-4"></div>
+          <div class="inner-div">
+            <label>Firm Name</label>
+
+            <select
+              class="form-select"
+              style="width: 100%"
+              name="firm"
+              (change)="getVendorId($event.target.value)"
+            >
+              <option selected disabled>Select one</option>
+              <option
+                *ngFor="let data of officeData"
+                [value]="data.vendorMasterId"
+              >
+                {{ data?.vendorOrganizationName }}
+              </option>
+            </select>
+          </div>
+          <div class="inner-div mt-4">
+            <label>Contractor Name</label>
+            <p>{{ vendorData?.contactPersonName || "N/A" }}</p>
+          </div>
+          <div class="inner-div mt-4">
+            <label>Contact No</label>
+            <p>{{ vendorData?.vendorContactDetails }}</p>
+          </div>
+
+          <div class="inner-div mt-4">
+            <label>Receipt Number</label>
+            <input
+              class="form-control"
+              type="text"
+              placeholder="emdReceiptNo"
+              name="emdReceiptNo"
+              [(ngModel)]="vendorData.emdReceiptNo"
+            />
+          </div>
+          <div class="inner-div mt-4">
+            <label>Max No of work can be assigned</label>
+
+            <p>{{ vendorData?.noofworksAllocated }}</p>
+          </div>
+          <div class="inner-div mt-4">
+            <label>Work Start Date</label>
+            <input
+              class="form-control"
+              type="date"
+              placeholder="work"
+              name="workstartdate"
+              [(ngModel)]="formData.workStartDate"
+            />
+          </div>
+          <div class="inner-div mt-4">
+            <label>Labour Award Amount</label>
+            <p>
+              <strong>{{ labourAwardAmount ? labourAwardAmount : 0 }}</strong>
+            </p>
+          </div>
+        </div>
+        <div>
+          <div class="inner-div mt-3"></div>
+          <div class="inner-div mt-3">
+            <label>License No</label>
+            <p>{{ vendorData.vendorLicenseNumber }}</p>
+          </div>
+
+          <div class="inner-div mt-4">
+            <label>License Validity End Date</label>
+            <p>
+              {{
+                vendorData?.vendorRegistrationValidUpto == null
+                  ? "" || "N/A"
+                  : (vendorData?.vendorRegistrationValidUpto | date : "medium")
+              }}
+            </p>
+          </div>
+          <div class="inner-div mt-2">
+            <label>E.M.D Amount</label>
+            <input
+              class="form-control"
+              type="text"
+              placeholder="emdAmount"
+              name="emdAmount"
+              [(ngModel)]="vendorData.emdAmount"
+            />
+          </div>
+          <div class="inner-div mt-1">
+            <label>Receipt Date</label>
+            <input
+              class="form-control"
+              type="date"
+              placeholder="emdReceiptDate"
+              name="emdReceiptDate"
+              [(ngModel)]="vendorData.emdReceiptDate"
+            />
+          </div>
+          <div class="inner-div mt-4">
+            <label>No of work allocated </label>
+            <p>{{ pendingWorkAwardData?.WmWorkorderRegisteredDataCount }}</p>
+          </div>
+          <div class="inner-div mt-4">
+            <label>Work End Date</label>
+            <p>
+              <input
+                class="form-control"
+                type="date"
+                name=""
+                id=""
+                name="workenddate"
+                [(ngModel)]="formData.workEndDate"
+              />
+            </p>
+          </div>
+          <div class="inner-div mt-4"></div>
+        </div>
+      </div> -->
+
+        <div
+          *ngIf="
+            data?.wmWorkorderRegistered?.workExecutionMethod ==
+            'Labour Contract'
+          "
+        >
+          <div class="heading mt-4">
+            <h2>Licence Electrical Contractor Details</h2>
+          </div>
+
+          <div class="two-row-grid mt-4">
+            <div class="left-div">
+              <div class="inner-div mt-4"></div>
+              <div class="inner-div">
+                <label>Firm Name</label>
+
+                <select
+                  class="form-select"
+                  style="width: 100%"
+                  name="firm"
+                  (change)="getVendorId($event.target.value)"
+                  [(ngModel)]="vendorId"
+                >
+                  <option selected disabled>Select one</option>
+                  <option
+                    *ngFor="let data of officeData"
+                    [value]="data.vendorMasterId"
+                  >
+                    {{ data?.vendorOrganizationName }}
+                  </option>
+                </select>
+              </div>
+              <div class="inner-div mt-4">
+                <label>Contractor Name</label>
+                <p>{{ vendorData?.contactPersonName || "N/A" }}</p>
+              </div>
+              <div class="inner-div mt-4">
+                <label>Contact No</label>
+                <p>{{ vendorData?.vendorContactDetails }}</p>
+              </div>
+
+              <div class="inner-div mt-4">
+                <label>Receipt Number</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="emdReceiptNo"
+                  name="emdReceiptNo"
+                  [(ngModel)]="vendorData.emdReceiptNo"
+                />
+              </div>
+              <div class="inner-div mt-4">
+                <label>Max No of work can be assigned</label>
+
+                <p>{{ vendorData?.noofworksAllocated }}</p>
+              </div>
+              <div class="inner-div mt-4">
+                <label>Work Start Date</label>
+                <input
+                  class="form-control"
+                  type="date"
+                  placeholder="work"
+                  name="workstartdate"
+                  [(ngModel)]="formData.workStartDate"
+                />
+              </div>
+              <div class="inner-div mt-4">
+                <label>Work Award Amount</label>
+                <p>
+                  <strong>{{ workAwardedAmount | number : "1.2-2" }}</strong>
+                </p>
+              </div>
+            </div>
+            <div>
+              <div class="inner-div mt-3"></div>
+              <div class="inner-div mt-3">
+                <label>License No</label>
+                <p>{{ vendorData.vendorLicenseNumber }}</p>
+              </div>
+
+              <div class="inner-div mt-4">
+                <label>License Validity End Date</label>
+                <p>
+                  {{
+                    vendorData?.vendorRegistrationValidUpto == null
+                      ? "" || "N/A"
+                      : (vendorData?.vendorRegistrationValidUpto
+                        | date : "medium")
+                  }}
+                </p>
+              </div>
+              <div class="inner-div mt-2">
+                <label>E.M.D Amount</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="emdAmount"
+                  name="emdAmount"
+                  [(ngModel)]="vendorData.emdAmount"
+                />
+              </div>
+              <div class="inner-div mt-1">
+                <label>Receipt Date</label>
+                <input
+                  class="form-control"
+                  type="date"
+                  placeholder="emdReceiptDate"
+                  name="emdReceiptDate"
+                  [(ngModel)]="vendorData.emdReceiptDate"
+                />
+              </div>
+              <div class="inner-div mt-4">
+                <label>No of work allocated </label>
+                <p>
+                  {{ pendingWorkAwardData?.WmWorkorderRegisteredDataCount }}
+                </p>
+              </div>
+              <div class="inner-div mt-4">
+                <label>Work End Date</label>
+                <p>
+                  <input
+                    class="form-control"
+                    type="date"
+                    name=""
+                    id=""
+                    name="workenddate"
+                    [(ngModel)]="formData.workEndDate"
+                  />
+                </p>
+              </div>
+              <div class="inner-div mt-4"></div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          *ngIf="
+            data?.wmWorkorderRegistered?.workExecutionMethod ==
+              'Partial Turnkey' ||
+            data?.wmWorkorderRegistered?.workExecutionMethod == 'Total Turnkey'
+          "
+        >
+          <div class="heading mt-4">
+            <h2>RC Contractor Details</h2>
+          </div>
+
+          <div class="two-row-grid mt-4">
+            <div class="left-div">
+              <div class="inner-div mt-4"></div>
+              <!-- <div class="inner-div">
+              <label>Consignee </label>
+
+              <p>{{ rcdetails.consignee }}</p>
+            </div> -->
+              <div class="inner-div mt-4">
+                <label>RC Code</label>
+                <p>{{ rcdetails?.rcCode }}</p>
+              </div>
+              <div class="inner-div mt-4">
+                <label>Execution Method</label>
+                <p>{{ rcdetails.executionMethod }}</p>
+              </div>
+              <!-- <div class="inner-div mt-4">
+              <label>RC Code</label>
+              <p>{{ rcdetails?.rcCode }}</p>
+            </div> -->
+              <div class="inner-div mt-4">
+                <label>Work Start Date</label>
+                <input
+                  class="form-control"
+                  type="date"
+                  placeholder="work"
+                  name="workstartdate"
+                  [(ngModel)]="formData.workStartDate"
+                />
+              </div>
+              <div class="inner-div mt-4">
+                <label>Work Award Amount</label>
+                <p>
+                  <strong>{{ workAwardedAmount | number : "1.2-2" }}</strong>
+                </p>
+              </div>
+            </div>
+            <div>
+              <div class="inner-div mt-3"></div>
+              <div class="inner-div mt-4">
+                <label>RC Vendor Name</label>
+                <p>{{ rcdetails?.rcVendorName }}</p>
+              </div>
+              <div class="inner-div mt-3">
+                <label>RC Validity</label>
+                <p>{{ rcdetails?.rcValidity }}</p>
+              </div>
+
+              <div class="inner-div mt-2">
+                <label>RC Work Description</label>
+                <p>{{ rcdetails?.rcWorkDescription }}</p>
+              </div>
+              <div class="inner-div mt-4">
+                <label>Work End Date</label>
+                <p>
+                  <input
+                    class="form-control"
+                    type="date"
+                    name=""
+                    id=""
+                    name="workenddate"
+                    [(ngModel)]="formData.workEndDate"
+                  />
+                </p>
+              </div>
+              <div class="inner-div mt-4"></div>
+            </div>
+          </div>
+        </div>
+
+        <br />
+        <div
+          style="width: 100%; margin-top: 1rem"
+          *ngIf="
+            data?.wmWorkorderRegistered?.workExecutionMethod ==
+            'Labour Contract'
+          "
+        >
+          <table class="table table-bordered text-center">
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th scope="col">S. No.</th>
+                <th scope="col">Work Order No.</th>
+                <th scope="col">Work Order Date</th>
+                <th scope="col">Work Execution Method</th>
+                <th scope="col">Work Awarded Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let data of pendingWorkAwardData?.WmWorkorderRegisteredData;
+                  index as i
+                "
+              >
+                <td>{{ i + 1 }}</td>
+                <td>{{ data?.workorderNo }}</td>
+                <td>{{ data?.workorderDate | date : "dd/MM/yyyy" }}</td>
+                <td>{{ data?.workExecutionMethod }}</td>
+                <td>
+                  {{
+                    data?.workAwardedAmount !== "null"
+                      ? data?.workAwardedAmount
+                      : 0
+                  }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div
+            *ngIf="data?.estimationMaterialLabourDetails?.length == 0"
+            style="display: flex; justify-content: center; padding: 1rem"
+          >
+            <span>No Data Found</span>
+          </div>
+        </div>
+        <br />
+        <div class="heading">
+          <h2
+            *ngIf="
+              data?.wmWorkorderRegistered?.workExecutionMethod ==
+                'Partial Turnkey' ||
+              data?.wmWorkorderRegistered?.workExecutionMethod ==
+                'Total Turnkey'
+            "
+          >
+            Material / Labour Details
+          </h2>
+          <h2
+            *ngIf="
+              data?.wmWorkorderRegistered?.workExecutionMethod !=
+                'Partial Turnkey' &&
+              data?.wmWorkorderRegistered?.workExecutionMethod !=
+                'Total Turnkey'
+            "
+          >
+            Labour Details
+          </h2>
+        </div>
+        <div
+          style="
+            width: 100%;
+
+            margin-top: 1rem;
+          "
+        >
+        <div style="overflow-x: scroll; width: 100%;">
+          <table class="table table-bordered text-center">
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th scope="col" style="width: 5%">Sr. No.</th>
+                <th scope="col">Work Type</th>
+                <th scope="col">Code</th>
+                <th scope="col">Description</th>
+                <th scope="col">Unit</th>
+                <th scope="col">QTY</th>
+                <th scope="col">Rate</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let data of data.estimationMaterialLabourDetails;
+                  index as i
+                "
+              >
+                <td>
+                  {{ i + 1 }}
+                </td>
+                <td style="text-align: left">{{ data?.workPart }}</td>
+                <td style="text-align: left">{{ data?.materialCode }}</td>
+                <td style="text-align: left">{{ data?.materialName }}</td>
+                <td>{{ data?.unit }}</td>
+                <td>{{ data?.quantity }}</td>
+                <td>{{ data?.rate }}</td>
+                <td>{{ data?.amount }}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ total ? total : 0 }}</td>
+              </tr>
+              <tr
+                *ngFor="let item of data.estimationAddlChargesRegisteredDetails"
+              >
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <label *ngIf="item.chargeType == 'PERCENTAGE'"
+                    >{{ item.chargeTypeValue=='null'?'0':item.chargeTypeValue}}%
+                    {{ item.additionalChargeName }}</label
+                  >
+                  <label *ngIf="item.chargeType == 'FLAT'">{{
+                    item.additionalChargeName
+                  }}</label>
+                </td>
+
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <p>{{ item.amount | number : "1.2-2" }}</p>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Grand Total (Labour Charges)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ workAwardedAmount | number : "1.2-2" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+          <div
+            *ngIf="data?.estimationMaterialLabourDetails?.length == 0"
+            style="display: flex; justify-content: center; padding: 1rem"
+          >
+            <span>No Data Found</span>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div
+      class="container mt-4"
+      *ngIf="data.wmWorkAwardTermsCondsLogDTOList && data.wmWorkAwardTermsCondsLogDTOList.length"
+    >
+      <h2 class="mb-4">Additional Terms & Conditions</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Sr. No</th>
+            <th>Subject</th>
+            <th>Terms & Conditions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let item of data.wmWorkAwardTermsCondsLogDTOList;
+              index as i
+            "
+          >
+            <td>{{ i + 1 }}</td>
+            <td>{{ item.termsConditionsHead }}</td>
+            <td>{{ item.termsConditionsData }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="forward-approved">
+      <label class="sm" *ngIf="userRole == 'EE'">
+        <input
+          [value]="1"
+          name="sh"
+          type="radio"
+          (change)="onRadioChange($event.target.value, 'Approve')"
+        />
+        Approve
+      </label>
+      <label
+        class="sm"
+        *ngIf="
+          userRole == 'AE' ||
+          userRole == 'AEE' ||
+          userRole == 'AETDO' ||
+          userRole == 'AEEO' ||
+          userRole == 'AOIA'
+        "
+      >
+        <input
+          [value]="2"
+          name="sh"
+          type="radio"
+          (change)="onRadioChange($event.target.value, 'Forward')"
+        />
+        Forward
+      </label>
+    </div>
+
+    <div *ngIf="sh == 2">
+      <div class="container text-center">
+        <div class="row">
+          <div
+            class="col"
+            style="display: flex; flex-direction: column; gap: 2rem"
+          >
+            <h4><b>Forwarded By</b></h4>
+            <h4><b>Forwarded To</b></h4>
+            <h4><b>Forwarded Remarks <span class="star">*</span></b></h4>
+          </div>
+          <div
+            class="col"
+            style="display: flex; flex-direction: column; gap: 2rem"
+          >
+            <input
+              type="text"
+              class="form-control"
+              style="width: 80%"
+              id=""
+              name="forwardBy"
+              [(ngModel)]="forwardData.forwardBy"
+            />
+            <input
+              type="text"
+              class="form-control"
+              style="width: 80%"
+              id=""
+              name="forwardTo"
+              [(ngModel)]="forwardData.forwardTo"
+            />
+
+            <textarea
+              class="form-control"
+              name="forwardTo"
+              id=""
+              cols="20"
+              rows="3"
+              [(ngModel)]="forwardData.forwardRemarks"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="sh == 1">
+      <div class="container text-center">
+        <div class="row">
+          <div
+            class="col"
+            style="display: flex; flex-direction: column; gap: 2rem"
+          >
+            <h4><b>Approved By</b></h4>
+            <h4><b>Approve Date</b></h4>
+            <h4><b>Approve Remarks <span class="star">*</span></b></h4>
+          </div>
+          <div
+            class="col"
+            style="display: flex; flex-direction: column; gap: 2rem"
+          >
+            <input
+              type="text"
+              class="form-control"
+              
+              id=""
+              name="approve"
+              [(ngModel)]="approveData.approvedBy"
+            />
+            <input
+              type="date"
+              class="form-control"
+           
+              id=""
+              name="approvedate"
+              [(ngModel)]="approveData.date"
+            />
+
+            <textarea
+              class="form-control"
+              name="approvedate"
+              id=""
+              cols="20"
+              rows="3"
+              [(ngModel)]="approveData.remarks"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="displayButton"
+      class="mt-4 pb-4"
+      style="
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        padding: 0 1rem;
+      "
+    >
+      <button
+        type="button"
+        [disabled]="isSaveDisabled"
+        class="btn btn-primary btn-md"
+        (click)="openConfirmationpopupDialog(displayButton)"
+      >
+        {{ displayButton }}
+      </button>
+      <button type="button" class="btn clor btn-primary btn-md">Close</button>
+    </div>
+  </section>
+</div>

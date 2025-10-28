@@ -1,0 +1,25 @@
+<section>
+  <form [formGroup]="networkExtensionTypeForm">
+  <h1 mat-dialog-title>Update Network Extension Type Master</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Network Extension Type</mat-label>
+        <input matInput placeholder="Ex. Each"
+        formControlName="networkExtensionTypeName" appAlphaNumeric [maxLength]="50" required/>
+          <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Network Extension Code</mat-label>
+        <input matInput placeholder="Ex. Each"
+        formControlName="networkExtensionTypeCode" appAlphaNumeric [maxLength]="20" required/>
+          <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onNetworkType()">Update</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+  </form>
+</section>

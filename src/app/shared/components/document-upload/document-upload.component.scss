@@ -1,0 +1,183 @@
+h1 {
+    color: #484848;
+    font-weight: 600;
+    margin: unset !important;
+  }
+  
+  section {
+    margin: 0.5rem;
+   
+  }
+  
+//   th {
+//     font-size: 1rem;
+//     font-weight: 600;
+//     background-color: #f0f6ff;
+//   }
+  
+//   td {
+//     text-align: -webkit-center;
+//     font-size: 0.8rem;
+//     font-weight: 600;
+//     color: #757575;
+  
+//     input {
+//       min-width: 8rem !important;
+//     }
+  
+//     select {
+//       min-width: max-content !important;
+//     }
+//   }
+  
+  .three-row-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 2rem;
+  
+    .inner-div {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(2, 1fr);
+      align-items: baseline;
+      margin-bottom: 1rem;
+  
+      label {
+        margin: unset;
+        font-size: 1rem;
+      }
+  
+      p {
+        font-size: 0.8rem;
+        color: #6e6d6d;
+        font-weight: 500;
+      }
+    }
+  }
+  
+  .btn-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .btn {
+    padding: 0.4rem 1rem;
+    background-color: #4472c4;
+    color: white;
+    min-height: 2.5rem;
+    min-width: 5rem;
+  
+    &:hover {
+      background-color: #7f9cce;
+    }
+  }
+  
+  .clor {
+    background-color: white;
+    color: #4472c4;
+    border: 2px solid #4472c4;
+  
+    &:hover {
+      background-color: #d8d7d7;
+      color: #4472c4;
+    }
+  }
+  
+  @media only screen and (max-width: 1000px) {
+    section {
+      margin: 1rem;
+    }
+  
+    .three-row-grid {
+      grid-template-columns: 1fr;
+  
+      .inner-div {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+  
+        label,
+        input,
+        p,
+        select {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+  .btn-upload {
+    width: 50%;
+    border: 2px dashed #c2c2c2 !important;
+    color: #484848;
+    background-color: white;
+    padding: 1rem;
+  
+    &:hover {
+      color: white;
+      border: 2px solid #c2c2c2 !important;
+      transition: 1s;
+    }
+  }
+  .upload-div {
+    display: flex;
+    align-items: baseline;
+    margin: unset;
+    font-size: 1rem;
+  }
+ 
+  
+  .upload-div label {
+    margin-right: 3rem; 
+  }
+
+  .table-container {
+    max-height: 200px; 
+    overflow: auto; 
+  }
+  
+  table {
+    width: 100%;
+    overflow: auto;
+    min-width: 10rem;
+  
+    th {
+      color: #4472c4;
+      height:40px;
+    }
+  td{
+    content: unset;
+  }
+  }
+  
+  .checklist-scroll {
+    max-width: 250px; 
+    overflow-x: auto;
+    white-space: nowrap;
+}
+.title-2 {
+  display: flex;
+  justify-content: space-between; /* Space between the text and the button */
+  align-items: center; /* Align the items vertically in the center */
+  margin-bottom: 20px; /* Adjust margin as needed */
+}
+
+.upload-btn-container {
+  margin-left: auto; /* Push the button container to the right */
+}
+
+.c-btn {
+  /* Add any specific styles for the button if necessary */
+  background-color: #1976d2; /* Example button background */
+  color: white; /* Example button text color */
+}
+
+.c-btn:hover {
+  background-color: #1565c0; /* Darker blue on hover */
+}
+  
+
+  
+
+  
+  

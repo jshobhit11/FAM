@@ -1,0 +1,158 @@
+<!-- <mat-nav-list class="top">
+  <div class="logo py-3">
+    <a routerLink="/main/dashboard"><img src="assets/escoms.png" style="height: auto;" alt="" /></a>
+  </div>
+</mat-nav-list> -->
+<mat-divider></mat-divider>
+<mat-nav-list>
+  <a
+    mat-list-item
+    routerLinkActive="list-item-active"
+    routerLink="/estimates/dashboard"
+    (click)="toggleSideBar()"
+    style="margin-top: 3rem"
+  >
+  <img
+  src="assets/icons/blackboard.svg"
+  class="icon_configuration"
+  alt="Estimates"
+/> Estimates
+  </a>
+  <ul class="mt-4">
+    <div>
+      <span
+        class="section-container"
+        (click)="toggleImprovementMaintanceSection()"
+        class="section-title">
+        <img src="assets/icons/pencil-alt.svg" class="icon_configuration" alt="Store" /> Improvement & Maintenance Works
+        <span class="angle-down-and-right">
+          <img *ngIf="showImprovementMaintanceSection" src="assets/icons/angle-down.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+          <img *ngIf="!showImprovementMaintanceSection" src="assets/icons/angle-right.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+        </span>
+      </span>
+      <ul [@openClose]="showImprovementMaintanceSection ? 'open' : 'closed'" class="sub-nav-list side-nav-child-list">
+        <li>
+          <a  routerLinkActive="active" routerLink="/estimates/improvement-site-inspection-form"
+            (click)="toggleSideBar()">
+            Site Inspection
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+        <!-- <li>
+          <a routerLinkActive="active" routerLink="/estimates/improvement-estimation-list">
+            Estimation
+          </a>
+        </li>
+        <mat-divider></mat-divider> -->
+        <li>
+          <a routerLinkActive="active" routerLink="/estimates/improvement-estimation-approval-list"
+            (click)="toggleSideBar()">
+            Estimation Approval
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <span class="section-container" (click)="toggleRevisedEstimateSection()" class="section-title">
+        <img src="assets/icons/blackboard.svg" class="icon_configuration" alt="Estimate" /> <span class="sub-menu-text">Revised Estimate</span>
+        <span class="angle-down-and-right">
+          <img *ngIf="showRevisedEstimate" src="assets/icons/angle-down.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+          <img *ngIf="!showRevisedEstimate" src="assets/icons/angle-right.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+        </span>
+      </span>
+      <ul [@openClose]="showRevisedEstimate ? 'open' : 'closed'" class="sub-nav-list side-nav-child-list">
+        <!-- <li>
+          <a routerLinkActive="active" routerLink="/estimates/revised-estimation-list">
+            Revised Estimation
+          </a>
+        </li> -->
+        <mat-divider></mat-divider>
+        <li>
+          <a routerLinkActive="active" routerLink="/estimates/revised-estimation-approval-list" 
+            (click)="toggleSideBar()">
+            Revised Estimation Approval
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <span class="section-container" (click)="toggleEmergencyEstimateSection()" class="section-title">
+        <img src="assets/icons/bookmark-alt.svg" class="icon_configuration" alt="Emergency Works Estimates" /> Emergency Works Estimates
+        <span class="angle-down-and-right">
+          <img *ngIf="showEmergencyEstimate" src="assets/icons/angle-down.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+          <img *ngIf="!showEmergencyEstimate" src="assets/icons/angle-right.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+        </span>
+      </span>
+      <ul [@openClose]="showEmergencyEstimate ? 'open' : 'closed'" class="sub-nav-list side-nav-child-list">
+        <!-- <li>
+          <a routerLinkActive="active" routerLink="/estimates/emergency-estimation">
+            Estimation
+          </a>
+        </li> -->
+        <mat-divider></mat-divider>
+        <li>
+          <a routerLinkActive="active" routerLink="/estimates/emergency-estimation-approval-list"
+            (click)="toggleSideBar()">
+            Estimation Approval
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <span class="section-container" (click)="toggleBulkMetersEstimateSection()" class="section-title">
+        <img src="assets/icons/layout-grid4.svg" class="icon_configuration" alt="Bulk Meters Replacement" />  Bulk Meters Replacement
+        <span class="angle-down-and-right">
+          <img *ngIf="showBulkMetersEstimate" src="assets/icons/angle-down.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+          <img *ngIf="!showBulkMetersEstimate" src="assets/icons/angle-right.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+        </span>
+      </span>
+      <ul [@openClose]="showBulkMetersEstimate ? 'open' : 'closed'" class="sub-nav-list side-nav-child-list">
+        <!-- <li>
+          <a routerLinkActive="active" routerLink="/estimates/bmr-estimation-creation">
+            Estimation
+          </a>
+        </li> -->
+        <mat-divider></mat-divider>
+        <li>
+          <a routerLinkActive="active" routerLink="/estimates/bmr-estimation-approval-list"
+            (click)="toggleSideBar()">
+            Estimation Approval
+          </a>
+        </li>
+        <mat-divider></mat-divider>
+      </ul>
+    </div>
+
+
+  <!-- <div>
+    <span class="section-container" (click)="toggleRevenueMaintenanceSection()" class="section-title">
+      <img src="assets/icons//bag.svg" class="icon_configuration" alt="Revenue Maintenance" /> Revenue Works
+      <span class="angle-down-and-right">
+        <img *ngIf="showRevenueMaintenance" src="assets/icons/angle-down.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+        <img *ngIf="!showRevenueMaintenance" src="assets/icons/angle-right.svg" alt="Dashboard" class="arrow_icon_configuration"/>
+      </span>
+    </span>
+    <ul [@openClose]="showRevenueMaintenance ? 'open' : 'closed'" class="sub-nav-list side-nav-child-list">
+      <li>
+        <span (click)="toggleQMOMSection()" class="section-title">Quarterly Maintenance</span>
+        <ul *ngIf="showQMOM">
+          <li><a routerLinkActive="active" routerLink="/estimates/qmom-estimation">Estimation</a></li>
+          <mat-divider></mat-divider>
+          <li><a routerLinkActive="active" routerLink="/estimates/qmom-estimation-approval-list">Estimation Approval</a></li>
+        </ul>
+      </li>
+      <mat-divider></mat-divider>
+      <li>
+        <span (click)="toggleQMMTSection()" class="section-title">Quarterly Maintenance (MT)</span>
+        <ul *ngIf="showQMMT">
+          <li><a routerLinkActive="active" routerLink="/estimates/qmmt-estimation">Estimation</a></li>
+          <mat-divider></mat-divider>
+          <li><a routerLinkActive="active" routerLink="/estimates/qmmt-estimation-approval-list">Estimation Approval</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div> -->
+
+
+  </ul>
+</mat-nav-list>

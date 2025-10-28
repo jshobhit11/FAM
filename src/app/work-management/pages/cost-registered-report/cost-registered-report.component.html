@@ -1,0 +1,54 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/dashboard">Works</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Cost-Registered-Report</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <section>
+    <form [formGroup]="cRegisteredForm">
+    <div class="container">
+      <div class="page__content shadow p-3 position-relative dis-flex-colu">
+        <h2 class="title-2">Cost-Registered-Report</h2>
+      <div style="width: 100%; margin-top: 1rem">
+        <div class="inner-div">
+          <label class="form-label">Work Order No <span class="star">*</span></label>
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Work Order No"
+            formControlName="workOrderNo"
+            [(ngModel)]="workorder"
+            appAlphaNumeric
+            [maxLength]="10"
+            matInput
+            required
+          />
+          <mat-error  *ngIf="cRegisteredForm.get('workOrderNo').hasError('required') && cRegisteredForm.get('workOrderNo').touched">
+            Please fill this field
+          </mat-error>
+        </div>
+          <div class="offset-sm-5 mt-2 mb-4">
+            <button
+              type="submit"
+              class="btn btn-primary center-btn btn-md"
+              style="background-color: #4472c4;" 
+              (click)="generateWorkAwardReport()"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  </section>
+</div>

@@ -1,0 +1,48 @@
+<section>
+    <form class="form" [formGroup]="appStatusProcessForm">
+    <h1 mat-dialog-title>Update Application Status Process Mapping Master</h1>
+    <div class="content-fields mt-4" mat-dialog-content>
+        <div class="modal-input-control">
+            <mat-form-field appearance="fill">
+                <mat-label>Application Status Name</mat-label>
+                <mat-select formControlName="applicationStatusId" required>
+                  <mat-option *ngFor="let main of applicationData" [value]="main.applicatoinStatusId" [maxLength]="">
+                    {{main.statusName}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="appStatusProcessForm.get('applicationStatusId').invalid && appStatusProcessForm.get('applicationStatusId').touched">
+                    Please select in this field.</mat-error> 
+              </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Process Type Master Name</mat-label>
+                <mat-select formControlName="processTypeMasterId" required>
+                    <mat-option *ngFor="let main of processData" [value]="main.processTypeMasterId" [maxLength]="">
+                        {{main.processTypeName}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="appStatusProcessForm.get('processTypeMasterId').invalid && appStatusProcessForm.get('processTypeMasterId').touched">
+                    Please select in this field.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Type Wise Sequence</mat-label>
+                <input matInput placeholder="Ex. Each"
+                formControlName="typeWiseSequence" appAlphaNumeric [maxLength]="" required/>
+                <mat-error>Please enter in this field.</mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+                <mat-label>Display Flag</mat-label>
+                <mat-select formControlName="displayFlag" required >
+                    <mat-option *ngFor="let main of disFlag" [value]="main">
+                        {{ main == '0' ? 'No' : main == '1' ? 'Yes' : '' }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="appStatusProcessForm.get('displayFlag').invalid && appStatusProcessForm.get('displayFlag').touched">
+                    Please select in this field.</mat-error> 
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+        <button class="c-btn" mat-button (click)="onAppStatusProcessMappingUpdate()" [disabled]="notificationRef">Update</button>
+        <button class="btn clor" mat-button mat-dialog-close [disabled]="notificationRef">Close</button>
+    </div>
+    </form>
+</section>

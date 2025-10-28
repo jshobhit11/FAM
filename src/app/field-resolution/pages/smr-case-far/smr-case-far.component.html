@@ -1,0 +1,225 @@
+<div
+  class="page__content p-3 p20 shadow dis-fl dis-fl2 position-relative dis-flex-colu"
+>
+  <h1 class="title-2">
+    <a routerLink="/field-resolution" class="box-navigation">
+      <img src="assets/left.png" alt="Back" class="icon_configuration"> Back
+    </a>
+    SMR case Cancellation
+  </h1>
+  <!-- Criteria Section as Legendary Tag -->
+  <!-- <div
+    class="legendary-tag mt-2 p-2"
+    style="
+      background-color: #eef5ff;
+      border-left: 4px solid #4472c4;
+      padding-left: 10px;
+    "
+  >
+    <strong>Criteria:</strong>
+    <ol style="margin: 0; padding-left: 20px">
+      <li>
+        Applications should be the New Connection, Temporary Connection, Load
+        Enhancement, Load Reduction, and Multiple Connection.
+      </li>
+      <li>Application should be in:</li>
+      <li style="display: flex; align-items: first baseline">
+        <button class="btn-minimize" (click)="toggleTableVisibility()">
+          <span *ngIf="!isTableVisible">
+            <img
+              src="assets/plus.png"
+              alt="Image for hidden table"
+              class="icon-size"
+            />
+          </span>
+          <span *ngIf="isTableVisible">
+            <img
+              src="assets/minus.png"
+              alt="Image for visible table"
+              class="icon-size"
+            />
+          </span>
+        </button>
+        <table
+          *ngIf="isTableVisible"
+          class="status-table"
+          style="
+            width: 50%;
+            margin-top: 10px;
+            border-collapse: collapse;
+            background-color: #fefcfb;
+            font-size: 13px;
+          "
+        >
+          <thead>
+            <tr>
+              <th style="border: 1px solid #4472c4; padding: 5px">
+                Application Status
+              </th>
+              <th style="border: 1px solid #4472c4; padding: 5px">Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 5px">Estimation</td>
+              <td style="border: 1px solid #ddd; padding: 5px">2</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ddd; padding: 5px">
+                Power Sanction Approval
+              </td>
+              <td style="border: 1px solid #ddd; padding: 5px">3</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ol>
+  </div> -->
+
+  <div class="form-container">
+    <div class="form-group mt-2">
+      <label for="execution-type">Discom:</label>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-select placeholder="Choose an option" [(value)]="selectedOption">
+          <mat-option *ngFor="let option of options" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="input-group mt-2">
+      <mat-label for="account-id">Case ID:</mat-label>
+      <mat-form-field appearance="fill" class="full-width">
+        <input
+          matInput
+          id="account-id"
+          placeholder="Enter Case ID"
+          [(ngModel)]="accountId"
+        />
+      </mat-form-field>
+      <span>
+        <button
+          class="btn btn-md radio-button"
+          style="background-color: #4472c4; color: white"
+          (click)="getDetails()"
+        >
+          Get Details
+        </button>
+      </span>
+    </div>
+  </div>
+  <div *ngIf="!data && errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
+  <form *ngIf="data">
+    <h2 class="title-2">Consumer Details</h2>
+
+    <div class="details-section">
+      <div class="details-left">
+        <div class="input-group">
+          <label>Account ID</label>
+          <p>{{ data.accountId || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Applicant Name</label>
+          <p>{{ data.applicantName || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Name & Address</label>
+          <p>{{ data.nameAddress || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Email ID</label>
+          <p>{{ data.emailId || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Contact No.</label>
+          <p>{{ data.contactno || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Adjacent Consumer No.</label>
+          <p>{{ data.adjacentAccountNo || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>No.of Connections.</label>
+          <p>{{ data.noOfConnections || "-" }}</p>
+        </div>
+      </div>
+
+      <div class="details-middle">
+        <div class="input-group">
+          <label>Applied Load (KW & HP)</label>
+          <p>{{ data.totalContractedLoad || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Total Applied Load in KW</label>
+          <p>{{ data.loadUnit || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Total Build Up Area</label>
+          <p>{{ data.buildUpArea || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Existing Load (KW & HP)</label>
+          <p>{{ data.exsistingLoad || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Total Existing Load (KW)</label>
+          <p>{{ data.exsistingLoad || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Application Status</label>
+          <p>{{ data.applicationStatusCode || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Pending At</label>
+          <p>{{ data.designation || "-" }}</p>
+        </div>
+      </div>
+
+      <div class="details-right">
+        <div class="input-group">
+          <label>Case Id</label>
+          <p>{{ data.referenceNumber || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Applicant Type</label>
+          <p>{{ data.applicantType || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Application Type</label>
+          <p>{{ data.applicationTypeName || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Category</label>
+          <p>{{ data.category || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Tariff</label>
+          <p>{{ data.tarrif || "-" }}</p>
+        </div>
+        <div class="input-group">
+          <label>Phase</label>
+          <p>{{ data.phase || "-" }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-container mt-4">
+      <button
+        class="btn-revert"
+        style="
+          background-color: #4472c4;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 4px;
+        "
+        (click)="openSaveDialog('return_site_inspection')"
+        [disabled]="isButtonDisabled"
+      >
+       Update
+      </button>
+    </div>
+  </form>
+</div>

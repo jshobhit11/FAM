@@ -1,0 +1,43 @@
+<div class="page-1 mt-6">
+
+    <section>
+      <form class="form">
+        <div class="page__content shadow p-3 position-relative dis-flex-colu">
+          
+          <h2 class="title-2">Document List <span><button class="c-btn " mat-button (click)="uploadDoc()" >Upload</button></span></h2>
+          <!-- <button>Upload</button> -->
+          <!-- <div class="col  disp-flex"> -->
+            <!-- <button class="c-btn">Upload </button> -->
+            <!-- <input class="btn btn-upload" type="file" id="actual-btn" /> -->
+          <!-- </div> -->
+          <div class="table-container">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th class="heading-cell">Sl.No</th>
+                        <th class="heading-cell">Process Name</th>
+                        <th class="heading-cell">Document Name</th>
+                        <th class="heading-cell">Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of documentData; let i =index">
+                        <td>{{ i+1 }}</td>
+                        <td class="checklist-scroll">{{item.processName}} </td>
+                        <td class="checklist-scroll">{{ decodeURIComponent(item.documentName) }}</td>
+                        <td>
+                          <mat-icon (click)="onDownloadPDF(item.documentId)">get_app</mat-icon>
+                      </td>
+                    </tr>
+                </tbody>
+            </table>
+       
+            <div class="btn-box mt-3" mat-dialog-actions>
+              <button class="c-btn" mat-button (click)="navigateBack()" >Close</button>
+            </div>
+        </div>
+        </div>
+      </form>
+    </section>
+    </div>
+    

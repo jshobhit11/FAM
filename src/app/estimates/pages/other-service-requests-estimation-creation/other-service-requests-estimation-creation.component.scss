@@ -1,0 +1,117 @@
+@import "../../../../app/dashboard-forms/dashboard-forms.component.scss";
+
+.typicalCostForm {
+  div {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+
+    input {
+      width: unset !important;
+    }
+
+    label {
+      width: 30% !important;
+    }
+
+    button {
+      border: unset;
+      background-color: unset;
+    }
+  }
+
+  .percentDiv {
+    .percentInput {
+      width: 6rem !important;
+    }
+    .percentInputLabel {
+      width: 20% !important;
+    }
+  }
+}
+
+.table {
+  button {
+    border: unset;
+    background-color: unset;
+  }
+
+  input {
+    width: 100% !important;
+  }
+}
+
+.scopeOfWork {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+
+  div {
+    select,
+    label {
+      width: 100% !important;
+    }
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .typicalCostForm {
+    .disp-flex {
+      flex-direction: row !important;
+      gap: 0.5rem;
+    }
+
+    div {
+      label {
+        width: unset !important;
+      }
+    }
+
+    .percentDiv {
+      .percentInputLabel {
+        width: 40% !important;
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .table {
+    input {
+      width: 6rem !important;
+    }
+  }
+
+  .scopeOfWork {
+    flex-direction: column;
+    align-items: unset;
+  }
+}
+
+.tr-text {
+  // font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 30px;
+  color: #3e3e3e;
+  padding: 0.8rem 0;
+}
+
+// for adding scroll in mat select options and for multi select selected options
+
+::ng-deep .mat-option-text {
+  text-overflow: unset !important;
+  overflow: auto !important;
+}
+
+::ng-deep .mat-select-value {
+  text-overflow: unset !important;
+  overflow: auto !important;
+}
+
+td {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: auto;
+}

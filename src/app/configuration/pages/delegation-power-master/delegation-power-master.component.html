@@ -1,0 +1,111 @@
+<div class="container-fluid page-3">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/configuration">Configuration</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Delegation Of Power Master</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+  <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+    <h2 class="title-2">Delegation Of Power Master</h2>
+    <div style="display: flex; flex-wrap: wrap; overflow: auto">
+      <div class="top-row first-top-row">
+        <div class="input-control">
+          <mat-form-field class="example-full-width">
+            <mat-label> Delegation Power Name</mat-label>
+            <input (keyup)="applyFilter($event.target.value)" matInput placeholder="Ex. Each" />
+          </mat-form-field>
+        </div>
+        <div class="button-control">
+          <div class="button-control">
+            <button mat-button class="c-btn" (click)="openAddDelegationMasterItemDialog()">
+              Add Delegation Power
+            </button>
+          </div>
+        </div>
+      </div>
+      <table mat-table [dataSource]="dataSource" class="est-config-table mt-4">
+        <!-- SLNO Column -->
+        <ng-container matColumnDef="slno">
+          <th mat-header-cell *matHeaderCellDef>SL NO</th>
+          <td mat-cell *matCellDef="let element">
+            {{ dataSource.data.indexOf(element) + 1 }}
+          </td>
+        </ng-container>
+
+        <!-- Type Of Power -->
+        <ng-container matColumnDef="typeOfPower">
+          <th mat-header-cell *matHeaderCellDef>Type Of Power</th>
+          <td mat-cell *matCellDef="let element">{{element.typeOfPower}}</td>
+        </ng-container>
+
+        <!-- Work Category  Column -->
+        <ng-container matColumnDef="workCategoryMasterId">
+          <th mat-header-cell *matHeaderCellDef>Dop Category </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.workCategoryName === "null" ? '-' :element.workCategoryName }}
+          </td>
+        </ng-container>
+
+        <!--  Category Column -->
+        <ng-container matColumnDef="categoryCode">
+          <th mat-header-cell *matHeaderCellDef> Category </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.categoryCodeName === "null" ? '-' :element.categoryCodeName }}</td>
+        </ng-container>
+
+        <!-- Min Load Column -->
+        <ng-container matColumnDef="minLoadAmount">
+          <th mat-header-cell *matHeaderCellDef>Min Load/Amount/%</th>
+          <td mat-cell *matCellDef="let element">{{element.minLoadAmount}}</td>
+        </ng-container>
+
+        <!-- Min Load-->
+        <ng-container matColumnDef="maxLoadAmount">
+          <th mat-header-cell *matHeaderCellDef>Max Load/Amount/%</th>
+          <td mat-cell *matCellDef="let element">{{element.maxLoadAmount}}</td>
+        </ng-container>
+
+        <!-- Unit Column -->
+        <ng-container matColumnDef="unit">
+          <th mat-header-cell *matHeaderCellDef>Unit</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.unit === "null" ? '-' :element.unit}}</td>
+        </ng-container>
+
+        <!-- Work Execution Method Column -->
+        <ng-container matColumnDef="workExecutionMethod">
+          <th mat-header-cell *matHeaderCellDef>Work Execution Method</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.workExecutionMethodName === "null" ? '-' :element.workExecutionMethodName}}
+          </td>
+        </ng-container>
+
+        <!-- Reporting Designation Name Column -->
+        <ng-container matColumnDef="designationMasterId">
+          <th mat-header-cell *matHeaderCellDef>Designation Name</th>
+          <td mat-cell *matCellDef="let element">{{element.designationName}}</td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let element">
+            <button style="border: none; background-color: transparent"
+              (click)="openUpdateDelegationMasterItemDialog(element.delegationOfPowerMasterId)">
+              <mat-icon color="error">edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

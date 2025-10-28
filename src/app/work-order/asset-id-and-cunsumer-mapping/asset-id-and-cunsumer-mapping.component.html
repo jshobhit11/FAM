@@ -1,0 +1,72 @@
+ <section>
+    <form class="form">
+      <div class="col-lg-6 mt-4" style="width: 100% !important; padding: 1rem">
+        <div class="heading" style="background-color: #f0f0f0">
+          <h1>Asset Reference Mapping</h1>
+        </div>
+        <br>
+        <div class="two-row-grid" style="justify-content: space-evenly">
+          <div class="left-div" style="width: unset !important">
+            <div class="inner-div">
+              <label>Work Order No:</label>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div>
+          <input type="file" #fileInput style="display: none" (change)="handleFile($event)">
+          <div class="btn-box" style="margin-bottom: 1rem;">
+            <button type="button" class="btn btn-primary btn-lg" (click)="fileInput.click()">Upload</button>
+  
+            <button type="button" class="btn btn-primary btn-lg" (click)="downloadTableData()">Download</button>
+          </div>
+          <div>
+            <table class="table table-bordered text-center">
+                <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                    <tr>
+                      <th>S.NO</th>
+                      <th>Account Id</th>
+                      <th>Meter Serial No</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>0</td>
+                      <td>
+                        <select class="form-control" name="account" [(ngModel)]="accountValue">
+                          <option *ngFor="let item of accountOptions" [value]="item">{{ item }}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select class="form-control" name="meter" [(ngModel)]="meterValue">
+                          <option *ngFor="let item of meterOptions" [value]="item" [disabled]="isMeterSelected(item)">{{ item }}</option>
+                        </select>
+                      </td>
+                      <td>
+                        <button style="border: none; background-color: transparent" (click)="addRow()">
+                          <i class="material-icons delete-button">add</i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr *ngFor="let item of items; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ item.account }}</td>
+                      <td>{{ item.meter }}</td>
+                      <td>
+                        <button class="delete-button" style="border: none; background-color: transparent" (click)="deleteRow(i)">
+                          <i class="material-icons" style="color: red">delete</i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+            </table>
+          </div>
+          <div class="btn btn-primary btn-md">
+            <button type="button" class="btn btn-primary btn-md">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+  

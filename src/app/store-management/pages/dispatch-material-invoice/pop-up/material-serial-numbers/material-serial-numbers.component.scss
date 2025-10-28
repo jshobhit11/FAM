@@ -1,0 +1,171 @@
+.heading-box {
+  background-color: #f3f7fa; 
+  padding: 1rem; 
+  border-radius: 8px; 
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+}
+
+.heading h3 {
+  font-size: 1.4rem;
+  color: #484848;
+  margin: 0;
+}
+
+.heading button {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.heading button img {
+  width: 20px; 
+  height: 20px;
+}
+
+.content {
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+  overflow: auto;
+  min-width: 30rem;
+
+  th {
+    color: #4472c4;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  th,
+  td {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  tbody tr:hover {
+    background-color: #f4f4f4;
+  }
+}
+
+.btn {
+  padding: 0.4rem 1rem;
+  background-color: #4472c4;
+  color: white;
+  min-height: 2.5rem;
+  min-width: 5rem;
+
+  &:hover {
+    background-color: #7f9cce;
+  }
+}
+
+::ng-deep .mat-form-field {
+  width: 50% !important;
+  font-size: 1rem !important;
+}
+
+@media only screen and (max-width: 1000px) {
+  .heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .heading h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  ::ng-deep .mat-form-field {
+    width: 100% !important;
+  }
+}
+
+
+/* Container styling */
+.responsive-table {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  border: 1px solid #757575;
+  border-radius: 8px;
+}
+
+/* Header styling */
+.table-header {
+  display: contents; /* Keeps the header in the grid */
+  font-weight: bold;
+  background-color: #f3f7fa;
+  padding: 1rem;
+}
+
+/* Row styling */
+.table-row {
+  display: contents; /* Ensure each row stays inside grid */
+  cursor: pointer;
+}
+
+.row-item {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Button styling */
+.action-btn .btn {
+  background-color: #4472c4;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.action-btn .btn:hover {
+  background-color: #7f9cce;
+}
+
+/* Responsive for Mobile View */
+@media (max-width: 768px) {
+  .responsive-table {
+    grid-template-columns: 1fr; /* Stack items vertically */
+  }
+
+  /* Hide headers on mobile */
+  .table-header {
+    display: none;
+  }
+
+  /* Convert rows to card format */
+  .table-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Display labels for each item */
+  .row-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+  }
+
+  /* Add labels for each field */
+  .row-item::before {
+    content: attr(data-label) ": ";
+    font-weight: bold;
+  }
+
+  .action-btn {
+    margin-top: 1rem;
+  }
+}

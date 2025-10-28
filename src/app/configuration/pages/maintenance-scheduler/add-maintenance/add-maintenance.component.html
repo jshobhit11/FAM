@@ -1,0 +1,98 @@
+<section [formGroup]="MaintenanceForm">
+    <h1 mat-dialog-title>Add Scheduler</h1>
+    <div class="modal-input-control">
+        <mat-form-field class="example-full-width">
+            <mat-label>Asset Type</mat-label>
+            <mat-select required formControlName="assetType" (selectionChange)="onAssetTypeSelectionChange($event.value)">
+                <mat-option *ngFor="let asset of assetTypes" [value]="asset.assetType">
+                    {{ asset.assetType }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>        
+          <mat-form-field class="example-full-width">
+            <mat-label>Maintenance Type</mat-label>
+            <mat-select required formControlName="maintenanceType">
+              <mat-option *ngFor="let maintenance of MaintenanceOptions" [value]="maintenance">
+                {{maintenance}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+        <mat-form-field class="example-full-width">
+            <mat-label>Frequency</mat-label>
+            <mat-select required formControlName="frequency">
+              <mat-option *ngFor="let option of frequencyOptions" [value]="option">{{ option }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Equipment</mat-label>
+            <input matInput placeholder="Ex. Each" formControlName="equipment"  [maxLength]="100" required />
+          </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+            <mat-form-field class="example-full-width">
+                <mat-label>Responsible Officer</mat-label>
+                <mat-select required formControlName="responsibleOfficer">
+                    <mat-option *ngFor="let designation of designations" [value]="designation.designationCode">
+                        {{ designation.designationCode }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <mat-label>Office Type</mat-label>
+              <mat-select required formControlName="officeType">
+                <mat-option *ngFor="let option of officeTypeOptions" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+            </mat-form-field>
+
+      </div>
+      <div class="modal-input-control">
+        <mat-form-field class="example-full-width">
+          <mat-label>Job Notify Day</mat-label>
+          <mat-select required formControlName="jobNotifyDay">
+            <mat-option *ngFor="let day of jobNotifyDays" [value]="day">{{ day }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Remarks</mat-label>
+            <input matInput placeholder="Ex. Each" formControlName="remarks" [maxLength]="300" />
+          </mat-form-field>
+    </div>
+    <div class="custom-input-container">
+        <mat-form-field class="example-full-width">
+            <mat-label>Check List</mat-label>
+            <input #checklistInput matInput formControlName="checklistInput" placeholder="Ex. Each" required />
+        </mat-form-field>
+        <button mat-button class="c-btn" (click)="addToTable(checklistInput.value);checklistInput.value=''">+</button>
+    </div>
+    
+    <div class="table-container">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th class="heading-cell">Sl No</th>
+                    <th class="heading-cell">Checklist</th>
+                    <th class="heading-cell">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of checklistItems; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td class="checklist-scroll">{{ item }}</td>
+                    <td>
+                        <button mat-icon-button class="delete-button" (click)="deleteItem(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+       
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="onAddMaintenanceType()">Add</button>
+      <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+  </section>
+  

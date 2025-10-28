@@ -1,0 +1,25 @@
+<section>
+  <form [formGroup]="storeAdjustmentForm">
+    <h1 mat-dialog-title>Add Store Adjustment Reason Master</h1>
+    <div class="content-fields mt-4" mat-dialog-content>
+      <div class="modal-input-control">
+          <mat-form-field class="example-full-width">
+            <mat-label>Adjustment Reason</mat-label>
+            <input matInput placeholder="Ex. Each"
+             [maxLength]="100" appAlphaNumeric formControlName="adjustmentReason" required  />
+            <mat-error>Please enter in this field.</mat-error>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+              <mat-label>Descriptions</mat-label>
+              <input matInput placeholder="Ex. Each"
+               [maxLength]="300" appAlphaNumeric formControlName="descriptions" required />
+              <mat-error>Please enter in this field.</mat-error>
+            </mat-form-field>
+      </div>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="onAddStoreAdjustment()">Add</button>
+      <button class="clor" mat-button mat-dialog-close [disabled]="notificationRef">Close</button>
+    </div>
+  </form>
+  </section>

@@ -1,0 +1,56 @@
+<mat-toolbar class="app-toolbar">
+<!-- <mat-toolbar class="app-toolbar no-print mat-toolbar mat-primary mat-elevation-z6 mat-toolbar-multiple-rows"
+color="primary"> -->
+  <mat-toolbar-row class="justify-content-between" fxShow="true" fxHide.lt-md="true">
+    <button mat-icon-button (click)="toggleSidebar()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <!-- <button mat-button routerLink="/main/dashboard" routerLinkActive="active">
+    <img src="assets/1.svg" class="db_img" alt="Dashboard"/> Dashboard</button> 
+    <button mat-button routerLink="/estimates" routerLinkActive="active" >
+    <img src="assets/3.svg" class="db_img" alt="Estimates"/>Estimates</button> 
+    <button mat-button routerLink="/work-management" routerLinkActive="active">
+    <img src="assets/4.svg" class="db_img" alt="Works" />Works</button>
+    <button mat-button routerLink="/store-management" routerLinkActive="active">
+    <img src="assets/4.svg" class="db_img" alt="Store"/>Store</button>
+    <button mat-button routerLink="/configuration" routerLinkActive="active" >
+    <img src="assets/4.svg" class="db_img" alt="Configuration"/>Configuration</button> -->
+
+    <!-- <span class="bell-icon">
+      <mat-icon>notifications_none</mat-icon>
+    </span> -->
+
+    <div class="row ml-auto">
+      <ul class="row m-0 align-items-center">
+        <li style="display: flex !important; flex-direction: row">
+          <!-- <app-countdown-timer class="user mt-4 d-flex align-items-center"></app-countdown-timer> -->
+
+          <!-- <input
+            class="form-control me-2 mt-4 mb-4"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          /> -->
+          <button
+            mat-button
+            [matMenuTriggerFor]="menu"
+            class="user mt-2 d-flex align-items-center">
+            <img src="assets/admin-user-icon.jpeg" alt="" class="user-image mr-1 p-2" />
+            <span class="user-name">{{ username }}</span>
+            <mat-icon class="user-image-icon ml-1"
+              >keyboard_arrow_down</mat-icon
+            >
+          </button>
+
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="doLogout($event)">
+              <mat-icon>exit_to_app</mat-icon>
+              Logout
+            </button>
+          </mat-menu>
+        </li>
+      </ul>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

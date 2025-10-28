@@ -1,0 +1,209 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/store-management/dashboard">Store</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Upload Inventory</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <section>
+    <form class="form" [formGroup]="uploadInvoiceReport">
+      <div class="page__content shadow p-3 position-relative dis-flex-colu">
+        <h2 class="title-2">Upload Inventory </h2>
+        <div class="store-head">
+          <div>
+          <div class="two-column-grid">
+            <div class="left-column">
+              <div class="inner-div">
+                <label>Store <span class="star">*</span></label>
+                <div>
+                <select
+                  class="form-control form-select"
+                  (change)="onStoreChange($event.target.value)"
+                  name="stores"
+                  [(ngModel)]="saveData.store"
+                  formControlName="storeCode"
+                  required
+                >
+                  <option disabled>-- select --</option>
+                  <option *ngFor="let store of storeData" [value]="store.storeMasterId">{{ store.storeName }}</option>
+                </select>
+                <mat-error *ngIf="uploadInvoiceReport.get('storeCode').hasError('required') && uploadInvoiceReport.get('storeCode').touched">
+                  Please select this field
+                </mat-error>
+              </div>
+              </div>
+              <div class="inner-div">
+                <label>Upload File Type <span class="star">*</span></label>
+                <div>
+                <select
+                  class="form-control form-select"
+                  name="store"
+                  [(ngModel)]="saveData.docType"
+                  formControlName="uploadfiletype"
+                  required
+                >
+                  <option>-- select --</option>
+                  <option value="mtr">Meter Sample Doc</option>
+                  <option value="dtc">Transformer Sample Doc</option>
+                  <option value="Non-Serial">Non Serial Sample Doc</option>
+                </select>
+                <mat-error *ngIf="uploadInvoiceReport.get('uploadfiletype').hasError('required') && uploadInvoiceReport.get('uploadfiletype').touched">
+                  Please select this field
+                </mat-error>
+              </div>
+              </div>
+            </div>
+            <div class="right-column">
+              <div class="inner-div" [class.error]="uploadInvoiceReport.get('file').invalid && uploadInvoiceReport.get('file').touched && !fileSizeError" >
+                <label>File<span class="star">*</span></label>
+                <div>
+                <input
+                  class="btn btn-upload"
+                  style="color: black;"
+                  type="file"
+                  id="actual-btn"
+                  accept=".xlsx"
+                  (change)="onFileChange($event)"
+                  formControlName="file"
+                  appFileSizeValidator="5"
+                  required
+                />
+                <mat-error *ngIf="uploadInvoiceReport.get('file').hasError('required') && uploadInvoiceReport.get('file').touched && !fileSizeError">
+                  Please select this field
+                </mat-error>
+                <mat-error *ngIf="fileSizeError">
+                  File size must be up to 5MB.
+                </mat-error>
+              </div>
+              </div>
+              <div>
+                <p class="download-p">
+                  <a
+                    href="assets/SM_Meter_Upload.xlsx"
+                    target="_blank"
+                    download="SM_Meter_Upload.xlsx"
+                    class="download-link"
+                  >
+                    (Download Meters Sample Doc)
+                  </a>
+                </p>
+              </div>
+              <div>
+                <p class="download-p">
+                  <a
+                    href="assets/SM_Transformer_Upload.xlsx"
+                    target="_blank"
+                    download="SM_Transformer_Upload.xlsx"
+                    class="download-link"
+                  >
+                    (Download Transformers Sample Doc)
+                  </a>
+                </p>
+              </div>
+              <div>
+                <p class="download-p">
+                  <a
+                    href="assets/Non_Serial_No_Upload.xlsx"
+                    target="_blank"
+                    download="Non_Serial No_Upload.xlsx"
+                    class="download-link"
+                  >
+                    (Download Non Serial No Sample Doc)
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>  
+        </div>      
+  
+          <div class="txt-area col-xl-10 px-2">
+            <div class="label-container mt-2 label-column">
+            <label >Remarks<span class="star">*</span></label>
+          </div>
+          <div class="w-100">         
+              <textarea
+              class="form-control-p"
+              cols="100"
+              rows="3"
+              name="remarks"
+              [(ngModel)]="saveData.Remarks"
+              formControlName="remarks"
+              required
+              appAlphaNumeric
+              [maxLength]="300" style="width:100%"
+            ></textarea>
+            <mat-error style="margin-left: 75px;" *ngIf="uploadInvoiceReport.get('remarks').hasError('required') && uploadInvoiceReport.get('remarks').touched">
+              Please select this field
+            </mat-error>
+          </div>
+          </div>
+          <div
+            *ngIf="showtable"
+            style="
+              overflow: auto;
+              width: 100%;
+              border: 2px solid #c2c2c2;
+              margin-top: 1rem;
+            "
+          >
+            <table class="table table-bordered text-center">
+              <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                <tr>
+                  <th scope="col">File Name</th>
+                  <th scope="col">Record Count</th>
+                  <th scope="col">Success Count</th>
+                  <th scope="col">Failure Count</th>
+                  <th scope="col">Upload Date</th>
+                  <th scope="col">smInventoryUploadReqId</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ showData.fileName }}</td>
+                  <td>{{ showData.RecordCount }}</td>
+                  <td>{{ showData.SuccessCount }}</td>
+                  <td>
+                    <span *ngIf="showData.FailureCount == 0">{{
+                      showData.FailureCount
+                    }}</span>
+                    <a
+                      style="cursor: pointer"
+                      *ngIf="showData.FailureCount > 0"
+                      (click)="downloadExcelFile()"
+                      >{{ showData.FailureCount }}</a
+                    >
+                  </td>
+                  <td>{{ showData.uploadDate }}</td>
+                  <td>{{ showData?.smInventoryUploadReqId }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        
+  
+      <div class="btn-box mt-4 pb-4">
+        <button
+          [disabled]="disableUploadButton"
+          type="button"
+          class="btn btn-primary btn-md"
+          (click)="openConfirmationpopupDialog()"
+        >
+        {{ uploadButtonText }}
+      </button>
+        <button type="button" class="btn clor btn-primary btn-md" (click)="onClose()">Close</button>
+      </div>
+      </div>
+      </div>
+    </form>
+  </section>
+  </div>
+  
+  

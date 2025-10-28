@@ -1,0 +1,47 @@
+.btn-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-start;
+  }
+  
+  .btn {
+    padding: 0.4rem 1rem;
+    background-color: #4472c4;
+    color: white;
+    min-height: 0.5rem;
+    min-width: 3rem;
+  
+    &:hover {
+      background-color: #7f9cce;
+    }
+  }
+  
+  .clor {
+    background-color: white;
+    color: #4472c4;
+    border: 2px solid #4472c4;
+  
+    &:hover {
+      background-color: #d8d7d7;
+      color: #4472c4;
+    }
+  }
+  
+  ::ng-deep .mat-snack-bar-container {
+    color: #2d2d2d;
+    background-color: whitesmoke;
+    // position: absolute;
+    // bottom: 0;
+  
+    span {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+  
+    button {
+      color: #4472c4;
+    }
+  }
+  
+  

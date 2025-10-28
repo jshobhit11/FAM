@@ -1,0 +1,56 @@
+<div class="dialog-container">
+  <div mat-dialog-title class="dialog-title">
+    <h3><strong>Tapping Point Details </strong></h3>
+    <button mat-icon-button (click)="onClose()" class="close-button">
+      <mat-icon aria-label="Close" class="close-icon">close</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content class="content">
+    <div class="detail-box">
+      <div class="detail-row">
+        <div class="label">assetId:</div>
+        <div class="value">{{ data.assetId }}</div>
+      </div>
+      <div class="detail-row">
+        <div class="label">assetType:</div>
+        <div class="value">{{ data.assetType }}</div>
+      </div>
+      <!-- <div class="detail-row">
+        <div class="label">GIS UID:</div>
+        <div class="value">{{ data.gisUid }}</div>
+      </div>
+      <div class="detail-row">
+        <div class="label">Parent UID:</div>
+        <div class="value">{{ data.parentUid }}</div>
+      </div> -->
+      <div class="detail-row">
+        <div class="label">latitude:</div>
+        <div class="value">{{ data.latitude }}</div>
+      </div>
+      <div class="detail-row">
+        <div class="label">longitude:</div>
+        <div class="value">{{ data.longitude }}</div>
+      </div>
+      <!-- <div class="detail-row">
+        <div class="label">Reference No:</div>
+        <div class="value">{{ data.referenceNo }}</div>
+      </div> -->
+      <div class="detail-row">
+        <div class="label">Name Of The Transformer:</div>
+        <div class="value">{{ data.nameOfTheTransformer }}</div>
+      </div>
+      <div class="detail-row">
+        <div class="label">Transformer Capacity:</div>
+        <div class="value">{{ data.transformerCapacity }}</div>
+      </div>
+      <div class="detail-row">
+        <div class="label">Feeder Name:</div>
+        <div class="value">{{ data.feederName }}</div>
+      </div>
+      <div class="detail-row">
+        <div class="label">Substation Name:</div>
+        <div class="value">{{ data.substationName }}</div>
+      </div>
+    </div>
+  </div>
+</div>

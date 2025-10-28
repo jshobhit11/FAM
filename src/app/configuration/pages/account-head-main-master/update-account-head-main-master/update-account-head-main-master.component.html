@@ -1,0 +1,58 @@
+<section>
+  <form [formGroup]="accountheadmainForm">
+    <h1 mat-dialog-title>Update Account Head Main Master</h1>
+    <div class="content-fields mt-4" mat-dialog-content>
+      <div class="modal-input-control">
+        <mat-form-field class="example-full-width">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            placeholder="Ex. Conductor"
+            formControlName="accountHeadMainName"
+            required
+            [maxLength]="50"
+            appAlphaNumeric
+          />
+          <mat-error
+            *ngIf="
+              accountheadmainForm
+                .get('accountHeadMainName')
+                .hasError('required') &&
+              accountheadmainForm.get('accountHeadMainName').touched
+            "
+          >
+            Please enter in this field.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Code</mat-label>
+          <input
+            matInput
+            placeholder="Ex. 234"
+            formControlName="accountHeadMainCode"
+            required
+            [maxLength]="10"
+            appAlphaNumeric
+            required
+          />
+          <mat-error
+            *ngIf="
+              accountheadmainForm
+                .get('accountHeadMainCode')
+                .hasError('required') &&
+              accountheadmainForm.get('accountHeadMainCode').touched
+            "
+          >
+            Please enter in this field.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="onAccHeadMainMasterUpdate()">
+        Update
+      </button>
+      <button class="btn clor" mat-button mat-dialog-close>Close</button>
+    </div>
+  </form>
+</section>

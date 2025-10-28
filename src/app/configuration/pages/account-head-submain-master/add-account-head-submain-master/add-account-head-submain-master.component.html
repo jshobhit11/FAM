@@ -1,0 +1,35 @@
+<section>
+  <form [formGroup]="accountHeadSubmainForm">
+  <h1 mat-dialog-title>Add Account Head Submain Master</h1>
+  <div class="content-fields mt-4" mat-dialog-content style="flex-direction: column;">
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label> Account Head Submain Name</mat-label>
+        <input matInput placeholder="Ex. Conductor" 
+        formControlName="accountHeadSubmainName" [maxLength]="100" appAlphaNumeric required />
+          <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label> Account Head Submain Code</mat-label>
+        <input matInput placeholder="Ex. 234" 
+        [maxLength]="10" appAlphaNumeric formControlName="accountHeadSubmainCode" required/>
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Account Head Main Name</mat-label>
+        <mat-select formControlName="amAccountHeadMainMasterId">
+          <mat-option *ngFor="let main of accountHeadMainData" [value]="main.amAccountHeadMainMasterId">
+            {{main.accountHeadMainCode}}-{{main.accountHeadMainName}}</mat-option>
+        </mat-select>
+        <mat-error>Please select in this field.</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onAddAccountHeadSubmainMaster()" [disabled]="notificationRef">Add</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+  </form>
+</section>

@@ -1,0 +1,48 @@
+<section class="mt-3">
+<div class="container-fluid page">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/main/dashboard">Dashboard </a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '1'">
+            <a class="bg_li_gr">Site Inspection </a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '2'">
+            <a class="bg_li_gr">Estimation</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '5'">
+            <a class="bg_li_gr">Estimate Approval </a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '3'">
+            <a class="bg_li_gr">Power Sanction Approval </a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '4'">
+            <a class="bg_li_gr">Awaiting For Payments</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '6'">
+            <a class="bg_li_gr">Service Line Estimate</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '7'">
+            <a class="bg_li_gr">Service Line Estimate Approval</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '21'">
+            <a class="bg_li_gr">Waiting For Work Order Generation</a>
+          </li>
+          <li class="breadcrumb-item" *ngIf="statusCode == '43'">
+            <a class="bg_li_gr">Estimate Sanction</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+
+  <app-filter-table
+  headingName="List Summary" [isOffice]="true" titleName="main"
+  [cols]="cols" [rows]="rows" [data]="rows" [filterFields]="filterFields" [loading]="loading">
+  </app-filter-table>
+ 
+</div>
+</section>

@@ -1,0 +1,52 @@
+<section>
+    <form class="form">
+        <div class="page__content shadow p-3 position-relative dis-flex-colu">
+            <h2 class="title-2">Account Meter Mapping</h2>
+
+            <div style="overflow: auto; width: 100%; border: 2px solid #c2c2c2; margin-top: 1rem;">
+                <table class="table table-bordered text-center">
+                    <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                        <tr>
+                            <th scope="col">Account Id</th>
+                            <th scope="col">Badge Number</th>
+                            <th scope="col">Serial No</th>
+                            <th scope="col">Reading Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of accountMappingData">
+                            <td>{{ item.accountId }}</td>
+                            <td>{{ item.badgeNumber }}</td>
+                            <td>{{ item.meterSerialNo }}</td>
+                            <td>{{ item.readingDate }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="overflow: auto; width: 100%; border: 2px solid #c2c2c2; margin-top: 1rem;">
+                <table class="table table-bordered text-center">
+                    <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                        <tr>
+                            <th scope="col">Sequence no</th>
+                            <th scope="col">Register Id </th>
+                            <th scope="col">Unit of Measure</th>
+                            <th scope="col">Time of Use</th>
+                            <th scope="col">Reading</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of validateMeterData">
+                            <td>{{ item.registerReadSeqNo }}</td>
+                            <td>{{ item.registerId }}</td>
+                            <td>{{ item.registerUom }}</td>
+                            <td>{{ item.registerTou }}</td>
+                            <td>{{ item.registerReading }}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</section>

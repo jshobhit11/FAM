@@ -1,0 +1,17 @@
+<div class="upload-section">
+  <label class="form-label">Add Premises Documents</label>
+
+  <div class="upload-box">
+    <input type="file" #fileInput (change)="onFileSelected($event)" />
+    <button class="btn btn-primary" (click)="onUpload()" [disabled]="!selectedFile">
+      Upload
+    </button>
+  </div>
+
+  <div *ngIf="uploadSuccess" class="success-msg">
+     File uploaded successfully!
+  </div>
+  <div *ngIf="uploadError" class="error-msg">
+     {{ uploadError }}
+  </div>
+</div>

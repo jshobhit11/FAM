@@ -1,0 +1,40 @@
+<div class="dialog-container">
+    <div mat-dialog-title class="dialog-title">
+      <h3><strong>Feasibility Point Details</strong></h3>
+      <button mat-icon-button (click)="onClose()" class="close-button">
+        <mat-icon aria-label="Close" class="close-icon">close</mat-icon>
+      </button>
+    </div>
+    <div mat-dialog-content class="content">
+        <div *ngFor="let item of data" class="detail-box">
+            <div class="detail-row" (click)="downloadPDF(item.documentId)">
+                <div class="label">Document Name :</div>
+                <div class="value">{{ item.reportFileLfa }}</div>
+                <div class="download-icon">
+                  <mat-icon>get_app</mat-icon> <!-- Material Icons download icon -->
+                </div>
+              </div>
+              <div class="detail-row" (click)="downloadImage(item.imageId)">
+                <div class="label">Image Name :</div>
+                <div class="value">{{ item.sldImage }}</div>
+                <div class="download-icon">
+                  <mat-icon>get_app</mat-icon> <!-- Material Icons download icon -->
+                </div>
+             </div>
+             <div class="detail-row">
+                <div class="label">Case ID:</div>
+                <div class="value">{{ item.referenceNumber }}</div>
+              </div>
+             <div class="detail-row">
+                <div class="label">Status:</div>
+                <div class="value">
+                  <ng-container *ngIf="item.statusLfa === 'Y'; else otherContent">
+                    Success
+                  </ng-container>
+                  <ng-template #otherContent>{{ item.statusLfa }}</ng-template>
+                </div>
+              </div>
+              
+      </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="page-1">
+    <section class="mt-2">
+      <ul>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a routerLink="/store-management/dashboard">Store</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a style="color: lightslategray">Receiver Division Store Transfer Approval</a>
+            </li>
+          </ol>
+        </nav>
+      </ul>
+    </section>
+    <section>
+      <app-filter-table headingName="Receiver Division Store Transfer Approval"
+      [isOffice]="true" titleName="receiverDivisionStoreTransferApproval" dataKey="materialsIndentNo"
+      [cols]="cols" [rows]="data" [data]="data" [filterFields]="filterFields" [loading]="true">
+      </app-filter-table>
+    </section>
+    </div>

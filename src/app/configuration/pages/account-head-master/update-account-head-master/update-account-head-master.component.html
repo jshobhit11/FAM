@@ -1,0 +1,80 @@
+<section>
+  <h1 mat-dialog-title>Update Account Head Master</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Account Main Head</mat-label>
+        <mat-select
+          [(ngModel)]="getData.accountMainHeadCode"
+          required
+          (selectionChange)="selectAccountMainHead($event.value)" 
+        >
+          <mat-option *ngFor="let main of accountMainData" [value]="main.accountHeadMainCode">
+            {{ main.accountHeadMainCode }}-{{ main.accountHeadMainName }}
+          </mat-option>
+        </mat-select>
+        <!-- Show error if invalid -->
+        <mat-error *ngIf="!getData.accountMainHeadCode">
+          Please select this field.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Account Sub Main Head</mat-label>
+        <mat-select [(ngModel)]="getData.accountSubmainHeadCode"  required>
+          <mat-option *ngFor="let main of accountSubMainData" [value]="main.accountHeadSubmainCode" >
+            {{ main.accountHeadSubmainCode }} - {{ main.accountHeadSubmainName }}
+          </mat-option>
+        </mat-select>
+        <!-- Show error if invalid -->
+        <mat-error *ngIf="!getData.accountSubmainHeadCode  " >
+          Please select this field.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="modal-input-control">
+      <mat-form-field appearance="fill">
+        <mat-label>Account Head Code</mat-label>
+        <input
+          matInput
+          placeholder="Ex. Each"
+          [(ngModel)]="getData.accountHeadCode"
+          required
+          minlength="2"
+        />
+        <!-- Show error if invalid -->
+        <mat-error *ngIf="!getData.accountHeadCode || getData.accountHeadCode.length < 2">
+          Please enter this field.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Account Head Name</mat-label>
+        <input
+          matInput
+          placeholder="Ex. Each"
+          [(ngModel)]="getData.accountHeadDescription"
+          required
+          minlength="2"
+        />
+        <!-- Show error if invalid -->
+        <mat-error *ngIf="!getData.accountHeadDescription || getData.accountHeadDescription.length < 2">
+          Please enter this field.
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button
+      class="c-btn"
+      mat-button
+      (click)="onAccountHeadUpdate()"
+      [disabled]="!isFormValid()"
+    >
+      Update
+    </button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+</section>

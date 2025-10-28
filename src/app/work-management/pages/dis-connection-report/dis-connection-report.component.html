@@ -1,0 +1,131 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/dashboard">Works</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Disconnection-Report</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <section>
+    <form class="form" [formGroup]="formGroup">
+      <div class="container-fluid page">
+        <div class="page__content shadow p-3 position-relative dis-flex-colu">
+          <h2 class="title-2">Disconnection-Report</h2>
+          <div style="width: 100%; margin-top: 1rem">
+            <div class="p-3 mb-5">
+              <div class="row g-4 align-items-center">
+                
+                <div class="col-sm-6" id="office">
+                  <label for="office">Office Name <span style="color: red"> *</span></label>
+                  <div class="card flex justify-content-center mt-1">
+                    <p-treeSelect
+                      class="md:w-20rem w-full"
+                      containerStyleClass="w-full"
+                      formControlName="selectedNodes"
+                      (onNodeSelect)="nodeSelect($event.node)"
+                      selectionMode="single"
+                      (onNodeUnselect)="nodeUnselect()"
+                      [(ngModel)]="selected"
+                      [options]="nodes"
+                      [filter]="true"
+                      [filterInputAutoFocus]="true"
+                      [scrollHeight]="'200px'"
+                    ></p-treeSelect>
+                  </div>
+                </div>
+                <div class="row g-4 align-items-center">
+                  <div class="col-sm-4">
+                    <mat-form-field style="width:18rem;">
+                      <mat-label>From Date</mat-label>
+                      <input matInput [matDatepicker]="fromDatePicker" name="fromDate" formControlName="fromDate" required [readonly]="true" [disabled]="false" [max]="getFormattedCurrentDate()" [ngModel]="formGroup.get('fromDate').value | date: 'yyyy-MM-dd'">
+                      <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                      <mat-datepicker #fromDatePicker></mat-datepicker>
+                      <mat-error>Please select this field</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-2">
+                    <label for="toDate" class="col-form-label" style="font-weight: normal;margin-left: 40px;">
+                      To Date <span class="star"> *</span>
+                    </label>
+                  </div>
+                  <div class="col-sm-4">
+                    <mat-form-field style="width:18rem;">
+                      <mat-label>To Date</mat-label>
+                      <input matInput [matDatepicker]="toDatePicker" name="toDate" formControlName="toDate" required [readonly]="true" [disabled]="false" [max]="getFormattedCurrentDate()" appDateRangeValidator [ngModel]="formGroup.get('toDate').value | date: 'yyyy-MM-dd'" >
+                      <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                      <mat-datepicker #toDatePicker></mat-datepicker>
+                      <mat-error *ngIf="formGroup.get('toDate').hasError('required') && formGroup.get('toDate').touched">Please select this field</mat-error>
+                      <mat-error *ngIf="formGroup.get('toDate').hasError('dateRangeError')">To Date cannot be before From Date</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                </div>
+              </div>
+              <div class="offset-sm-5">
+                <div class="row mt-2 mb-2 align-items-center col-sm-4">
+                  <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Output Format<span class="star"> *</span></legend>
+                    <div class="mt-2">
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="inlineRadioOptions"
+                          id="inlineRadio1"
+                          value="pdf"
+                          (change)="onRadioChange($event.target.value)"
+                          checked
+                        />
+                        <label class="form-check-label" for="inlineRadio1">PDF</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="inlineRadioOptions"
+                          id="inlineRadio2"
+                          value="xlsx"
+                          (change)="onRadioChange($event.target.value)"
+                        />
+                        <label class="form-check-label" for="inlineRadio2">XLS</label>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="offset-sm-5 mt-2 mb-2">
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-md"
+                    *ngIf="pdfType == 'pdf'"
+                    (click)="generateBudgetAbstractReport()"
+                  >
+                    Generate PDF
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-md"
+                    *ngIf="pdfType == 'xlsx'"
+                    (click)="downloadExcelFile()"
+                  >
+                    Generate XLSX
+                  </button>
+                </div>
+                <!-- <div class="offset-sm-5">
+                  <span *ngIf="error" style="color: red">{{ error }}</span>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+    </form>
+  </section>
+</div>

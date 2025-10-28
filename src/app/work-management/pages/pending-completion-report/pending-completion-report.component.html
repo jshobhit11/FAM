@@ -1,0 +1,110 @@
+<div class="page-1"></div>
+    <section class="mt-2">
+      <ul>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a routerLink="/work-management/dashboard">Works</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a style="color: lightslategray"> Completion Report</a>
+            </li>
+          </ol>
+        </nav>
+      </ul>
+    </section>
+    
+    <section>
+      <form [formGroup]="cRegisteredForm">
+      <div class="container">
+        <div class="page__content shadow p-3 position-relative dis-flex-colu">
+          <h2 class="title-2"> Completion Report</h2>
+          <div style="width: 100%;">
+            <div class="inner-div">
+              <label>Section Name <span class="star">*</span></label>
+              <!-- <input
+              type="text"
+              class="form-control"
+              name="searchInput"
+              [formControl]="searchInput"
+              placeholder="Search"
+              matInput 
+              formControlName="sectionName"
+              [matAutocomplete]="auto"
+              appAlphaNumeric
+              [maxLength]="20"
+              (input)="filterOfficeOptions($event.target.value)"
+            /> -->
+            <!-- <mat-error  *ngIf="cRegisteredForm.get('sectionName').hasError('required') && cRegisteredForm.get('sectionName').touched">
+                Please fill this field
+              </mat-error> -->
+
+              <mat-form-field appearance="fill">
+                <input
+                type="text"
+                placeholder="Pick one"
+                 matInput
+                 [formControl]="cRegisteredForm.get('sectionName')"
+                  [matAutocomplete]="auto"
+                  placeholder="Select Section Name"
+                 
+                />
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectOffice($event.option.value)">
+                  <mat-option *ngFor="let option of sectionOptions" [value]="option.officeMasterId">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-autocomplete>
+                 <mat-error *ngIf="cRegisteredForm.get('sectionName').hasError('required') && cRegisteredForm.get('sectionName').touched">
+                  Please fill this field
+                </mat-error>
+              </mat-form-field>
+            
+            
+              <!-- <mat-autocomplete
+                #auto="matAutocomplete"
+                (optionSelected)="selectOffice($event.option.value)"
+              >
+                <mat-option
+                  *ngFor="let option of filteredOfficeOptions | async"
+                  [value]="option"
+                >
+                  {{ option.officeMasterId }}
+                </mat-option>
+              </mat-autocomplete> -->
+            </div>
+            <div class="offset-sm-5">
+              <div class="row mt-2 mb-2 align-items-center col-sm-4">
+                <fieldset class="scheduler-border">
+                  <legend class="scheduler-border">Output Format</legend>
+                  <div
+                  class="output-format-box"
+                  style="display: flex; align-items: center; justify-content: center"
+                >
+                  <div class="radio-buttons">
+                    <input type="radio" formControlName="outputFormat" value="pdf" id="pdf" checked="true" />
+                    <label for="pdf">PDF <span class="star">*</span></label>
+                    <input type="radio" formControlName="outputFormat" value="xls" id="xls" />
+                    <label for="xls">XLS  <span class="star">*</span></label>
+                  </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+    
+            <div class="offset-sm-5 mt-2 mb-4">
+              <button
+                type="submit"
+                class="btn btn-primary btn-md" 
+                style="background-color: #4472c4;" 
+                (click)="generateCompletionReport()"
+              >
+                Download
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    </section>
+    
+   

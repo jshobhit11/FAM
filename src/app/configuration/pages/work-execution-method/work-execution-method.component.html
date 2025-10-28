@@ -1,0 +1,84 @@
+<div class="container-fluid page-3">
+<ul>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/configuration">Configuration</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a style="color: lightslategray">Work Execution Method Master</a>
+      </li>
+    </ol>
+  </nav>
+</ul> 
+  <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+    <h2 class="title-2">Work Execution Method Master  </h2>
+
+  <div style="display: flex; flex-wrap: wrap; overflow: auto">
+    <div class="top-row">
+      <div class="input-control">
+        <mat-form-field class="example-full-width">
+          <mat-label>Search By Work Execution Method Name</mat-label>
+          <input
+            (keyup)="applyFilter($event.target.value)"
+            matInput
+            placeholder="Ex. Conductor"
+          />
+        </mat-form-field>
+      </div>
+      <div class="button-control">
+        <button
+          mat-button
+          class="c-btn"
+          (click)="openAddWorkExecutionMethodDialog()">
+          Add Work Execution Method
+        </button>
+      </div>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 mt-4">
+
+      <!-- SLNO Column -->
+      <ng-container matColumnDef="slno">
+        <th mat-header-cell *matHeaderCellDef>SL NO</th>
+        <td mat-cell *matCellDef="let element">
+          {{ dataSource.data.indexOf(element) + 1 }}
+        </td>
+      </ng-container>
+
+      <!-- work execution method name Column -->
+      <ng-container matColumnDef="WorkExecutionMethodName">
+        <th mat-header-cell *matHeaderCellDef>Work Execution Method Name</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.woExecutionMethodName }}
+        </td>
+      </ng-container>
+
+      <!-- work execution code Column -->
+      <ng-container matColumnDef="WorkExecutionMethodCode">
+        <th mat-header-cell *matHeaderCellDef>Work Execution Method Code</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.woExecutionMethodCode }}
+        </td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            style="border: none; background-color: transparent"
+            (click)="
+              openUpdateWorkExecutionMethodDialog(element.woExecutionMethodId)">
+            <mat-icon color="error">edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+  </mat-paginator>
+

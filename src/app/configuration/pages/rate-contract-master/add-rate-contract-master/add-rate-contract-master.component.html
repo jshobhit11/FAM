@@ -1,0 +1,106 @@
+<section>
+<form class="form" [formGroup]="rateContractForm">
+<h1 mat-dialog-title>Add Rate Contract Master</h1>
+  <div class="two-row-fields">
+    <div class="col-sm-6" id="office">
+      Applicable Areas<br>
+      <div class="card flex justify-content-center">
+          <form [formGroup]="treeForm">
+              <p-treeSelect class="md:w-20rem w-full"
+              containerStyleClass="w-full"
+              formControlName="selectedNodes"
+              (onNodeSelect)="nodeSelect($event.node)"
+              selectionMode="single"
+              (onNodeUnselect)="nodeUnselect()"
+              [(ngModel)]="selected"
+              [options]="nodes"
+              [filter]="true" 
+              [scrollHeight]="'250px'"
+          > </p-treeSelect>
+          </form>
+          <mat-error *ngIf="treeForm.get('selectedNodes').hasError('required')">
+            Please select Office Name.
+          </mat-error>
+        </div>
+    </div>
+  </div>
+  <div class="two-row-fields">
+    <mat-form-field class="fill">
+      <mat-label>Vendor Master</mat-label>
+      <mat-select [(ngModel)]="selectedVendorId" formControlName="vendMaster" required>
+        <mat-option *ngFor="let main of vendorData" [value]="main.vendorId">
+          {{ main.vendorOrganizationName }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="rateContractForm.get('vendMaster').invalid && rateContractForm.get('vendMaster').touched">
+        Please select in this field.</mat-error> 
+    </mat-form-field>
+    <mat-form-field class="fill">
+      <mat-label>Rate contractor Vendor Name</mat-label>
+      <input matInput placeholder="Ex. Each" [ngModel]="getSelectedVendorName(selectedVendorId)"  
+      formControlName="vendName" appAlphaNumeric required/>
+      <mat-error>Please enter in this field.</mat-error>
+    </mat-form-field>
+    </div>
+
+    <div class="two-row-fields">
+    <mat-form-field class="fill">
+      <mat-label>Rc Code</mat-label>
+      <input matInput placeholder="Ex. Each" [(ngModel)]="contractTypeObj.rcCode" 
+      formControlName="rCode" appAlphaNumeric required/>
+      <mat-error>Please enter in this field.</mat-error>
+    </mat-form-field>
+    <mat-form-field class="fill">
+      <mat-label>Rc Validity</mat-label>
+      <input matInput [matDatepicker]="picker" placeholder="Rc Validity" [(ngModel)]="contractTypeObj.rcValidity"
+      formControlName="rcValidity" required />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error>Please select this field.</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="two-row-fields">
+    <mat-form-field class="fill">
+      <mat-label>Execution Method</mat-label>
+      <mat-select [(ngModel)]='contractTypeObj.executionMethod' formControlName="exeMethod" required>
+        <mat-option value="Partial Turnkey">Partial Turnkey</mat-option>
+        <mat-option value="Total Turnkey">Total Turnkey</mat-option>
+      </mat-select>
+      <mat-error *ngIf="rateContractForm.get('exeMethod').invalid && rateContractForm.get('exeMethod').touched">
+        Please select in this field.</mat-error> 
+    </mat-form-field>
+    <mat-form-field class="fill">
+      <mat-label>Rc WorkDescription</mat-label>
+      <input matInput placeholder="Ex. Each" [(ngModel)]="contractTypeObj.rcWorkDescription" 
+      formControlName="rWorkDesc" appAlphaNumeric required/>
+      <mat-error>Please enter in this field.</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="two-row-fields">
+    <mat-form-field class="fill">
+      <mat-label>Consignee</mat-label>
+      <mat-select [(ngModel)]='contractTypeObj.consignee' formControlName="cosigne" required>
+        <mat-option value="Store">Store</mat-option>
+        <mat-option value="Site">Site</mat-option>
+      </mat-select>
+      <mat-error *ngIf="rateContractForm.get('cosigne').invalid && rateContractForm.get('cosigne').touched">
+        Please select in this field.</mat-error> 
+    </mat-form-field>  
+    <mat-form-field class="fill">
+      <mat-label>Discom</mat-label>
+      <mat-select [(ngModel)]="contractTypeObj.discom" formControlName="discom" required>
+        <mat-option *ngFor="let main of DiscomData" [value]="main.discomCode">
+          {{ main.discomName }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="rateContractForm.get('discom').invalid && rateContractForm.get('discom').touched">
+        Please select in this field.</mat-error> 
+    </mat-form-field>
+         
+</div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="addRcContractType()">Add</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+</form>
+</section>

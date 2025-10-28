@@ -1,0 +1,24 @@
+<div class="container-fluid page">
+    <section class="mt-2">
+      <ul>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a routerLink="/estimates/dashboard">Estimates </a>
+            </li>
+            <li class="breadcrumb-item">
+              <a style="color: lightslategray">
+                Preventive Maintenance List 
+              </a>
+            </li>
+          </ol>
+        </nav>
+      </ul>
+    </section>
+  
+    <app-filter-table headingName="Preventive Maintenance List Summary" 
+    titleName="Preventive Maintenance List" [isOffice]="true" [cols]="cols" [rows]="PreventiveList" 
+    [data]="PreventiveList" [filterFields]="filterFields" [loading]="false">
+    </app-filter-table>
+ </div>
+

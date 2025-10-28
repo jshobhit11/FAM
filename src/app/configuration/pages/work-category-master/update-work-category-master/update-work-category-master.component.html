@@ -1,0 +1,48 @@
+<section>
+  <form [formGroup]="workCategoryForm">
+  <h1 mat-dialog-title>Update Work Category Master</h1>
+  <div class="modal-input-control">
+    <mat-form-field class="example-full-width">
+      <mat-label>Work Category Name</mat-label>
+      <input matInput placeholder="Ex. Each" formControlName="workCategoryName" [maxLength]="50" appAlphaNumeric />
+      <mat-error *ngIf="workCategoryForm.get('workCategoryName').hasError('required') && workCategoryForm.get('workCategoryName').touched">
+        Please enter in this field.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Work Category Code</mat-label>
+      <input matInput placeholder="Ex. Each" formControlName="workCategoryCode" [maxLength]="5" appAlphaNumeric />
+      <mat-error *ngIf="workCategoryForm.get('workCategoryCode').hasError('required') && workCategoryForm.get('workCategoryCode').touched">
+        Please enter in this field.
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="modal-input-control">
+    <mat-form-field class="example-full-width">
+      <mat-label>Budget Type</mat-label>
+      <mat-select [(value)]="getData.budgetType" formControlName="budgetType">
+        <mat-option *ngFor="let main of bugdetTypes" [value]="main">
+          {{main}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="workCategoryForm.get('budgetType').hasError('required') && workCategoryForm.get('budgetType').touched">
+        Please select this field
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Budget Check Required</mat-label>
+
+      <mat-select  [(value)]="getData.budgetCheckFlag" formControlName="budgetCheckFlag" required>
+        <mat-option [value]="1">Yes</mat-option>
+        <mat-option [value]="0">No</mat-option>
+      </mat-select>
+      <mat-error *ngIf="workCategoryForm.get('budgetCheckFlag').hasError('required') && workCategoryForm.get('budgetCheckFlag').touched">
+        Please select this field
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onWorkCategoryUpdate()" [disabled]="notificationRef">Update</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+</form>
+</section>

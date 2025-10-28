@@ -1,0 +1,34 @@
+.page {
+    color: white;
+    padding: 0 0.5rem;
+    background: #f1f5f9;
+    &__box {
+      background: #4472c4;
+      margin: 0 -1rem;
+      font-size: 1rem;
+    }
+    &__content {
+      display: flex;
+      min-height: calc(100vh - 70px);
+      border-radius: 10px;
+      background: white;
+      color: black;
+      font-size: 1rem;
+  
+      th {
+        background-color: #f0f6ff;
+      }
+  
+      td {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #757575;
+      }
+    }
+  }
+  
+  .dis-flex-colu {
+    display: flex;
+    flex-direction: column;
+  }
+  

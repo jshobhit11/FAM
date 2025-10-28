@@ -1,0 +1,48 @@
+<!-- <mat-nav-list class="top">
+  <div class="logo py-3">
+    <a routerLink="/main/dashboard"><img src="assets/escoms.png" style="height: auto;" alt="" /></a>
+  </div>
+</mat-nav-list> -->
+<mat-divider></mat-divider>
+<mat-nav-list>
+  <a mat-list-item routerLinkActive="list-item-active" routerLink="/field-resolution" class="configuration-title" style="margin-top: 3rem;">
+    <img src="assets/icons/settings.svg" class="icon_configuration" alt="field-resolution"/>
+    <span style="font-weight: 600;">Field Resolution</span>
+  </a>
+</mat-nav-list>
+<mat-nav-list>
+  <div>
+    <div class="section-container" (click)="toggleList()">
+      <span class="section-title">
+        <img src="assets/icons/archive.svg" class="icon_configuration" alt="Estimate Master">
+        Field Complaints Resolution
+      </span>
+    </div>
+    <ul class="side-nav-child-list" *ngIf="isListVisible">
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/revert-to-site-inspection">Revert To Site Inspection</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/power-sanction">Line Extension To Without Line Extension (Vice Versa)</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/generate-procurement-letter">Generate Procurement Letter</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/account-mapping-to-meter-upload">Revert To Meter Upload From Account To Meter Mapping</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/move-to-meter-upload">Move To Meter Upload For Without Line Extension Cases</a></li> 
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/execution-method-change">Work Execution Method Change To Self Execution</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/change-dop-category">Change Dop Category From Self Execution Works To Service Connection</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/line-ext-change">Revert To Work Execution</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/change-approval-in-work-order-creation">Change AETDO Instead Of AET (Vice Versa)</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/smr-estimation-change">Multiple meter estimate error in Single Meter Replacement validation</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/payment-to-estimation-approval">Change Awaiting For Payment To Estimation Approval</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/work-improvement-to-estimate">Works Improvement Revert back to Estimate</a></li>
+
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/imw-revert-workexecution">Improvement work – move back to work execution from asset bom mapping, work completion, work closed. </a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/meterupload-to-servicemain">Revert back to Service main estimate from meter upload.</a></li>
+      <!-- <li><a routerLinkActive="active" routerLink="/field-resolution/meter-to-work-execution">Change meter upload to work execution</a></li>-->
+      <!-- <li><a routerLinkActive="active" routerLink="/field-resolution/smr-cancellation">SMR case Cancellation</a></li> -->
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/revert-imw">Improvement work – after estimation approval and in any stage, revert back to estimate. </a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/smr-approval">SMR – after estimation approval and in any stage.</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/amm-to-meter">Account Meter Mapping (Singel New Connection).</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/meter-replacement-validation">Meter REPLACEMENT (LE,LR,SMR) - Meter validation – meter_replicated</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/meter-mc">To generate the meter file again for MC.</a></li>
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/meter-bmr">To generate the meter file again for BMR.</a></li> 
+      <li><a (click)="toggleSideBar()" routerLinkActive="active" routerLink="/field-resolution/service-main-material">Add Service Main Material.</a></li>
+    </ul>
+  </div>
+</mat-nav-list>

@@ -1,0 +1,138 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/dashboard">Works</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/work-management/asset-bom-report"
+              >Asset BOM Mapping List</a
+            >
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Asset BOM Mapping</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <section>
+    <form class="form">
+      <div class="page__content shadow p-3 position-relative dis-flex-colu">
+        <h2 class="title-2"> Asset BOM Mapping </h2>
+        <!-- <div class="btn-box mt-4">
+          <button type="button" class="btn btn-primary btn-lg" (click)="fileInput.click()">Upload</button>
+          <input type="file" #fileInput style="display: none" (change)="handleFile($event)">
+          <button type="button" class="btn btn-primary btn-lg" (click)="downloadTableData()">Download</button>
+        </div> -->
+        <div style="overflow: auto;width: 100%;margin-top: 1rem;">
+          <table class="table table-bordered text-center" *ngIf="!fullDetails">
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th scope="col" style="width: 14%">Asset ID</th>
+                <th scope="col" style="width: 41%">Materials</th>
+                <th scope="col" style="width: 12%">Actual Quantity</th>
+                <th scope="col" style="width: 14%">Remaining Quantity</th>
+                <th scope="col" style="width: 14%">Mapped Quantity</th>
+                <th scope="col" style="width: 9%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <select class="form-control" name="asset"
+                    [(ngModel)]="assetValue">
+                    <option *ngFor="let data of assetListIds; index as i"
+                      [value]="data">
+                      <span> {{ data }}</span>
+                    </option>
+                  </select>
+                </td>
+                <td>
+                  <select class="form-control" name="material"
+                    [(ngModel)]="materialValue"
+                    (change)="onMaterialChange($event.target.value)">
+                    <option *ngFor="let data of assetList.workorderEstimationLogAndMaterialsLabourData"
+                      [value]="data.materialsLabourMasterId">
+                      {{ data.mlName }}
+                    </option>
+                  </select>
+                </td>
+                <td>
+                  {{ actualQuantityValue }}
+                </td>
+                <td>{{ remainingQty }}</td>
+                <td>
+                  <input type="text" class="form-control" name="mappedQuantity"
+                    [(ngModel)]="mappedQuantityValue"
+                    (blur)="onMappedQuantity($event.target.value)"
+                  />
+                </td>
+                <td>
+                  <button style="border: none; background-color: transparent"
+                    (click)="addRow()">
+                    <i class="material-icons">add</i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+  
+          <div style="width: 100%; border: 2px solid #c2c2c2; margin-top: 1rem">
+            <table class="table table-bordered text-center">
+              <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                <tr>
+                  <th scope="col">S. No.</th>
+                  <th scope="col">Asset ID</th>
+                  <th scope="col" style="width: 40%">Materials</th>
+                  <th scope="col">Mapped Quantity</th>
+                  <!-- <th scope="col"></th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of assetList.amAssetRegisterLogAndMaterialsLabourData; index as i">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ data.assetId }}</td>
+                  <td>{{ data.mlName }}</td>
+                  <td>
+                    {{
+                      data?.quantity == "null"
+                        ? data?.mappedQuantity
+                        : data?.quantity
+                    }}
+                  </td>
+                </tr>
+                <!-- <tr *ngFor="let row of tableData; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ row.assetId }}</td>
+                  <td>{{ row.material }}</td>
+                  <td>{{ row.mappedQuantity }}</td>
+                  <td>
+                    <button
+                      style="border: none; background-color: transparent"
+                      (click)="deleteRow(i)"
+                    >
+                      <img src="assets/delete-icon.png" alt="" />
+                    </button>
+                  </td>
+                </tr> -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div *ngIf="!fullDetails" class="btn-box mt-4 center-btn">
+          <button
+          [disabled]="isLoading"
+            type="button"
+            class="btn btn-primary btn-md"
+            (click)="openConfirmationDialog()"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </form>
+  </section>
+  </div>

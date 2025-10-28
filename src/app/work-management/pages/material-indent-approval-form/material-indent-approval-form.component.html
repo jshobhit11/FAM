@@ -1,0 +1,170 @@
+<section class="mt-2">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/work-management/dashboard">Works</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a routerLink="/work-management/material-indent-approval"
+            >Material Indent Approval</a
+          >
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Material Indent Approval Form</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+</section>
+<section>
+  <form class="form" [formGroup]="IndentApprovalForm">
+    <div class="page__content shadow p-3 position-relative dis-flex-colu">
+      <h2 class="title-2">Material Indent Approval</h2>
+
+      <div
+        style="margin-top: 1rem; padding: 0.5rem"
+        *ngIf="approveMaterialIndentData.length"
+      >
+      <div class="grid two-row-grid mt-4">
+        <div class="left-div">
+          <div class="inner-div">
+            <label>Material Indent Request No</label>
+            <p>{{ approveMaterialIndentData[0].materialsIndentNo }}</p>
+          </div>
+          <div class="inner-div">
+            <label>Work Order No</label>
+            <p>{{ approveMaterialIndentData[0].workorderNo }}</p>
+          </div>
+          <!-- <div class="inner-div">
+            <label>Schedule Start Date</label>
+            <p></p>
+          </div> -->
+          <div class="inner-div">
+            <label>Store</label>
+            <p>{{ approveMaterialIndentData[0].storeOffice }}</p>
+          </div>
+        </div>
+        <div>
+          <div class="inner-div">
+            <label> Material Indent Date</label>
+            <p>{{ approveMaterialIndentData[0].materialsIndentDate | date : "yyyy/MM/dd"}}</p>
+          </div>
+          <div class="inner-div">
+            <label> Work Order On</label>
+            <p>{{ approveMaterialIndentData[0].workorderDate | date : "yyyy/MM/dd" }}</p>
+          </div>
+
+          <!-- <div class="inner-div">
+            <label>Schedule End Date</label>
+            <p></p>
+          </div> -->
+        </div>
+      </div>
+        <div class="txt-area">
+          <label style="width: fit-content">Description</label>
+          <!-- <p>{{ approveMaterialIndentData[0].workDescription }}</p> -->
+          <textarea
+            class="form-control"
+            cols="100"
+            rows="3"
+            name="description"
+            [(ngModel)]="approveMaterialIndentData[0].workDescription"
+            formControlName="description"
+            appAlphaNumeric
+            [maxLength]="300"
+            required
+          ></textarea>
+          <mat-error  *ngIf="IndentApprovalForm.get('description').hasError('required') && IndentApprovalForm.get('description').touched">
+            Please enter description
+          </mat-error>
+        </div>
+      </div>
+
+      <div
+        style="
+          overflow: auto;
+          width: 100%;
+          border: 2px solid #c2c2c2;
+          margin-top: 1rem;
+        "
+      >
+        <table class="table table-bordered text-center">
+          <thead style="background-color: #f2f2f2; color: #3e3e3e">
+            <tr>
+              <th scope="col">S. No.</th>
+              <th scope="col">Material</th>
+              <th scope="col">Material Code</th>
+              <th scope="col">Material Unit</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Recieved Quantity</th>
+              <th scope="col">Requested Quantity</th>
+              <th scope="col">Part #</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dataItem of estData; index as i">
+              <td>{{ i + 1 }}</td>
+              <td class="horizontal-scroll">{{ dataItem.materialName }}</td>
+              <td>{{dataItem.materialCode}}</td>
+              <td>{{ dataItem.materialUnit }}</td>
+              <td>{{ dataItem.estimatedQuantity }}</td>
+              <td>
+                {{
+                  dataItem.receivedQuantity === "null" ||
+                  dataItem.receivedQuantity === null
+                    ? 0
+                    : dataItem.receivedQuantity
+                }}
+              </td>
+              <td>{{ dataItem.requestQuantity }}</td>
+              <!-- <td><input type="text" class="form-control" name="requestQuantity" [(ngModel)]="dataItem.requestQuantity" /></td> -->
+              <td>{{ dataItem.part }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="txt-area mt-4">
+        <label style="width: fit-content">Remarks <span class="star">*</span></label>
+        <div>
+        <textarea
+          class="form-control"
+          cols="100"
+          rows="3"
+          name="approveRemarks"
+          [(ngModel)]="approveRemarks"
+          formControlName="remarks"
+          appAlphaNumeric
+          [maxLength]="300"
+          required
+        ></textarea>
+        <mat-error  *ngIf="IndentApprovalForm.get('remarks').hasError('required') && IndentApprovalForm.get('remarks').touched">
+          Please enter remarks
+        </mat-error>
+      </div>
+      </div>
+
+      <div class="btn-box mt-4">
+        <p *ngIf="(validationMessage$ | async) as validationMessage" class="alert alert-danger mt-3">{{ validationMessage }}</p>
+        <button
+        *ngIf="!(validationMessage$ | async)"
+          [disabled]="isLoading"
+          type="button"
+          class="btn btn-primary btn-md"
+          (click)="openApprovalpopupDialog()"
+        >
+          Approve
+        </button>
+        <button 
+        *ngIf="!(validationMessage$ | async)" 
+        type="button"
+        class="btn btn-danger btn-md"
+        style="background-color: red; border-color: darkred; color: white;"
+        (click)="openRejectpopupDialog()"
+      >
+        Reject
+      </button>
+      </div>
+    </div>
+  </form>
+</section>

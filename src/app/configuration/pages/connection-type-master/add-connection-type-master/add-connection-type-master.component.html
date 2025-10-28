@@ -1,0 +1,26 @@
+<section>
+  <form [formGroup]="connectionTypeForm">
+  <h1 mat-dialog-title>Add Connection Type Master</h1>
+  <div class="content-fields mt-4" mat-dialog-content>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Connection Type Name</mat-label>
+        <input matInput placeholder="Ex. Conductor"
+        formControlName="connectionTypeName" appAlphaNumeric [maxLength]="50" required />
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Connection Type Code</mat-label>
+        <input matInput placeholder="Ex. 234" 
+        formControlName="connectionTypeCode" appAlphaNumeric [maxLength]="20" required/>
+        <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onAddConnectionType()">Add</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+  </form>
+</section>

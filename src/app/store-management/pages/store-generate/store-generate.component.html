@@ -1,0 +1,41 @@
+<div class="page-1">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/store-management/dashboard">Works</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">Material Store Request Genarated</a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+<section>
+<h2 class="heading">Material Store Request Generated</h2>
+
+<div class="work-order p-3">
+  <table class="my-scrollable-table">
+    <tr>
+      <th scope="col">Indent Req No.</th>
+      <th scope="col">Indent Req Date</th>
+      <th scope="col">Download</th>
+    </tr>
+    <tr>
+      <td>{{materialsIndentNo}}</td>
+      <td>{{materialsIndentDate | date: 'yyyy-MM-dd'}}</td>
+      <td>
+        <button
+          type="button"
+          class="btn btn-primary btn-md"
+          style="background-color: #4472c4;"
+          (click)="generateInvoiceReportReport(wmMaterialsIndentId)"
+        >
+          Download
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+</section>
+</div>

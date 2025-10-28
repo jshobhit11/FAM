@@ -1,0 +1,86 @@
+<div class="page-1"></div>
+    <section class="mt-2">
+      <ul>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a routerLink="/store-management/dashboard">Store</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a style="color: lightslategray">Store Serial Material Report</a>
+            </li>
+          </ol>
+        </nav>
+      </ul>
+    </section>
+    
+    <section>
+      <form [formGroup]="cRegisteredForm">
+      <div class="container">
+        <div class="page__content shadow p-3 position-relative dis-flex-colu">
+          <h2 class="title-2">Store Serial Material Report</h2>
+          <div style="width: 100%;">
+            <div class="inner-div">
+              <label>Store Code <span class="star">*</span></label>
+              <input
+              matInput
+              class="form-control"
+              name="searchInput"
+              
+              placeholder="Search"
+              formControlName="storeCode"
+              [matAutocomplete]="auto"
+              
+              (input)="filterOfficeOptions($event.target.value)"
+            />
+              <mat-error  *ngIf="cRegisteredForm.get('storeCode').hasError('required') && cRegisteredForm.get('storeCode').touched">
+                Please fill this field
+              </mat-error>
+            
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                (optionSelected)="selectOffice($event.option.value)"
+              >
+                <mat-option
+                  *ngFor="let option of filteredOfficeOptions | async"
+                  [value]="option.storeCode"
+                >
+                  {{ option.storeCode }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+            <div class="offset-sm-5">
+              <div class="row mt-2 mb-2 align-items-center col-sm-4">
+                <fieldset class="scheduler-border">
+                  <legend class="scheduler-border">Output Format</legend>
+                  <div
+                  class="output-format-box"
+                  style="display: flex; align-items: center; justify-content: center"
+                >
+                  <div class="radio-buttons">
+                    <input type="radio" formControlName="outputFormat" value="pdf" id="pdf" checked="true" />
+                    <label for="pdf">PDF <span class="star">*</span></label>
+                    <input type="radio" formControlName="outputFormat" value="xls" id="xls" />
+                    <label for="xls">XLS  <span class="star">*</span></label>
+                  </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+    
+            <div class="offset-sm-5 mt-2 mb-4">
+              <button
+                type="submit"
+                class="btn btn-primary btn-md" 
+                style="background-color: #4472c4;" 
+                (click)="generatePrndingMeterReport()"
+              >
+                Download
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    </section>
+    

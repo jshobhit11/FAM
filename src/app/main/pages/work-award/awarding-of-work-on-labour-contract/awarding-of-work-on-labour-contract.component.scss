@@ -1,0 +1,33 @@
+.heading {
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.work-order table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.work-order td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.work-order th {
+    border: 1px solid #dddddd;
+    padding: 7px;
+}
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+  }
+
+
+  
+
+
+

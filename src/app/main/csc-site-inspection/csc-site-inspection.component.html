@@ -1,0 +1,663 @@
+<div class="page-1">
+  <section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerlink="/main/dashboard">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerlink (click)="navigate()">{{ process }} Site Inspection</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">{{ siteInspectionType }} </a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+
+  <section class="mt-2 mb-4">
+    <div
+      class="page__content shadow p-3 position-relative dis-flex-colu mb-2 background-w"
+    >
+      <h2 class="title-2">Service Request Site Inspection</h2>
+      <mat-horizontal-stepper [linear]="isLinear" #stepper>
+        <mat-step label="Consumer Details">
+          <form class="form">
+            <div class="col-lg-6 mt-4 dis-fl cd-container" *ngIf="data">
+              <h2 class="title-2">Consumer Details</h2>
+              <div class="cd-content" *ngIf="data.accountId == 'null'">
+                <label>Application Type</label>
+                <p>
+                  {{
+                    data.applicationType !== "null" ? data.applicationType : "-"
+                  }}
+                </p>
+              </div>
+              <div class="cd-content mt-2" *ngIf="data.accountId == 'null'">
+                <label>Type of Connection</label>
+                <p>
+                  {{
+                    data.connectionType !== "null" ? data.connectionType : "-"
+                  }}
+                </p>
+              </div>
+
+              <div class="cd-content mt-2">
+                <label>Account ID</label>
+                <p>{{ data.accountId !== "null" ? data.accountId : "-" }}</p>
+              </div>
+              <div class="cd-content">
+                <label>Name & Address</label>
+                <p>
+                  {{
+                    data?.applicantName !== "null" ? data?.applicantName : "-"
+                  }},
+                  {{ data.address !== "null" ? data.address : "-" }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Land Mark</label>
+                <p>{{ data.landmark !== "null" ? data.landmark : "-" }}</p>
+              </div>
+              <div class="cd-content">
+                <label>Email ID</label>
+                <p>{{ data.email !== "null" ? data.email : "-" }}</p>
+              </div>
+              <div class="cd-content">
+                <label>Contact No.</label>
+                <p>
+                  {{ data.mobileNumber !== "null" ? data.mobileNumber : "-" }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Applicant Type</label>
+                <p>
+                  {{ data.applicantType !== "null" ? data.applicantType : "-" }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Application Type</label>
+                <p>
+                  {{
+                    data.applicationType !== "null" ? data.applicationType : "-"
+                  }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Tariff</label>
+                <p>{{ data?.tariff !== "null" ? data?.tariff : "-" }}</p>
+              </div>
+              <!-- <div *ngIf="data?.applicationTypeCode !== 'PD'" class="cd-content">
+                <label>Type of Connection</label>
+                <p>
+                  {{
+                    data.connectionType !== "null" ? data.connectionType : "-"
+                  }}
+                </p>
+              </div>
+              <div *ngIf="data?.applicationTypeCode !== 'PD'" class="cd-content">
+                <label>Applied Load (KW)</label>
+                <p>{{ data.loadKw !== "null" ? data.loadKw : "-" }}</p>
+              </div>
+              <div *ngIf="data?.applicationTypeCode !== 'PD'" class="cd-content">
+                <label>Applied Load (HP)</label>
+                <p>{{ data.loadHp !== "null" ? data.loadHp : "-" }}</p>
+              </div>
+              <div *ngIf="data?.applicationTypeCode !== 'PD'" class="cd-content">
+                <label>Total Applied Load in {{ data?.loadUnit }}</label>
+                <p>{{ data?.totalContractedLoad }}</p>
+              </div> -->
+              <div class="cd-content">
+                <label>Phase</label>
+                <p>{{ data.phase !== "null" ? data.phase : "-" }}</p>
+              </div>
+              <!-- <div class="cd-content">
+                <label>Plot Size (sq.ft)</label>
+                <p>{{ data.plotSize !== "null" ? data.plotSize : "-" }}</p>
+              </div>
+              <div class="cd-content">
+                <label>Total Build up Area (sq.mts.)</label>
+                <p>
+                  {{
+                    data.buildupAreaSize !== "null" ? data.buildupAreaSize : "-"
+                  }}
+                </p>
+              </div>
+              <div class="cd-content">
+                <label>Adjacent Consumer Number</label>
+                <p>
+                  {{
+                    data.adjacentAccountNo !== "null"
+                      ? data.adjacentAccountNo
+                      : "-"
+                  }}
+                </p>
+              </div> -->
+              <div class="btn-box mt-4">
+                <!-- <button type="button" class="btn btn-lg clor">Email & SMS</button> -->
+                <!-- <button
+                  type="button"
+                  class="btn btn-md clor"
+                  (click)="navigateToViewDocument()"
+                >
+                  View Document
+                </button> -->
+                <button type="button" class="btn btn-md clor" (click)="navigateToPrintForm(accountId)">
+                  <a
+                    style="text-decoration: none; color: unset"
+                    >Print Application Form</a
+                  >
+                </button>
+                <button
+                  matStepperNext
+                  type="button"
+                  class="btn btn-primary btn-md"
+                  (click)="onNextButtonClick(stepper)"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step label="Inspection Details">
+          <form class="form" [formGroup]="networkExtensionForm">
+            <div class="col-lg-6 mt-4 dis-fl premisesInspe">
+              <h2>Inspection Details</h2>
+
+              <!-- Display Name Details if applicationStatusCode is NMCHG -->
+              <ng-container *ngIf="data?.applicationTypeCode === 'NMCHG'">
+                <div class="col disp-flex">
+                  <label class="form-label">Old Applicant Name</label>
+                  <p>
+                    {{
+                      data?.applicantName !== "null" ? data?.applicantName : "-"
+                    }}
+                  </p>
+                </div>
+                <div class="col disp-flex">
+                  <label class="form-label">New Applicant Name</label>
+                  <p>{{ data?.newName !== "null" ? data?.newName : "-" }}</p>
+                </div>
+              </ng-container>
+
+              <!-- Display Tariff Details if applicationStatusCode is TC -->
+              <ng-container *ngIf="data?.applicationTypeCode === 'TCNG'">
+                <div class="col disp-flex">
+                  <label class="form-label">Old Tariff</label>
+                  <p>{{ data?.tariff !== "null" ? data?.tariff : "-" }}</p>
+                </div>
+                <div class="col disp-flex">
+                  <label class="form-label">New Tariff</label>
+                  <p>
+                    {{
+                      categoryMaterialName !== null ? categoryMaterialName : "-"
+                    }}
+                  </p>
+                </div>
+              </ng-container>
+
+              <!-- <ng-container *ngIf="data?.applicationTypeCode === 'SMR'">
+                <div class="col disp-flex" style="margin-top: 20px;">
+                  <label class="form-label">Upload Document</label>
+                  <div style="display: flex; flex-direction: column;">
+                    <input
+                      type="file"
+                      #pdfFileInput
+                      name="fileupload"
+                      appFileSizeValidator
+                      class="form-control"
+                      id=""
+                      formControlName="pdfFile"
+                      placeholder=""
+                      style="width: 140%;"
+                    />
+                    <mat-error style="margin-top: 5px;">File size exceeds 1 MB. Please upload a file below 1MB.</mat-error>
+                  </div>
+                </div>                    
+                    <div class="col disp-flex">
+                      <label class="form-label">Inspected By</label>
+                      <div class="inspected-checkbox">
+                        <div>
+                          <input
+                            type="checkbox"
+                            formcontrolname="inspectedByAE"
+                            id="AE"
+                            name="AE"
+                            value="AE"
+                            checked
+                          />
+                          <label for="AE">AE</label>
+                        </div>
+                        <div>
+                          <input
+                            type="checkbox"
+                            formcontrolname="inspectedByAEE"
+                            id="AEE"
+                            name="AEE"
+                            value="AEE"
+                          />
+                          <label for="AEE">AEE</label>
+                        </div>
+                        <div>
+                          <input
+                            type="checkbox"
+                            formcontrolname="inspectedByEE"
+                            id="EE"
+                            name="EE"
+                            value="EE"
+                          />
+                          <label for="EE">EE</label>
+                        </div>
+                        <div>
+                          <input
+                            type="checkbox"
+                            formcontrolname="inspectedBySE"
+                            id="SE"
+                            name="SE"
+                            value="SE"
+                          />
+                          <label for="SE">SE</label>
+                        </div>
+                        <div>
+                          <input
+                            type="checkbox"
+                            formcontrolname="inspectedByCE"
+                            id="CE"
+                            name="CE"
+                            value="CE"
+                          />
+                          <label for="CE">CE</label>
+                        </div>
+                      </div>
+                    </div>
+      
+                    <div class="col disp-flex">
+                      <label class="form-label"> Inspection Date </label>
+                      <div class="date-field">
+                        <input
+                          class="form-control"
+                          type="date"
+                          formcontrolname="inspectionDate"
+                          id="inspectionDate"
+                          [value]="defaultInspectionDate | date:'yyyy-MM-dd'">
+                      </div>
+                    </div>
+                    <div class="col mt-3 disp-flex">
+                      <label class="form-label">Remarks</label>
+                      <textarea
+                        class="form-control"
+                        name="deviationRemarks"
+                        formControlName="deviationRemarks"
+                        id=""
+                        cols="20"
+                        rows="2"
+                        placeholder="Remarks"
+                      ></textarea>
+                    </div>
+
+              </ng-container> -->
+
+              <ng-container  *ngIf="data?.applicationTypeCode !== 'NMCHG' && data?.applicationTypeCode !== 'TCNG'&& data?.applicationTypeCode !== 'PD'">
+              <ng-container>
+                                             
+              <div class="col disp-flex" *ngIf="data?.applicationTypeCode==='PD'">
+                <label class="form-label">
+                 Account Number
+                  <span class="star">*</span>
+                </label>
+                       <input type="text" class="form-control margin-bottom" 
+                       formControlName="accountNumber"
+                       placeholder="" 
+                       [maxLength]="14"/>
+              </div> 
+              <ng-container *ngIf="data?.applicationTypeCode !== 'SMR' && data?.applicationTypeCode !== 'UMT_MT'">
+                <div class="col disp-flex" *ngIf="data?.applicationTypeCode!=='PD' ">
+                <label class="form-label">Nearest Network <span class="star">*</span></label>
+                <select
+                  class="form-select"
+                  name="Nearest Network"
+                  formcontrolname="nearestNetwork"
+                  (change)="onNearestNetworkChange($event.target.value)"
+                >
+                  <option selected disabled>Select Nearest Network</option>
+                  <option value="LTPOLE">LT POLE</option>
+                  <option value="HTPOLE">HT POLE</option>
+                  <option value="DTC">DTC</option>
+                  <option value="FEEDER">FEEDER</option>
+                </select>
+              </div>
+              
+              <div class="col disp-flex" *ngIf="data?.applicationTypeCode === 'PD'">
+                <label class="form-label">Dismantle From</label>
+                <select
+                  class="form-select"
+                  name="Nearest Network"
+                  formControlName="dismantleNearestNetwork"
+                  (change)="onNearestNetworkChange($event.target.value)"
+                >
+                  <option selected disabled>Select Nearest Network</option>
+                  <option value="LTPOLE">LT POLE</option>
+                  <option value="HTPOLE">HT POLE</option>
+                  <option value="DTC">DTC</option>
+                  <option value="FEEDER">FEEDER</option>
+                </select>
+              </div>
+              
+            </ng-container>
+            <div class="col disp-flex" *ngIf="isNetworkAssetNo && data?.applicationTypeCode !== 'PD'">
+              <label class="form-label">
+                <b>{{ label }}</b>
+              </label>
+              <input
+                type="text"
+                name="networkassetno"
+                class="form-control"
+                id=""
+                placeholder="Enter {{ label }}"
+                formControlName="networkAssetNo"
+              />
+            </div>
+            
+              <!-- <div class="col disp-flex" *ngIf="process !== 'DND'">
+                                <label class="form-label">Network Extension Required or Not</label>
+                                <select class="form-select" name="isNetworkExtensionRequired" formcontrolname="isNetworkExtensionRequired" (ngModelChange)="onNetworkExtentionRequiredChange($event)" placeholder="Is Network Extension Required ">
+                                    <option value="">Is Network Extension Required</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div> -->
+
+              <div class="row" mt-5 *ngIf="data?.applicationTypeCode !== 'SMR' && data?.applicationTypeCode !== 'UMT_MT'">
+                <label class="form-label col-md-6"
+                  >Latitude and Longitude of the location</label
+                >
+                <div class="col-md-2 px-2 l-padding0">
+                  <input
+                    type="text"
+                    class="form-control-p disabled-input w-100"
+                    id=""
+                    name="latitude"
+                    placeholder="Latitude"
+                    formControlName="latitude"
+                    readonly="true"
+                  />
+                </div>
+
+                <div class="col-md-2 px-2 l-padding0">
+                  <input
+                    type="text"
+                    class="form-control-p disabled-input w-100"
+                    id=""
+                    name="longitude"
+                    placeholder="Longitude"
+                    formControlName="longitude"
+                    readonly="true"
+                  />
+                </div>
+
+                <div class="col-md-2 text-end">
+                  <button class="btn-tapping" (click)="onTapping()">
+                    Get Tapping Point
+                  </button>
+                </div>
+              </div>
+              <div
+                class="col disp-flex dis-old-acc"
+                style="margin-top: -20px"
+                *ngIf="showViewPointButton"
+              >
+                <button class="btn-tapping" (click)="onViewPoint()">
+                  View Tapping Point
+                </button>
+              </div>
+              <div *ngIf="process !== 'DND'">
+                <div class="col disp-flex" *ngIf="!isNetworkExtensionType" >
+                  <label class="form-label">
+                    <b>Network Extension Type</b>
+                  </label>
+                  <select
+                    class="form-select"
+                    name="networkExtensionType"
+                    formcontrolname="networkExtensionType"
+                  >
+                    <option value="">Select Network Extension Type</option>
+                    <option
+                      *ngFor="
+                        let networkExtensionTypeItem of networkExtensionType
+                      "
+                      [value]="
+                        networkExtensionTypeItem.networkExtensionTypeMasterId
+                      "
+                    >
+                      {{ networkExtensionTypeItem.networkExtensionTypeName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- <div class="btn-box mt-4" style="justify-content: flex-end !important" *ngIf="!isNetworkExtensionType">
+                                <button type="button" class="btn btn-primary btn-md">
+                                    Check Feasibility
+                                </button>
+                            </div> -->
+
+              <!-- <div class="col disp-flex l-padding0">
+                                <label class="form-label">Distribution Transformer Name</label>
+                                <input type="text" name="distributionTransformerName" class="form-control" id="" placeholder="Distribution Transformer Name" formcontrolname="distributionTransformerName"/>
+                            </div> -->
+
+              <div class="col disp-flex l-padding0" *ngIf="data?.applicationTypeCode !== 'SMR' && data?.applicationTypeCode !== 'UMT_MT'">
+                <label class="form-label">Distribution Transformer Name</label>
+                <input
+                  type="text"
+                  name="nameOfTheTransformer"
+                  class="form-control disabled-input"
+                  id=""
+                  placeholder=""
+                  readonly="true"
+                  formControlName="nameOfTheTransformer"
+                />
+              </div>
+
+              <div class="col disp-flex" *ngIf="data?.applicationTypeCode !== 'SMR' && data?.applicationTypeCode !== 'UMT_MT'">
+                <label class="form-label">Feeder Name</label>
+                <input
+                  type="text"
+                  name="feederName"
+                  class="form-control disabled-input"
+                  id=""
+                  placeholder=""
+                  formControlName="feederName"
+                  appAlphaNumeric
+                  readonly="true"
+                  [maxLength]="50"
+                />
+              </div>
+
+              <div class="col disp-flex" *ngIf="data?.applicationTypeCode !== 'SMR' && data?.applicationTypeCode !== 'UMT_MT'">
+                <label class="form-label"> SubStation Name</label>
+                <input
+                  type="text"
+                  name="substationName"
+                  class="form-control disabled-input"
+                  id=""
+                  placeholder=""
+                  readonly="true"
+                  formControlName="substationName"
+                />
+              </div>
+            </ng-container>
+            
+            </ng-container>
+              <div class="cd-content" *ngIf="data?.applicationTypeCode ==='PD'">
+                <h3>Meter Registered Details :-</h3>
+              </div>
+              <div style="
+              overflow: auto;
+              width: 100%;
+              border: 2px solid #c2c2c2;
+              margin-top: 0.5rem;"
+              *ngIf="data?.applicationTypeCode ==='PD'">
+            <table class="table table-bordered text-center">
+              <thead style="background-color: #f2f2f2; color: #3e3e3e">
+                <tr>
+                  <th scope="col">Sequence no</th>
+                  <th scope="col">Register Id </th>
+                  <th scope="col">Unit of Measure</th>
+                  <th scope="col">Time of Use</th>
+                  <!-- <th scope="col">Read Type</th> -->
+                  <th scope="col">Reading</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of meterData; let i = index">
+                  <tr>
+                      <td>{{ item.registerReadSeqNo }}</td>
+                      <td>{{ item.registerId }}</td>
+                      <td>{{ item.registerUom }}</td>
+                      <td>{{ item.registerTou }}</td>
+                      <td>
+                        <input type="text" class="form-control" 
+                               [(ngModel)]="item.registerReading" [ngModelOptions]="{standalone: true}"
+                               (keypress)="validateInput($event, item.registerUom, i)" maxlength="15"
+                               #inputField="ngModel"
+                               (blur)="validatePFValue(item, i)"
+                               [ngClass]="{'is-invalid': inputField.invalid && inputField.touched}">
+                               
+                               <div *ngIf="item.errorMessage">
+                                <small class="text-danger">{{ item.errorMessage }}</small>
+                              </div>
+
+                    </td>
+                  </tr>
+              </ng-container>
+              </tbody>
+            </table>
+             </div>
+          <div class="col disp-flex" style="margin-top: 20px;">
+            <label class="form-label">Upload Document</label>
+            <div style="display: flex; flex-direction: column;">
+              <input
+                type="file"
+                #pdfFileInput
+                name="fileupload"
+                appFileSizeValidator
+                class="form-control"
+                id=""
+                formControlName="pdfFile"
+                placeholder=""
+                style="width: 140%;"
+              />
+              <mat-error style="margin-top: 5px;">File size exceeds 1 MB. Please upload a file below 1MB.</mat-error>
+            </div>
+          </div>                    
+              <div class="col disp-flex">
+                <label class="form-label">Inspected By</label>
+                <div class="inspected-checkbox">
+                  <div>
+                    <input
+                      type="checkbox"
+                      formcontrolname="inspectedByAE"
+                      id="AE"
+                      name="AE"
+                      value="AE"
+                      checked
+                    />
+                    <label for="AE">AE</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      formcontrolname="inspectedByAEE"
+                      id="AEE"
+                      name="AEE"
+                      value="AEE"
+                    />
+                    <label for="AEE">AEE</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      formcontrolname="inspectedByEE"
+                      id="EE"
+                      name="EE"
+                      value="EE"
+                    />
+                    <label for="EE">EE</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      formcontrolname="inspectedBySE"
+                      id="SE"
+                      name="SE"
+                      value="SE"
+                    />
+                    <label for="SE">SE</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      formcontrolname="inspectedByCE"
+                      id="CE"
+                      name="CE"
+                      value="CE"
+                    />
+                    <label for="CE">CE</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col disp-flex">
+                <label class="form-label"> Inspection Date </label>
+                <div class="date-field">
+                  <input
+                    class="form-control"
+                    type="date"
+                    formcontrolname="inspectionDate"
+                    id="inspectionDate"
+                    [value]="defaultInspectionDate | date:'yyyy-MM-dd'">
+                </div>
+              </div>
+              <div class="col disp-flex" *ngIf="data?.applicationTypeCode ==='PD'">
+                 <label class="form-label"> Year of Commission of Meter </label> 
+                <mat-select class="form-control" formControlName="yrOfCommMtr"  (selectionChange)="onyrOfCommMtrSelected($event.value)">
+                    <mat-option *ngFor="let year of yearOptions" [value]="year">{{ year }}</mat-option>
+                  </mat-select>
+               </div>
+              
+              <div class="col mt-3 disp-flex">
+                <label class="form-label">Remarks</label>
+                <textarea
+                  class="form-control"
+                  name="deviationRemarks"
+                  formControlName="deviationRemarks"
+                  id=""
+                  cols="20"
+                  rows="2"
+                  placeholder="Remarks"
+                ></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="mt-4 mb-2 text-center">
+                <button
+                [disabled]="isLoading"
+                  type="button"
+                  class="btn btn-secondary btn-md clor"
+                  (click)="openConfirmationpopupDialog()"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+  </section>
+</div>

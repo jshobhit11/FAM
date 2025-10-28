@@ -1,0 +1,27 @@
+<section>
+  <form [formGroup]="storeAdjustmentForm">
+    <h1 mat-dialog-title>Update Store Adjustment Reason Master</h1>
+    <div class="content-fields mt-4" mat-dialog-content>
+      <div class="modal-input-control">
+        <mat-form-field class="example-full-width">
+          <mat-label>Adjustment Reason</mat-label>
+          <input matInput placeholder="Ex. Each" formControlName="adjustmentReason" [maxLength]="100" appAlphaNumeric/>
+          <mat-error *ngIf="storeAdjustmentForm.get('adjustmentReason').hasError('required') && storeAdjustmentForm.get('adjustmentReason').touched">
+            Please enter in this field.
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <mat-label>Descriptions</mat-label>
+            <input matInput placeholder="Ex. Each" formControlName="descriptions" [maxLength]="300" appAlphaNumeric />
+            <mat-error *ngIf="storeAdjustmentForm.get('descriptions').hasError('required') && storeAdjustmentForm.get('descriptions').touched">
+              Please enter in this field.
+            </mat-error>
+          </mat-form-field>
+      </div>
+    </div>
+    <div class="btn-box mt-3" mat-dialog-actions>
+      <button class="c-btn" mat-button (click)="onStoreAdjustmentUpdate()" [disabled]="notificationRef">Update</button>
+      <button class="btn clor" mat-button mat-dialog-close [disabled]="notificationRef">Close</button>
+    </div>
+  </form>
+  </section>

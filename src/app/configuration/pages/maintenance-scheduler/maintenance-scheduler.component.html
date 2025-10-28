@@ -1,0 +1,112 @@
+
+<div class="container-fluid page-3">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/configuration">Configuration</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Maintenance Schedular</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+
+  <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+    <h2 class="title-2">Maintenance Schedular </h2>
+    <div class="container-fluid">
+    <div style="display: flex; flex-wrap: wrap; overflow: auto">
+      <div class="top-row first-top-row">
+        <div class="input-control">
+          <mat-form-field class="example-full-width">
+            <mat-label>Search By Equipment</mat-label>
+            <input (keyup)="applyFilter($event.target.value)" matInput placeholder="Ex. Each" />
+          </mat-form-field>
+        </div>
+        <div class="button-control">
+          <button mat-button class="c-btn" (click)="openAddMaintenanceDialog()" >
+            Add Schedular
+          </button>
+        </div>
+      </div>
+      <table  [dataSource]="dataSource" mat-table class="est-config-table mt-4">
+        <!-- SLNO Column -->
+        <ng-container matColumnDef="slno">
+          <th mat-header-cell *matHeaderCellDef>SL NO</th>
+          <td mat-cell *matCellDef="let element; index as i">{{ getSerialNumber(i) }}</td>
+        </ng-container>
+
+        <!-- Asset Type Column -->
+        <ng-container matColumnDef="assetType">
+          <th mat-header-cell *matHeaderCellDef>Asset Type</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.assetType}}
+          </td>
+        </ng-container>
+
+        <!-- Maintenance Column -->
+        <ng-container matColumnDef="maintenanceType">
+          <th mat-header-cell *matHeaderCellDef>Maintenance Type</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.maintenanceType}}
+          </td>
+        </ng-container>
+
+        <!-- Frequency Column -->
+        <ng-container matColumnDef="frequency">
+          <th mat-header-cell *matHeaderCellDef>Frequency</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.frequency}}
+          </td>
+        </ng-container>
+
+        <!-- Equipment Column -->
+        <ng-container matColumnDef="equipment">
+          <th mat-header-cell *matHeaderCellDef>Equipment</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.equipment}}
+          </td>
+        </ng-container>
+        <!-- Remarks Column -->
+        <ng-container matColumnDef="remarks">
+          <th mat-header-cell *matHeaderCellDef>Remarks</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.remarks == "null" ? "-" :element.remarks }}
+          </td>
+        </ng-container>        
+
+      <!-- Responsible Officer Column -->
+        <ng-container matColumnDef="responsibleOfficer">
+            <th mat-header-cell *matHeaderCellDef>Responsible Officer</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.responsibleOfficerCode}}
+            </td>
+        </ng-container>
+      <!-- Job Notify Day Column -->
+        <ng-container matColumnDef="jobNotifyDay">
+            <th mat-header-cell *matHeaderCellDef>Job Notify Day</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.jobNotifyDay}}
+            </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let element">
+            <button style="border: none; background-color: transparent"
+            (click)="openUpdateMaintenanceDialog(element.mmMaintenanceSchedulerMasterId)">
+              <mat-icon color="error">edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+    </mat-paginator>
+    </div>

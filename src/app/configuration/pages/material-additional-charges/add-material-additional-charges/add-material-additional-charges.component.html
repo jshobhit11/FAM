@@ -1,0 +1,101 @@
+<section>
+  <form class="form" [formGroup]="materialAdditionalForm">
+  <h1 mat-dialog-title>Add Material Additional Charges Mapping</h1>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Execution Method</mat-label>
+        <mat-select [(ngModel)]="materialAdditionalObj.woExecutionMethodId" formControlName="woExecutionMethod" required>
+          <mat-option *ngFor="let main of materialIDName" [value]="main.executionMethodIds">
+            {{main.executionMethodName}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="materialAdditionalForm.get('woExecutionMethod').invalid && materialAdditionalForm.get('woExecutionMethod').touched">
+          Please select in this field.</mat-error> 
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Charge Type</mat-label>
+        <mat-select [(ngModel)]="materialAdditionalObj.chargeType" name="chargeType" formControlName="chargeType"  (ngModelChange)="handleChargeTypeChange($event)" required>
+          <mat-option *ngFor="let main of chargeTypes" [value]="main">
+            {{ main }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="materialAdditionalForm.get('chargeType').invalid && materialAdditionalForm.get('chargeType').touched">
+          Please select in this field.</mat-error> 
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Additional Charge Name</mat-label>
+        <mat-select [(ngModel)]="materialAdditionalObj.additionalChargeName" formControlName="additionalCharge" required (selectionChange)="populateChargeSequence($event)">
+          <mat-option *ngFor="let main of additionalData" [value]="main.additionalChargesName">
+            {{main.additionalChargesName}} 
+          </mat-option>
+        </mat-select>
+        
+    <mat-error *ngIf="materialAdditionalForm.get('additionalCharge').invalid && materialAdditionalForm.get('additionalCharge').touched">
+          Please select in this field.</mat-error> 
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" *ngIf="materialAdditionalObj.chargeType !== 'FLAT'">
+        <mat-label>Charge Type Value</mat-label>
+        <input class="no-spinner" matInput placeholder="Ex. Each" [(ngModel)]="materialAdditionalObj.chargeTypeValue"
+           type="number" pattern="[0-9]*" formControlName="chargeTypeValue" appAlphaNumeric [maxLength]="10" required/>
+           <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width">
+        <mat-label>Sequence</mat-label>
+        <input class="no-spinner" matInput placeholder="Ex. Each"
+          [(ngModel)]="materialAdditionalObj.chargesSequenceOrder" type="number" pattern="[0-9]*" 
+          formControlName="chargesSequence" appAlphaNumeric required/>
+          <mat-error>Please enter in this field.</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width" *ngIf="materialAdditionalObj.chargeType !== 'FLAT'">
+        <mat-label>Value Calculated by Material</mat-label>
+        <mat-select [(ngModel)]='materialAdditionalObj.valueCalculatedByMaterial' formControlName="valueCalculatedMaterial" required>
+          <mat-option value="1">Yes</mat-option>
+          <mat-option value="0">No</mat-option>
+        </mat-select>
+        <mat-error *ngIf="materialAdditionalForm.get('valueCalculatedMaterial').invalid && materialAdditionalForm.get('valueCalculatedMaterial').touched">
+          Please select in this field.</mat-error> 
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width" *ngIf="materialAdditionalObj.chargeType !== 'FLAT'">
+        <mat-label>Value Calculated by Labour</mat-label>
+        <mat-select [(ngModel)]="materialAdditionalObj.valueCalculatedByLabour" name="valueCalculatedByLabour" formControlName="valueCalculatedLabour" required>
+          <mat-option value="1">Yes</mat-option>
+          <mat-option value="0">No</mat-option>
+        </mat-select>
+        <mat-error *ngIf="materialAdditionalForm.get('valueCalculatedLabour').invalid && materialAdditionalForm.get('valueCalculatedLabour').touched">
+          Please select in this field.</mat-error> 
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Display by Default</mat-label>
+        <mat-select [(ngModel)]='materialAdditionalObj.displayByDefault' formControlName="displayDefault" required>
+          <mat-option value="1">Yes</mat-option>
+          <mat-option value="0">No</mat-option>
+        </mat-select>
+        <mat-error *ngIf="materialAdditionalForm.get('displayDefault').invalid && materialAdditionalForm.get('displayDefault').touched">
+          Please select in this field.</mat-error> 
+      </mat-form-field>
+    </div>
+    <div class="modal-input-control">
+      <mat-form-field class="example-full-width" *ngIf="materialAdditionalObj.chargeType !== 'FLAT'">
+        <mat-label>Value Calculated by Total Labour</mat-label>
+        <mat-select [(ngModel)]="materialAdditionalObj.valueCalculatedByTotalLabour"
+          name="valueCalculatedByTotalLabour" formControlName="valueCalculatedTotalLabour" required>
+          <mat-option value="0">No</mat-option>
+          <mat-option value="1" [ngModel]="materialAdditionalObj.valueCalculatedByLabour === '0'"
+            [disabled]="materialAdditionalObj.valueCalculatedByLabour === '0'">Yes</mat-option>
+        </mat-select>
+        <mat-error *ngIf="materialAdditionalForm.get('valueCalculatedTotalLabour').invalid && materialAdditionalForm.get('valueCalculatedTotalLabour').touched">
+          Please select in this field.</mat-error> 
+      </mat-form-field>
+    </div>
+  <div class="btn-box mt-3" mat-dialog-actions>
+    <button class="c-btn" mat-button (click)="onadditionalchargeAdd()">Add</button>
+    <button class="btn clor" mat-button mat-dialog-close>Close</button>
+  </div>
+</form>
+</section>

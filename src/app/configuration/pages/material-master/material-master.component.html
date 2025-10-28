@@ -1,0 +1,89 @@
+<div class="container-fluid page-3">
+  <ul>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a routerLink="/configuration">Configuration</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a style="color: lightslategray">Material Master</a>
+        </li>
+      </ol>
+    </nav>
+  </ul>
+
+  <div class="page__content p-3 p20 shadow dis-fl dis-fl2  position-relative dis-flex-colu">
+    <h2 class="title-2"> SR Material Master</h2>
+
+    <div style="display: flex; flex-wrap: wrap; overflow: auto">
+      <div class="top-row first-top-row">
+        <div class="input-control">
+          <mat-form-field appearance="fill">
+            <mat-label>Type</mat-label>
+            <mat-select (selectionChange)="onMaterialType($event.value)">
+              <mat-option *ngFor="let main of mlTypes" [value]="main">
+                {{ main }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Search By Description</mat-label>
+            <input (keyup)="applyFilter($event.target.value)" matInput placeholder="Ex.search description" />
+          </mat-form-field>
+        </div>
+        <div class="button-control">
+          <button mat-button class="c-btn" (click)="openAddMaterialMasterItemDialog()">
+            Add SR Material
+          </button>
+        </div>
+      </div>
+      <table mat-table [dataSource]="dataSource" class="est-config-table mt-4">
+        <!-- SLNO Column -->
+        <ng-container matColumnDef="slno">
+          <th mat-header-cell *matHeaderCellDef>SL NO</th>
+          <td mat-cell *matCellDef="let element">
+            {{ dataSource.data.indexOf(element) + 1 }}
+          </td>
+        </ng-container>
+        <!-- material Type Name -->
+        <ng-container matColumnDef="materialTypeMasterId">
+          <th mat-header-cell *matHeaderCellDef>Material Type</th>
+          <td mat-cell *matCellDef="let element; index as i">
+            {{ getMaterialName(element.materialTypeMasterId) }}
+          </td>
+        </ng-container>
+        <!-- Material Type Column-->
+        <ng-container matColumnDef="mlType">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let element">{{ element.mlType }}</td>
+        </ng-container>
+        <!-- Material Code Column-->
+        <ng-container matColumnDef="mlCode">
+          <th mat-header-cell *matHeaderCellDef>Code</th>
+          <td mat-cell *matCellDef="let element">{{ element.mlCode }}</td>
+        </ng-container>
+        <!-- Material Name Column-->
+        <ng-container matColumnDef="mlName">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let element">{{ element.mlName }}</td>
+        </ng-container>
+        <!-- Materil Unit Column-->
+        <ng-container matColumnDef="mlUnit">
+          <th mat-header-cell *matHeaderCellDef>Unit</th>
+          <td mat-cell *matCellDef="let element">{{ element.mlUnit }}</td>
+        </ng-container>
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let element">
+            <button style="border: none; background-color: transparent"
+              (click)="openUpdateMaterialMasterItemDialog(element.srMaterialsMasterId)">
+              <mat-icon color="error">edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+    </mat-paginator>

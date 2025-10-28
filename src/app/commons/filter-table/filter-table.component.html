@@ -1,0 +1,117 @@
+<div class="page__content shadow dis-fl2 position-relative dis-flex-colu">
+<h2 class="title-2 p-3" *ngIf="headingName" [ngClass]="{'reduce-gap': !isOffice, 'no-border': !headingName, 'remove-gap': isOffice}">{{ headingName }}</h2>
+<div class="row office-m40" *ngIf="isOffice" >
+  <div class="col-sm-5"></div>
+  <div class="col-sm-1 text-end mt-2 office-label"><strong>Office</strong></div>
+  <div class="col-sm-5">
+    <div class="card flex justify-content-center"> 
+        <p-treeSelect class="md:w-40rem w-full" 
+          containerStyleClass="w-full" 
+          [formControl]="treeControl"
+          (onNodeSelect)="nodeSelect($event.node)"
+          selectionMode="single" 
+          (onNodeUnselect)="reset()" 
+          [options]="nodes"
+          [filter]="true"
+          [scrollHeight]="'200px'"
+          >
+        </p-treeSelect>
+      </div>
+  </div>
+<div class="col-sm-1">
+ <button type="button" class="btn btn-warning btn-sm mr_6" (click)="reset()">Reset</button>
+</div>
+</div>
+<div class="p-3 p_tree_cont mt-1">
+    <p-table [tableStyle]="{ 'width': '100%' }" #dt [value]="rows" 
+      [(selection)]="selectedAccounts" [dataKey]="dataKey" [rowHover]="true" [rows]="10"
+      responsiveLayout="stack" responsive=true
+      [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50,100,200]" [loading]="loading"
+      [exportHeader]="'customExportHeader'" [columns]="cols" selectionMode="multiple" [paginator]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="0"
+      [globalFilterFields]="filterFields">
+      <ng-template pTemplate="caption">
+          <button pButton label="Clear" class="btn btn-warning btn-sm filter-btn ms-2 mr_6 float-start" icon="pi pi-filter-slash" (click)="clear(dt)">
+            <span class="p-button-icon p-button-icon-left pi pi-filter-slash" aria-hidden="true"></span>
+            <span class="p-button-label">Clear Filter</span> 
+          </button>
+
+        <div class="flex text-end table-padding-right">
+          <div class="p-input-icon-left ms-2">
+            <i class="pi pi-search"></i>
+            <input class="pl30" pInputText type="text" [formControl]="clearControl"
+              (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search" />
+          </div>
+          <button type="button" (click)="exportExcel(dt)" class="bi bi-filetype-xls button-success ms-2 p-btns text-success"
+            pTooltip="XLS" tooltipPosition="bottom"></button>
+          <button type="button" (click)="exportPdf(dt)" class="bi bi-filetype-pdf button-warning ms-2 p-btns text-danger"
+            pTooltip="PDF" tooltipPosition="bottom"></button>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngFor="let item of cols" pSortableColumn="{{ item.key }}">
+            <div class="header-container">
+              <div class="header-title">{{ item.title }}</div>
+              <div class="header-icons">
+                <p-sortIcon field="{{ item.key }}"></p-sortIcon>
+                <p-columnFilter class="filter-icon" type="text" field="{{ item.key }}" display="menu"></p-columnFilter>
+              </div>
+            </div>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-data>
+        <tr class="p-selectable-row">
+          <td *ngFor="let item of cols; index as i" class="break-word">
+            <span class="p-column-title">{{item.title}} : </span>
+            <ng-container *ngIf="item.key !== 'download' && item.key !== 'icon'; else downloadBlock">
+              <a [ngClass]="{ 'text-decoration-none': data[item.key] == 'null' }" *ngIf="item.route && isDesignationRole(data.designationCode||data.designaionCode); else elseBlock" (click)="routerPath(data, item)">
+                <span *ngIf="data.estimationType === 'RE' && (data.applicationStatusCode === '8' || data.applicationStatusCode === '9' || data.applicationStatusCode === '12' || data.applicationStatusCode === '22')">
+                  REVISED
+                </span>
+                {{ data[item.key] !== 'null' ? data[item.key] : '-' }}
+              </a>
+              <ng-template #elseBlock>
+                <div *ngIf="item.key == 'indicator'; else endBlock" class="color-div" [ngClass]="{ 'indicator-color-one': data[item.key] == 1, 'indicator-color-two': data[item.key] == 2, 'indicator-color-three': data[item.key] >= 3 }">
+                </div>
+                <ng-template #endBlock>
+                  {{ data[item.key] }}
+                </ng-template>
+              </ng-template>
+            </ng-container>
+            <ng-container *ngIf="item.key === 'details'">
+              <td>
+                <button class="btn btn-icon btn-primary btn-sm" (click)="navigateToDetails(data.mmMaintenanceSchedulerTaskId)">
+                  <i class="bi bi-plus-circle"></i>
+                </button>
+              </td>
+            </ng-container>
+                
+            <ng-container *ngIf="item.key === 'indentDownload'">
+                <mat-icon class="mat-icon material-icons filter-download" (click)="downloadIndent(data)">get_app</mat-icon>
+            </ng-container>
+    
+            <ng-container *ngIf="item.key === 'invoiceDownload'">
+                <mat-icon class="mat-icon material-icons filter-download" (click)="downloadInvoice(data)">get_app</mat-icon>
+            </ng-container>
+            <ng-template #downloadBlock >
+              <mat-icon *ngIf="item.key === 'download'" class="mat-icon material-icons custom-icon" (click)="downloadPDF(data)">get_app</mat-icon>
+              <!-- <a style="color: inherit;"  class="text-decoration-none" *ngIf="item.key === 'icon'" [routerLink]="['/main', 'full-details', data.serviceRegistrationsId ? data.serviceRegistrationsId : data.serviceRegistrationId]" >
+                <i class="bi bi-eye"></i>
+              </a> -->
+              <a style="color: inherit;"  class="text-decoration-none" *ngIf="item.key === 'icon'" [loading]="loading" (click)="viewStatus(data)">
+                <i class="bi bi-eye"></i>
+              </a>
+            </ng-template>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td [attr.colspan]="cols.length">No record found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+</div>
+</div>

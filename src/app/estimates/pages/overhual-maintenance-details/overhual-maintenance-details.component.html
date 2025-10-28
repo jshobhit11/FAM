@@ -1,0 +1,97 @@
+<section class="mt-2">
+    <ul>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a routerLink="/estimates/dashboard">Estimates </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a style="color: lightslategray">
+              Overhual Maintenance Detials
+            </a>
+          </li>
+        </ol>
+      </nav>
+    </ul>
+  </section>
+  <section>
+    <form>
+        <div class="container-fluid page">
+          <div class="page__content shadow p-3 position-relative dis-flex-colu">
+            <h2 class="title-2">Overhual Maintenance Detials</h2>
+            <div class="grid-container">
+              <div class="left-column">
+                <div class="field">
+                  <span class="field-label">Task No :</span>
+                  <span class="field-value">{{ data[0]?.taskNo }}</span>
+                </div>
+                <div class="field">
+                  <span class="field-label">Asset Type :</span>
+                  <span class="field-value">{{ data[0]?.assetType }}</span>
+                </div>
+                <div class="field">
+                  <span class="field-label">Equipment :</span>
+                  <span class="field-value">{{ data[0]?.equipment }}</span>
+                </div>
+                <div class="field ">
+                  <span class="field-label">Remarks :</span>
+                  <span class="field-value-scroll">
+                    <span class="field-value">{{ data[0]?.remarks !== 'null' ? data[0]?.remarks : "-"}}</span>
+                  </span>
+                </div>
+                <div class="field">
+                  <span class="field-label">Scheduler Start Date :</span>
+                  <span class="field-value">{{ data[0]?.schedulerStartDate | date:'yyyy-MM-dd' }}</span>
+                </div>
+              </div>
+              <div class="right-column">
+                <div class="field">
+                  <span class="field-label">Frequency :</span>
+                  <span class="field-value">{{ data[0]?.frequency }}</span>
+                </div>
+                <div class="field">
+                  <span class="field-label">Frequency Type :</span>
+                  <span class="field-value">{{ data[0]?.frequencyType }}</span>
+                </div>
+                <div class="field">
+                  <span class="field-label">Responsible Office :</span>
+                  <span class="field-value">{{ data[0]?.responsibleOffice }}</span>
+                </div>
+                <div class="field">
+                  <span class="field-label">Responsible Officer :</span>
+                  <span class="field-value">{{ data[0]?.responsibleOfficer }}</span>
+                </div>
+                <div class="field">
+                  <span class="field-label">Scheduler End Date :</span>
+                  <span class="field-value">{{ data[0]?.schedulerEndDate | date:'yyyy-MM-dd' }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="container-fluid page">
+              <h3 class="title-2">Checklist</h3>
+              <mat-table [dataSource]="checklist" >
+                <ng-container matColumnDef="sNo">
+                  <mat-header-cell *matHeaderCellDef>S.No</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{rowIndex(row)}}</mat-cell>
+                </ng-container>
+            
+                <ng-container matColumnDef="checkList">
+                  <mat-header-cell *matHeaderCellDef>Checklist Value</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{row.checkList}}</mat-cell>
+                </ng-container>
+            
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+              </mat-table>
+              <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+            <div style="display: flex; justify-content: center;">
+              <button type="button" class="btn btn-secondary" (click)="goBack()">Back</button>
+            </div>
+          </div>
+        </div>
+      </form>
+  </section>
+
+
+  <!-- class="mat-elevation-z8" -->

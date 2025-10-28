@@ -1,0 +1,84 @@
+<section>
+    <!-- ---------- Left side box ---------- -->
+    <div
+      class="left-side"
+      style="background-image: url('assets/login-form-bg.png'); background-position: center center; background-repeat: no-repeat; background-attachment: scroll; background-size: cover;"
+    >
+      <img src="assets/all-escom-logo.png" alt="bescom-logo" style="width: 50%;" />
+      <h2 class="product-title"> Infinite Estimates and Enterprise Asset Management (EAM)</h2>
+    </div>
+  
+  
+    <!-- ---------- Login form box ---------- -->
+    <div class="login-box">
+      <div class="sso-message">
+        <h3>Field Activity Management</h3>
+      </div>
+      <img src="assets/all-escom-logo.png" class="escoms-logo" alt="bescom-logo"/>
+      <div class="sso-message">
+        Enter your Single Sign-On credentials below
+      </div>
+  
+      <div class="standalone-message">
+      <h2>Sign In</h2>
+      </div>
+      <form action="">
+        <div class="col mt-4">
+          <label for="formGroupExampleInput" class="form-label">Username <span>*</span></label>
+          <mat-spinner *ngIf="showSpinner" style="position: fixed"></mat-spinner>
+  
+          <input
+            type="text"
+            class="form-control"
+            id="formGroupExampleInput"
+            placeholder="username"
+            name="username"
+            [(ngModel)]="username"
+          />
+        </div>
+  
+        <div class="col mt-4">
+          <label class="form-label">Password <span>*</span></label>
+          <div class="password">
+            <input
+              type="{{ hidePassword ? 'password' : 'text' }}"
+              name="oldPassword"
+              class="form-control form-control-user"
+              autocomplete="off"
+              [(ngModel)]="password"
+              placeholder="Password"
+              (keypress)="resetError()"
+              required
+            />
+            <span class="btn btn-link" (click)="showAndHidePassword()">
+              <i *ngIf="hidePassword" class="bi bi-eye-slash"></i>
+              <i *ngIf="!hidePassword" class="bi bi-eye"></i>
+            </span>
+          </div>
+        </div>
+  
+        <div class="col mt-1">
+          <label class="error-message" style="color: brown">{{ loginError }}</label>
+        </div>
+  
+        <div class="col mt-4 btn-box">
+          <button
+            class="btn btn-lg"
+            (click)="doLogin()"
+            [disabled]="username.trim().length === 0 || password.trim().length === 0"
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- ---------- Right side box ---------- -->
+    <div
+      class="right-side"
+      style="background-image: url('assets/est-eam-bg.png'); background-position: center center; background-repeat: no-repeat; background-size: cover;"
+    >
+    </div>
+  </section>
+  <app-footer></app-footer>
+  

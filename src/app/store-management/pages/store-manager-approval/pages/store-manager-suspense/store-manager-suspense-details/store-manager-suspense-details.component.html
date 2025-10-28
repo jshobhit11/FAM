@@ -1,0 +1,142 @@
+<section [class.overlayed]="snackbarIsOpen" >
+    <form class="form">
+      <div class="col-lg-6 mt-4" style="width: 100% !important; padding: 1rem" *ngIf="data">
+        <div class="heading" style="background-color: #f0f0f0">
+          <h1>Store Manager Suspense Approval</h1>
+        </div>
+  
+        <div style="border: 2px solid #c2c2c2; margin-top: 1rem; padding: 0.5rem">
+          <div class="three-row-grid mt-4">
+            <div class="left-div">
+              <div class="inner-div">
+                <label>Request Number</label>
+                <p>{{ data?.wmMaterialIndent?.materialsIndentNo }}</p>
+              </div>
+              <div class="inner-div">
+                <label>Remarks</label>
+                <p>{{ data?.wmMaterialIndent?.approveRemarks }}</p>
+                <!-- <textarea *ngIf="data && data.wmMaterialIndent && data.wmMaterialIndent.approveRemarks" class="form-control" cols="10" rows="5" name="approveRemarks" (input)="changeRemark($event.target.value)" [(ngModel)]="data.wmMaterialIndent.approveRemarks"></textarea> -->
+              </div>
+            </div>
+            <div>
+              <div class="inner-div">
+                <label>Request Date</label>
+                <p>{{ data?.wmMaterialIndent?.materialsIndentDate | date : "yyyy/MM/dd" }}</p>
+              </div>
+               <!-- <div class="inner-div">
+                <label>Department</label>
+                <p></p>
+              </div> -->  
+            </div>
+            <div>
+              <!-- <div class="inner-div">
+                <label>Request Priority Type</label>
+                <p></p>
+              </div> -->
+              <div class="inner-div">
+                <label>Request By</label>
+                <p>{{ data?.indentRaisedBy?.userName }}</p>
+              </div>
+              <div class="inner-div">
+                <label>Designation</label>
+                <p>{{ data?.indentRaisedBy?.userRole }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div style="overflow: auto;width: 100%;border: 2px solid #c2c2c2;margin-top: 1rem;">
+          <table class="table table-bordered text-center">
+            <thead style="background-color: #f2f2f2; color: #3e3e3e">
+              <tr>
+                <th class="main-heading" rowspan="2" scope="col">S. No.</th>
+                <th class="main-heading" rowspan="2" scope="col">Material Name</th>
+                <th class="main-heading" rowspan="2" scope="col">Material Code</th>
+                <th class="main-heading" rowspan="2" scope="col">Unit</th>
+                <th class="main-heading" rowspan="2" scope="col">Rate</th>
+                <th class="main-heading" rowspan="2" scope="col">Requested Qty</th>
+                <th class="main-heading bg-issue-qty" colspan="3" scope="colgroup">Issue Quantity</th>
+                <th class="main-heading" rowspan="2" scope="col">Amount</th>
+                <th class="main-heading bg-store-current-qty" colspan="2" scope="colgroup">Store Current Qty</th>
+                <th class="main-heading bg-store-balance-qty" colspan="2" scope="colgroup">Store Balance Qty</th>
+              </tr>
+              <tr style="background-color: #f2f2f2;">
+                <th class="sub-heading bg-issue-qty" scope="col">New&nbsp;</th>
+                <th class="sub-headings bg-issue-qty" scope="col">Used</th>
+                <th class="sub-headings bg-issue-qty" scope="col">Total</th>
+                <th class="sub-heads bg-store-current-qty" scope="col">New</th>
+                <th class="sub-heads bg-store-current-qty" scope="col">Used</th>
+                <th class="sub-heading bg-store-balance-qty" scope="col">New</th>
+                <th class="sub-heading bg-store-balance-qty" scope="col">Used</th>            
+              </tr>
+            </thead>      
+            <tbody>
+              <tr *ngFor="let dataItem of matIndentTLog; index as i">
+                <td>{{ i + 1 }}</td>
+                <td class="horizontal-scroll">{{ dataItem.materialName }}</td>
+                <td>{{ dataItem.materialCode }}</td>
+                <td>{{ dataItem.materialUnit }}</td>
+                <td>{{ dataItem.materialRate }}</td>
+                <td>{{ (dataItem.requestQuantity === "null" ? 0 :dataItem.requestQuantity) }}</td>
+                <td>
+                  <input
+                    class="form-control wider-input no-spinner"
+                    type="number"
+                    name="issuedNewQty {{ i }}"
+                    [(ngModel)]="dataItem.issuedNewQty"
+                    (input)="handleQuantityChange(i)"
+                    inputmode="numeric"
+                    onkeydown="return event.keyCode !== 189"
+                    min="0"
+                    step="0.001"
+                    (keydown)="blockExtraDecimalPlaces($event)"
+                    (blur)="limitInputToThreeDecimalPlaces($event)"
+                  />
+                </td>
+                <td>
+                  <input
+                    class="form-control wider-input no-spinner"
+                    type="number"
+                    name="issuedUsedQty{{ i }}"
+                    [(ngModel)]="dataItem.issuedUsedQty"
+                    (input)="handleQuantityChange(i)"
+                    inputmode="numeric"
+                    onkeydown="return event.keyCode !== 189"
+                    min="0"
+                    step="0.001"
+                    (keydown)="blockExtraDecimalPlaces($event)"
+                    (blur)="limitInputToThreeDecimalPlaces($event)"
+                  />
+                </td>
+                <td>{{ getTotal(i, dataItem) }}</td>
+                <td>{{calculateAmount(dataItem.total, dataItem.materialRate)}}</td>
+                <td>{{ dataItem.newCurrentQty | number:'1.0-0'}}</td>
+                <td>{{ dataItem.storeUsedQty | number:'1.0-0'}}</td>
+                <td>{{ dataItem.storeBalanceQtyNew | number:'1.0-0'}}</td>
+                <td>{{ dataItem.storeBalanceQtyUsed | number:'1.0-0' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <div class="btn-box mt-4">
+          <button 
+            type="button" 
+            class="btn btn-primary btn-md" 
+            [disabled]="!isAllocateButton" 
+            (click)="openSuspensePoup()"
+
+          >
+            Allocate</button>
+          <button
+            type="button"
+            class="btn btn-primary btn-md"
+            routerLink="/store-management/store-manager-approval"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </form>
+  </section>
+  
