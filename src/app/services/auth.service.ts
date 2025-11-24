@@ -18,7 +18,7 @@ export class AuthService extends RestAPIService {
 
   loginKeyCloak() {
     //Production
-   // const endpoint = new ApiEndpointForKeyCloak(RequestMethod.Post, APIUrl.MobileLoginThroughKeycloak);
+    // const endpoint = new ApiEndpointForKeyCloak(RequestMethod.Post, APIUrl.MobileLoginThroughKeycloak);
     //Testing
     const endpoint = new ApiEndpointForKeyCloak(RequestMethod.Post, APIUrl.MobileLoginThroughKeycloakTest);
     return this.sendRequestForKeyCloak<any>(endpoint);
@@ -28,8 +28,8 @@ export class AuthService extends RestAPIService {
     return Promise.resolve();
   }
   ssoLogin() {
-    window.open(`${this.authApiUrl}/login`,"_self");
- 
+    window.open(`${this.authApiUrl}/login`, "_self");
+
   }
   private store = new Map<string, string>();
 

@@ -1061,7 +1061,7 @@
                 decimal).
               </mat-error>
 
-              <div class="col mt-2 disp-flex" *ngIf="showisAmrMeter">
+              <!-- <div class="col mt-2 disp-flex" *ngIf="showisAmrMeter">
                 <label class="form-label"> Is AMR Meter. </label>
                 <div style="display: flex; gap: 1rem">
                   <div class="radio-btns">
@@ -1086,10 +1086,44 @@
                     <label for="no_of_is_amr-meter_existing">No</label>
                   </div>
                 </div>
-              </div>
-              <div class="col mt-4 disp-flex">
-  <app-premises-doc-upload></app-premises-doc-upload>
+              </div> -->
+            
+<div>
+  <h3>Upload Image</h3>
+
+  <button (click)="selectImage()">Select Image</button>
+    <!-- <div *ngIf="selectedFileName">
+    <p>Selected Image Name:</p>
+    <h2 [innerText]="selectedFileName"></h2>
+  </div>  -->
+
+   <p *ngIf="selectedMessage" style="color:green;">{{ selectedMessage }}</p>
+
+  <button (click)="uploadImage()" [disabled]="isUploading">
+    {{ isUploading ? 'Uploading...' : 'Upload' }}
+  </button>
+
+  <p *ngIf="uploadSuccess" style="color:green;">✅ Upload successful!</p>
+  <p *ngIf="uploadError" style="color:red;">❌ {{ uploadError }}</p>
+
+    <mat-error *ngIf="
+    premisesInspectionForm.get('imageUploaded')?.invalid &&
+    premisesInspectionForm.get('imageUploaded')?.touched
+  ">
+    Please upload an image before proceeding.
+  </mat-error>
 </div>
+
+
+
+
+
+
+              
+
+
+
+
 
               <!-- <div class="col mt-4 disp-flex dis-old-acc">
             <label class="form-label"
@@ -1139,6 +1173,7 @@
                   type="button"
                   (click)="validateForms('premisesInspection')"
                   class="btn btn-primary btn-md"
+                  [disabled]="premisesInspectionForm.invalid"
                 >
                   Next
                 </button>
@@ -3585,6 +3620,12 @@
                   type="button"
                   class="btn btn-primary btn-md"
                   (click)="openConfirmationpopupDialog('submit')"
+                  (click)="onsendLonLat()"
+                 
+                 
+
+
+
                 >
                   Submit
                 </button>

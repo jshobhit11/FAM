@@ -19,12 +19,18 @@ import { SingleAccountMeterReplacemantComponent } from './meter-energization/sin
 import { MultipleAccountMeterReplacemantComponent } from './meter-energization/multiple-account-meter-replacemant/multiple-account-meter-replacemant.component';
 import { FieldResolutionComponent } from './field-resolution/pages/field-resolution/field-resolution.component';
 import { OtpComponent } from './otp/otp.component';
+import { SSOLoginComponent } from './sso/sso.login.component';
+// import { PremisesDocUploadComponent } from './premises-doc-upload/premises-doc-upload.component';
+import { DashboardFormsComponent } from './dashboard-forms/dashboard-forms.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  // { path:'', component:SSOLoginComponent },
+  // { path: '', component: SSOLoginComponent },
   { path: '', component: LoginComponent },
+
+  // { path: '', redirectTo: '/main', pathMatch: 'full' },
 
   {
     path: 'main',
@@ -32,6 +38,28 @@ const routes: Routes = [
     component: MainComponent,
     loadChildren: () => import('./main/main.module').then((m) => m.MainModule),
   },
+
+
+  {
+    path: 'abc',
+    component: DashboardComponent
+
+  },
+
+  // {
+  //   path: 'efg',
+  //   component: DashboardFormsComponent
+
+  // },
+
+
+
+  // {
+  //   path: 'main',
+  //   // canActivate: [AuthGuard],
+  //   component: MainComponent,
+  //   loadChildren: () => import('./main/main.module').then((m) => m.MainModule),
+  // },
 
   { path: 'otp', component: OtpComponent },
 
@@ -97,6 +125,14 @@ const routes: Routes = [
       },
     ],
   },
+
+
+
+
+
+  // { path: 'document-upload', canActivate: [AuthGuard], component: DocumentUploadComponent },
+
+
   { path: 'single-account-meter-mapping', component: SingleAccountMeterMappingComponent, },
   { path: 'multiple-account-meter-mapping', component: MultipleAccountMeterMappingComponent, },
   { path: 'single-account-meter-replacemant', component: SingleAccountMeterReplacemantComponent, },

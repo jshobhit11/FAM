@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">localhost</domain>
+        <pin-set expiration="2026-12-31">
+            <pin digest="SHA-256">HJpqxrCkpTJ/AfyDo4+TYGt3DhIieTpMEeKoAcciMcc=</pin>
+            <pin digest="SHA-256">HJpqxrCkpTJ/AfyDo4+TYGt3DhIieTpMEeKoAcciMCC=</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>

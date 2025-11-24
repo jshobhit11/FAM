@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
@@ -23,6 +23,14 @@ import { MobileUtils } from 'src/app/lib/mobile-utils';
 // import { LoaderService } from 'src/app/services/loader.service';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { toDimension } from 'chart.js/dist/helpers/helpers.core';
+import { SendLocationService } from '../services/sendLocation';
+import { ImageDocumentService } from '../services/document.service';
+
+declare var navigator: any;
+declare var Camera: any;
+declare var window: any;
+declare var cordova: any;
+
 
 @Component({
   selector: 'app-dashboard-forms',
@@ -109,6 +117,19 @@ export class DashboardFormsComponent implements OnInit {
   validatedCaseId: string = '';
   validatedAccountId: string = '';
   siteDimensions = [];
+  SendLocationService: any;
+
+  selectedFileUri: string | null = null;
+  // selectedFileName: string | null = null;
+  uploadSuccess = false;
+  uploadError: string | null = null;
+  // previewUrl: string | null = null;
+  isUploading = false;
+  //documentService: any;
+  selectedMessage: string | null = null;
+  latitude: number | null = null;
+  longitude: number | null = null;
+
   constructor(
     private _formBuilder: FormBuilder,
     private dashboardService: DashboardService,
@@ -120,7 +141,11 @@ export class DashboardFormsComponent implements OnInit {
     private gisservice: GisServicesService,
     private documentService: DocumentService,
     private location: Location,
-    private http: HttpClient // private loader: LoaderService,
+    private http: HttpClient,// private loader: LoaderService,
+
+    private ImageDocumentService: ImageDocumentService,
+
+    private ngZone: NgZone
   ) {
     this.meterRegisteredDetailsForm = this._formBuilder.group({
       meterData: this._formBuilder.array([]),
@@ -161,41 +186,41 @@ export class DashboardFormsComponent implements OnInit {
     //     areas: ['', []],
     //     layoutCaseId: ['', []],
     //   });
-      // this.loadInspectionForm = this._formBuilder.group({
-      //   totalNoOfFloors: [''],
-      //   plotSize: [''],
-      //   totalBuildUpAreaOfBuilding: ['', Validators.required],
-      //   heightOfBuilding: [''],
-      //   requestedLoadKW: [''],
-      //   requestedLoadHP: [''],
-      //   totalConnectedLoad: [''],
-      //   totalNoOfDomesticApplicants: [''],
-      //   totalNoOfDomesticLoad: [''],
-      //   totalNoOfCommercialApplicants: [''],
-      //   totalNoOfCommercialLoad: [''],
-      //   totalNoOfEducationalApplicants: [''],
-      //   totalNoOfEducationalLoad: [''],
-      //   totalNoOfIndustrialApplicants: [''],
-      //   totalNoOfIndustrialLoad: [''],
-      //   isTheApplicantWillingToProvideSpace: [''],
-      //   executionMethod: [''],
-      //   existingBuildupArea: [''],
-      //   existingLoadHp: [''],
-      //   existingLoadKw: [''],
-      //   existingLoadUnit: [''],
-      //   existingTotalLoad: [''],
-      //   newBuildupArea: [''],
-      //   newLoadHp: [''],
-      //   newLoadKw: [''],
-      //   newLoadUnit: [''],
-      //   newNoFloor: [''],
-      //   noOfFloorAdded: [''],
-      //   noOfFloorReduced: [''],
-      //   existingNoFloor: [''],
-      //   newTotalLoad: [''],
-      //   totalLoadOfTheBuilding: [''],
-      //   existingLoadOfPremises: [''],
-      //   totalLoadConForDOP: [''],
+    // this.loadInspectionForm = this._formBuilder.group({
+    //   totalNoOfFloors: [''],
+    //   plotSize: [''],
+    //   totalBuildUpAreaOfBuilding: ['', Validators.required],
+    //   heightOfBuilding: [''],
+    //   requestedLoadKW: [''],
+    //   requestedLoadHP: [''],
+    //   totalConnectedLoad: [''],
+    //   totalNoOfDomesticApplicants: [''],
+    //   totalNoOfDomesticLoad: [''],
+    //   totalNoOfCommercialApplicants: [''],
+    //   totalNoOfCommercialLoad: [''],
+    //   totalNoOfEducationalApplicants: [''],
+    //   totalNoOfEducationalLoad: [''],
+    //   totalNoOfIndustrialApplicants: [''],
+    //   totalNoOfIndustrialLoad: [''],
+    //   isTheApplicantWillingToProvideSpace: [''],
+    //   executionMethod: [''],
+    //   existingBuildupArea: [''],
+    //   existingLoadHp: [''],
+    //   existingLoadKw: [''],
+    //   existingLoadUnit: [''],
+    //   existingTotalLoad: [''],
+    //   newBuildupArea: [''],
+    //   newLoadHp: [''],
+    //   newLoadKw: [''],
+    //   newLoadUnit: [''],
+    //   newNoFloor: [''],
+    //   noOfFloorAdded: [''],
+    //   noOfFloorReduced: [''],
+    //   existingNoFloor: [''],
+    //   newTotalLoad: [''],
+    //   totalLoadOfTheBuilding: [''],
+    //   existingLoadOfPremises: [''],
+    //   totalLoadConForDOP: [''],
 
     //     // Layout Form Controls
 
@@ -367,7 +392,7 @@ export class DashboardFormsComponent implements OnInit {
     //     if (this.data.serviceRegistration) {
     //       this.data.serviceRegistration.mrCode =
     //         this.data.serviceRegistration.mrCode === 'null' ? '' : this.data.serviceRegistration.mrCode;
-        
+
     //       this.data.serviceRegistration.mrDay =
     //         this.data.serviceRegistration.mrDay === 'null' ? '' : this.data.serviceRegistration.mrDay;
 
@@ -543,372 +568,375 @@ export class DashboardFormsComponent implements OnInit {
     //       this.networkExtensionForm.get('longitude')?.updateValueAndValidity();
     //     });
     // } else {
-      this.premisesInspectionForm = this._formBuilder.group({
-        isMeterChangeReq: [[]],
-        isCtChangeReq: ['0', []],
-        oldMf: [
-          { value: '', disabled: true },
-          [Validators.pattern(/^\d{1,6}$|^\d{1,6}\.\d{1,3}$/)],
-        ],
-        newMf: [
-          { value: '', disabled: true },
-          [Validators.pattern(/^\d{1,6}$|^\d{1,6}\.\d{1,3}$/)],
-        ],
-        mainCategory: [''],
-        subCategory: ['28', []],
-        isGovernmentSchemeApplicable: ['0', []],
-        schemeName: ['', []],
-        natureOfBusiness: ['', [Validators.required]],
-        beneficiaryIssuerDepartment: ['', []],
-        isNameAndSiteAddressCorrect: ['1', []],
-        isSiteIsInAccordance: ['1', []],
-        bbmpWardNo: ['', [Validators.required]],
-        parliamentConstituency: ['', [Validators.required]],
-        assemblyConstituency: ['', [Validators.required]],
-        isInternalWiringCompleted: ['1', []],
-        isBorewellExisting: ['0', []],
-        isAmrMeter: ['0', []],
-        disconnectedAccountNo: ['', []],
-        areas: ['', []],
-        layoutCaseId: ['', []],
-        isInstallBefore2005: ['0', []],
+    this.premisesInspectionForm = this._formBuilder.group({
+      isMeterChangeReq: [[]],
+      isCtChangeReq: ['0', []],
+      oldMf: [
+        { value: '', disabled: true },
+        [Validators.pattern(/^\d{1,6}$|^\d{1,6}\.\d{1,3}$/)],
+      ],
+      newMf: [
+        { value: '', disabled: true },
+        [Validators.pattern(/^\d{1,6}$|^\d{1,6}\.\d{1,3}$/)],
+      ],
+      mainCategory: [''],
+      subCategory: ['28', []],
+      isGovernmentSchemeApplicable: ['0', []],
+      schemeName: ['', []],
+      natureOfBusiness: ['', [Validators.required]],
+      beneficiaryIssuerDepartment: ['', []],
+      isNameAndSiteAddressCorrect: ['1', []],
+      isSiteIsInAccordance: ['1', []],
+      bbmpWardNo: ['', [Validators.required]],
+      parliamentConstituency: ['', [Validators.required]],
+      assemblyConstituency: ['', [Validators.required]],
+      isInternalWiringCompleted: ['1', []],
+      isBorewellExisting: ['0', []],
+      isAmrMeter: ['0', []],
+      disconnectedAccountNo: ['', []],
+      areas: ['', []],
+      layoutCaseId: ['', []],
+      isInstallBefore2005: ['0', []],
+
+
+      imageUploaded: ['false', Validators.requiredTrue]
+    });
+
+    this.loadInspectionForm = this._formBuilder.group({
+      totalNoOfFloors: [''],
+      plotSize: [''],
+      totalBuildUpAreaOfBuilding: ['', Validators.required],
+      heightOfBuilding: [''],
+      requestedLoadKW: [''],
+      requestedLoadHP: [''],
+      totalConnectedLoad: [''],
+      totalNoOfDomesticApplicants: [''],
+      totalNoOfDomesticLoad: [''],
+      totalNoOfCommercialApplicants: [''],
+      totalNoOfCommercialLoad: [''],
+      totalNoOfEducationalApplicants: [''],
+      totalNoOfEducationalLoad: [''],
+      totalNoOfIndustrialApplicants: [''],
+      totalNoOfIndustrialLoad: [''],
+      isTheApplicantWillingToProvideSpace: [''],
+      executionMethod: [''],
+      existingBuildupArea: [''],
+      existingLoadHp: [''],
+      existingLoadKw: [''],
+      existingLoadUnit: [''],
+      existingTotalLoad: [''],
+      newBuildupArea: [''],
+      newLoadHp: [''],
+      newLoadKw: [''],
+      newLoadUnit: [''],
+      newNoFloor: [''],
+      noOfFloorAdded: [''],
+      noOfFloorReduced: [''],
+      existingNoFloor: [''],
+      newTotalLoad: [''],
+      totalLoadOfTheBuilding: [''],
+      existingLoadOfPremises: [''],
+      totalLoadConForDOP: [''],
+
+      // Layout Form Controls
+
+      typeOfLayout: [''],
+      totalProjectAreaAcres: [''],
+      // locationOfPremise: [''],
+      totalProjectAreaGuntas: [''],
+
+      // Additional Requested Load
+      requestedLoadWaterHP: [''],
+      requestedLoadWaterKW: [''],
+      requestedLoadStreetLights: [''],
+      requestedLoadSTPKW: [''],
+      requestedLoadSTPHP: [''],
+      otherMiscLoadsKW: [''],
+      totalRequestedLoadKW: [''],
+      siteDetails: this._formBuilder.array([]),
+    });
+
+    this.networkExtensionForm = this._formBuilder.group({
+      adjacentConsumerNumber: ['', [Validators.required]],
+      isNetworkExtensionRequired: ['', [Validators.required]],
+      latitude: [''],
+      longitude: [''],
+      networkExtensionType: [''],
+      connectionExtendedFrom: ['', []],
+      nameOfTheTransformer: [''],
+      transformerCapacity: [''],
+      feederName: ['', [Validators.required]],
+      substationName: ['', [Validators.required]],
+      mrCode: ['', [Validators.required]],
+      mrDay: ['', [Validators.required]],
+      isCablePrecommTestReq: ['0', []],
+      isRMUPrecommTestReq: ['0', []],
+      isLBSPrecommTestReq: ['0', []],
+      isDTTestingChargesReq: ['0', []],
+    });
+    this.meterProcuredForm = this._formBuilder.group({
+      //isMeterChangeReq: ['0', []],
+      isMeterProcuredByConsumer: ['1', []],
+      isYouWantToUploadMeters: ['0', []],
+      meterProcuredAccountId: ['', []],
+      meterProcuredSerialNumber: ['', []],
+      meterProcuredKWH: ['', []],
+      meterProcuredKVAH: ['', []],
+      meterProcuredKVA: ['', []],
+      meterProcuredKW: ['', []],
+      meterProcuredPF: ['', []],
+      meterProcuredRRNumber: ['', []],
+    });
+
+    this.inspectedByForm = this._formBuilder.group(
+      {
+        isSolarHeaterMandatory: ['0', []],
+        isProvisionForSolarWaterHeaterMade: ['0', []],
+        isAnyHTEHTLineCrossing: ['0', []],
+        isLineClearCertiProvided: ['0', []],
+        areaBelongsTo: ['', [Validators.required]],
+        premisesBelongsTo: ['', [Validators.required]],
+        isDecommOfAssetsReq: ['0', []],
+        isAnyAddDocCollectedAtSpot: ['0', []],
+        isAnyDocsStillToBeCollected: ['0', []],
+        anyOtherDetail: ['', []],
+        deviationAccountId: ['', [Validators.required]],
+        deviationParticulars: ['', []],
+        deviationRemarks: ['', [Validators.required]],
+        inspectionReportUploadDate: ['', []],
+        inspectionDate: [dayjs().format('YYYY-MM-DD'), [Validators.required]],
+        inspectedByAE: ['1', [Validators.required]],
+        inspectedByAEE: [''],
+        inspectedByEE: [''],
+        inspectedBySE: [''],
+        inspectedByCE: [''],
+        rejectReason: ['', Validators.required],
+        pdfFile: [''],
+      },
+      {
+        validators: this.atLeastOneCheckboxCheckedValidator([
+          'inspectedByAE',
+          'inspectedByAEE',
+          'inspectedByEE',
+          'inspectedBySE',
+          'inspectedByCE',
+        ]),
+      }
+    );
+
+    this.premisesInspe = this._formBuilder.group({
+      premisesInspe: ['', Validators.required],
+    });
+    this.consumerDetails = this._formBuilder.group({
+      consumerDetails: [''],
+    });
+
+    this.hideBox();
+    this.displayExecutionBlock();
+    const apiKey = sessionStorage.getItem('api-key');
+    const serviceKey = sessionStorage.getItem('service-key');
+    const userRole = sessionStorage.getItem('user-role');
+    const userName = sessionStorage.getItem('user-name');
+    const userCode = sessionStorage.getItem('user-code');
+    const officeCode = sessionStorage.getItem('office-id');
+    const discom = sessionStorage.getItem('discom');
+    this.discomCode = discom;
+    this.route.paramMap.subscribe(async (params: ParamMap) => {
+      this.route.queryParamMap.subscribe((queryParams) => {
+        this.serviceRegistrationsId = queryParams.get(
+          'serviceRegistrationsId'
+        );
       });
-
-      this.loadInspectionForm = this._formBuilder.group({
-        totalNoOfFloors: [''],
-        plotSize: [''],
-        totalBuildUpAreaOfBuilding: ['', Validators.required],
-        heightOfBuilding: [''],
-        requestedLoadKW: [''],
-        requestedLoadHP: [''],
-        totalConnectedLoad: [''],
-        totalNoOfDomesticApplicants: [''],
-        totalNoOfDomesticLoad: [''],
-        totalNoOfCommercialApplicants: [''],
-        totalNoOfCommercialLoad: [''],
-        totalNoOfEducationalApplicants: [''],
-        totalNoOfEducationalLoad: [''],
-        totalNoOfIndustrialApplicants: [''],
-        totalNoOfIndustrialLoad: [''],
-        isTheApplicantWillingToProvideSpace: [''],
-        executionMethod: [''],
-        existingBuildupArea: [''],
-        existingLoadHp: [''],
-        existingLoadKw: [''],
-        existingLoadUnit: [''],
-        existingTotalLoad: [''],
-        newBuildupArea: [''],
-        newLoadHp: [''],
-        newLoadKw: [''],
-        newLoadUnit: [''],
-        newNoFloor: [''],
-        noOfFloorAdded: [''],
-        noOfFloorReduced: [''],
-        existingNoFloor: [''],
-        newTotalLoad: [''],
-        totalLoadOfTheBuilding: [''],
-        existingLoadOfPremises: [''],
-        totalLoadConForDOP: [''],
-
-        // Layout Form Controls
-
-        typeOfLayout: [''],
-        totalProjectAreaAcres: [''],
-        // locationOfPremise: [''],
-        totalProjectAreaGuntas: [''],
-
-        // Additional Requested Load
-        requestedLoadWaterHP: [''],
-        requestedLoadWaterKW: [''],
-        requestedLoadStreetLights: [''],
-        requestedLoadSTPKW: [''],
-        requestedLoadSTPHP: [''],
-        otherMiscLoadsKW: [''],
-        totalRequestedLoadKW: [''],
-        siteDetails: this._formBuilder.array([]),
+      const accountId = params.get('accountId');
+      const applicationStatusCode = params.get('statusCode');
+      const processTypeName = params.get('processTypeName');
+      this.processTypeName = processTypeName;
+      this.applicationStatusCode = applicationStatusCode;
+      this.accountId = accountId;
+      const mainCategoryFilter: any = {
+        apiKey,
+        serviceKey,
+        userRole,
+        userName,
+        userCode,
+        officeCode,
+        serviceRegistrationsId: this.serviceRegistrationsId,
+        applicationStatusCode,
+      };
+      this.data =
+        await this.dashboardService.getDataByServiceIdAndApplicationStatus(
+          mainCategoryFilter
+        );
+      this.premisesInspectionForm.patchValue({
+        isMeterChangeReq:
+          this.data.serviceRegistration?.applicationTypeCode === 'LE' ||
+            this.data.serviceRegistration?.applicationTypeCode === 'LR'
+            ? '1'
+            : '0',
+        mainCategory: this.data.serviceRegistration?.mainCategory,
       });
+      if (this.data?.ccbServiceRequestSpecDetailsDTOList) {
+        this.loadSiteDimensions(
+          this.data.ccbServiceRequestSpecDetailsDTOList
+        );
+      }
+      if (this.data && this.data.ccbServiceRequestDTO) {
+        const responseData = this.data.ccbServiceRequestDTO;
 
-      this.networkExtensionForm = this._formBuilder.group({
-        adjacentConsumerNumber: ['', [Validators.required]],
-        isNetworkExtensionRequired: ['', [Validators.required]],
-        latitude: [''],
-        longitude: [''],
-        networkExtensionType: [''],
-        connectionExtendedFrom: ['', []],
-        nameOfTheTransformer: [''],
-        transformerCapacity: [''],
-        feederName: ['', [Validators.required]],
-        substationName: ['', [Validators.required]],
-        mrCode: ['', [Validators.required]],
-        mrDay: ['', [Validators.required]],
-        isCablePrecommTestReq: ['0', []],
-        isRMUPrecommTestReq: ['0', []],
-        isLBSPrecommTestReq: ['0', []],
-        isDTTestingChargesReq: ['0', []],
-      });
-      this.meterProcuredForm = this._formBuilder.group({
-        //isMeterChangeReq: ['0', []],
-        isMeterProcuredByConsumer: ['1', []],
-        isYouWantToUploadMeters: ['0', []],
-        meterProcuredAccountId: ['', []],
-        meterProcuredSerialNumber: ['', []],
-        meterProcuredKWH: ['', []],
-        meterProcuredKVAH: ['', []],
-        meterProcuredKVA: ['', []],
-        meterProcuredKW: ['', []],
-        meterProcuredPF: ['', []],
-        meterProcuredRRNumber: ['', []],
-      });
+        this.loadInspectionForm.patchValue({
+          typeOfLayout: responseData.typeOfLayout || '',
+          totalProjectAreaAcres: responseData.totalProjectAreaAcres || '',
+          // locationOfPremise: responseData.locationOfPremise || '',
+          totalProjectAreaGuntas: responseData.totalProjectAreaGuntas || '',
+          requestedLoadWaterHP: responseData.loadWaterSupplyHp || '',
+          requestedLoadWaterKW: responseData.loadWaterSupplyKw || '',
+          requestedLoadStreetLights: responseData.loadStreetLightKw || '',
+          requestedLoadSTPKW: responseData.loadSewagePlantKw || '',
+          requestedLoadSTPHP: responseData.loadSewagePlantHp || '',
+          otherMiscLoadsKW: responseData.otherMiscLoadsKW || '',
+          totalRequestedLoadKW: responseData.totalRequestedLoadKw || '',
+        });
+      }
+      if (this.data.serviceRegistration) {
+        this.data.serviceRegistration.mrCode =
+          this.data.serviceRegistration.mrCode === 'null' ? '' : this.data.serviceRegistration.mrCode;
 
-      this.inspectedByForm = this._formBuilder.group(
-        {
-          isSolarHeaterMandatory: ['0', []],
-          isProvisionForSolarWaterHeaterMade: ['0', []],
-          isAnyHTEHTLineCrossing: ['0', []],
-          isLineClearCertiProvided: ['0', []],
-          areaBelongsTo: ['', [Validators.required]],
-          premisesBelongsTo: ['', [Validators.required]],
-          isDecommOfAssetsReq: ['0', []],
-          isAnyAddDocCollectedAtSpot: ['0', []],
-          isAnyDocsStillToBeCollected: ['0', []],
-          anyOtherDetail: ['', []],
-          deviationAccountId: ['', [Validators.required]],
-          deviationParticulars: ['', []],
-          deviationRemarks: ['', [Validators.required]],
-          inspectionReportUploadDate: ['', []],
-          inspectionDate: [dayjs().format('YYYY-MM-DD'), [Validators.required]],
-          inspectedByAE: ['1', [Validators.required]],
-          inspectedByAEE: [''],
-          inspectedByEE: [''],
-          inspectedBySE: [''],
-          inspectedByCE: [''],
-          rejectReason: ['', Validators.required],
-          pdfFile: [''],
-        },
-        {
-          validators: this.atLeastOneCheckboxCheckedValidator([
-            'inspectedByAE',
-            'inspectedByAEE',
-            'inspectedByEE',
-            'inspectedBySE',
-            'inspectedByCE',
-          ]),
-        }
+        this.data.serviceRegistration.mrDay =
+          this.data.serviceRegistration.mrDay === 'null' ? '' : this.data.serviceRegistration.mrDay;
+
+        this.setConditionalValidators();
+
+        const isLEorLR = ['LE', 'LR'].includes(this.data.serviceRegistration.applicationTypeCode);
+
+        this.premisesInspectionForm.patchValue({
+          isMeterChangeReq: isLEorLR ? '1' : '0',
+          mrCode: this.data.serviceRegistration.mrCode,
+          mrDay: this.data.serviceRegistration.mrDay,
+        });
+      }
+      if (
+        this.data.serviceRegistration &&
+        this.data.serviceRegistration.sessionIpAddress == 'migserver'
+      ) {
+        this.isSessionMigrated = true;
+      } else {
+        this.isSessionMigrated = false;
+      }
+      this.loadUnit =
+        this.data.serviceRegistration.loadUnit == 'null'
+          ? 'KW'
+          : this.data.serviceRegistration.loadUnit;
+      this.serviceRegistrationsId =
+        this.data.serviceRegistration?.serviceRegistrationId;
+      this.applicationTypeCode =
+        this.data.serviceRegistration?.applicationTypeCode;
+      this.connectionTypeCode =
+        this.data.serviceRegistration?.connectionTypeCode;
+
+      this.totalContractedLoad = parseInt(
+        this.data.serviceRegistration.totalContractedLoad
+      );
+      this.setDefaultNetworkExtensionRequired();
+      const meterfilterParams: any = {
+        apiKey,
+        serviceKey,
+        userRole,
+        userName,
+        userCode,
+        serviceRegistrationsId: this.serviceRegistrationsId,
+      };
+      this.meterData =
+        await this.dashboardService.getMeterRegistersLogDataByServiceRegistrationsId(
+          meterfilterParams
+        );
+      this.populateMeterData();
+      this.mainCategoryData =
+        await this.dashboardService.getAllMainCategoryData(
+          mainCategoryFilter
+        );
+      console.log('mainCategoryData ==>', this.mainCategoryData);
+      const parliamentConstituencyFilter: any = {
+        apiKey,
+        serviceKey,
+        userRole,
+        userName,
+        userCode,
+        constituencyType: 'PARLIAMENT',
+        districtId: Number(this.data.serviceRegistration?.districtId),
+      };
+
+      const filterParams: any = {
+        apiKey,
+        serviceKey,
+        userRole,
+        userName,
+        userCode,
+      };
+      this.parliamentConstituency =
+        await this.dashboardService.getConstituencyDataByType(
+          parliamentConstituencyFilter
+        );
+      this.networkExtensionType =
+        await this.dashboardService.getNetworkExtensionTypeData(filterParams);
+      this.deviationType = await this.dashboardService.getDeviationTypeData(
+        filterParams
       );
 
-      this.premisesInspe = this._formBuilder.group({
-        premisesInspe: ['', Validators.required],
+      this.loadInspectionForm
+        ?.get('isTheApplicantWillingToProvideSpace')
+        .valueChanges.subscribe(async (v) => {
+          if (v === '0') {
+            this.executionMethod = [
+              {
+                woExecutionMethodId: 'Self Execution',
+                woExecutionMethodName: 'Self Execution',
+              },
+            ];
+          } else
+            this.executionMethod =
+              await this.dashboardService.getExecutionMethodData(
+                filterParams
+              );
+        });
+      this.checkIsMeterProcured();
+      this.loadInspectionValues(this.data);
+      if (
+        this.data.serviceRegistration.connectionCode === 'MC' ||
+        this.data.serviceRegistration.connectionCode === 'MC-MSB'
+      ) {
+        this.hideOption = true;
+      }
+      if (this.premisesInspectionForm.get('subCategory').value) {
+        this.onChangeSubCategory();
+      }
+    });
+    this.checkSchemeNameandBenifciary();
+    this.networkExtensionForm
+      .get('isNetworkExtensionRequired')
+      .valueChanges.subscribe((value) => {
+        this.updateCheckFeasibilityButton();
       });
-      this.consumerDetails = this._formBuilder.group({
-        consumerDetails: [''],
+    this.updateCheckFeasibilityButton();
+
+    this.loadInspectionForm
+      .get('existingLoadOfPremises')
+      ?.valueChanges.subscribe((value) => {
+        this.updateTotalLoadConForDOP();
       });
 
-      this.hideBox();
-      this.displayExecutionBlock();
-      const apiKey = sessionStorage.getItem('api-key');
-      const serviceKey = sessionStorage.getItem('service-key');
-      const userRole = sessionStorage.getItem('user-role');
-      const userName = sessionStorage.getItem('user-name');
-      const userCode = sessionStorage.getItem('user-code');
-      const officeCode = sessionStorage.getItem('office-id');
-      const discom = sessionStorage.getItem('discom');
-      this.discomCode = discom;
-      this.route.paramMap.subscribe(async (params: ParamMap) => {
-        this.route.queryParamMap.subscribe((queryParams) => {
-          this.serviceRegistrationsId = queryParams.get(
-            'serviceRegistrationsId'
-          );
-        });
-        const accountId = params.get('accountId');
-        const applicationStatusCode = params.get('statusCode');
-        const processTypeName = params.get('processTypeName');
-        this.processTypeName = processTypeName;
-        this.applicationStatusCode = applicationStatusCode;
-        this.accountId = accountId;
-        const mainCategoryFilter: any = {
-          apiKey,
-          serviceKey,
-          userRole,
-          userName,
-          userCode,
-          officeCode,
-          serviceRegistrationsId: this.serviceRegistrationsId,
-          applicationStatusCode,
-        };
-        this.data =
-          await this.dashboardService.getDataByServiceIdAndApplicationStatus(
-            mainCategoryFilter
-          );
-        this.premisesInspectionForm.patchValue({
-          isMeterChangeReq:
-            this.data.serviceRegistration?.applicationTypeCode === 'LE' ||
-            this.data.serviceRegistration?.applicationTypeCode === 'LR'
-              ? '1'
-              : '0',
-          mainCategory: this.data.serviceRegistration?.mainCategory,
-        });
-        if (this.data?.ccbServiceRequestSpecDetailsDTOList) {
-          this.loadSiteDimensions(
-            this.data.ccbServiceRequestSpecDetailsDTOList
-          );
-        }
-        if (this.data && this.data.ccbServiceRequestDTO) {
-          const responseData = this.data.ccbServiceRequestDTO;
+    this.loadInspectionForm
+      .get('newLoadKw')
+      ?.valueChanges.subscribe(() => this.updateTotalLoad());
+    this.loadInspectionForm
+      .get('newLoadHp')
+      ?.valueChanges.subscribe(() => this.updateTotalLoad());
 
-          this.loadInspectionForm.patchValue({
-            typeOfLayout: responseData.typeOfLayout || '',
-            totalProjectAreaAcres: responseData.totalProjectAreaAcres || '',
-            // locationOfPremise: responseData.locationOfPremise || '',
-            totalProjectAreaGuntas: responseData.totalProjectAreaGuntas || '',
-            requestedLoadWaterHP: responseData.loadWaterSupplyHp || '',
-            requestedLoadWaterKW: responseData.loadWaterSupplyKw || '',
-            requestedLoadStreetLights: responseData.loadStreetLightKw || '',
-            requestedLoadSTPKW: responseData.loadSewagePlantKw || '',
-            requestedLoadSTPHP: responseData.loadSewagePlantHp || '',
-            otherMiscLoadsKW: responseData.otherMiscLoadsKW || '',
-            totalRequestedLoadKW: responseData.totalRequestedLoadKw || '',
-          });
-        }
-        if (this.data.serviceRegistration) {
-          this.data.serviceRegistration.mrCode =
-            this.data.serviceRegistration.mrCode === 'null' ? '' : this.data.serviceRegistration.mrCode;
-        
-          this.data.serviceRegistration.mrDay =
-            this.data.serviceRegistration.mrDay === 'null' ? '' : this.data.serviceRegistration.mrDay;
-        
-          this.setConditionalValidators();
-        
-          const isLEorLR = ['LE', 'LR'].includes(this.data.serviceRegistration.applicationTypeCode);
-        
-          this.premisesInspectionForm.patchValue({
-            isMeterChangeReq: isLEorLR ? '1' : '0',
-            mrCode: this.data.serviceRegistration.mrCode,
-            mrDay: this.data.serviceRegistration.mrDay,
-          });
-        }
-        if (
-          this.data.serviceRegistration &&
-          this.data.serviceRegistration.sessionIpAddress == 'migserver'
-        ) {
-          this.isSessionMigrated = true;
-        } else {
-          this.isSessionMigrated = false;
-        }
-        this.loadUnit =
-          this.data.serviceRegistration.loadUnit == 'null'
-            ? 'KW'
-            : this.data.serviceRegistration.loadUnit;
-        this.serviceRegistrationsId =
-          this.data.serviceRegistration?.serviceRegistrationId;
-        this.applicationTypeCode =
-          this.data.serviceRegistration?.applicationTypeCode;
-        this.connectionTypeCode =
-          this.data.serviceRegistration?.connectionTypeCode;
-
-        this.totalContractedLoad = parseInt(
-          this.data.serviceRegistration.totalContractedLoad
-        );
-        this.setDefaultNetworkExtensionRequired();
-        const meterfilterParams: any = {
-          apiKey,
-          serviceKey,
-          userRole,
-          userName,
-          userCode,
-          serviceRegistrationsId: this.serviceRegistrationsId,
-        };
-        this.meterData =
-          await this.dashboardService.getMeterRegistersLogDataByServiceRegistrationsId(
-            meterfilterParams
-          );
-        this.populateMeterData();
-        this.mainCategoryData =
-          await this.dashboardService.getAllMainCategoryData(
-            mainCategoryFilter
-          );
-        console.log('mainCategoryData ==>', this.mainCategoryData);
-        const parliamentConstituencyFilter: any = {
-          apiKey,
-          serviceKey,
-          userRole,
-          userName,
-          userCode,
-          constituencyType: 'PARLIAMENT',
-          districtId: Number(this.data.serviceRegistration?.districtId),
-        };
-
-        const filterParams: any = {
-          apiKey,
-          serviceKey,
-          userRole,
-          userName,
-          userCode,
-        };
-        this.parliamentConstituency =
-          await this.dashboardService.getConstituencyDataByType(
-            parliamentConstituencyFilter
-          );
-        this.networkExtensionType =
-          await this.dashboardService.getNetworkExtensionTypeData(filterParams);
-        this.deviationType = await this.dashboardService.getDeviationTypeData(
-          filterParams
-        );
-
-        this.loadInspectionForm
-          ?.get('isTheApplicantWillingToProvideSpace')
-          .valueChanges.subscribe(async (v) => {
-            if (v === '0') {
-              this.executionMethod = [
-                {
-                  woExecutionMethodId: 'Self Execution',
-                  woExecutionMethodName: 'Self Execution',
-                },
-              ];
-            } else
-              this.executionMethod =
-                await this.dashboardService.getExecutionMethodData(
-                  filterParams
-                );
-          });
-        this.checkIsMeterProcured();
-        this.loadInspectionValues(this.data);
-        if (
-          this.data.serviceRegistration.connectionCode === 'MC' ||
-          this.data.serviceRegistration.connectionCode === 'MC-MSB'
-        ) {
-          this.hideOption = true;
-        }
-        if (this.premisesInspectionForm.get('subCategory').value) {
-          this.onChangeSubCategory();
-        }
-      });
-      this.checkSchemeNameandBenifciary();
-      this.networkExtensionForm
-        .get('isNetworkExtensionRequired')
-        .valueChanges.subscribe((value) => {
-          this.updateCheckFeasibilityButton();
-        });
-      this.updateCheckFeasibilityButton();
-
-      this.loadInspectionForm
-        .get('existingLoadOfPremises')
-        ?.valueChanges.subscribe((value) => {
-          this.updateTotalLoadConForDOP();
-        });
-
-      this.loadInspectionForm
-        .get('newLoadKw')
-        ?.valueChanges.subscribe(() => this.updateTotalLoad());
-      this.loadInspectionForm
-        .get('newLoadHp')
-        ?.valueChanges.subscribe(() => this.updateTotalLoad());
-
-      this.loadInspectionForm
-        .get('requestedLoadKW')
-        ?.valueChanges.subscribe(() => this.updateTotalLoadLE());
-      this.loadInspectionForm
-        .get('requestedLoadHP')
-        ?.valueChanges.subscribe(() => this.updateTotalLoadLE());
+    this.loadInspectionForm
+      .get('requestedLoadKW')
+      ?.valueChanges.subscribe(() => this.updateTotalLoadLE());
+    this.loadInspectionForm
+      .get('requestedLoadHP')
+      ?.valueChanges.subscribe(() => this.updateTotalLoadLE());
     // }
   }
 
@@ -1216,72 +1244,72 @@ export class DashboardFormsComponent implements OnInit {
 
     //   updateValidity(networkFields);
     // } else {
-      clearValidators(commonFields);
+    clearValidators(commonFields);
 
-      if (this.data?.serviceRegistration?.applicationTypeCode == 'LR') {
-        setValidators([
-          'noOfFloorReduced',
-          'totalNoOfFloors',
-          'existingNoFloor',
-          'existingBuildupArea',
-          'heightOfBuilding',
-          'existingLoadOfPremises',
-        ]);
-        this.loadInspectionForm.get('isMeterChangeReq')?.setValue('1');
-      } else if (this.data?.serviceRegistration?.applicationTypeCode == 'LE') {
-        setValidators([
-          'noOfFloorAdded',
-          'totalNoOfFloors',
-          'existingNoFloor',
-          'existingBuildupArea',
-          'heightOfBuilding',
-          'existingLoadOfPremises',
-        ]);
-        this.loadInspectionForm.get('isMeterChangeReq')?.setValue('1');
-      } else if (
-        this.data?.serviceRegistration?.applicationTypeCode == 'LAYOUT'
-      ) {
-        setValidators([
-          'totalRequestedLoadKW',
-          'otherMiscLoadsKW',
-          'requestedLoadSTPHP',
-          'requestedLoadSTPKW',
-          'requestedLoadStreetLights',
-          'requestedLoadWaterKW',
-          'requestedLoadWaterHP',
-          'totalProjectAreaGuntas',
-          // 'locationOfPremise',
-          'totalProjectAreaAcres',
-          'typeOfLayout',
-        ]);
-        clearValidators(['totalBuildUpAreaOfBuilding']);
-        this.loadInspectionForm.get('isMeterChangeReq')?.setValue('0');
-      }
+    if (this.data?.serviceRegistration?.applicationTypeCode == 'LR') {
+      setValidators([
+        'noOfFloorReduced',
+        'totalNoOfFloors',
+        'existingNoFloor',
+        'existingBuildupArea',
+        'heightOfBuilding',
+        'existingLoadOfPremises',
+      ]);
+      this.loadInspectionForm.get('isMeterChangeReq')?.setValue('1');
+    } else if (this.data?.serviceRegistration?.applicationTypeCode == 'LE') {
+      setValidators([
+        'noOfFloorAdded',
+        'totalNoOfFloors',
+        'existingNoFloor',
+        'existingBuildupArea',
+        'heightOfBuilding',
+        'existingLoadOfPremises',
+      ]);
+      this.loadInspectionForm.get('isMeterChangeReq')?.setValue('1');
+    } else if (
+      this.data?.serviceRegistration?.applicationTypeCode == 'LAYOUT'
+    ) {
+      setValidators([
+        'totalRequestedLoadKW',
+        'otherMiscLoadsKW',
+        'requestedLoadSTPHP',
+        'requestedLoadSTPKW',
+        'requestedLoadStreetLights',
+        'requestedLoadWaterKW',
+        'requestedLoadWaterHP',
+        'totalProjectAreaGuntas',
+        // 'locationOfPremise',
+        'totalProjectAreaAcres',
+        'typeOfLayout',
+      ]);
+      clearValidators(['totalBuildUpAreaOfBuilding']);
+      this.loadInspectionForm.get('isMeterChangeReq')?.setValue('0');
+    }
 
-      if (
-        ['NC', 'MC', 'TC'].includes(
-          this.data?.serviceRegistration?.applicationTypeCode
-        )
-      ) {
-        setValidators([
-          'existingBuildupArea',
-          'totalNoOfFloors',
-          'heightOfBuilding',
-          'newBuildupArea',
-        ]);
-      }
+    if (
+      ['NC', 'MC', 'TC'].includes(
+        this.data?.serviceRegistration?.applicationTypeCode
+      )
+    ) {
+      setValidators([
+        'existingBuildupArea',
+        'totalNoOfFloors',
+        'heightOfBuilding',
+        'newBuildupArea',
+      ]);
+    }
 
-      updateValidity(commonFields);
+    updateValidity(commonFields);
 
-      if (
-        ['LE', 'LR'].includes(
-          this.data?.serviceRegistration?.applicationTypeCode
-        )
-      ) {
-        clearValidators(networkFields);
-      }
+    if (
+      ['LE', 'LR'].includes(
+        this.data?.serviceRegistration?.applicationTypeCode
+      )
+    ) {
+      clearValidators(networkFields);
+    }
 
-      updateValidity(networkFields);
+    updateValidity(networkFields);
     // }
   }
 
@@ -1442,76 +1470,76 @@ export class DashboardFormsComponent implements OnInit {
     //     }
     //   }
     // } else {
-      let currentForm: FormGroup;
+    let currentForm: FormGroup;
 
-      switch (formName) {
-        case 'premisesInspection':
-          currentForm = this.premisesInspectionForm;
-          break;
-        case 'loadInspection':
-          currentForm = this.loadInspectionForm;
-          break;
-        case 'networkExtension':
-          currentForm = this.networkExtensionForm;
-          break;
-        case 'meterInspection':
-          currentForm = this.meterRegisteredDetailsForm;
-          break;
-        case 'inspectedForm':
-          currentForm = this.inspectedByForm;
-          break;
-        default:
-          currentForm = null;
-          break;
-      }
+    switch (formName) {
+      case 'premisesInspection':
+        currentForm = this.premisesInspectionForm;
+        break;
+      case 'loadInspection':
+        currentForm = this.loadInspectionForm;
+        break;
+      case 'networkExtension':
+        currentForm = this.networkExtensionForm;
+        break;
+      case 'meterInspection':
+        currentForm = this.meterRegisteredDetailsForm;
+        break;
+      case 'inspectedForm':
+        currentForm = this.inspectedByForm;
+        break;
+      default:
+        currentForm = null;
+        break;
+    }
 
-      if (currentForm) {
-        const isLEorLR = ['LE', 'LR'].includes(
-          this.data?.serviceRegistration?.applicationTypeCode
-        );
+    if (currentForm) {
+      const isLEorLR = ['LE', 'LR'].includes(
+        this.data?.serviceRegistration?.applicationTypeCode
+      );
 
-        if (currentForm.invalid) {
-          currentForm.markAllAsTouched();
-          let errorMessage = '';
+      if (currentForm.invalid) {
+        currentForm.markAllAsTouched();
+        let errorMessage = '';
 
-          if (formName === 'meterInspection') {
-            errorMessage = 'Please fill all the meter readings.';
-          } else if (formName == 'networkExtension' && !isLEorLR) {
-            errorMessage =
-              'Please click on the "Get Tapping" button for required details.';
-          } else if (!isLEorLR) {
-            errorMessage = 'Please fill in all the mandatory fields.';
-          }
+        if (formName === 'meterInspection') {
+          errorMessage = 'Please fill all the meter readings.';
+        } else if (formName == 'networkExtension' && !isLEorLR) {
+          errorMessage =
+            'Please click on the "Get Tapping" button for required details.';
+        } else if (!isLEorLR) {
+          errorMessage = 'Please fill in all the mandatory fields.';
+        }
 
-          if (errorMessage) {
-            this.snackBar.open(errorMessage, 'Ok', {
-              duration: 3000,
-              horizontalPosition: 'center',
-              verticalPosition: cordova !== undefined ? 'bottom' : 'top',
-            });
-          }
+        if (errorMessage) {
+          this.snackBar.open(errorMessage, 'Ok', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: cordova !== undefined ? 'bottom' : 'top',
+          });
+        }
 
-          const invalidElement = document.querySelector('.ng-invalid');
-          if (invalidElement) {
-            invalidElement.scrollIntoView({
-              behavior: 'smooth',
-              block: 'center',
-            });
-          }
-        } else {
-          if (formName === 'meterInspection') {
-            this.stepper.next();
-          } else if (
-            formName === 'networkExtension' &&
-            this.showNetworkExtensionForm &&
-            !isLEorLR
-          ) {
-            this.stepper.next();
-          } else if (formName === 'inspectedForm') {
-            this.stepper.next();
-          }
+        const invalidElement = document.querySelector('.ng-invalid');
+        if (invalidElement) {
+          invalidElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }
+      } else {
+        if (formName === 'meterInspection') {
+          this.stepper.next();
+        } else if (
+          formName === 'networkExtension' &&
+          this.showNetworkExtensionForm &&
+          !isLEorLR
+        ) {
+          this.stepper.next();
+        } else if (formName === 'inspectedForm') {
+          this.stepper.next();
         }
       }
+    }
     // }
   }
 
@@ -1909,7 +1937,7 @@ export class DashboardFormsComponent implements OnInit {
 
     const totalLoadOfTheBuilding =
       this.data?.serviceRegistration?.applicationTypeCode === 'LE' ||
-      this.data?.serviceRegistration?.applicationTypeCode === 'LR'
+        this.data?.serviceRegistration?.applicationTypeCode === 'LR'
         ? this.loadInspectionForm.get('totalLoadConForDOP').value
         : this.loadInspectionForm.get('totalLoadOfTheBuilding').value;
 
@@ -2763,498 +2791,498 @@ export class DashboardFormsComponent implements OnInit {
     //     });
     //   }
     // } else {
-      const isLEorLR = ['LE', 'LR'].includes(
-        this.data?.serviceRegistration?.applicationTypeCode
-      );
-      let siteInspectionDTO: any = {
-        existingBuildupArea: Number(
-          this.loadInspectionForm.get('existingBuildupArea').value
-        ),
-        newBuildupArea: Number(
-          this.loadInspectionForm.get('newBuildupArea').value
-        ),
-        existingLoadKw: Number(
-          this.loadInspectionForm.get('existingLoadKw').value
-        ),
-        existingNoFloor: Number(
-          this.loadInspectionForm.get('existingNoFloor').value
-        ),
-        noOfFloorAdded: Number(
-          this.loadInspectionForm.get('noOfFloorAdded').value
-        ),
-        existingTotalLoad: Number(
-          this.loadInspectionForm.get('existingTotalLoad').value
-        ),
-        newLoadKw: Number(this.loadInspectionForm.get('newLoadKw').value),
-        newTotalLoad: Number(this.loadInspectionForm.get('newTotalLoad').value),
-        noOfFloorReduced: Number(
-          this.loadInspectionForm.get('noOfFloorReduced').value
-        ),
+    const isLEorLR = ['LE', 'LR'].includes(
+      this.data?.serviceRegistration?.applicationTypeCode
+    );
+    let siteInspectionDTO: any = {
+      existingBuildupArea: Number(
+        this.loadInspectionForm.get('existingBuildupArea').value
+      ),
+      newBuildupArea: Number(
+        this.loadInspectionForm.get('newBuildupArea').value
+      ),
+      existingLoadKw: Number(
+        this.loadInspectionForm.get('existingLoadKw').value
+      ),
+      existingNoFloor: Number(
+        this.loadInspectionForm.get('existingNoFloor').value
+      ),
+      noOfFloorAdded: Number(
+        this.loadInspectionForm.get('noOfFloorAdded').value
+      ),
+      existingTotalLoad: Number(
+        this.loadInspectionForm.get('existingTotalLoad').value
+      ),
+      newLoadKw: Number(this.loadInspectionForm.get('newLoadKw').value),
+      newTotalLoad: Number(this.loadInspectionForm.get('newTotalLoad').value),
+      noOfFloorReduced: Number(
+        this.loadInspectionForm.get('noOfFloorReduced').value
+      ),
 
-        serviceRegistrationId:
-          this.data?.serviceRegistration?.serviceRegistrationId,
-        mainCategory: Number(
-          this.premisesInspectionForm.get('mainCategory').value
-        ),
-        subCategory: Number(
-          this.premisesInspectionForm.get('subCategory').value
-        ),
-        schemeName: this.premisesInspectionForm.get('schemeName').value,
-        beneficiaryIssuerDept: this.premisesInspectionForm.get(
-          'beneficiaryIssuerDepartment'
-        ).value,
-        isGovtSchemeApplicatible: Number(
-          this.premisesInspectionForm.get('isGovernmentSchemeApplicable').value
-        ),
-        isNameAddressCorrect: Number(
-          this.premisesInspectionForm.get('isNameAndSiteAddressCorrect').value
-        ),
-        isSiteInAccordance: Number(
-          this.premisesInspectionForm.get('isSiteIsInAccordance').value
-        ),
-        wardNo: this.premisesInspectionForm.get('bbmpWardNo').value,
-        assemblyConstituency: Number(
-          this.premisesInspectionForm.get('assemblyConstituency').value
-        ),
-        parliamentConstituency: Number(
-          this.premisesInspectionForm.get('parliamentConstituency').value
-        ),
-        isBoreWellExisting: Number(
-          this.premisesInspectionForm.get('isBorewellExisting').value
-        ),
-        isAmrMeter: Number(this.premisesInspectionForm.get('isAmrMeter').value),
-        isCtChangeReq: Number(
-          this.premisesInspectionForm.get('isCtChangeReq').value
-        ),
-        oldMf: Number(this.premisesInspectionForm.get('oldMf').value),
-        newMf: Number(this.premisesInspectionForm.get('newMf').value),
-        isInternalWiringDone: Number(
-          this.premisesInspectionForm.get('isInternalWiringCompleted').value
-        ),
-        oldAccNoInPremises: this.premisesInspectionForm.get(
-          'disconnectedAccountNo'
-        ).value,
-        arrears: Number(this.premisesInspectionForm.get('areas').value),
-        isInstallBefore2005: Number(
-          this.premisesInspectionForm.get('isInstallBefore2005').value
-        ),
-        totNoFloor: Number(
-          this.loadInspectionForm.get('totalNoOfFloors').value
-        ),
-        plotSize: Number(this.loadInspectionForm.get('plotSize').value),
-        totBuildupArea: Number(
-          this.loadInspectionForm.get('totalBuildUpAreaOfBuilding').value
-        ),
-        buildingHeight: Number(
-          this.loadInspectionForm.get('heightOfBuilding').value
-        ),
-        loadKw: Number(this.loadInspectionForm.get('requestedLoadKW').value),
-        loadHp: Number(this.loadInspectionForm.get('requestedLoadHP').value),
-        totalLoadKw: Number(
-          this.loadInspectionForm.get('totalConnectedLoad').value
-        ),
-        totBuildingLoad: this.loadInspectionForm.get('totalLoadOfTheBuilding')
-          .value,
-        totNoOfDomestic: Number(
-          this.loadInspectionForm.get('totalNoOfDomesticApplicants').value
-        ),
-        totNoOfCommercial: Number(
-          this.loadInspectionForm.get('totalNoOfCommercialApplicants').value
-        ),
-        totNoOfEducation: Number(
-          this.loadInspectionForm.get('totalNoOfEducationalApplicants').value
-        ),
-        totNoOfIndustrial: Number(
-          this.loadInspectionForm.get('totalNoOfIndustrialApplicants').value
-        ),
-        domesticLoadKw: Number(
-          this.loadInspectionForm.get('totalNoOfDomesticLoad').value
-        ),
-        commercialLoadKw: Number(
-          this.loadInspectionForm.get('totalNoOfCommercialLoad').value
-        ),
-        educationLoadKw: Number(
-          this.loadInspectionForm.get('totalNoOfEducationalLoad').value
-        ),
-        industrialLoadKw: Number(
-          this.loadInspectionForm.get('totalNoOfIndustrialLoad').value
-        ),
-        isSpaceProvided: this.loadInspectionForm.get(
-          'isTheApplicantWillingToProvideSpace'
-        ).value,
-        executionMethod: Number(
-          this.loadInspectionForm.get('executionMethod').value
-        ),
-        adjacentAccountNo: this.networkExtensionForm.get(
-          'adjacentConsumerNumber'
-        ).value,
-        isNetworkExtRequired: Number(
-          this.networkExtensionForm.get('isNetworkExtensionRequired').value
-        ),
-        networkExtType: Number(
-          this.networkExtensionForm.get('networkExtensionType').value
-        ),
-        connectionExtendedFrom: this.networkExtensionForm.get(
-          'connectionExtendedFrom'
-        ).value,
-        mrCode: this.networkExtensionForm.get('mrCode').value,
-        mrDay: this.networkExtensionForm.get('mrDay').value,
-        isCablePrecomTestRequired: Number(
-          this.networkExtensionForm.get('isCablePrecommTestReq').value
-        ),
-        isRmuPrecomTestRequired: Number(
-          this.networkExtensionForm.get('isRMUPrecommTestReq').value
-        ),
-        isLbsPrecomTestRequired: Number(
-          this.networkExtensionForm.get('isLBSPrecommTestReq').value
-        ),
-        isDtPrecomTestRequired: Number(
-          this.networkExtensionForm.get('isDTTestingChargesReq').value
-        ),
-        isMeterChange: Number(
-          this.premisesInspectionForm.get('isMeterChangeReq').value
-        ),
-        isMeterProcured: Number(
-          this.meterProcuredForm.get('isMeterProcuredByConsumer').value
-        ),
-        isSolarHeaterMandatory: Number(
-          this.inspectedByForm.get('isSolarHeaterMandatory').value
-        ),
-        isSolarHeaterProvisioned: Number(
-          this.inspectedByForm.get('isProvisionForSolarWaterHeaterMade').value
-        ),
-        isHtEhtLineCrossing: Number(
-          this.inspectedByForm.get('isAnyHTEHTLineCrossing').value
-        ),
-        lineClearenceCertSubmitted: Number(
-          this.inspectedByForm.get('isLineClearCertiProvided').value
-        ),
-        areaBelongsTo: Number(this.inspectedByForm.get('areaBelongsTo').value),
-        premisesBelongsTo: Number(
-          this.inspectedByForm.get('premisesBelongsTo').value
-        ),
-        decommisionAssetsRequired: Number(
-          this.inspectedByForm.get('isDecommOfAssetsReq').value
-        ),
-        anyAddlDocCollected: Number(
-          this.inspectedByForm.get('isAnyAddDocCollectedAtSpot').value
-        ),
-        others: this.inspectedByForm.get('anyOtherDetail').value,
-        inspectedByAe: this.inspectedByForm.get('inspectedByAE').value ? 1 : 0,
-        inspectedByAee: this.inspectedByForm.get('inspectedByAEE').value
-          ? 1
-          : 0,
-        inspectedByEe: this.inspectedByForm.get('inspectedByEE').value ? 1 : 0,
-        inspectedBySe: this.inspectedByForm.get('inspectedBySE').value ? 1 : 0,
-        inspectedByCe: this.inspectedByForm.get('inspectedByCE').value ? 1 : 0,
-        isMeterUploaded: Number(
-          this.meterProcuredForm.get('isYouWantToUploadMeters').value
-        ),
-        anyDocsPending: Number(
-          this.inspectedByForm.get('isAnyDocsStillToBeCollected').value
-        ),
-        anyAocsPending: Number(
-          this.inspectedByForm.get('isAnyDocsStillToBeCollected').value
-        ),
-        anyDeviation: this.deviationDetails.length ? 1 : 0,
-        isFeasibility: 1,
-        layoutRefServiceRegistrationsId: this.layoutValidationSuccess
-          ? this.serviceRegistrationsId
-          : null,
-        typeOfLayout: this.loadInspectionForm.get('typeOfLayout').value,
-        totalProjectAreaAcres: Number(
-          this.loadInspectionForm.get('totalProjectAreaAcres').value
-        ),
-        totalProjectAreaGuntas: Number(
-          this.loadInspectionForm.get('totalProjectAreaGuntas').value
-        ),
-        // locationOfPremise:
-        //   this.loadInspectionForm.get('locationOfPremise').value,
-        requestedLoadWaterHP: Number(
-          this.loadInspectionForm.get('requestedLoadWaterHP').value
-        ),
-        requestedLoadWaterKW: Number(
-          this.loadInspectionForm.get('requestedLoadWaterKW').value
-        ),
-        requestedLoadStreetLights: Number(
-          this.loadInspectionForm.get('requestedLoadStreetLights').value
-        ),
-        requestedLoadSTPKW: Number(
-          this.loadInspectionForm.get('requestedLoadSTPKW').value
-        ),
-        requestedLoadSTPHP: Number(
-          this.loadInspectionForm.get('requestedLoadSTPHP').value
-        ),
-        otherMiscLoadsKW: Number(
-          this.loadInspectionForm.get('otherMiscLoadsKW').value
-        ),
-        totalRequestedLoadKW: Number(
-          this.loadInspectionForm.get('totalRequestedLoadKW').value
-        ),
+      serviceRegistrationId:
+        this.data?.serviceRegistration?.serviceRegistrationId,
+      mainCategory: Number(
+        this.premisesInspectionForm.get('mainCategory').value
+      ),
+      subCategory: Number(
+        this.premisesInspectionForm.get('subCategory').value
+      ),
+      schemeName: this.premisesInspectionForm.get('schemeName').value,
+      beneficiaryIssuerDept: this.premisesInspectionForm.get(
+        'beneficiaryIssuerDepartment'
+      ).value,
+      isGovtSchemeApplicatible: Number(
+        this.premisesInspectionForm.get('isGovernmentSchemeApplicable').value
+      ),
+      isNameAddressCorrect: Number(
+        this.premisesInspectionForm.get('isNameAndSiteAddressCorrect').value
+      ),
+      isSiteInAccordance: Number(
+        this.premisesInspectionForm.get('isSiteIsInAccordance').value
+      ),
+      wardNo: this.premisesInspectionForm.get('bbmpWardNo').value,
+      assemblyConstituency: Number(
+        this.premisesInspectionForm.get('assemblyConstituency').value
+      ),
+      parliamentConstituency: Number(
+        this.premisesInspectionForm.get('parliamentConstituency').value
+      ),
+      isBoreWellExisting: Number(
+        this.premisesInspectionForm.get('isBorewellExisting').value
+      ),
+      isAmrMeter: Number(this.premisesInspectionForm.get('isAmrMeter').value),
+      isCtChangeReq: Number(
+        this.premisesInspectionForm.get('isCtChangeReq').value
+      ),
+      oldMf: Number(this.premisesInspectionForm.get('oldMf').value),
+      newMf: Number(this.premisesInspectionForm.get('newMf').value),
+      isInternalWiringDone: Number(
+        this.premisesInspectionForm.get('isInternalWiringCompleted').value
+      ),
+      oldAccNoInPremises: this.premisesInspectionForm.get(
+        'disconnectedAccountNo'
+      ).value,
+      arrears: Number(this.premisesInspectionForm.get('areas').value),
+      isInstallBefore2005: Number(
+        this.premisesInspectionForm.get('isInstallBefore2005').value
+      ),
+      totNoFloor: Number(
+        this.loadInspectionForm.get('totalNoOfFloors').value
+      ),
+      plotSize: Number(this.loadInspectionForm.get('plotSize').value),
+      totBuildupArea: Number(
+        this.loadInspectionForm.get('totalBuildUpAreaOfBuilding').value
+      ),
+      buildingHeight: Number(
+        this.loadInspectionForm.get('heightOfBuilding').value
+      ),
+      loadKw: Number(this.loadInspectionForm.get('requestedLoadKW').value),
+      loadHp: Number(this.loadInspectionForm.get('requestedLoadHP').value),
+      totalLoadKw: Number(
+        this.loadInspectionForm.get('totalConnectedLoad').value
+      ),
+      totBuildingLoad: this.loadInspectionForm.get('totalLoadOfTheBuilding')
+        .value,
+      totNoOfDomestic: Number(
+        this.loadInspectionForm.get('totalNoOfDomesticApplicants').value
+      ),
+      totNoOfCommercial: Number(
+        this.loadInspectionForm.get('totalNoOfCommercialApplicants').value
+      ),
+      totNoOfEducation: Number(
+        this.loadInspectionForm.get('totalNoOfEducationalApplicants').value
+      ),
+      totNoOfIndustrial: Number(
+        this.loadInspectionForm.get('totalNoOfIndustrialApplicants').value
+      ),
+      domesticLoadKw: Number(
+        this.loadInspectionForm.get('totalNoOfDomesticLoad').value
+      ),
+      commercialLoadKw: Number(
+        this.loadInspectionForm.get('totalNoOfCommercialLoad').value
+      ),
+      educationLoadKw: Number(
+        this.loadInspectionForm.get('totalNoOfEducationalLoad').value
+      ),
+      industrialLoadKw: Number(
+        this.loadInspectionForm.get('totalNoOfIndustrialLoad').value
+      ),
+      isSpaceProvided: this.loadInspectionForm.get(
+        'isTheApplicantWillingToProvideSpace'
+      ).value,
+      executionMethod: Number(
+        this.loadInspectionForm.get('executionMethod').value
+      ),
+      adjacentAccountNo: this.networkExtensionForm.get(
+        'adjacentConsumerNumber'
+      ).value,
+      isNetworkExtRequired: Number(
+        this.networkExtensionForm.get('isNetworkExtensionRequired').value
+      ),
+      networkExtType: Number(
+        this.networkExtensionForm.get('networkExtensionType').value
+      ),
+      connectionExtendedFrom: this.networkExtensionForm.get(
+        'connectionExtendedFrom'
+      ).value,
+      mrCode: this.networkExtensionForm.get('mrCode').value,
+      mrDay: this.networkExtensionForm.get('mrDay').value,
+      isCablePrecomTestRequired: Number(
+        this.networkExtensionForm.get('isCablePrecommTestReq').value
+      ),
+      isRmuPrecomTestRequired: Number(
+        this.networkExtensionForm.get('isRMUPrecommTestReq').value
+      ),
+      isLbsPrecomTestRequired: Number(
+        this.networkExtensionForm.get('isLBSPrecommTestReq').value
+      ),
+      isDtPrecomTestRequired: Number(
+        this.networkExtensionForm.get('isDTTestingChargesReq').value
+      ),
+      isMeterChange: Number(
+        this.premisesInspectionForm.get('isMeterChangeReq').value
+      ),
+      isMeterProcured: Number(
+        this.meterProcuredForm.get('isMeterProcuredByConsumer').value
+      ),
+      isSolarHeaterMandatory: Number(
+        this.inspectedByForm.get('isSolarHeaterMandatory').value
+      ),
+      isSolarHeaterProvisioned: Number(
+        this.inspectedByForm.get('isProvisionForSolarWaterHeaterMade').value
+      ),
+      isHtEhtLineCrossing: Number(
+        this.inspectedByForm.get('isAnyHTEHTLineCrossing').value
+      ),
+      lineClearenceCertSubmitted: Number(
+        this.inspectedByForm.get('isLineClearCertiProvided').value
+      ),
+      areaBelongsTo: Number(this.inspectedByForm.get('areaBelongsTo').value),
+      premisesBelongsTo: Number(
+        this.inspectedByForm.get('premisesBelongsTo').value
+      ),
+      decommisionAssetsRequired: Number(
+        this.inspectedByForm.get('isDecommOfAssetsReq').value
+      ),
+      anyAddlDocCollected: Number(
+        this.inspectedByForm.get('isAnyAddDocCollectedAtSpot').value
+      ),
+      others: this.inspectedByForm.get('anyOtherDetail').value,
+      inspectedByAe: this.inspectedByForm.get('inspectedByAE').value ? 1 : 0,
+      inspectedByAee: this.inspectedByForm.get('inspectedByAEE').value
+        ? 1
+        : 0,
+      inspectedByEe: this.inspectedByForm.get('inspectedByEE').value ? 1 : 0,
+      inspectedBySe: this.inspectedByForm.get('inspectedBySE').value ? 1 : 0,
+      inspectedByCe: this.inspectedByForm.get('inspectedByCE').value ? 1 : 0,
+      isMeterUploaded: Number(
+        this.meterProcuredForm.get('isYouWantToUploadMeters').value
+      ),
+      anyDocsPending: Number(
+        this.inspectedByForm.get('isAnyDocsStillToBeCollected').value
+      ),
+      anyAocsPending: Number(
+        this.inspectedByForm.get('isAnyDocsStillToBeCollected').value
+      ),
+      anyDeviation: this.deviationDetails.length ? 1 : 0,
+      isFeasibility: 1,
+      layoutRefServiceRegistrationsId: this.layoutValidationSuccess
+        ? this.serviceRegistrationsId
+        : null,
+      typeOfLayout: this.loadInspectionForm.get('typeOfLayout').value,
+      totalProjectAreaAcres: Number(
+        this.loadInspectionForm.get('totalProjectAreaAcres').value
+      ),
+      totalProjectAreaGuntas: Number(
+        this.loadInspectionForm.get('totalProjectAreaGuntas').value
+      ),
+      // locationOfPremise:
+      //   this.loadInspectionForm.get('locationOfPremise').value,
+      requestedLoadWaterHP: Number(
+        this.loadInspectionForm.get('requestedLoadWaterHP').value
+      ),
+      requestedLoadWaterKW: Number(
+        this.loadInspectionForm.get('requestedLoadWaterKW').value
+      ),
+      requestedLoadStreetLights: Number(
+        this.loadInspectionForm.get('requestedLoadStreetLights').value
+      ),
+      requestedLoadSTPKW: Number(
+        this.loadInspectionForm.get('requestedLoadSTPKW').value
+      ),
+      requestedLoadSTPHP: Number(
+        this.loadInspectionForm.get('requestedLoadSTPHP').value
+      ),
+      otherMiscLoadsKW: Number(
+        this.loadInspectionForm.get('otherMiscLoadsKW').value
+      ),
+      totalRequestedLoadKW: Number(
+        this.loadInspectionForm.get('totalRequestedLoadKW').value
+      ),
+    };
+
+    let siteDetails = this.siteDetails.controls.map((site) => {
+      let entry: any = {
+        ccbServiceRequestSpecDetailsId:
+          site.value.ccbServiceRequestSpecDetailsId,
+        ccbServiceRequestId: site.value.ccbServiceRequestId,
+        specDesc: site.value.specDesc,
       };
 
-      let siteDetails = this.siteDetails.controls.map((site) => {
-        let entry: any = {
-          ccbServiceRequestSpecDetailsId:
-            site.value.ccbServiceRequestSpecDetailsId,
-          ccbServiceRequestId: site.value.ccbServiceRequestId,
-          specDesc: site.value.specDesc,
-        };
-
-        if (
-          site.value.specDesc.startsWith(
-            'Assessed load in kW for Site Dimension'
-          )
-        ) {
-          entry.actualSpecValue = site.value.specValue;
-        } else {
-          entry.specValue = site.value.specValue;
-        }
-
-        return entry;
-      });
-
-      // Instead of wrapping in `siteDetails`, spread the objects directly
-      let ccbServiceRequestSpecDetailsDTOList = [...siteDetails];
-
-      const existingLoadOfPremises = this.loadInspectionForm.get(
-        'existingLoadOfPremises'
-      ).value;
-      const totalLoadConForDOP =
-        this.loadInspectionForm.get('totalLoadConForDOP').value;
-      if (existingLoadOfPremises) {
-        // If existingLoadOfPremises has a value, update the DTO
-        siteInspectionDTO.existingTotalLoad = Number(existingLoadOfPremises);
-        siteInspectionDTO.totBuildingLoad = Number(totalLoadConForDOP);
-      }
-      const wmMeterRegistersLogList: any[] = [];
       if (
-        this.data?.serviceRegistration?.applicationTypeCode === 'LE' ||
-        this.data?.serviceRegistration?.applicationTypeCode === 'LR'
-      ) {
-        const meterDataArray = this.meterRegisteredDetailsForm.get(
-          'meterData'
-        ) as FormArray;
-
-        meterDataArray.controls.forEach((control, index) => {
-          const registerReadingValue = control.get('registerReading').value;
-          if (registerReadingValue) {
-            const wmMeterRegistersLogItem = {
-              wmMeterRegistersId: this.meterData[index].wmMeterRegistersId,
-              discom: this.meterData[index].discom,
-              serviceRegistrationsId:
-                this.meterData[index].serviceRegistrationsId,
-              serviceRequestNo: this.meterData[index].serviceRequestNo,
-              accountId: this.meterData[index].accountId,
-              badgeNumber: this.meterData[index].badgeNumber,
-              registerId: this.meterData[index].registerId,
-              registerReadSeqNo: this.meterData[index].registerReadSeqNo,
-              registerUom: this.meterData[index].registerUom,
-              registerTou: this.meterData[index].registerTou,
-              registerReadType: this.meterData[index].registerReadType,
-              registerReading: registerReadingValue,
-              insertedBy: this.meterData[index].insertedBy,
-              insertedDate: this.meterData[index].insertedDate,
-              modifiedBy: this.meterData[index].modifiedBy,
-              modifiedDate: this.meterData[index].modifiedDate,
-              sessionIpAddress: this.meterData[index].sessionIpAddress,
-              activeStatus: this.meterData[index].activeStatus,
-              uniqueCondition: this.meterData[index].uniqueCondition,
-              meterFlag: this.meterData[index].meterFlag,
-            };
-
-            wmMeterRegistersLogList.push(wmMeterRegistersLogItem);
-          }
-        });
-      }
-
-      if (isLEorLR && siteInspectionDTO.isMeterChange == 0) {
-        siteInspectionDTO.latitude = 'null';
-        siteInspectionDTO.longitude = 'null';
-        siteInspectionDTO.tpAssetId = 'null';
-        siteInspectionDTO.tpAssetType = 'null';
-        siteInspectionDTO.tpGisUid = 'null';
-        siteInspectionDTO.tpParentUid = 'null';
-        siteInspectionDTO.dtrId = 'null';
-      } else if (this.storedParsedServiceResponse) {
-        siteInspectionDTO.tpAssetId = this.storedParsedServiceResponse.assetId;
-        siteInspectionDTO.tpAssetType =
-          this.storedParsedServiceResponse.assetType;
-        siteInspectionDTO.tpGisUid = this.storedParsedServiceResponse.gisUid;
-        siteInspectionDTO.latitude =
-          this.networkExtensionForm.get('latitude').value;
-        siteInspectionDTO.longitude =
-          this.networkExtensionForm.get('longitude').value;
-        const transformerCapacity = this.networkExtensionForm.get(
-          'transformerCapacity'
-        ).value;
-        siteInspectionDTO.transformerCapacity =
-          !transformerCapacity || isNaN(Number(transformerCapacity))
-            ? 0
-            : Number(transformerCapacity);
-        siteInspectionDTO.tpParentUid =
-          this.storedParsedServiceResponse.parentUid;
-        const transformerName = this.networkExtensionForm.get(
-          'nameOfTheTransformer'
-        ).value;
-        siteInspectionDTO.dtrId =
-          !transformerName || transformerName == '-' ? '' : transformerName;
-        siteInspectionDTO.feederName =
-          this.storedParsedServiceResponse.feederName;
-        siteInspectionDTO.substationName =
-          this.storedParsedServiceResponse.substationName;
-      }
-      //  else if (!isLEorLR) {
-      //   this.snackBar
-      //     .open(
-      //       'Latitude and Longitude of the location details are required. Please Click on Get Tapping Point',
-      //       'OK',
-      //       { verticalPosition: cordova !== undefined ? 'bottom' : 'top' }
-      //     )
-      //     .onAction()
-      //     .subscribe(() => {
-      //       this.snackBar.dismiss();
-      //     });
-      //   return;
-      // }
-      if (Number(this.premisesInspectionForm.get('natureOfBusiness').value)) {
-        siteInspectionDTO.connectionNatureId = Number(
-          this.premisesInspectionForm.get('natureOfBusiness').value
-        );
-      }
-      if (this.inspectedByForm.get('inspectionReportUploadDate').value) {
-        const inspectionReportUploadDate = new Date(
-          this.inspectedByForm.get('inspectionReportUploadDate').value
-        );
-        siteInspectionDTO.scheduleDate =
-          inspectionReportUploadDate.toISOString();
-      }
-      if (this.inspectedByForm.get('inspectionDate').value) {
-        siteInspectionDTO.inspectionDate =
-          this.inspectedByForm.get('inspectionDate').value;
-      }
-      const isLayout =
-        this.data?.serviceRegistration?.applicationTypeCode == 'LAYOUT';
-      let submitSiteInspection: any;
-      if (
-        this.data?.serviceRegistration?.applicationTypeCode == 'LE' ||
-        this.data?.serviceRegistration?.applicationTypeCode == 'LR'
-      ) {
-        submitSiteInspection = {
-          siteInspectionDTO: siteInspectionDTO,
-          consumerMetersProcuredDTO: this.meterProcuredDetails,
-          inspectionDeviationDTO: this.deviationDetails,
-          wmMeterRegistersLogList: wmMeterRegistersLogList,
-        };
-      } else if (isLayout) {
-        submitSiteInspection = {
-          siteInspectionDTO: siteInspectionDTO,
-          ccbServiceRequestSpecDetailsDTOList: isLayout
-            ? ccbServiceRequestSpecDetailsDTOList
-            : [],
-          consumerMetersProcuredDTO: this.meterProcuredDetails,
-          inspectionDeviationDTO: this.deviationDetails,
-        };
-      } else {
-        submitSiteInspection = {
-          siteInspectionDTO: siteInspectionDTO,
-          consumerMetersProcuredDTO: this.meterProcuredDetails,
-          inspectionDeviationDTO: this.deviationDetails,
-        };
-      }
-
-      const apiKey = sessionStorage.getItem('api-key');
-      const serviceKey = sessionStorage.getItem('service-key');
-      const userRole = sessionStorage.getItem('user-role');
-      const userName = sessionStorage.getItem('user-name');
-      const userCode = sessionStorage.getItem('user-code');
-
-      // if (this.loadInspectionForm.get('executionMethod').value === '' && this.isExecutionRequired) {
-      //   this.snackBar
-      //     .open('Execution method is required', 'OK', { verticalPosition: cordova !== undefined ? 'bottom' : 'top' })
-      //     .onAction()
-      //     .subscribe(() => {
-      //       this.snackBar.dismiss();
-      //     });
-      //   return;
-      // }
-      if (
-        this.inspectedByForm.get('inspectionDate').value == '' ||
-        this.inspectedByForm.get('inspectionDate').value == null
-      ) {
-        this.snackBar
-          .open('inspection date required', 'OK', { verticalPosition: cordova !== undefined ? 'bottom' : 'top' })
-          .onAction()
-          .subscribe(() => {
-            this.snackBar.dismiss();
-          });
-        return;
-      }
-      if (
-        this.inspectedByForm.get('premisesBelongsTo').value == '' ||
-        this.inspectedByForm.get('areaBelongsTo').value == ''
-      ) {
-        this.snackBar
-          .open('Premises Belongs To  and Area Belongs To required', 'OK', {
-            verticalPosition: cordova !== undefined ? 'bottom' : 'top',
-          })
-          .onAction()
-          .subscribe(() => {
-            this.snackBar.dismiss();
-          });
-        return;
-      }
-
-      if (
-        (this.inspectedByForm.get('inspectionDate').value !== null ||
-          this.inspectedByForm.get('inspectionDate').value !== '') &&
-        this.inspectedByForm.get('inspectionDate').value <
-          this.data?.serviceRegistration?.registeredOn.split(' ')[0]
-      ) {
-        this.snackBar
-          .open(
-            'Inspection date should not be less than registration date',
-            'OK',
-            { verticalPosition: cordova !== undefined ? 'bottom' : 'top' }
-          )
-          .onAction()
-          .subscribe(() => {
-            this.snackBar.dismiss();
-          });
-        return;
-      }
-      this.isLoading = true;
-      const siteInspection = await this.dashboardService
-        .saveSiteInspectionData(
-          { apiKey, serviceKey, userCode, userRole, userName },
-          submitSiteInspection
+        site.value.specDesc.startsWith(
+          'Assessed load in kW for Site Dimension'
         )
-        .catch((err: any) => console.log(err));
-
-      if (siteInspection.messageType === 'SUCCESS') {
-        const snackBarRef = this.snackBar.open(
-          'Site Inspection Done Successfully',
-          'OK',
-          {
-            verticalPosition: cordova !== undefined ? 'bottom' : 'top',
-          }
-        );
-        snackBarRef.onAction().subscribe(() => {
-          this.router.navigate([`/main/home/1/${this.processTypeName}`]);
-          this.isLoading = false;
-        });
-      } else if (siteInspection.messageType == 'FAILURE') {
-        const snackBarRef = this.snackBar.open(
-          siteInspection.messageText,
-          'Ok',
-          {
-            verticalPosition: cordova !== undefined ? 'bottom' : 'top',
-          }
-        );
-        snackBarRef.onAction().subscribe(() => {
-          this.isLoading = false;
-        });
+      ) {
+        entry.actualSpecValue = site.value.specValue;
+      } else {
+        entry.specValue = site.value.specValue;
       }
+
+      return entry;
+    });
+
+    // Instead of wrapping in `siteDetails`, spread the objects directly
+    let ccbServiceRequestSpecDetailsDTOList = [...siteDetails];
+
+    const existingLoadOfPremises = this.loadInspectionForm.get(
+      'existingLoadOfPremises'
+    ).value;
+    const totalLoadConForDOP =
+      this.loadInspectionForm.get('totalLoadConForDOP').value;
+    if (existingLoadOfPremises) {
+      // If existingLoadOfPremises has a value, update the DTO
+      siteInspectionDTO.existingTotalLoad = Number(existingLoadOfPremises);
+      siteInspectionDTO.totBuildingLoad = Number(totalLoadConForDOP);
+    }
+    const wmMeterRegistersLogList: any[] = [];
+    if (
+      this.data?.serviceRegistration?.applicationTypeCode === 'LE' ||
+      this.data?.serviceRegistration?.applicationTypeCode === 'LR'
+    ) {
+      const meterDataArray = this.meterRegisteredDetailsForm.get(
+        'meterData'
+      ) as FormArray;
+
+      meterDataArray.controls.forEach((control, index) => {
+        const registerReadingValue = control.get('registerReading').value;
+        if (registerReadingValue) {
+          const wmMeterRegistersLogItem = {
+            wmMeterRegistersId: this.meterData[index].wmMeterRegistersId,
+            discom: this.meterData[index].discom,
+            serviceRegistrationsId:
+              this.meterData[index].serviceRegistrationsId,
+            serviceRequestNo: this.meterData[index].serviceRequestNo,
+            accountId: this.meterData[index].accountId,
+            badgeNumber: this.meterData[index].badgeNumber,
+            registerId: this.meterData[index].registerId,
+            registerReadSeqNo: this.meterData[index].registerReadSeqNo,
+            registerUom: this.meterData[index].registerUom,
+            registerTou: this.meterData[index].registerTou,
+            registerReadType: this.meterData[index].registerReadType,
+            registerReading: registerReadingValue,
+            insertedBy: this.meterData[index].insertedBy,
+            insertedDate: this.meterData[index].insertedDate,
+            modifiedBy: this.meterData[index].modifiedBy,
+            modifiedDate: this.meterData[index].modifiedDate,
+            sessionIpAddress: this.meterData[index].sessionIpAddress,
+            activeStatus: this.meterData[index].activeStatus,
+            uniqueCondition: this.meterData[index].uniqueCondition,
+            meterFlag: this.meterData[index].meterFlag,
+          };
+
+          wmMeterRegistersLogList.push(wmMeterRegistersLogItem);
+        }
+      });
+    }
+
+    if (isLEorLR && siteInspectionDTO.isMeterChange == 0) {
+      siteInspectionDTO.latitude = 'null';
+      siteInspectionDTO.longitude = 'null';
+      siteInspectionDTO.tpAssetId = 'null';
+      siteInspectionDTO.tpAssetType = 'null';
+      siteInspectionDTO.tpGisUid = 'null';
+      siteInspectionDTO.tpParentUid = 'null';
+      siteInspectionDTO.dtrId = 'null';
+    } else if (this.storedParsedServiceResponse) {
+      siteInspectionDTO.tpAssetId = this.storedParsedServiceResponse.assetId;
+      siteInspectionDTO.tpAssetType =
+        this.storedParsedServiceResponse.assetType;
+      siteInspectionDTO.tpGisUid = this.storedParsedServiceResponse.gisUid;
+      siteInspectionDTO.latitude =
+        this.networkExtensionForm.get('latitude').value;
+      siteInspectionDTO.longitude =
+        this.networkExtensionForm.get('longitude').value;
+      const transformerCapacity = this.networkExtensionForm.get(
+        'transformerCapacity'
+      ).value;
+      siteInspectionDTO.transformerCapacity =
+        !transformerCapacity || isNaN(Number(transformerCapacity))
+          ? 0
+          : Number(transformerCapacity);
+      siteInspectionDTO.tpParentUid =
+        this.storedParsedServiceResponse.parentUid;
+      const transformerName = this.networkExtensionForm.get(
+        'nameOfTheTransformer'
+      ).value;
+      siteInspectionDTO.dtrId =
+        !transformerName || transformerName == '-' ? '' : transformerName;
+      siteInspectionDTO.feederName =
+        this.storedParsedServiceResponse.feederName;
+      siteInspectionDTO.substationName =
+        this.storedParsedServiceResponse.substationName;
+    }
+    //  else if (!isLEorLR) {
+    //   this.snackBar
+    //     .open(
+    //       'Latitude and Longitude of the location details are required. Please Click on Get Tapping Point',
+    //       'OK',
+    //       { verticalPosition: cordova !== undefined ? 'bottom' : 'top' }
+    //     )
+    //     .onAction()
+    //     .subscribe(() => {
+    //       this.snackBar.dismiss();
+    //     });
+    //   return;
+    // }
+    if (Number(this.premisesInspectionForm.get('natureOfBusiness').value)) {
+      siteInspectionDTO.connectionNatureId = Number(
+        this.premisesInspectionForm.get('natureOfBusiness').value
+      );
+    }
+    if (this.inspectedByForm.get('inspectionReportUploadDate').value) {
+      const inspectionReportUploadDate = new Date(
+        this.inspectedByForm.get('inspectionReportUploadDate').value
+      );
+      siteInspectionDTO.scheduleDate =
+        inspectionReportUploadDate.toISOString();
+    }
+    if (this.inspectedByForm.get('inspectionDate').value) {
+      siteInspectionDTO.inspectionDate =
+        this.inspectedByForm.get('inspectionDate').value;
+    }
+    const isLayout =
+      this.data?.serviceRegistration?.applicationTypeCode == 'LAYOUT';
+    let submitSiteInspection: any;
+    if (
+      this.data?.serviceRegistration?.applicationTypeCode == 'LE' ||
+      this.data?.serviceRegistration?.applicationTypeCode == 'LR'
+    ) {
+      submitSiteInspection = {
+        siteInspectionDTO: siteInspectionDTO,
+        consumerMetersProcuredDTO: this.meterProcuredDetails,
+        inspectionDeviationDTO: this.deviationDetails,
+        wmMeterRegistersLogList: wmMeterRegistersLogList,
+      };
+    } else if (isLayout) {
+      submitSiteInspection = {
+        siteInspectionDTO: siteInspectionDTO,
+        ccbServiceRequestSpecDetailsDTOList: isLayout
+          ? ccbServiceRequestSpecDetailsDTOList
+          : [],
+        consumerMetersProcuredDTO: this.meterProcuredDetails,
+        inspectionDeviationDTO: this.deviationDetails,
+      };
+    } else {
+      submitSiteInspection = {
+        siteInspectionDTO: siteInspectionDTO,
+        consumerMetersProcuredDTO: this.meterProcuredDetails,
+        inspectionDeviationDTO: this.deviationDetails,
+      };
+    }
+
+    const apiKey = sessionStorage.getItem('api-key');
+    const serviceKey = sessionStorage.getItem('service-key');
+    const userRole = sessionStorage.getItem('user-role');
+    const userName = sessionStorage.getItem('user-name');
+    const userCode = sessionStorage.getItem('user-code');
+
+    // if (this.loadInspectionForm.get('executionMethod').value === '' && this.isExecutionRequired) {
+    //   this.snackBar
+    //     .open('Execution method is required', 'OK', { verticalPosition: cordova !== undefined ? 'bottom' : 'top' })
+    //     .onAction()
+    //     .subscribe(() => {
+    //       this.snackBar.dismiss();
+    //     });
+    //   return;
+    // }
+    if (
+      this.inspectedByForm.get('inspectionDate').value == '' ||
+      this.inspectedByForm.get('inspectionDate').value == null
+    ) {
+      this.snackBar
+        .open('inspection date required', 'OK', { verticalPosition: cordova !== undefined ? 'bottom' : 'top' })
+        .onAction()
+        .subscribe(() => {
+          this.snackBar.dismiss();
+        });
+      return;
+    }
+    if (
+      this.inspectedByForm.get('premisesBelongsTo').value == '' ||
+      this.inspectedByForm.get('areaBelongsTo').value == ''
+    ) {
+      this.snackBar
+        .open('Premises Belongs To  and Area Belongs To required', 'OK', {
+          verticalPosition: cordova !== undefined ? 'bottom' : 'top',
+        })
+        .onAction()
+        .subscribe(() => {
+          this.snackBar.dismiss();
+        });
+      return;
+    }
+
+    if (
+      (this.inspectedByForm.get('inspectionDate').value !== null ||
+        this.inspectedByForm.get('inspectionDate').value !== '') &&
+      this.inspectedByForm.get('inspectionDate').value <
+      this.data?.serviceRegistration?.registeredOn.split(' ')[0]
+    ) {
+      this.snackBar
+        .open(
+          'Inspection date should not be less than registration date',
+          'OK',
+          { verticalPosition: cordova !== undefined ? 'bottom' : 'top' }
+        )
+        .onAction()
+        .subscribe(() => {
+          this.snackBar.dismiss();
+        });
+      return;
+    }
+    this.isLoading = true;
+    const siteInspection = await this.dashboardService
+      .saveSiteInspectionData(
+        { apiKey, serviceKey, userCode, userRole, userName },
+        submitSiteInspection
+      )
+      .catch((err: any) => console.log(err));
+
+    if (siteInspection.messageType === 'SUCCESS') {
+      const snackBarRef = this.snackBar.open(
+        'Site Inspection Done Successfully',
+        'OK',
+        {
+          verticalPosition: cordova !== undefined ? 'bottom' : 'top',
+        }
+      );
+      snackBarRef.onAction().subscribe(() => {
+        this.router.navigate([`/main/home/1/${this.processTypeName}`]);
+        this.isLoading = false;
+      });
+    } else if (siteInspection.messageType == 'FAILURE') {
+      const snackBarRef = this.snackBar.open(
+        siteInspection.messageText,
+        'Ok',
+        {
+          verticalPosition: cordova !== undefined ? 'bottom' : 'top',
+        }
+      );
+      snackBarRef.onAction().subscribe(() => {
+        this.isLoading = false;
+      });
+    }
     // }
   }
 
@@ -3281,6 +3309,40 @@ export class DashboardFormsComponent implements OnInit {
       });
     }
   }
+
+
+
+  onsendLonLat() {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        console.log('Latitude:', latitude, 'Longitude:', longitude);
+
+        // Call a service method to send longitude and latitude to backend
+        this.SendLocationService.saveLocationCapture(latitude, longitude, this.serviceRegistrationsId, this.processTypeName).subscribe({
+          next: (response) => {
+            console.log('Location sent successfully:', response);
+            // Optionally show success message or proceed further
+          },
+          error: (error) => {
+            console.error('Error sending location:', error);
+          }
+        });
+      },
+      // (error) => {
+      //   console.error('Error getting location:', error);
+      //   alert('Unable to get your location. Please allow location access.');
+      // },
+      // { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }
+
 
   isScemeAndBenificiary: boolean = true;
   checkSchemeNameandBenifciary(e: any = null, data = null) {
@@ -3467,7 +3529,225 @@ export class DashboardFormsComponent implements OnInit {
     this.documentService.setServiceRegistrationId(serviceRegistrationId);
     this.documentService.navigateToViewDocument('/main/document-upload');
   }
+
+
+  selectImage() {
+    // this.checkPermissions();
+
+
+    navigator.camera.getPicture(
+      (imageUri: string) => {
+        // this.selectedFileUri = 'data:image/jpeg;base64,' + imageUri;
+
+        if (!imageUri) {
+          this.ngZone.run(() => {
+            this.uploadError = 'No image selected.';
+            this.clearMessagesAfterDelay();
+          });
+          return;
+        }
+
+        //  Resolve file size using Cordova File API
+        window.resolveLocalFileSystemURL(
+          imageUri,
+          (fileEntry: any) => {
+            fileEntry.file((file: any) => {
+              const fileSizeInMB = file.size / (1024 * 1024);
+              this.ngZone.run(() => {
+                if (fileSizeInMB > 10) {
+                  this.uploadError = 'Image size too big — should not be greater than 10 MB.';
+                  this.selectedFileUri = null;
+                  // this.selectedFileName = null;
+                  this.selectedMessage = null;
+                } else {
+                  this.selectedFileUri = imageUri;
+                  //this.selectedFileName = imageUri.substring(imageUri.lastIndexOf('/') + 1);
+                  this.uploadError = null;
+                  this.selectedMessage = 'Image selected';
+                }
+
+                // 🔹 Clear messages automatically after 10 seconds
+                this.clearMessagesAfterDelay();
+              });
+            });
+          },
+          // (err: any) => {
+          //   this.uploadError = 'Could not access file details: ' + err;
+          //   this.selectedMessage = null;
+          //   this.clearMessagesAfterDelay();
+          // }
+        );
+      },
+      (err: any) => {
+        this.uploadError = 'Image selection failed: ' + err;
+        this.clearMessagesAfterDelay();
+      },
+      {
+        quality: 70,
+        destinationType: Camera.DestinationType.FILE_URI,
+        // sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+        sourceType: Camera.PictureSourceType.Camera
+
+      }
+    );
+  }
+
+  private clearMessagesAfterDelay() {
+    setTimeout(() => {
+      this.ngZone.run(() => {
+        this.uploadError = null;
+        this.selectedMessage = null;
+        this.uploadSuccess = false;
+      });
+    }, 10000); // 10 seconds
+  }
+
+
+
+
+
+  //       this.selectedFileUri = imageUri;
+  //       //  this.previewUrl = imageUri; // direct file path preview
+  //       //  this.selectedFileName = imageUri.substring(imageUri.lastIndexOf('/') + 1);
+  //       this.uploadError = null;
+  //     },
+  //     (err: any) => {
+  //       this.uploadError = 'Image selection failed: ' + err;
+  //     },
+  //     {
+  //       quality: 70,
+  //       destinationType: Camera.DestinationType.FILE_URI,
+  //       sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+  //     }
+  //   );
+  // }
+
+
+
+  // uploadImage() {
+  //   if (!this.selectedFileUri) {
+  //     this.uploadError = 'Please select an image first.';
+  //     this.clearMessagesAfterDelay();
+  //     return;
+  //   }
+
+  //   // Step 1 — Get GPS before uploading
+  //   navigator.geolocation.getCurrentPosition(
+  //     (position: any) => {
+  //       this.ngZone.run(() => {
+  //         this.latitude = position.coords.latitude;
+  //         this.longitude = position.coords.longitude;
+  //         console.log('User location:', this.latitude, this.longitude);
+
+
+
+  //         // Step 2 — Upload file with location
+  //         this.uploadFileWithLocation();
+
+
+
+
+
+  //       });
+  //     },
+  //     (error: any) => {
+  //       this.uploadError = 'Location access denied or unavailable.';
+  //       console.error('Geolocation error:', error);
+  //     },
+  //     { enableHighAccuracy: true, timeout: 10000 }
+  //   );
+  // }
+
+  // uploadFileWithLocation() {
+  //   this.isUploading = true;
+
+  //   this.documentService.uploadFile(this.selectedFileUri)
+  //     .then(res => {
+  //       this.isUploading = false;
+  //       this.uploadSuccess = true;
+  //       console.log('File uploaded successfully:', res);
+
+  //       // ✅ Step 3: Save latitude & longitude to backend
+  //       if (this.latitude && this.longitude) {
+  //         this.documentService.saveLocationCapture(this.latitude, this.longitude)
+  //           .subscribe({
+  //             next: (response) => {
+  //               console.log('Location saved successfully:', response);
+  //             },
+  //             error: (err) => {
+  //               console.error('Error saving location:', err);
+  //             }
+  //           });
+  //       }
+
+  //       this.clearMessagesAfterDelay();
+  //     })
+  //     .catch(err => {
+  //       this.isUploading = false;
+  //       this.uploadError = 'File upload failed';
+  //       console.error('Upload error:', err);
+  //       this.clearMessagesAfterDelay();
+  //     });
+  // }
+
+
+
+
+
+  // uploadFileWithLocation() {
+  //   this.isUploading = true;
+
+  //   this.documentService.uploadFile(this.selectedFileUri)
+  //     .then(res => {
+  //       this.isUploading = false;
+  //       this.uploadSuccess = true;
+  //       console.log('File uploaded successfully:', res);
+  //       this.clearMessagesAfterDelay();
+  //     })
+  //     .catch(err => {
+  //       this.isUploading = false;
+  //       this.uploadError = 'File upload failed';
+  //       console.error('Upload error:', err);
+  //       this.clearMessagesAfterDelay();
+  //     });
+  // }
+
+
+
+
+  uploadImage() {
+    if (!this.selectedFileUri) {
+      this.uploadError = 'Please select a image first.';
+      this.clearMessagesAfterDelay();
+      return;
+
+
+    }
+
+    this.isUploading = true;
+    this.uploadError = null;
+    this.uploadSuccess = false;
+
+
+    this.ImageDocumentService.uploadFile(this.selectedFileUri, this.serviceRegistrationsId, this.processTypeName)
+      .then(res => {
+        this.isUploading = false;
+        this.uploadSuccess = true;
+        this.selectedMessage = null;
+        console.log('File uploaded successfully:', res);
+        this.clearMessagesAfterDelay();
+      })
+
+      .catch(err => {
+        this.isUploading = false;
+        this.uploadError = 'File upload failed';
+        console.error('Upload error:', err);
+        this.clearMessagesAfterDelay();
+      });
+
+  }
 }
+
 function convertNullToEmpty(newTotalLoad: any): any {
   throw new Error('Function not implemented.');
 }

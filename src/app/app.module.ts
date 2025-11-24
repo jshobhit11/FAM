@@ -75,7 +75,7 @@ import { WelcomeComponent } from './welcome/welcome/welcome.component';
 import { fieldResolutionModule } from './field-resolution/field-resolution.module';
 //import { OtpComponent } from './components/otp/otp.component';
 import { OtpComponent } from './otp/otp.component';
-import { PremisesDocUploadComponent } from './premises-doc-upload/premises-doc-upload.component';
+//import { PremisesDocUploadComponent } from './premises-doc-upload/premises-doc-upload.component';
 
 @NgModule({
   declarations: [
@@ -132,8 +132,7 @@ import { PremisesDocUploadComponent } from './premises-doc-upload/premises-doc-u
     SingleAccountMeterReplacemantComponent,
     SingleAccountMeterMappingComponent,
     WelcomeComponent,
-    OtpComponent,
-    PremisesDocUploadComponent,
+    OtpComponent
 
   ],
   imports: [

@@ -7,7 +7,7 @@ import { UserSessionService } from '../services/user-session.service';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private userSession: UserSessionService, private router: Router) {}
+  constructor(private userSession: UserSessionService, private router: Router) { }
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    
+
     if (!this.userSession.hasSavedValidToken()) {
       return false;
     }

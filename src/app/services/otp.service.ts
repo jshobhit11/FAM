@@ -29,7 +29,11 @@ import { Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class OtpService {
-    private validateOtpUrl = 'http://localhost:8082/api/sms/validate';
+    private validateOtpUrl = 'https://localhost:8443/api/sms/validate';
+
+    // private validateOtpUrl = 'http://hplvmobapp01:8092/fam/api/sms/validate';
+
+    // private validateOtpUrl = 'https://ipdsmobileapps.kdiscoms.org:9200/FAM_APP/api/sms/validate';
 
     constructor(private http: HttpClient) { }
 

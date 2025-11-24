@@ -6,6 +6,7 @@ import { FieldActivityService } from 'src/app/services/field-activity.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LoaderService } from 'src/app/services/loader.service';
+import { SendLocationService } from 'src/app/services/sendLocation';
 interface SaveData {
   messageType: string;
   messageText: string;
@@ -28,17 +29,18 @@ export class PowerSanctionComponent implements OnInit {
   errorMessage: string;
   isButtonDisabled: boolean = false;
   isTableVisible: boolean = true;
+  SendLocationService: any;
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
     private fieldactivityService: FieldActivityService,
     private router: Router,
-    private loader:LoaderService
-  ) {}
+    private loader: LoaderService
+  ) { }
 
   ngOnInit(): void {
-    this.form = this.fb.group({ 
+    this.form = this.fb.group({
       meterRequiredflag: [null],
       lineExtension: [null],
       meterChange: [null],
@@ -56,16 +58,16 @@ export class PowerSanctionComponent implements OnInit {
     this.isTableVisible = !this.isTableVisible;
   }
   generateOptions(): void {
-    this.options = Array.from({ length: 5 }, (_, i) => i + 1); 
+    this.options = Array.from({ length: 5 }, (_, i) => i + 1);
   }
   onMeterChange(): void {
-      const meterChangeValue = this.form.get('meterRequiredflag')?.value;
-      this.showCtChange = meterChangeValue === 'no';
+    const meterChangeValue = this.form.get('meterRequiredflag')?.value;
+    this.showCtChange = meterChangeValue === 'no';
   }
   async getDetails() {
     try {
       this.accountId = this.accountId?.trim();
-  
+
       if (!this.accountId || isNaN(Number(this.accountId))) {
         alert('Please enter a valid numeric Account ID');
         return;
@@ -75,20 +77,20 @@ export class PowerSanctionComponent implements OnInit {
       const userRole = sessionStorage.getItem('user-role');
       const userName = sessionStorage.getItem('user-name');
       const userCode = sessionStorage.getItem('user-code');
-      const discom =this.selectedOption
-      const detailsFilter: any = {apiKey,serviceKey,userRole,userName,userCode, referenceNumber: this.accountId, discom};
+      const discom = this.selectedOption
+      const detailsFilter: any = { apiKey, serviceKey, userRole, userName, userCode, referenceNumber: this.accountId, discom };
       const response = await this.fieldactivityService.getDataByCaseIdForAfterPowerSanction(detailsFilter);
-  
+
       if (response && response.data && response.data.length > 0) {
         this.data = response.data[0];
-        
+
         this.form.patchValue({
           lineExtension: this.data.isNetworkExtension,
-          meterRequiredflag : this.data.meterRequiredFlag,
-          ctChange: (this.data.applicationTypeCode == 'LE' || this.data.applicationTypeCode == 'LR') 
-          ? (this.data.isCtChangeReq) 
-          : null,
-          gisNetworkDone:this.data.isGisNetworkDone,
+          meterRequiredflag: this.data.meterRequiredFlag,
+          ctChange: (this.data.applicationTypeCode == 'LE' || this.data.applicationTypeCode == 'LR')
+            ? (this.data.isCtChangeReq)
+            : null,
+          gisNetworkDone: this.data.isGisNetworkDone,
           // meterChange : this.data.isMeterChange  == 'true' ? 'yes' : 'no',
           plinthArea: this.data.buildupAreaSize,
           height: this.data.buildingHeight,
@@ -115,9 +117,41 @@ export class PowerSanctionComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 'yes') {
-       this.afterPowerSanctionApproval();
+        this.afterPowerSanctionApproval();
       }
     });
+  }
+
+
+  OnsendLonLat() {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        console.log('Latitude:', latitude, 'Longitude:', longitude);
+
+        // Call a service method to send longitude and latitude to backend
+        this.SendLocationService.saveLocationCapture(latitude, longitude).subscribe({
+          next: (response) => {
+            console.log('Location sent successfully:', response);
+            // Optionally show success message or proceed further
+          },
+          error: (error) => {
+            console.error('Error sending location:', error);
+          }
+        });
+      },
+      // (error) => {
+      //   console.error('Error getting location:', error);
+      //   alert('Unable to get your location. Please allow location access.');
+      // },
+      // { enableHighAccuracy: true, timeout: 10000 }
+    );
   }
   async afterPowerSanctionApproval() {
     try {
@@ -134,7 +168,7 @@ export class PowerSanctionComponent implements OnInit {
       // const isGisNetworkDone = this.data?.isGisNetworkDone;
       // const isCtChangeReq = this.form.get('ctChange').value;
 
-      const initialSaveFilter = { 
+      const initialSaveFilter = {
         apiKey,
         serviceKey,
         userName,
@@ -155,7 +189,7 @@ export class PowerSanctionComponent implements OnInit {
         }
         return filtered;
       }, {} as Record<string, any>);
-      
+
 
       this.saveData = await this.fieldactivityService.afterPowerSanctionApproval(saveFilter);
       const messageType = this.saveData?.messageType;
@@ -163,24 +197,26 @@ export class PowerSanctionComponent implements OnInit {
 
       if (messageType === 'SUCCESS') {
         this.snackBar.open(messageText, 'OK', {
-          verticalPosition: cordova !== undefined ? 'bottom' : 'top', 
+          verticalPosition: cordova !== undefined ? 'bottom' : 'top',
           panelClass: ['snackbar-success'],
-        }).onAction().subscribe(() => {});
+        }).onAction().subscribe(() => { });
       } else if (messageType === 'FAILURE') {
         this.snackBar.open(messageText, 'OK', {
-          verticalPosition: cordova !== undefined ? 'bottom' : 'top', 
+          verticalPosition: cordova !== undefined ? 'bottom' : 'top',
           panelClass: ['snackbar-failure'],
-        }).onAction().subscribe(() => {});
+        }).onAction().subscribe(() => { });
       }
     } catch (error) {
       console.error('Error in returnToSiteInspection:', error);
       this.snackBar.open('Failed to process the request.', 'OK', {
         duration: 3000,
-        verticalPosition: cordova !== undefined ? 'bottom' : 'top', 
+        verticalPosition: cordova !== undefined ? 'bottom' : 'top',
         panelClass: ['snackbar-failure'],
-      }).onAction().subscribe(() => {});
+      }).onAction().subscribe(() => { });
     }
   }
-  
-  
+
+
+
+
 }

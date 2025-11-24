@@ -20,12 +20,14 @@ import { ConfigurationService } from '../services/configuration.service';
 import { PopUpComponent } from '../lr-le-meter-power-approval/pop-up/pop-up.component';
 import { MatDialog } from '@angular/material/dialog';
 import { LoaderService } from '../services/loader.service';
+import { SendLocationService } from '../services/sendLocation';
 @Component({
   selector: 'app-estimation-approval',
   templateUrl: './estimation-approval.component.html',
   styleUrls: ['./estimation-approval.component.scss'],
 })
 export class EstimationApprovalComponent implements OnInit {
+  SendLocationService: any;
   accountId: any;
   data: any = {};
   isChecked: boolean;
@@ -88,7 +90,7 @@ export class EstimationApprovalComponent implements OnInit {
     private configurationService: ConfigurationService,
     private dialog: MatDialog,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   toggleDisplayTableIf() {
     this.toggleTable = !this.toggleTable;
@@ -435,9 +437,8 @@ export class EstimationApprovalComponent implements OnInit {
           );
         }
       }
-      this.forwardData.forwardBy = `${
-        this.data?.serviceRegistration?.designationShortCode
-      } - ${sessionStorage.getItem('user-name')}`;
+      this.forwardData.forwardBy = `${this.data?.serviceRegistration?.designationShortCode
+        } - ${sessionStorage.getItem('user-name')}`;
       this.forwardData.forwardDate = new Date().toISOString().substring(0, 10);
       if (this.data?.serviceRegistration?.designationShortCode === 'AE') {
         this.isAE = true;
@@ -561,7 +562,7 @@ export class EstimationApprovalComponent implements OnInit {
       Number(
         Number(
           data?.totalBudgetAmount -
-            (data?.workOrderIssueAmount + data?.totalReserveAmount)
+          (data?.workOrderIssueAmount + data?.totalReserveAmount)
         ).toFixed(2)
       ) || 0;
     this.divisionalBudgetData = data;
@@ -626,6 +627,38 @@ export class EstimationApprovalComponent implements OnInit {
         this.approve(action);
       }
     });
+  }
+
+
+  OnsendLonLat() {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        console.log('Latitude:', latitude, 'Longitude:', longitude);
+
+        // Call a service method to send longitude and latitude to backend
+        this.SendLocationService.saveLocationCapture(latitude, longitude).subscribe({
+          next: (response) => {
+            console.log('Location sent successfully:', response);
+            // Optionally show success message or proceed further
+          },
+          error: (error) => {
+            console.error('Error sending location:', error);
+          }
+        });
+      },
+      // (error) => {
+      //   console.error('Error getting location:', error);
+      //   alert('Unable to get your location. Please allow location access.');
+      // },
+      // { enableHighAccuracy: true, timeout: 10000 }
+    );
   }
 
   openForwardDialog(): void {
@@ -857,7 +890,7 @@ export class EstimationApprovalComponent implements OnInit {
     );
   }
 
-  async approve(action: string) {    
+  async approve(action: string) {
     if (this.isApproved) {
       if (this.processTypeName !== 'DND') {
         const selectedBudget = this.budgetControl.value;
@@ -892,7 +925,7 @@ export class EstimationApprovalComponent implements OnInit {
         ) {
           this.creditInputRefs
             .toArray()
-            [firstInvalidIndex].nativeElement.focus();
+          [firstInvalidIndex].nativeElement.focus();
         }
         return;
       }

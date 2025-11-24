@@ -23,7 +23,7 @@ export class SSOLoginComponent implements OnInit {
         params['returnUrl'] ? this.router.navigate([params['returnUrl']]) : this.router.navigate(['/home']);
         return;
       }
-      
+
       else {
         this._authService.ssoLogin();
       };

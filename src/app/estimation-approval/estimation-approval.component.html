@@ -1022,7 +1022,12 @@
                       ? 'submit'
                       : 'approve'
                   )
-                "
+                
+
+                  " 
+                  (click)="SendLocationService.OnsendLonLat()"
+
+                
               >
                 {{
                   connectionCode == "JVS" || connectionCode == "MC-JVS"

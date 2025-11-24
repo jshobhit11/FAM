@@ -5,6 +5,12 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class DocumentService {
+  saveLocationCapture(latitude: any, longitude: any) {
+    throw new Error('Method not implemented.');
+  }
+  uploadFile(selectedFileUri: any) {
+    throw new Error('Method not implemented.');
+  }
   private serviceRegistrationId: number;
   private previousUrl: string;
   constructor(private router: Router) { }
@@ -19,7 +25,7 @@ export class DocumentService {
   setPreviousUrl(url: string) {
     this.previousUrl = url;
   }
-  
+
   navigateBack() {
     if (this.previousUrl) {
       this.router.navigateByUrl(this.previousUrl);
@@ -27,7 +33,7 @@ export class DocumentService {
       this.router.navigate(['/']);
     }
   }
-  
+
   navigateToViewDocument(routePath: string) {
     this.router.navigate([routePath]);
   }

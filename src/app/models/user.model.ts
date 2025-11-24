@@ -13,6 +13,7 @@ export interface ILoginResponse {
   apiKey: string;
   officeId: string;
   discom: string;
+  mobileNo: string;
   resources: IResource[];
 }
 

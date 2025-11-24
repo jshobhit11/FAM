@@ -10,7 +10,13 @@ import { Observable } from 'rxjs';
 
 export class VersionService {
 
-    private apiUrl = 'http://localhost:8081/api/version/check';
+    private apiUrl = 'https://localhost:8443/api/version/check';
+    // private apiUrl = "http://10.5.10.108:8092/fam/api/version/check";
+    // private apiUrl = "http://ipdsmobileapps.kdiscoms.org:9200/WAMS_TEST_SERVICES/api/version/check";
+
+    //private apiUrl = "http://hplvmobapp01:8092/fam/api/version/check";
+
+    // private apiUrl = 'https://ipdsmobileapps.kdiscoms.org:9200/FAM_APP/api/version/check';
 
     constructor(private http: HttpClient) { }
 

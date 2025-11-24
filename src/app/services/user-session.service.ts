@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { DateTime } from 'luxon';
 import { Subject } from 'rxjs';
 import { ILoginResponse } from '../models/user.model';
+import { A } from 'node_modules_backup/@angular/cdk/keycodes';
+import appShell from 'node_modules_backup/@schematics/angular/app-shell';
+import { ApiEndpoint } from './api-endpoint';
 
 const SessionNoExpireValue = '-1';
 
@@ -29,7 +32,7 @@ export class UserSessionService {
       this.userRole = storedUserRole;
     }
     const storedUserName = sessionStorage.getItem('user-name');
-    if(storedUserName){
+    if (storedUserName) {
       this.userName = storedUserName
     }
   }
@@ -54,6 +57,24 @@ export class UserSessionService {
     sessionStorage.setItem('allowed-resources', JSON.stringify(this.allowedResources));
     this.userRole = response.role;
     this.userName = response.userName;
+  }
+
+
+  getAuthDetails() {
+    return {
+      username: sessionStorage.getItem('user-name'),
+      password: sessionStorage.getItem('key-cloak-password'),
+      apikey: sessionStorage.getItem('api-key'),
+      servicekey: sessionStorage.getItem('service-key'),
+      officeid: sessionStorage.getItem('office-id'),
+      discom: sessionStorage.getItem('discom'),
+      usercode: sessionStorage.getItem('user-code'),
+      userrole: sessionStorage.getItem('user-role'),
+
+
+
+
+    }
   }
 
   public saveAuthToken(username: string, password: string): void {
@@ -126,4 +147,4 @@ export class UserSessionService {
   }
 }
 
-class TokenExpiredError extends Error {}
+class TokenExpiredError extends Error { }

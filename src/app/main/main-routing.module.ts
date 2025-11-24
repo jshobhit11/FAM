@@ -26,7 +26,6 @@ import { AwardingOfWorkOnLabourContractComponent } from './pages/work-award/awar
 import { SearchByAccountIdComponent } from './search-by-account-id/search-by-account-id.component';
 import { EditWorkExecutionComponent } from './pages/edit-work-execution/edit-work-execution.component';
 import { MaterialInspectionComponent } from '../work-order/material-inspection/material-inspection.component';
-// import { WorkAwardRequestComponent } from '../work-management/pages/work-award-request/work-award-request.component';
 import { CreateWorkAwardRequestComponent } from '../work-management/pages/create-work-award-request/create-work-award-request.component';
 import { AwaitingPaymentComponent } from './awaiting-payment/awaiting-payment.component';
 import { AccountIdMeterMappingComponent } from '../work-order/account-id-meter-mapping/account-id-meter-mapping.component';
@@ -44,81 +43,40 @@ import { FieldReportComponent } from '../work-management/pages/field-report/fiel
 import { MeterUploadComponent } from '../work-management/pages/meter-upload/meter-upload.component';
 import { LrLeMeterPowerApprovalComponent } from '../lr-le-meter-power-approval/lr-le-meter-power-approval.component';
 import { UnauthorizedComponent } from '../unauthorized/unauthorized.component';
-// import { WelcomeComponent } from '../welcome/welcome/welcome.component';
+import { MainComponent } from './main.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DashboardComponent,
-  },
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-  },
-  {
-    path: 'home/:statusCode/:processTypeName',
-    component: HomeComponent,
-  },
-  {
-    path: 'sub-list/:statusCode/:processTypeName',
-    component: SubListComponent,
-  },
-  {
-    path: 'siteInspection/:statusCode/:processTypeName/:serviceRegistrationsId',
-    component: DashboardFormsComponent,
-  },
-  {
-    path: 'cscSiteInspection/:statusCode/:processTypeName/:serviceRegistrationsId',
-    component: CscSiteInspectionComponent,
-  },
-  {
-    path: 'print-form/:accountId',
-    component: PrintFormComponent,
-  },
+    component: DashboardComponent
 
-  // Estimation Forms routing
-  {
-    path: 'estimate-forms/:statusCode/:processTypeName/:serviceRegistrationsId',
-    component: EstimateFormsComponent,
   },
-  {
-    path: 'estimate-forms/:statusCode/:serviceRegistrationsId/:edit/:processTypeName',
-    component: EstimateFormsComponent,
-  },
-  {
-    path: 'estimation-report/:estimationId/:registrationId',
-    component: EstimationReportComponent,
-  },
-  {
-    path: 'estimation-approval/:statusCode/:processTypeName/:serviceRegistrationsId',
-    component: EstimationApprovalComponent,
-  },
-  {
-    path: 'load-power-sanction/:statusCode/:processTypeName/:serviceRegistrationsId',
-    component: LrLeMeterPowerApprovalComponent,
-  },
-  {
-    path: 'other-estimation-approval/:statusCode/:processTypeName/:serviceRegistrationsId',
-    component: EstimationCscApprovalComponent,
-  },
-  {
-    path: 'estimation-sanction/:statusCode/:processTypeName/:serviceRegistrationsId',
-    component: EstimationSanctionComponent,
-  },
-  {
-    path: 'service-line-estimate/:statusCode/:processTypeName/:serviceRegistrationsId',
-    component: ServiceLineEstimateComponent,
-  },
-  {
-    path: 'service-line-estimate/:serviceRegistrationsId/:statusCode/:processTypeName/:edit',
-    component: ServiceLineEstimateComponent,
-  },
+  //  children: [
+  { path: 'dashboard', component: DashboardComponent },
+
+  { path: 'home/:statusCode/:processTypeName', component: HomeComponent },
+  { path: 'sub-list/:statusCode/:processTypeName', component: SubListComponent },
+  { path: 'siteInspection/:statusCode/:processTypeName/:serviceRegistrationsId', component: DashboardFormsComponent },
+  { path: 'cscSiteInspection/:statusCode/:processTypeName/:serviceRegistrationsId', component: CscSiteInspectionComponent },
+  { path: 'print-form/:accountId', component: PrintFormComponent },
+
+  // Estimation Forms
+  { path: 'estimate-forms/:statusCode/:processTypeName/:serviceRegistrationsId', component: EstimateFormsComponent },
+  { path: 'estimate-forms/:statusCode/:serviceRegistrationsId/:edit/:processTypeName', component: EstimateFormsComponent },
+  { path: 'estimation-report/:estimationId/:registrationId', component: EstimationReportComponent },
+  { path: 'estimation-approval/:statusCode/:processTypeName/:serviceRegistrationsId', component: EstimationApprovalComponent },
+  { path: 'load-power-sanction/:statusCode/:processTypeName/:serviceRegistrationsId', component: LrLeMeterPowerApprovalComponent },
+  { path: 'other-estimation-approval/:statusCode/:processTypeName/:serviceRegistrationsId', component: EstimationCscApprovalComponent },
+  { path: 'estimation-sanction/:statusCode/:processTypeName/:serviceRegistrationsId', component: EstimationSanctionComponent },
+  { path: 'service-line-estimate/:statusCode/:processTypeName/:serviceRegistrationsId', component: ServiceLineEstimateComponent },
+  { path: 'service-line-estimate/:serviceRegistrationsId/:statusCode/:processTypeName/:edit', component: ServiceLineEstimateComponent },
   { path: 'view-site-inspection', component: ViewSiteInspectionPageComponent },
 
+  // Work Execution
   { path: 'work-execution', component: WorkExecutionComponent },
   { path: 'work-execution-details', component: WorkExecutionDetailsComponent },
 
-  // Work Order Routing
+  // Work Order
   { path: 'work-order-summary', component: WorkOrderSummaryComponent },
   { path: 'work-order-creation', component: WorkOrderCreationComponent },
   { path: 'work-order-pending', component: WorkOrderPendingComponent },
@@ -128,76 +86,30 @@ const routes: Routes = [
   { path: 'assign-crew-form', component: AssignCrewFormComponent },
   { path: 'permit-to-work-request', component: PermitToWorkRequestComponent },
   { path: 'line-clearance', component: LineClearanceComponent },
-  {
-    path: 'asset-id-and-consumer-mapping',
-    component: AssetIdAndCunsumerMappingComponent,
-  },
-  {
-    path: 'work-order-package-report',
-    component: WorkOrderPackageReportComponent,
-  },
-  {
-    path: 'awarding-of-work-on-labour-contract/:workorderRegisteredId',
-    component: AwardingOfWorkOnLabourContractComponent,
-  },
-  {
-    path: 'search-result/:accountId/:searchBy/:searchType',
-    component: SearchByAccountIdComponent,
-  },
+  { path: 'asset-id-and-consumer-mapping', component: AssetIdAndCunsumerMappingComponent },
+  { path: 'work-order-package-report', component: WorkOrderPackageReportComponent },
+  { path: 'awarding-of-work-on-labour-contract/:workorderRegisteredId', component: AwardingOfWorkOnLabourContractComponent },
+  { path: 'search-result/:accountId/:searchBy/:searchType', component: SearchByAccountIdComponent },
   { path: 'edit-work-execution', component: EditWorkExecutionComponent },
   { path: 'material-inspection', component: MaterialInspectionComponent },
-  {
-    path: 'create-work-award-request',
-    component: CreateWorkAwardRequestComponent,
-  },
-  {
-    path: 'service-line-estimate-approval/:statusCode/:processTypeName/:serviceRegistrationsId',
-    component: ServiceLineEstimateApprovalComponent,
-  },
-  {
-    path: 'awaiting-payment/:accountId/:statusCode/:processTypeName',
-    component: AwaitingPaymentComponent,
-  },
-  {
-    path: 'account-id-meter-mapping',
-    component: AccountIdMeterMappingComponent,
-  },
-  {
-    path: 'meter-uploads',
-    component: MeterUploadComponent,
-  },
-  {
-    path: 'full-details/:serviceRegistrationId',
-    component: FullDetailsComponent,
-  },
-  {
-    path: 'meter-replacement',
-    component: MeterChangeDetailsComponent,
-  },
-  {
-    path: 'meter-validate-and-replicate',
-    component: MeterReplicateAndValidateComponent,
-  },
-  {
-    path: 'account-id-meter-mapping-sc',
-    component: AccountIdMappingScComponent,
-  },
-  {
-    path: 'meter-replacement-sc',
-    component: MeterChangeDetailsScComponent,
-  },
-  {
-    path: 'field-report',
-    component: FieldReportComponent,
-  },
-  {
-    path: 'unauthorized',
-    component: UnauthorizedComponent,
-  },
+  { path: 'create-work-award-request', component: CreateWorkAwardRequestComponent },
+  { path: 'service-line-estimate-approval/:statusCode/:processTypeName/:serviceRegistrationsId', component: ServiceLineEstimateApprovalComponent },
+  { path: 'awaiting-payment/:accountId/:statusCode/:processTypeName', component: AwaitingPaymentComponent },
+  { path: 'account-id-meter-mapping', component: AccountIdMeterMappingComponent },
+  { path: 'meter-uploads', component: MeterUploadComponent },
+  { path: 'full-details/:serviceRegistrationId', component: FullDetailsComponent },
+  { path: 'meter-replacement', component: MeterChangeDetailsComponent },
+  { path: 'meter-validate-and-replicate', component: MeterReplicateAndValidateComponent },
+  { path: 'account-id-meter-mapping-sc', component: AccountIdMappingScComponent },
+  { path: 'meter-replacement-sc', component: MeterChangeDetailsScComponent },
+  { path: 'field-report', component: FieldReportComponent },
+  { path: 'unauthorized', component: UnauthorizedComponent },
+
+
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MainRoutingModule {}
+export class MainRoutingModule { }

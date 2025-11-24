@@ -298,6 +298,8 @@
             "
             class="print-btn btn-md mt-4 mb-2"
             (click)="openSaveDialog('after-approval')"
+             (click)="openConfirmationpopupDialog('submit')"
+              (click)="SendLocationService.OnsendLonLat()"
           >
             Update Details
           </button>
