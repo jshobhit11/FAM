@@ -183,7 +183,7 @@ export class LoginComponent implements OnDestroy, OnInit {
               //   console.log(res.message);
             } else {
 
-              //alert('Please update your application to the latest version.');
+              alert('Please update your application to the latest version.');
               this.snackbar.open('Please Install the Latest APK', 'OK', {
                 verticalPosition: cordova !== undefined ? 'top' : 'top',
               });
@@ -377,7 +377,7 @@ export class LoginComponent implements OnDestroy, OnInit {
       discom: 'BESCOM',
       discomCode: 2,
       officeId: '0001',
-      personName: 'Shobhit',
+      personName: userName,
       appCode: 3,
       usercode: 'U01'
     };
